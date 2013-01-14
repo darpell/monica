@@ -3,8 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><?php echo $title ?> - Dengue Information</title>
+<link rel="stylesheet" type="text/css" href="<?php echo "$base/$css" ?>" />
 <?php 
-echo link_tag('styles/style.css');
+//echo link_tag('styles/style.css');
 if($script != "")
 $this->load->view('scripts/'.$script);
 ?>

@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/monica';
+$config['base_url']	= 'http://localhost/workspace/monica';
 $config['css'] = 'styles/style.css';
 
 /*
