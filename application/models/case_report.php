@@ -43,6 +43,7 @@
 			$data['TPage-txt'] . "','". 
 			$data['TPdateofentry-txt']. "'". ")";
 			$query = $this->db->query($qString);
+			$query->free_result();
 		}
 		function searchcase($data)
 		{
