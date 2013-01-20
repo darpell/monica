@@ -6,12 +6,7 @@ class Pages extends CI_Controller
 	{
 		$this->load->library('mobile_detect');
 		if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
-		{
-			$this->load->helper(array('form', 'url'));
-			
-			$this->load->library('form_validation');
-			$this->load->library('session');
-			
+		{			
 			$this->form_validation->set_rules('TPusername-txt', 'username', 'required');
 			$this->form_validation->set_rules('TPpassword-txt', 'password', 'required');
 			
