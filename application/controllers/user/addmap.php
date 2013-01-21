@@ -47,7 +47,7 @@ class Addmap extends CI_Controller
 			$last_id=key($coords);
 			$coords[$last_id]=substr_replace(end($coords),"",-1,1);
 			
-			$id=$this->Mapping->getPolygpnNumberMax()+1;
+			$id=$this->Mapping->getPolygonNumberMax()+1;
 			foreach ($coords as $row)
 			{
 				$row = explode(',',$row);
@@ -63,7 +63,7 @@ class Addmap extends CI_Controller
 				echo $id."      ".$lat."      ".$lng."      ".$this->input->post('NDtypeddl')."<br/>";
 				$this->Mapping->addPolygon($id,$lat,$lng,$this->input->post('NDtypeddl'));
 			}
-		//$this->Mapping->addPolygon($id,$lat,$lng,$this->input->post('NDtypeddl'));
+		$this->Mapping->addPolygon($id,$lat,$lng,$this->input->post('NDtypeddl'));
 		//*/
 	}
 }

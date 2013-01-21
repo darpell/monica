@@ -32,10 +32,11 @@
 			 			$('#dataPanel').append('<b>Please first create a polygon</b><br/>');
 			 			$("#dataPanel").scrollTop($("#dataPanel")[0].scrollHeight);
 			 		}else{
-			 			document.getElementById("hide").value = creator.showData();
-			 			//alert(document.getElementById("hide").value);
-			 			$('#dataPanel').append('<b>Polygon saved</b>: '+document.getElementById("hide").value+'<br/>');
+			 			$('#dataPanel').append('<b>Polygon saved</b>: '+creator.showData()+'<br/>');
 			 			$("#dataPanel").scrollTop($("#dataPanel")[0].scrollHeight);
+			 			alert("HOORAY!");
+			 			document.getElementById("hide").value = creator.showData();
+			 			document.forms["myform"].submit();
 			 		}
 			 });
 		};	
@@ -51,13 +52,19 @@
 	<td style="width:49%; height:400px">
 		<input id="reset" value="Reset" type="button" class="navi"/>
 		
-		<!--<form action="" action method='post' onsubmit='return confirm("Sure?")'>-->
+		<!-- <form action="" method='post' onsubmit='return confirm("Sure?")'> -->
 		
-		<?php echo form_open('addmap/addPolygon'); ?>
+		<?php 
+		$fdata = array(
+              'name'   => 'myform'
+            );
+		echo form_open('addmap/addPolygon',$fdata); ?>
 		<?php 
 		echo form_dropdown('NDtypeddl', $options, $options[0]);
 		?>
-		<input id="save" value="Submit" type="submit" class="navi"/>
+		<input type="hidden" id='hide' name="hide">
+		<input id="save" value="Submit" type="button" class="navi"/>
+		<!--<input id="save" value="Submit" type="submit" class="navi"/>-->
 		</form> 
 	</td>
 </tr>

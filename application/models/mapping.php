@@ -19,6 +19,16 @@ class Mapping extends CI_Model
 			$name . "'". ")";
 			$query = $this->db->query($qString);
 		}
+	function getPolygonNumberMax()
+		{
+			$qString = 'CALL getMAX_polygon_number';
+			$query = $this->db->query($qString);
+			foreach ($query->result() as $row)
+			{
+				$data=$row->polygon_ID;
+			}
+			return $data;
+		}
 	function mapByType($data)
 		{
 			if($data['node_type']=="larvalpositive")
