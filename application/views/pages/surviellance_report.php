@@ -1,3 +1,7 @@
+<!-- HEADER -->
+<?php $this->load->view('templates/header');?>
+
+<!-- CONTENT -->
 <body>
 <center>
 <h2> DENGUE SURVEILLANCE REPORT </h2>
@@ -38,3 +42,5 @@ if($agegroup == 4)
 <div id="chart_div1"></div>
 </center>
 <body>
+<!-- FOOTER -->
+<?php $this->load->view('templates/footer');?>

@@ -1,3 +1,7 @@
+<!-- HEADER -->
+<?php $this->load->view('templates/header');?>
+
+<!-- CONTENT -->
 <?php 
 $attributes = array(
 						'id' => 'TPlogin'
@@ -16,3 +20,6 @@ echo form_open('login/check',$attributes); ?>
 <div><input type="submit" value="Submit" /></div>
 
 </form>
+
+<!-- FOOTER -->
+<?php $this->load->view('templates/footer');?>

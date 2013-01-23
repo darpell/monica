@@ -3,20 +3,15 @@ class Upload extends CI_Controller
 {
 	public function index()
 	{
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'View patients';
-			$data['table'] = null;
-			$data['script'] = '';
-			$data['error'] =  '';
-			$this->load->view('templates/header',$data);
-			$this->load->library('table');
-			$data['result'] = "";
-			$this->load->view('pages/view_upload',$data);
-			$this->load->view('templates/footer');
+		$data['table'] = null;
+		$data['script'] = '';
+		$data['error'] =  '';
+		$this->load->library('table');
+		$data['result'] = "";
+		$this->load->view('pages/view_upload',$data);
+	}
 	
-			
-		}
 	function view()
 	{
 		$config['upload_path'] = './uploads/';
@@ -26,19 +21,13 @@ class Upload extends CI_Controller
 		if ( ! $this->upload->do_upload())
 		{
 			$error = $this->upload->display_errors();
-
-			$this->load->helper(array('form', 'url'));
 				
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
-		$data['title'] = 'View patients';
+			$data['title'] = 'View patients';
 			$data['table'] = null;
 			$data['script'] = '';
 			$data['error'] =  $error;
-			$this->load->view('templates/header',$data);
 			$this->load->library('table');
 			$this->load->view('pages/view_upload',$data);
-			$this->load->view('templates/footer');
 		}
 		else
 		{
@@ -153,9 +142,6 @@ class Upload extends CI_Controller
 		$rs->Close();
 		$db_connection->Close();
 		
-		
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'View patients';
 		
 			$values[]=array(
@@ -179,10 +165,8 @@ class Upload extends CI_Controller
 			
 			$data['table'] = $values;
 			$data['script'] = '';
-			$this->load->view('templates/header',$data);
 			$this->load->library('table');
 			$this->load->view('pages/view_upload',$data);
-			$this->load->view('templates/footer');
 			$this->session->set_userdata('TPuploadvalues', $upload['full_path']);
 			}
 	}
@@ -332,17 +316,13 @@ class Upload extends CI_Controller
 			);
 			$this->Case_report->addCase($data);
 			}
-					$this->load->helper(array('form', 'url'));
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
-		$data['title'] = 'View patients';
+
+			$data['title'] = 'View patients';
 			$data['table'] = null;
 			$data['script'] = '';
 			$data['error'] =  '';
-		$this->load->view('templates/header',$data);
 		$data['result'] = "Successfully Uploaded " .  count($patientnum) . " Cases";
 		$this->load->view('pages/view_upload',$data);
-		$this->load->view('templates/footer');
 		
 		}
 		else if ($this->input->post('TPsubmit') == 'Cancel')

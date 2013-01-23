@@ -1,4 +1,7 @@
+<!-- HEADER -->
+<?php $this->load->view('templates/header');?>
 
+<!-- CONTENT -->
 <table  border="1"  align="center">
 <tr>
 <?php 
@@ -74,3 +77,6 @@ echo $this->table->generate($table);
 </center>
 </div>
 <?php } ?>
+
+<!-- FOOTER -->
+<?php $this->load->view('templates/footer');?>

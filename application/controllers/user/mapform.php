@@ -4,10 +4,6 @@ class Mapform extends CI_Controller
 	public function index()
 	{
 		$this->load->model('Mapping');
-		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'View map nodes';
 		//scripts if none keep '' 
 		$data['script'] = 'view_casereport';
@@ -17,9 +13,7 @@ class Mapform extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/map_form');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/map_form',$data);
 		}
 		else
 		{
@@ -31,11 +25,7 @@ class Mapform extends CI_Controller
 		$this->load->model('Mapping');
 		$data['node_type'] = $this->input->post('NDtype-ddl');
 		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'View map';
-		
 		//scripts if none keep '' 
 		$data['script'] = 'view_casereport';
 		
@@ -60,10 +50,8 @@ class Mapform extends CI_Controller
 				
 				$data['nodes'] = $this->Mapping->mapByType($data);			
 				$data['bcount'] = $this->Mapping->getBarangayCount($data2);
-				$this->load->view('templates/header',$data);
 				$this->load->library('table');
 				$this->load->view('pages/view_map',$data);
-				$this->load->view('templates/footer');
 			}
 			/*
 			
@@ -86,12 +74,7 @@ class Mapform extends CI_Controller
 	{	
 		$this->load->model('Mapping');
 		$data['polygon_name'] = $this->input->post('NDtype-ddl');
-		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'View map';
-		
 		
 		//scripts if none keep '' 
 		$data['script'] = 'view_casereport';
@@ -106,10 +89,8 @@ class Mapform extends CI_Controller
 		{ 
 			$data['nodes'] = $this->Mapping->mapByType($data);
 			$data['bcount'] = $this->Mapping->getBarangayCount();
-			$this->load->view('templates/header',$data);
 			$this->load->library('table');
 			$this->load->view('pages/view_map',$data);
-			$this->load->view('templates/footer');
 		}
 		else
 		{
@@ -120,12 +101,7 @@ class Mapform extends CI_Controller
 	function mapAllPolygons()
 	{	
 		$this->load->model('Mapping');
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'View map';
-		
-		
 		//scripts if none keep ''
 		$data['script'] = 'view_casereport';
 		
@@ -138,10 +114,8 @@ class Mapform extends CI_Controller
 		if ($this->form_validation->run('') == FALSE)
 		{ 
 			$data['nodes'] = $this->Mapping->mapAllPolygon();
-			$this->load->view('templates/header',$data);
 			$this->load->library('table');
 			$this->load->view('pages/view_map',$data);
-			$this->load->view('templates/footer');
 		}
 		else
 		{

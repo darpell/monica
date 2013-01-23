@@ -4,18 +4,13 @@ class Crform extends CI_Controller
 	public function index()
 	{	$this->redirectLogin();
 		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Add report';
 		 
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{	//scripts if none keep '' 
 			$data['script'] = 'view_casereport';
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/cr_form');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/cr_form',$data);
 		}
 		else
 		{
@@ -38,8 +33,6 @@ class Crform extends CI_Controller
 	function addcase()
 	{		
 		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Add Case Report';
 		$data['script'] = '';
 		
@@ -64,9 +57,7 @@ class Crform extends CI_Controller
 		
 		if ($this->form_validation->run('') == FALSE)
 		{		$data['script'] = 'view_casereport';
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/cr_form');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/cr_form',$data);
 		}
 		else
 		{	
@@ -102,19 +93,15 @@ class Crform extends CI_Controller
 			'TPdateofentry-txt' => date('Y-m-d'),
 		);
 		
-		$this->Case_report->addCase($data); 	
-		$this->load->helper(array('form', 'url'));
+		$this->Case_report->addCase($data);
 		redirect(substr(base_url(), 0, -1) . '/index.php/case_report');
 		}
 	}
 	function viewCaseReport()
-	{	$this->redirectLogin();
+	{	
+		$this->redirectLogin();
 		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Add report';
-		
 		
 		//scripts if none keep '' 
 		$data['script'] = 'view_casereport';
@@ -125,9 +112,7 @@ class Crform extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/view_crform');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/view_crform',$data);
 		}
 		else
 		{
@@ -148,12 +133,6 @@ class Crform extends CI_Controller
 			'TPsort-dd' => $this->input->post('TPsort-dd')
 			);
 		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
-		$data['title'] = 'Add report';
-		
-		
 		//scripts if none keep '' 
 		$data['script'] = 'view_casereport';
 		
@@ -163,10 +142,8 @@ class Crform extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
 			$this->load->library('table');
 			$this->load->view('pages/view_crform',$data);
-			$this->load->view('templates/footer');
 		}
 		else
 		{
@@ -180,10 +157,6 @@ class Crform extends CI_Controller
 		$this->load->model('case_report');
 		
 		$data['patientno'] = $this->uri->segment(3,"");
-		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'View patients';
 		
 		
@@ -196,10 +169,8 @@ class Crform extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
 			$this->load->library('table');
 			$this->load->view('pages/view_patients',$data);
-			$this->load->view('templates/footer');
 		}
 		else
 		{
@@ -226,10 +197,8 @@ class Crform extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
 			$this->load->library('table');
 			$this->load->view('pages/update_patient',$data);
-			$this->load->view('templates/footer');
 		}
 		else
 		{
@@ -269,12 +238,7 @@ class Crform extends CI_Controller
 	{
 		$this->load->model('Case_report');
 		$data['year'] = '2012';
-	
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Add report';
-		
 		
 		$case = $this->Case_report->get_report_data_cases($data);
 		
@@ -427,7 +391,7 @@ class Crform extends CI_Controller
 		if ($this->form_validation->run('') == FALSE)
 		{	//scripts if none keep '' 
 			$data['script'] = 'test_charts';
-			$this->load->view('templates/header',$data);
+			//$this->load->view('templates/header',$data);
 			$data['report_data_age'] = $this->Case_report->get_report_data_age($data);;
 			$data['report_data_cases'] = $this->Case_report->get_report_data_cases($data);
 			$data['totalcur'] = $mn1 + $mn2 + $mn3 + $mn4 + $mn5 + $mn6 + $mn7 + $mn8 + $mn9 + $mn10 + $mn11 + $mn12;
@@ -449,7 +413,7 @@ class Crform extends CI_Controller
 			$data['percent'] = round($data['totalcur']/$data['totalprev'] , 2);
 			$data['percent'] =  $data['percent'] * 100;
 			$this->load->view('pages/surviellance_report', $data);
-			$this->load->view('templates/footer');
+			//$this->load->view('templates/footer');
 		}
 		else
 		{

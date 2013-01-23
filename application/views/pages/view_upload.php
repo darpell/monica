@@ -1,3 +1,7 @@
+<!-- HEADER -->
+<?php $this->load->view('templates/header');?>
+
+<!-- CONTENT -->
 <?php 
 if($table == null) {
 $attributes = array(
@@ -61,3 +65,6 @@ echo $this->table->generate($table);
 
 </div>
 <?php } ?>
+
+<!-- FOOTER -->
+<?php $this->load->view('templates/footer');?>

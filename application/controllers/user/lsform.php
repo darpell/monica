@@ -4,36 +4,29 @@ class Lsform extends CI_Controller
 	public function index()
 	{	
 		$this->redirectLogin();
-		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Add report';
 		$data['script'] = '';
 		
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/ls_form');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/ls_form',$data);
 		}
 		else
 		{
 			$this->load->view('pages/success');
 		}
 	}
+	
 	function redirectLogin()
 	{
 		if($this->session->userdata('logged_in') != TRUE )
 		redirect(substr(base_url(), 0, -1) . '/index.php/login');
 		
 	}
+	
 	function addls()
-	{		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
+	{
 		$data['title'] = 'Add larval survey';
 		$data['script'] = '';
 		
@@ -51,9 +44,7 @@ class Lsform extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			//$this->load->view('templates/header',$data);
-			$this->load->view('mobile/ls_form.php');
-			//$this->load->view('templates/footer');
+			$this->load->view('mobile/ls_form.php',$data);
 		}
 		else
 		{

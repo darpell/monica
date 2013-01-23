@@ -4,10 +4,6 @@ class Addmap extends CI_Controller
 	public function index()
 	{		
 		$this->load->model('Mapping');
-		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Add boundary';
 		//scripts if none keep '' 
 		$data['script'] = '';
@@ -16,9 +12,7 @@ class Addmap extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/add_map');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/add_map',$data);
 		}
 		else
 		{
@@ -28,18 +22,12 @@ class Addmap extends CI_Controller
 	function addPolygon()
 	{
 		$this->load->model('Mapping');
-		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Add Polygon';
 		$data['script'] = '';
 		
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		//*
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/add_map');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/add_map',$data);
 			
 			$coords= explode (')(', $this->input->post('hide'));
 			$coords[0]=substr_replace($coords[0],"",0,1);

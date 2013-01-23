@@ -3,25 +3,25 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><?php echo $title ?> - Dengue Information</title>
-<link rel="stylesheet" type="text/css" href="<?php echo "$base/$css" ?>" />
-<?php 
-//echo link_tag('styles/style.css');
+<?php
+echo link_tag('styles/style.css');
 if($script != "")
-$this->load->view('scripts/'.$script);
+	$this->load->view('scripts/'.$script);
 ?>
 </head>
 <body>
 <div id="main_container">
 <div id="header">
-<div id="logo"><a href="home.html"><img src="<?php echo "$base/images/PLACEHOLDER.gif"; ?>" alt="" title="" border="0"></a></div>
+<div id="logo"><a href=<?= base_url('index.php') ?>><img src="<?= base_url('/images/PLACEHOLDER.gif'); ?>" alt="" title="" border="0"></a></div>
         
         <div id="menu">
             <ul>                                        
-                <li><a class="current" href="home.html" title="">home</a></li>
-                <li><a href="services.html" title="">services</a></li>
-                <li><a href="#" title="">clients</a></li>
-                <li><a href="#" title="">testimonials</a></li>
-                <li><a href="contact.html" title="">contact us</a></li>
+                <li><?= anchor(base_url('index.php'),'Home')?></li>
+                <li><?= anchor('#','Report')?></li>
+                <li><?= anchor('#','Statistics')?></li>
+                <li><?= anchor('#','News')?></li>
+                <li><?= anchor('about','About')?></li>
+                <li><?= anchor('#','Links')?></li>
             </ul>
         </div>
         
@@ -29,7 +29,7 @@ $this->load->view('scripts/'.$script);
     
     <div class="green_box">
     	<div class="clock">
-        <img src="<?php echo "$base/images/map.png"; ?>" alt="" title="">             
+        <img src="<?= base_url('/images/map.png'); ?>" alt="" title="">             
         </div>
         <div class="text_content">
         <h1>PLACEHOLDER</h1>

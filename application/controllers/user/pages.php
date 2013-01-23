@@ -51,17 +51,14 @@ class Pages extends CI_Controller
 			}
 			
 			$data['title'] = ucfirst($page); // Capitalize the first letter
-			/* css */
-			$data['base'] = $this->config->item('base_url');
-			$data['css'] = $this->config->item('css');
 			
 			//scripts if none keep '' 
 			$data['script'] = '';
 	
 			
-			$this->load->view('templates/header', $data);
+			//$this->load->view('templates/header');
 			$this->load->view('pages/'.$page, $data);
-			$this->load->view('templates/footer', $data);
+			//$this->load->view('templates/footer');
 		} 
 	}
 }

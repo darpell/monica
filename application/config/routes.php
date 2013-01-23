@@ -56,6 +56,7 @@ $route['larval_survey'] = 'user/lsform';
 $route['larval_survey/(:any)'] = 'user/lsform/$1';
 $route['case_report/(:any)'] = 'user/crform/$1';
 $route['default_controller'] = 'user/pages/view';
+$route['about'] = 'user/pages/view/about';
 $route['(:any)'] = 'user/pages/view/$1';
 
 /* End of file routes.php */

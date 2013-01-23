@@ -3,9 +3,6 @@ class Login extends CI_Controller
 {
 	public function index()
 	{
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Login';
 		$data['script'] = '';
 		$data['result'] =  null;
@@ -13,20 +10,16 @@ class Login extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/view_login');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/view_login',$data);
 		}
 		else
 		{
 			$this->load->view('pages/success');
 		}
 	}
+	
 	function check()
 	{
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
 		$data['title'] = 'Login';
 		$data['script'] = '';
 		
@@ -35,59 +28,38 @@ class Login extends CI_Controller
 		
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/view_login');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/view_login',$data);
 		}
 		else
 		{
 			$this->load->model('mod_login');
 			$data = array(
-				'TPusername-txt' => $this->input->post('TPusername-txt'),
-				'TPpassword-txt' => $this->input->post('TPpassword-txt')
-			);
-		
-		
-		$userinfo  = $this->mod_login->check($data);
-		if($userinfo != false)
-		{
-		
-		$this->session->set_userdata('TPusername', $userinfo[0]['TPusername']);
-		$this->session->set_userdata('TPtype', $userinfo[0]['TPtype']);
-		$this->session->set_userdata('TPfirstname', $userinfo[0]['TPfirstname']);
-		$this->session->set_userdata('TPmiddlename', $userinfo[0]['TPmiddlename'] );
-		$this->session->set_userdata('TPlastname', $userinfo[0]['TPlastname'] );
-		$this->session->set_userdata('logged_in', true);
-		redirect(substr(base_url(), 0, -1) . '/index.php/');
-		}
-		else
-		{
-			$this->load->helper(array('form', 'url'));
-		
-		$this->load->library('form_validation');
-		
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
-		$data['title'] = 'Login';
-		$data['script'] = '';
-		$data['result'] = 'failed';
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/view_login');
-			$this->load->view('templates/footer');
-	
-
-		}
-		
-		
+						'TPusername-txt' => $this->input->post('TPusername-txt'),
+						'TPpassword-txt' => $this->input->post('TPpassword-txt')
+					);
+			$userinfo  = $this->mod_login->check($data);
+			if($userinfo != false)
+			{
+				$this->session->set_userdata('TPusername', $userinfo[0]['TPusername']);
+				$this->session->set_userdata('TPtype', $userinfo[0]['TPtype']);
+				$this->session->set_userdata('TPfirstname', $userinfo[0]['TPfirstname']);
+				$this->session->set_userdata('TPmiddlename', $userinfo[0]['TPmiddlename'] );
+				$this->session->set_userdata('TPlastname', $userinfo[0]['TPlastname'] );
+				$this->session->set_userdata('logged_in', true);
+				redirect(substr(base_url(), 0, -1) . '/index.php/');
+			}
+			else
+			{
+				$data['title'] = 'Login';
+				$data['script'] = '';
+				$data['result'] = 'failed';
+				$this->load->view('pages/view_login',$data);
+			}
 		}
 	}
 	
 	function add_user()
-	{			
-		/* css */
-		$data['base'] = $this->config->item('base_url');
-		$data['css'] = $this->config->item('css');
+	{
 		$data['title'] = 'Registration Page';
 		$data['script'] = '';
 		
@@ -101,9 +73,7 @@ class Login extends CI_Controller
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('templates/header',$data);
-			$this->load->view('pages/view_register');
-			$this->load->view('templates/footer');
+			$this->load->view('pages/view_register',$data);
 		}
 		else
 		{

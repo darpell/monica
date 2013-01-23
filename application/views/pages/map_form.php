@@ -1,3 +1,7 @@
+<!-- HEADER -->
+<?php $this->load->view('templates/header');?>
+
+<!-- CONTENT -->
 <?php 
 //$attributes = array(
 //						'id' => 'TPcr-form'
@@ -29,3 +33,6 @@ echo form_open('mapping/mapByType'); //*/
 <div><input type="submit" value="Submit" /></div>
 
 </form>
+
+<!-- FOOTER -->
+<?php $this->load->view('templates/footer');?>

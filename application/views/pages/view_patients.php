@@ -1,3 +1,7 @@
+<!-- HEADER -->
+<?php $this->load->view('templates/header');?>
+
+<!-- CONTENT -->
 <?php if($table != null) {?>
 
 <div>
@@ -33,3 +37,7 @@ echo $this->table->generate($table);
 
 </div>
 <?php } ?>
+
+
+<!-- FOOTER -->
+<?php $this->load->view('templates/footer');?>
