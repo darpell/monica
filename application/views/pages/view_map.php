@@ -37,16 +37,148 @@ function splitter(str){
 	var nodeType = new Array();
 	var lat = new Array();
 	var lng = new Array();
-	
-function load() {
+
+	function load(){
+
+		var map = new google.maps.Map(document.getElementById("map"), {
+	        center: new google.maps.LatLng(1.690276, 103.866119),
+	        zoom: 9,
+	        mapTypeId: 'roadmap'
+	      });
+			
+	      	//---------------------------------------------------------
+	      	//
+	      	//LARVAL SURVEY
+	      	//
+	      	//---------------------------------------------------------
+	      	
+	      if(document.getElementById('type').value.toString()=="larvalpositive")
+	          {
+			  	
+			  		var nodes = document.getElementById("data").value;
+			  		var data = splitter(nodes);
+			  		
+			  		for (var i = 0; i < data.length; i++)
+			  		{
+			  			nodeType[i] = data[i][0];		
+			  			refNumber[i] = data[i][1];
+			  			lat[i] = data[i][2];
+			  			lng[i] = data[i][3];
+			  		}
+			          
+				      var infoWindow = new google.maps.InfoWindow;
+				
+				//
+					
+					//alert(document.getElementById('type').value);
+					    
+				            for (var i = 0; i < data.length; i++) 
+				            //*
+				            {
+				            var address = refNumber[i];
+				            
+				            var type = nodeType[i];
+				            var point = new google.maps.LatLng(
+				                parseFloat(lat[i]),
+				                parseFloat(lng[i]));
+				            var html = "<b>" + name + "</b> <br/>" + address;
+				            var icon = customIcons[type] || {};
+				            var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+refNumber[i]+'|ff776b';
+				            var marker = new google.maps.Marker({
+				              map: map,
+				              position: point,
+				              icon: image,
+				              shadow: icon.shadow
+				            });
+							
+				            var circle = new google.maps.Circle({
+							center:point,
+							radius:200,
+							strokeColor:"#0000FF",
+							strokeOpacity:0.8,
+							strokeWeight:2,
+							fillColor:"#0000FF",
+							fillOpacity:0.4
+							});
+						
+							circle.setMap(map); 
+							bindInfoWindow(marker, map, infoWindow, html);
+							
+					}
+	      		}
+				//end of IF
+				//VIEW BOUNDARY
+				
+		      	//---------------------------------------------------------
+		      	//
+		      	//DENGUE CASES
+		      	//
+		      	//---------------------------------------------------------
+		      	
+				else if(document.getElementById('type').value.toString()=="denguecase")
+				{
+					var bcount = new Array();
+					var bcount=splitter(document.getElementById('dataCount').value.toString());
+					alert(document.getElementById('dataCount').value.toString());
+					var ctr = 0;
+					
+					var str = document.getElementById('data').value.toString();
+					str = str.split("%%");
+					
+					var data2 = new Array();
+					for (var i = 0; i < str.length; i++)
+					{
+						data2[i] = str[i].split("&&");
+					}
+					while(ctr <= data2.length-1)
+					{
+					var twicearea=0,
+				       x=0, y=0,
+				       nPts = data2.length,
+				       p1, p2, f;
+				   for (var i=0, j=nPts-1 ;i<nPts;j=i++) {
+				      p1=data2[i]; p2=data2[j];
+				      twicearea+=p1.x*p2.y;
+				      twicearea-=p1.y*p2.x;
+				      f=p1.x*p2.y-p2.x*p1.y;
+				      x+=(p1.x+p2.x)*f;
+				      y+=(p1.y+p2.y)*f;
+				   }
+				   f=twicearea*3;
+
+				   if(bcount[_i][1]!=null)
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[_i][1]+":"+bcount[_i][2]+'|ff776b';
+					else
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=0|ff776b';
+
+					var point = new google.maps.LatLng( x/f,y/f);
+					var icon = customIcons[type] || {};
+		            var centroidMarker = new google.maps.Marker({
+		              map: map,
+		              position: point,
+		              icon: image,
+		              shadow: icon.shadow
+		            });
+		           
+					bermudaTriangle.setMap(map);
+					ctr++;
+				}
+					
+				}
+	}
+function sa() {
       var map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(1.690276, 103.866119),
         zoom: 9,
         mapTypeId: 'roadmap'
       });
 		
-		//document.getElementById('type').value = nodeType[0];
-      	//alert(document.getElementById('type').value);
+    	//---------------------------------------------------------
+    	//
+    	//LARVAL SURVEY
+    	//
+    	//---------------------------------------------------------
+    	
       if(document.getElementById('type').value.toString()=="larvalpositive")
           {
 		  	
@@ -103,6 +235,13 @@ function load() {
       		}
 			//end of IF
 			//VIEW BOUNDARY
+			
+	      	//---------------------------------------------------------
+	      	//
+	      	//DENGUE CASES
+	      	//
+	      	//---------------------------------------------------------
+	      	
 			else if(document.getElementById('type').value.toString()=="denguecase")
 			{
 				var bcount = new Array();

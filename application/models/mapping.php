@@ -78,7 +78,8 @@ class Mapping extends CI_Model
 							$data2 .=
 							$row->polygon_ID . "&&" . 
 							$row->point_lat . "&&" . 
-							$row->point_lng . "%%" ;
+							$row->point_lng . "&&" . 
+							$row->polygon_name . "%%" ;
 					}
 					
 					$q->free_result();
@@ -199,7 +200,6 @@ class Mapping extends CI_Model
 		}
 		function getBarangayCount($data2)
 		{
-			
 			//echo $data['node_type'];			
 			$qString = 'CALL '; 
 			$qString .= "get_brangay_count('"; // name of stored procedure
@@ -207,7 +207,7 @@ class Mapping extends CI_Model
 			//variables needed by the stored procedure
 			$data2['date1']. "','". 
 			$data2['date2']. "'". ")";
-			
+			echo $qString." END ";
 			$q = $this->db->query($qString);
 			//*
 			if($q->num_rows() > 0) 
