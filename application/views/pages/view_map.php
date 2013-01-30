@@ -114,7 +114,6 @@ function load() {
 			{
 				//var bcount = new Array();
 				var bcount=splitter(document.getElementById('dataCount').value.toString());
-				//alert(document.getElementById('dataCount').value.toString());
 				
 				var str = document.getElementById('data').value.toString();
 				str = str.split("%%");
