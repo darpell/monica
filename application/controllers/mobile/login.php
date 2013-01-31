@@ -1,14 +1,31 @@
 <?php
 class Login extends CI_Controller
 {
+	public function index()
+	{
+		$data['title'] = 'Login';
+		
+		$this->form_validation->set_rules('mob_username-txt_r', 'Username', 'required');
+		$this->form_validation->set_rules('mob_password-txt_r', 'Password', 'required');
+		/** Validation rules could be seen at application/config/form_validation.php **/
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('mobile/login');
+		}
+		else
+		{
+			$this->load->view('mobile/home');
+		}
+	}
+	
 	function check()
 	{
-		$this->form_validation->set_rules('TPusername-txt', 'username', 'required');
-		$this->form_validation->set_rules('TPpassword-txt', 'password', 'required');
+		//$this->form_validation->set_rules('TPusername-txt', 'Username', 'required');
+		//$this->form_validation->set_rules('TPpassword-txt', 'Password', 'required');
 			
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('mobile/login.php');
+			$this->load->view('mobile/login');
 			//$this->load->view('mobile/success.php');
 		}
 		else
@@ -41,7 +58,7 @@ class Login extends CI_Controller
 	function logout()
 	{
 		$this->session->sess_destroy();
-		redirect('/login/', 'refresh');
+		redirect('/mobile/login/', 'refresh');
 	}
 }
 

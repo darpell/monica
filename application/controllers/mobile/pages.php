@@ -1,14 +1,25 @@
 <?php
 class Pages extends CI_Controller 
 {
-	public function mob_view($page = 'home')
+	public function view($page)
 	{
 		$this->load->library('mobile_detect');
 		if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
 		{			
-			//$data['title'] = 'Login';			
-			$this->load->view('mobile/login.php');
+			//$data['title'] = 'Login';
+			if ($page == 'home')
+				$this->load->view('mobile/home');
+			
+			else if ($page == 'checklocation')
+				$this->load->view('mobile/current_pos');	
+					
+			else if ($page == 'casemap')
+				$this->load->view('mobile/casemap');
+			
+			else if ($page == 'riskmap')
+				$this->load->view('mobile/riskmap');
 		}
+		
 		else 
 		{
 			redirect(base_url('/home'));

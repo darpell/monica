@@ -17,17 +17,17 @@
 
     <div data-role="content">    
         <ul data-role="listview" data-autodividers="true" data-inset="true">
-            <li><a href="index.php/mobile/login" data-ajax="false" data-transition="slide"> Login Details </a></li>
+            <li><a href="mobile/login" data-ajax="false" data-transition="slide"> Login Details </a></li>
             <!-- <li><a href="" data-transition="slide"> Status &amp; Notifications </a></li> -->
         </ul>
         <ul data-role="listview" data-autodividers="true" data-inset="true">
-            <li><?php echo anchor('mobile/riskmap', 'Risk Map', 'data-ajax="false" data-transition="slide"');?></li>
-        	<li><?php echo anchor('mobile/casemap', 'Case Map', 'data-ajax="false" data-transition="slide"');?></li>
+            <li> <a href="mobile/riskmap" data-ajax="false" data-transition="slide"> Risk Map </a> </li>
+        	<li> <a href="mobile/casemap" data-ajax="false" data-transition="slide"> Case Map </a> </li>
         	
         </ul>
         <ul data-role="listview" data-autodividers="true" data-inset="true">
-			<li><?php echo anchor('mobile/checklocation', 'Plot Current Location', 'data-ajax="false" data-transition="slide"');?></li>
-        	<li><?php echo anchor('mobile/larval_survey', 'Fill up Larval Form', 'data-ajax="false" data-transition="slide"');?></li>
+			<li> <a href="mobile/checklocation" data-ajax="false" data-transition="slide"> Plot Current Location </a> </li>
+        	<li> <a href="mobile/larval_survey" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
         </ul>
     </div><!-- /content -->
 

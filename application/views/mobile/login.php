@@ -43,7 +43,7 @@
 			        $('#contentTransition').show();
 			        
 			        // Submit the form
-			        $.post("mobile/login/check", $('#mob_login').serialize(), function(data){
+			        $.post("mobile/login", $('#mob_login').serialize(), function(data){
 			        	$('#contentTransition').hide();
 			        });        
 			        return false;
@@ -69,8 +69,15 @@
         </div> <!-- /header --> 
         <div data-role="content" id="login_content">
         
-        <?php //form_open('mobile/login/check'); ?>
-        <form id="mob_login" data-ajax="false"> <!-- action="mobile/login/check" method="post"> -->
+        <?php 
+        	/*$attr = array(
+							'id' => 'mob_login',
+							'method' => 'post',
+							'data-ajax' => 'false',
+						);
+        	echo form_open('mobile/login'); */
+        ?>
+        <form id="mob_login" data-ajax="false" action="mobile/login/check" method="post">
         	<div data-role="fieldcontain" class="ui-hide-label">
 	        	<label for="mob_username">Username:</label>
 	        	<label style="color:red"><?php echo form_error('mob_username-txt'); ?></label> <br/> 
@@ -84,10 +91,9 @@
 	            <input data-mini="true" type="password" id="mob_password" name="mob_password-txt_r" value="<?php echo set_value('Password'); ?>" placeholder="Password"/> <br/>
 	             
             </div>
-            
+
             <div id="submitDiv" data-role="fieldcontain">
             	<input data-mini="true" type="submit" value="Submit"/>
-            </div>
             <!-- <div data-role="button" data-icon="check" data-theme="b">Login</div> -->
         </form>
         

@@ -39,14 +39,10 @@
 */
 
 $route['404_override'] = '';
-$route['mobile'] = 'mobile/pages/mob_view';
+$route['mobile'] = 'mobile/pages/view/home';
 $route['mobile/(:any)'] = 'mobile/pages/view/$1';
 $route['mobile/login'] = 'mobile/login';
-//$route['mobile/login/(:any)'] = 'mobile/login/$1';
-//$route['mobile/login/check'] = 'mobile/login/check';
-$route['mobile/casemap'] = 'mobile/casemap';
-$route['mobile/riskmap'] = 'mobile/riskmap';
-$route['mobile/checklocation'] = 'mobile/checklocation';
+$route['mobile/login/(:any)'] = 'mobile/login/$1';
 $route['upload'] = 'user/upload';
 $route['case_report'] = 'user/crform';
 $route['upload/(:any)'] = 'user/upload/$1';

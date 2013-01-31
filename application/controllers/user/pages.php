@@ -7,7 +7,7 @@ class Pages extends CI_Controller
 		$this->load->library('mobile_detect');
 		if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
 		{			
-			redirect('/mobile');
+			redirect('mobile');
 		}
 		else 
 		{
