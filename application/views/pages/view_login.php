@@ -19,7 +19,7 @@ echo form_open('login/check',$attributes); ?>
 
 <div><input type="submit" value="Submit" /></div>
 
-</form>
+<?= form_close(); ?>
 
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

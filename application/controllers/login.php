@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+/*
 class Login extends CI_Controller {
 
 	public function __construct()
@@ -49,9 +49,9 @@ class Login extends CI_Controller {
 		echo $agent;
 		
 		echo $this->agent->platform(); // Platform info (Windows, Linux, Mac, etc.)
-		*/
+		
 	}
-}
+}*/
 
 
 /* End of file login.php */

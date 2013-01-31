@@ -2,6 +2,7 @@
 <html dir="ltr" lang="en-gb">
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<title>Geolocation API getCurrentPosition example</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
@@ -31,6 +32,19 @@
 	    navigator.geolocation.getCurrentPosition(showPosition,showError);
 	    }
 	  else{}
+
+	  function detectBrowser() {
+		  var useragent = navigator.userAgent;
+		  var mapdiv = document.getElementById("mapholder");
+
+		  if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
+		    mapdiv.style.width = '100%';
+		    mapdiv.style.height = '100%';
+		  } else {
+		    mapdiv.style.width = '600px';
+		    mapdiv.style.height = '800px';
+		  }
+		}
 
 	function showPosition(position)
 	  {
