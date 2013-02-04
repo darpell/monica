@@ -42,13 +42,13 @@ class Lsform extends CI_Controller
 		$this->form_validation->set_rules('TPmunicipality-txt', 'municipality', 'required');
 		$this->form_validation->set_rules('TPstreet-txt', 'street', 'required');
 		/** Validation rules could be seen at application/config/form_validation.php **/
-		if ($this->form_validation->run('') == FALSE)
+		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('mobile/ls_form.php',$data);
 		}
 		else
 		{
-			$this->load->view('mobile/ls_form.php');
+			$this->load->view('mobile/home.php');
 			$this->load->model('larval_survey');
 			$data = array(
 			'TPcreatedby-txt' => $this->input->post('TPcreatedby-txt'),

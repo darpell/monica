@@ -1,14 +1,6 @@
-<!DOCTYPE html> 
-<html> 
-<head> 
-    <title>Page Title</title> 
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<!-- HEADER -->
+<?php echo $this->load->view('/mobile/templates/mob_header.php'); ?>
 
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-    
     <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"> 
 </script> 
 	<script src="http://j.maxmind.com/app/geoip.js"></script>-->
@@ -16,10 +8,7 @@
 
 	<script type="text/javascript"
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-9o53l2-ccgNGON3JbUefG9aEmV09ikA&sensor=true">
-        </script>
-
-    
-	
+    </script>
     <script type="text/javascript">
 		$( document ).bind( "mobileinit", function() {
 			// Make your jQuery Mobile framework configuration changes here!
@@ -84,7 +73,7 @@ function initialize(){
     </div><!-- /header -->
     <div data-role="content">    
 
-<form action="home" method="post" data-ajax="false">
+<form action="addls" method="post" data-ajax="false">
 
 	<!-- name of inspector -->
 	<label for="TPinspector-txt">Name of Inspector:</label>

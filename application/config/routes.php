@@ -43,6 +43,7 @@ $route['mobile'] = 'mobile/pages/view/home';
 $route['mobile/(:any)'] = 'mobile/pages/view/$1';
 $route['mobile/login'] = 'mobile/login';
 $route['mobile/login/(:any)'] = 'mobile/login/$1';
+$route['mobile/addls'] = 'user/lsform/addls';
 $route['upload'] = 'user/upload';
 $route['case_report'] = 'user/crform';
 $route['upload/(:any)'] = 'user/upload/$1';

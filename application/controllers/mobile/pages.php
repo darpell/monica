@@ -9,7 +9,7 @@ class Pages extends CI_Controller
 			//$data['title'] = 'Login';
 			if ($page == 'home')
 				$this->load->view('mobile/home');
-			
+	
 			else if ($page == 'checklocation')
 				$this->load->view('mobile/current_pos');	
 					
@@ -18,6 +18,7 @@ class Pages extends CI_Controller
 			
 			else if ($page == 'riskmap')
 				$this->load->view('mobile/riskmap');
+			
 			else if ($page =='larval_survey')
 				$this->load->view('mobile/ls_form');
 		}

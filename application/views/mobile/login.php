@@ -78,6 +78,8 @@ http://stackoverflow.com/questions/7739183/jquery-mobile-how-do-i-submit-forms-t
 			    }
         </script>
 
+</head>
+<body>
     <div data-role="page" data-title="Login" id="page1"> 
         <div  data-role="header" data-theme="a" id="login_header" name="login_header" data-nobackbtn="true">
             <p style="font-size:medium;padding:5px">Dengue Mapping</p>
