@@ -18,11 +18,13 @@ class Pages extends CI_Controller
 			
 			else if ($page == 'riskmap')
 				$this->load->view('mobile/riskmap');
+			else if ($page =='larval_survey')
+				$this->load->view('mobile/ls_form');
 		}
 		
 		else 
 		{
-			redirect(base_url('/home'));
+			redirect(base_url());
 		} 
 	}
 }

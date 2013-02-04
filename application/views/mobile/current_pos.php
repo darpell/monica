@@ -24,7 +24,10 @@
   </head>
   <body>
 <div data-role="page" id="checklocation" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
-    <div data-role="header" data-position="fixed"> <h2> Current Location </h2> </div> <!-- /header-->
+    <div data-role="header" data-position="fixed"> 
+    	<h2> Current Location </h2> 
+    	<a href="#" data-rel="panel" data-icon="gear" class="ui-btn-right"> Options </a>
+    </div> <!-- /header-->
     <div data-role="content" style="width:100%; height:100%;padding:0;">
         <div id="currentLocation" style="position:absolute; width:100%; height:100%;"></div>
     </div><!-- /content -->
@@ -43,6 +46,7 @@
 		else {
 			alert("Geolocation is not supported by this browser");
 		}
+		
 		function displayPosition(position) {
 			var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 			var options = {
@@ -56,9 +60,11 @@
 				map: map,
 				title: "User location"
 			});
+			
 			var contentString = "<b>Timestamp:</b> " + parseTimestamp(position.timestamp) + "<br/><b>User location:</b> lat " + position.coords.latitude + ", long " + position.coords.longitude + ", accuracy " + position.coords.accuracy;
+			var btn = '<div id="info_content"> <button onclick="loadContent()"> Add Larval Incidence </button></div>';
 			var infowindow = new google.maps.InfoWindow({
-				content: contentString
+				content: contentString + btn
 			});
 			google.maps.event.addListener(marker, 'click', function() {
 				infowindow.open(map,marker);

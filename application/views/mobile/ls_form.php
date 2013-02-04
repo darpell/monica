@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="cordova-2.2.0.js"></script>
     
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"> 
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"> 
 </script> 
-<script src="http://j.maxmind.com/app/geoip.js"></script>
+	<script src="http://j.maxmind.com/app/geoip.js"></script>-->
 
 
 	<script type="text/javascript"
@@ -84,60 +83,94 @@ function initialize(){
         <h3>Larval Survey Report</h3>
     </div><!-- /header -->
     <div data-role="content">    
-<?php echo form_open('form'); ?>
 
-<h5>Name of Volunteer Inspector</h5>
-<label style="color:red"><?php echo form_error('TPinspector-txt'); ?></label>
-<input type="text" name="TPinspector-txt" value="<?php echo set_value('TPinspector-txt'); ?>" size="50" />
+<form action="home" method="post" data-ajax="false">
 
-<h5>Date</h5>
-<label style="color:red"><?php echo form_error('TPdate-txt'); ?></label>
-<input type="text" name="TPdate-txt" value="<?php echo date("Y-m-d H:i:s");  ; ?>" size="50" />
+	<!-- name of inspector -->
+	<label for="TPinspector-txt">Name of Inspector:</label>
+	<label style="color:red"><?php echo form_error('TPinspector-txt'); ?></label>
+	<input type="text" name="TPinspector-txt" id="TPinspector-txt" value="" data-mini="true" />
+	<!-- /name of inspector -->
 
-<h5>Barangay</h5>
-<label style="color:red"><?php echo form_error('TPbarangay-txt'); ?></label>
-<input type="text" name="TPbarangay-txt" id="TPbarangay-txt" size="50" />
+	<!-- date -->
+	<label for="TPdate-txt"> Date: </label>
+	<label style="color:red"><?php echo form_error('TPdate-txt'); ?></label>
+	<input type="date" name="TPdate-txt" id="TPdate-txt" value="<?php echo date("Y-m-d H:i:s");?>" data-mini="true" />
+	<!-- /date -->
 
-<h5>Street</h5>
-<label style="color:red"><?php echo form_error('TPstreet-txt'); ?></label>
-<input type="text" name="TPstreet-txt" id="TPstreet-txt" size="50" />
+	<!-- barangay -->
+	<label for="TPbarangay-txt"> Barangay: </label>
+	<label style="color:red"><?php echo form_error('TPbarangay-txt'); ?></label>
+	<input type="text" name="TPbarangay-txt" id="TPbarangay-txt" data-mini="true" />
+	<!-- /barangay -->
 
-<h5>Municipality</h5>
-<label style="color:red"><?php echo form_error('TPmunicipality-txt'); ?></label>
-<input type="text" name="TPmunicipality-txt" id="TPmunicipality-txt" size="50" />
+	<!-- street -->
+	<label for="TPstreet-txt"> Street: </label>
+	<label style="color:red"><?php echo form_error('TPstreet-txt'); ?></label>
+	<input type="text" name="TPstreet-txt" id="TPstreet-txt" data-mini="true" />
+	<!-- /street -->
 
-<h5>Name of Household</h5>
-<label style="color:red"><?php echo form_error('TPhousehold-txt'); ?></label>
-<input type="text" name="TPhousehold-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
+	<!-- municipality -->
+	<label for="TPmunicipality-txt"> Municipality: </label>
+	<label style="color:red"><?php echo form_error('TPmunicipality-txt'); ?></label>
+	<input type="text" name="TPmunicipality-txt" id="TPmunicipality-txt" data-mini="true" />
+	<!-- /municipality -->
 
-<h5>Result of Survey Positive or Negative</h5>
-<label style="color:red"><?php echo form_error('TPresult-rd'); ?></label>
-<input type="radio" name="TPresult-rd" value="Positive" <?php echo set_radio('myradio', 'Positive', TRUE); ?> /> Positive <br/>
-<input type="radio" name="TPresult-rd" value="Negative" <?php echo set_radio('myradio', 'Negative'); ?> /> Negative <br/>
+	<!-- household -->
+	<label for="TPhousehold-txt"> Name of Household: </label>
+	<label style="color:red"><?php echo form_error('TPhousehold-txt'); ?></label>
+	<input type="text" name="TPhousehold-txt" id="TPhousehold-txt" value="<?php echo set_value('patientno'); ?>" data-mini="true" />
+	<!-- /household -->
 
-<h5>Type of Container</h5>
-<label style="color:red"><?php echo form_error('TPcontainer-txt'); ?></label>
-<input type="text" name="TPcontainer-txt" value="<?php echo set_value('TPcontainer-txt'); ?>" size="50" />
+	<!-- result -->
+	<div data-role="fieldcontain">
+		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+			<legend> Survey Result </legend>
+			
+			<input type="radio" name="TPresult-rd" id="TPresult-rd1" value="negative" checked="checked" />
+			<label for="TPresult-rd1"> Negative </label>
+			
+			<input type="radio" name="TPresult-rd" id="TPresult-rd2" value="positive" />
+			<label for="TPresult-rd2"> Positive </label>
+			
+		</fieldset>
+	</div><!-- /result -->
 
-<h5>Created by:</h5>
-<label style="color:red"><?php echo form_error('TPcreatedby-txt'); ?></label>
-<input type="text" name="TPcreatedby-txt" value="<?php echo 'Mr. Bong'; ?>" size="50" />
+	<!-- container -->
+	<label for="TPcontainer-txt">Type of Container</label>
+	<label style="color:red"><?php echo form_error('TPcontainer-txt'); ?></label>
+	<input type="text" name="TPcontainer-txt" id="TPcontainer-txt" value="<?php echo set_value('TPcontainer-txt'); ?>" data-mini="true" />
+	<!-- /container -->
 
-<h5>Created on:</h5>
-<label style="color:red"><?php echo form_error('TPcreatedon-txt'); ?></label>
-<input type="text" name="TPcreatedon-txt" value="<?php echo date("Y-m-d H:i:s"); ?>" size="50" />
+	<!-- createdby -->
+	<label id="TPcreatedby-txt">Created by:</label>
+	<label style="color:red"><?php echo form_error('TPcreatedby-txt'); ?></label>
+	<input type="text" name="TPcreatedby-txt" id="TPcreatedby-txt" value="<?php echo 'Mr. Bong'; ?>" data-mini="true" />
+	<!-- /createdby -->
 
-<h5>Last Updated by: </h5>
-<label style="color:red"><?php echo form_error('TPlastupdatedby-txt'); ?></label>
-<input type="text" name="TPlastupdatedby-txt" value="<?php echo 'Mr. Bong'; ?>" size="50" />
+	<!-- created -->
+	<label for="TPcreatedon-txt"> Created on: </label>
+	<label style="color:red"><?php echo form_error('TPcreatedon-txt'); ?></label>
+	<input type="date" name="TPcreatedon-txt" id="TPcreatedon-txt" value="<?php echo date("Y-m-d H:i:s"); ?>" data-mini="true" />
+	<!-- /created -->
 
-<h5>Last Updated on:</h5>
-<label style="color:red"><?php echo form_error('TPlastupdatedon-txt'); ?></label>
-<input type="text" name="TPlastupdatedon-txt" value="<?php echo date("Y-m-d H:i:s"); ?>" size="50" />
+	<!-- updatedby -->
+	<label for="TPlastupdatedby-txt"> Last Updated by: </label>
+	<label style="color:red"><?php echo form_error('TPlastupdatedby-txt'); ?></label>
+	<input type="text" name="TPlastupdatedby-txt" id="TPlastupdatedby-txt" value="<?php echo 'Mr. Bong'; ?>" data-mini="true" />
+	<!-- /updatedby -->
 
-<div><input type="submit" value="Submit" /></div>
+	<!-- updated -->
+	<label for="TPlastupdatedon-txt"> Last Updated on: </label>
+	<label style="color:red"><?php echo form_error('TPlastupdatedon-txt'); ?></label>
+	<input type="date" name="TPlastupdatedon-txt" id="TPlastupdatedon-txt" value="<?php echo date("Y-m-d H:i:s"); ?>" data-mini="true" />
+	<!-- /updated -->
 
-<?php echo form_close();?>
+	<div>
+		<input type="submit" value="Submit" />
+	</div>
+
+</form>
 
     </div><!-- /content -->
 </div><!-- /page -->

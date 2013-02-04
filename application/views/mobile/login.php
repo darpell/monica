@@ -1,6 +1,15 @@
 <!-- HEADER -->
 <?= $this->load->view('/mobile/templates/mob_header.php') ?>
 
+<!-- 
+REFERENCES TO LOOK AT:
+http://stackoverflow.com/questions/8079459/authentication-in-jquery-mobile-and-phonegap
+http://tutorialzine.com/2011/08/jquery-mobile-product-website/
+http://stackoverflow.com/questions/13779903/codeigniter-and-jquery-mobile-1-2
+http://louiseglynn.com/?p=180
+http://stackoverflow.com/questions/4935887/jquery-mobile-and-form-submission
+http://stackoverflow.com/questions/7739183/jquery-mobile-how-do-i-submit-forms-to-a-url-and-transit-to-another-page-insid
+-->
 
 <!-- CONTENT -->
 
@@ -43,9 +52,15 @@
 			        $('#contentTransition').show();
 			        
 			        // Submit the form
-			        $.post("mobile/login", $('#mob_login').serialize(), function(data){
+			       /* $.post("mobile/login", $('#mob_login').serialize(), function(data){
 			        	$('#contentTransition').hide();
-			        });        
+			        });*/
+			        $.post("mobile/login",
+			        		$('#mob_login').serialize(),
+			        	    function(data,status){
+			        	      alert("Data: " + data + "\nStatus: " + status);
+			        	      $('#contentTransition').hide();
+			        	    });
 			        return false;
 				});
 			});
@@ -69,15 +84,7 @@
         </div> <!-- /header --> 
         <div data-role="content" id="login_content">
         
-        <?php 
-        	/*$attr = array(
-							'id' => 'mob_login',
-							'method' => 'post',
-							'data-ajax' => 'false',
-						);
-        	echo form_open('mobile/login'); */
-        ?>
-        <form id="mob_login" data-ajax="false" action="mobile/login/check" method="post">
+        <form id="mob_login"> <!-- data-ajax="true" action="mobile/login" method="post"> -->
         	<div data-role="fieldcontain" class="ui-hide-label">
 	        	<label for="mob_username">Username:</label>
 	        	<label style="color:red"><?php echo form_error('mob_username-txt'); ?></label> <br/> 
@@ -92,8 +99,7 @@
 	             
             </div>
 
-            <div id="submitDiv" data-role="fieldcontain">
-            	<input data-mini="true" type="submit" value="Submit"/>
+           	<input data-mini="true" type="submit" value="Submit"/>
             <!-- <div data-role="button" data-icon="check" data-theme="b">Login</div> -->
         </form>
         

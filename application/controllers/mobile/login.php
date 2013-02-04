@@ -15,6 +15,14 @@ class Login extends CI_Controller
 		else
 		{
 			$this->load->view('mobile/home');
+			
+			//$mob_username = $this->input->post('mob_username-txt_r');
+			//$mob_pass = $this->input->post('mob_password-txt_r');
+			var_dump('test');
+			$mob_username = $_POST['mob_username-txt_r'];
+			$mob_pass = $_POST['mob_password-txt_r'];
+			
+			echo "Dear" . $mob_username . " Hope you live well in " . $mob_pass . ".";
 		}
 	}
 	
