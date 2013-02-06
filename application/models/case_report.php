@@ -72,7 +72,7 @@
 			$date= explode ('-', $row->created_on);
 			
 			$data2[]=array(
-				'cr_no'=> anchor('http://localhost/monica/index.php/case_report/view_patients/'. $row->cr_no ,  $row->cr_no  , 'target="_blank"'),
+				'cr_no'=> anchor(base_url('index.php/case_report/view_patients/').'/'. $row->cr_no ,  $row->cr_no  , 'target="_blank"'),
 				'cr_city'=>$row->cr_city ,
 				'cr_name_dru'=> $row->cr_name_dru,
 				'cr_address'=> $row->cr_address,
@@ -114,7 +114,7 @@
 			$date2= explode ('-', $row->cr_date_onset);
 			
 			$data2[]=array(
-				'cr_patient_no'=>anchor('http://localhost/monica/index.php/case_report/update_patient/'. $row->cr_patient_no ,  $row->cr_patient_no  , 'target="_blank"'),
+				'cr_patient_no'=>anchor(base_url('index.php/case_report/update_patient').'/'. $row->cr_patient_no ,  $row->cr_patient_no  , 'target="_blank"'),
 				'cr_name'=> $row->cr_last_name . ", ". $row->cr_first_name,
 				'cr_dob'=> $date[1].'/'.$date[2].'/'.$date[0],
 				'cr_address'=>$row->cr_street . " " . $row->cr_barangay . " " . $row->cr_city . " " . $row->cr_province,

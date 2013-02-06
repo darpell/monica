@@ -17,11 +17,10 @@ if($script != "")
         <div id="menu">
             <ul>                                        
                 <li><?= anchor(base_url('index.php'),'Home')?></li>
-                <li><?= anchor('#','Report')?></li>
-                <li><?= anchor('#','Statistics')?></li>
-                <li><?= anchor('#','News')?></li>
-                <li><?= anchor('about','About')?></li>
-                <li><?= anchor('#','Links')?></li>
+                <li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
+                <li><?= anchor(base_url('index.php/case_report/viewCaseReport'),'Update Cases')?></li>
+            	<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
+ 				<li><?= anchor(base_url('index.php/case_report/testChart'),'Surveillance Report ')?></li>           
             </ul>
         </div>
         
