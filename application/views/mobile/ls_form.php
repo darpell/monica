@@ -1,5 +1,5 @@
 <!-- HEADER -->
-<?php echo $this->load->view('/mobile/templates/mob_header.php'); ?>
+<?php echo $this->load->view('mobile/templates/mob_header'); ?>
 
     <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"> 
 </script> 
@@ -199,7 +199,7 @@ function initialize(){
     <!-- Dialogs -->
           <div align="CENTER" data-role="content" id="contentDialog" name="contentDialog">	
 	 <div>Please fill in all required fields before submitting the form.</div>
-	 <a id="buttonOK" name="buttonOK" href="#page1" data-role="button" data-inline="true">OK</a>
+	 <a id="buttonOK" name="buttonOK" href="#page2" data-role="button" data-inline="true">OK</a>
 	</div>	<!-- contentDialog -->
 	
   	<!-- contentTransition is displayed after the form is submitted until a response is received back. -->

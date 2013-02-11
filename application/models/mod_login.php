@@ -25,11 +25,11 @@ class Mod_login extends CI_Model
 				foreach ($q->result() as $row) {
 				
 				$data2[] = array(
-					'TPusername'=>$row->user_username , 
-					'TPtype'=>$row->user_type ,
-					'TPfirstname'=> $row->user_firstname ,
-					'TPmiddlename'=> $row->user_middlename ,
-					'TPlastname'=> $row->user_lastname ,
+					'TPusername'	=>	$row->user_username , 
+					'TPtype'		=>	$row->user_type ,
+					'TPfirstname'	=>	$row->user_firstname ,
+					'TPmiddlename'	=>	$row->user_middlename ,
+					'TPlastname'	=>	$row->user_lastname ,
 					);
 	
 				}

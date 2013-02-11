@@ -10,11 +10,6 @@
     <!-- <script type="text/javascript" charset="utf-8" src="cordova-2.2.0.js"></script> -->
 	
 	<script>
-		var mob_username = null;
-		var mob_password = null;
-		var mob_footer = null;
-		var inputMapVar = null;
-
 		// Constants
 	    var MISSING = "missing";
 	    var EMPTY = "";

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Lsform extends CI_Controller
 {
 	public function index()
@@ -66,7 +66,7 @@ class Lsform extends CI_Controller
 			$this->larval_survey->add($data);
 			
 			$return_data['result'] = 'Your entry has been recorded.';
-			$this->load->view('mobile/ls_form',$return_data);
+			$this->load->view('mobile/home',$return_data);
 		}
 	}
 }

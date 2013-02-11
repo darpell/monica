@@ -31,8 +31,8 @@
         </ul>
         
         <br/><br/>
-        <span> test</span>
-        <span id="mob_result"> <?php echo $this->session->userdata('TPusername'); echo 'lala'?> </span>
+        <span><?php echo $this->session->userdata('TPusername'); ?></span>
+        <span id="mob_result"> <?php if ($result != null) echo $result; ?> </span>
         
     </div><!-- /content -->
 

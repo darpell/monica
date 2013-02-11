@@ -4,12 +4,14 @@ class Pages extends CI_Controller
 	public function view($page)
 	{
 		$this->load->library('mobile_detect');
-		if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
-		{			
+		//if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
+		//{			
 			//$data['title'] = 'Login';
 			if ($page == 'home')
-				$this->load->view('mobile/home');
-	
+			{
+				$data['result'] = null;
+				$this->load->view('mobile/home',$data);
+			}
 			else if ($page == 'checklocation')
 				$this->load->view('mobile/current_pos');	
 					
@@ -24,7 +26,7 @@ class Pages extends CI_Controller
 				$data['result'] = null;
 				$this->load->view('mobile/ls_form', $data);
 			}
-		}
+		//}
 		
 		else 
 		{
