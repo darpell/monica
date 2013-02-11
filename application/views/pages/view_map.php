@@ -151,8 +151,8 @@ function load() {
 				alert(data2);
 				
 					var ctr2 = 0;
-					for (var _i=0; _i <= data2[data2.length-2][0]; _i++)
-					{	//point = locs[_i];
+					for (var _i=1; _i <= data2[data2.length-1][0]; _i++)
+					{	
 						var  latLng = [];
 						var bermudaTriangle = [];
 						
@@ -162,8 +162,8 @@ function load() {
 						
 						while(ctr <= data2.length-1)
 						{
-							if (_i == data2[ctr][0])
-							{
+							if ((_i == data2[ctr][0]))
+							{	//alert(_i+" is equal to "+data2[ctr][0]);
 								if(parseFloat(data2[ctr][1]) < x1)
 								{x1=parseFloat(data2[ctr][1]);}
 								if(parseFloat(data2[ctr][2]) < y1)
@@ -174,9 +174,33 @@ function load() {
 								{y2=parseFloat(data2[ctr][2]);}
 								
 								latLng.push(new google.maps.LatLng(parseFloat(data2[ctr][1]), parseFloat(data2[ctr][2])));
+								if(ctr == data2.length)
+								{
+									bermudaTriangle = new google.maps.Polygon(
+											{
+												paths: latLng,
+												fillColor: "#FF0000",
+												fillOpacity:0.3
+											});
+										var centroidX = x1 + ((x2 - x1) * 0.5);
+										var centroidY = y1 + ((y2 - y1) * 0.5);
+										var image;
+									if(bcount[_i][1]!=null)
+									{
+										image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[_i][2]+'|ff776b';
+									}
+									else
+									{
+										image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=0|ff776b';
+									}
+									var point = new google.maps.LatLng(centroidX,centroidY);
+									createMarker(map,point,image,bcount[_i][1]);
+						           
+									bermudaTriangle.setMap(map);
+								}
 							}
 							else
-							{
+							{	//alert(_i+" is NOT equal to "+data2[ctr][0]);
 								bermudaTriangle = new google.maps.Polygon(
 										{
 											paths: latLng,
@@ -196,31 +220,10 @@ function load() {
 								}
 								var point = new google.maps.LatLng(centroidX,centroidY);
 								createMarker(map,point,image,bcount[_i][1]);
-								/*
-								var icon = customIcons[type] || {};
-					            var centroidMarker = new google.maps.Marker({
-					              map: map,
-					              position: point,
-					              icon: image,
-					              shadow: icon.shadow
-					            });
-
-								  
-								centroidMarker.info = new google.maps.InfoWindow({
-									content: "SHGUTS "+bcount[_i][1]
-								});
-								  
-								  //*
-								google.maps.event.addListener(centroidMarker, 'mouseover', function() {
-									centroidMarker.info.open(map, this);
-								});
-							      //*/
 					           
 								bermudaTriangle.setMap(map);
 
-								//alert("insert");
 								ctr2 = ctr;
-								//alert(ctr); 
 								ctr = data2.length;
 								x1=999;
 								x2=-999;
