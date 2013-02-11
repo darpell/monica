@@ -4,7 +4,7 @@
 <!-- CONTENT -->
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
-
+var infoWindow2 = new google.maps.InfoWindow({});
 var customIcons = {
 		  larvalpositive: {
 	        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png',
@@ -32,6 +32,28 @@ function splitter(str){
 	var nodeType = new Array();
 	var lat = new Array();
 	var lng = new Array();
+
+function createMarker(map,point,image,info)
+{
+	var icon = customIcons[type] || {};
+    var centroidMarker = new google.maps.Marker({
+      map: map,
+      position: point,
+      icon: image,
+      shadow: icon.shadow
+    });
+
+	 /*
+	centroidMarker.info = new google.maps.InfoWindow({
+		content: info
+	});
+	//*/
+	  
+	google.maps.event.addListener(centroidMarker, 'mouseover', function() {
+		infoWindow2.setContent(info);
+		infoWindow2.open(map, this);
+	});
+}
 	
 function load() {
 	
@@ -126,6 +148,7 @@ function load() {
 				{
 					data2[i] = str[i].split("&&");
 				}
+				alert(data2);
 				
 					var ctr2 = 0;
 					for (var _i=0; _i <= data2[data2.length-2][0]; _i++)
@@ -162,17 +185,18 @@ function load() {
 										});
 									var centroidX = x1 + ((x2 - x1) * 0.5);
 									var centroidY = y1 + ((y2 - y1) * 0.5);
-								
+									var image;
 								if(bcount[_i][1]!=null)
 								{
-									var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[_i][1]+":"+bcount[_i][2]+'|ff776b';
+									image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[_i][2]+'|ff776b';
 								}
 								else
 								{
-									var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[_i][1]+":"+'0|ff776b';
+									image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=0|ff776b';
 								}
-								
 								var point = new google.maps.LatLng(centroidX,centroidY);
+								createMarker(map,point,image,bcount[_i][1]);
+								/*
 								var icon = customIcons[type] || {};
 					            var centroidMarker = new google.maps.Marker({
 					              map: map,
@@ -181,9 +205,9 @@ function load() {
 					              shadow: icon.shadow
 					            });
 
-								  //*
+								  
 								centroidMarker.info = new google.maps.InfoWindow({
-									content: 'Hello'
+									content: "SHGUTS "+bcount[_i][1]
 								});
 								  
 								  //*
