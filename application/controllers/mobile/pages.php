@@ -20,7 +20,10 @@ class Pages extends CI_Controller
 				$this->load->view('mobile/riskmap');
 			
 			else if ($page =='larval_survey')
-				$this->load->view('mobile/ls_form');
+			{
+				$data['result'] = null;
+				$this->load->view('mobile/ls_form', $data);
+			}
 		}
 		
 		else 

@@ -11,6 +11,14 @@ http://stackoverflow.com/questions/4935887/jquery-mobile-and-form-submission
 http://stackoverflow.com/questions/7739183/jquery-mobile-how-do-i-submit-forms-to-a-url-and-transit-to-another-page-insid
 -->
 
+<!-- TODO -->
+
+<!-- 
+jQuery Ajax Codeigniter
+http://www.ibm.com/developerworks/web/library/wa-aj-codeigniter/
+http://stackoverflow.com/questions/2027057/codeigniter-jquery-ajax
+-->
+
 <!-- CONTENT -->
 
 		<script type="text/javascript">
@@ -52,16 +60,29 @@ http://stackoverflow.com/questions/7739183/jquery-mobile-how-do-i-submit-forms-t
 			        $('#contentTransition').show();
 			        
 			        // Submit the form
-			       /* $.post("mobile/login", $('#mob_login').serialize(), function(data){
+			        /*$.post("mobile/login", $('#mob_login').serialize(), function(data){
 			        	$('#contentTransition').hide();
 			        });*/
-			        $.post("mobile/login",
-			        		$('#mob_login').serialize(),
-			        	    function(data,status){
-			        	      alert("Data: " + data + "\nStatus: " + status);
-			        	      $('#contentTransition').hide();
-			        	    });
-			        return false;
+
+			        /*
+			        $.post("login/check",
+			        		{
+		        				'mob_username-txt_r':mob_username-txt_r,
+		        				'mob_password-txt_r':mob_password-txt_r
+			        		},
+			        		//$('#mob_login').serialize(),
+					        function(data){
+			        			$('#contentTransition').hide();
+			        			//alert("test");
+			        			//$.mobile.changePage("home");
+				        });*/
+			        
+			        		//$('#mob_login').serialize(),
+			        	    //function(data,status){
+			        	    //  alert("Data: " + data + "\nStatus: " + status);
+			        	    //  $('#contentTransition').hide();
+			        	    //})*/
+			        //return true;
 				});
 			});
 			
@@ -86,7 +107,7 @@ http://stackoverflow.com/questions/7739183/jquery-mobile-how-do-i-submit-forms-t
         </div> <!-- /header --> 
         <div data-role="content" id="login_content">
         
-        <form id="mob_login"> <!-- data-ajax="true" action="mobile/login" method="post"> -->
+        <form id="mob_login" action="login" method="post"> <!-- data-ajax="false" > -->
         	<div data-role="fieldcontain" class="ui-hide-label">
 	        	<label for="mob_username">Username:</label>
 	        	<label style="color:red"><?php echo form_error('mob_username-txt'); ?></label> <br/> 

@@ -29,6 +29,11 @@
 			<li> <a href="<?php echo site_url('mobile/checklocation');?>" data-ajax="false" data-transition="slide"> Plot Current Location </a> </li>
         	<li> <a href="<?php echo site_url('mobile/larval_survey');?>" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
         </ul>
+        
+        <br/><br/>
+        <span> test</span>
+        <span id="mob_result"> <?php echo $this->session->userdata('TPusername'); echo 'lala'?> </span>
+        
     </div><!-- /content -->
 
 <!-- FOOTER -->

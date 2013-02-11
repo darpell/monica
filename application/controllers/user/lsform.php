@@ -6,66 +6,67 @@ class Lsform extends CI_Controller
 		$this->redirectLogin();
 		$data['title'] = 'Add report';
 		$data['script'] = '';
+		$data['result'] = null;
 		
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$this->load->view('pages/ls_form',$data);
+			$this->load->view('mobile/ls_form',$data);
 		}
 		else
 		{
-			$this->load->view('pages/success');
+			
 		}
 	}
 	
 	function redirectLogin()
 	{
+		// TODO
 		if($this->session->userdata('logged_in') != TRUE )
-		redirect(substr(base_url(), 0, -1) . '/index.php/login');
-		
+			redirect(substr(base_url(), 0, -1) . '/index.php/login');
 	}
 	
 	function addls()
 	{
 		$data['title'] = 'Add larval survey';
 		$data['script'] = '';
-		
-		$this->form_validation->set_rules('TPcreatedby-txt', 'created by', 'required');
-		$this->form_validation->set_rules('TPcreatedon-txt', 'created on', 'required');
-		$this->form_validation->set_rules('TPlastupdatedby-txt', 'last updated by', 'required');
-		$this->form_validation->set_rules('TPlastupdatedon-txt', 'last updated on', 'required');
-		$this->form_validation->set_rules('TPcontainer-txt', 'container', 'required');
-		$this->form_validation->set_rules('TPhousehold-txt', 'household', 'required');
-		$this->form_validation->set_rules('TPbarangay-txt', 'barangay', 'required');
-		$this->form_validation->set_rules('TPdate-txt', 'date', 'required');
-		$this->form_validation->set_rules('TPinspector-txt', 'inspector', 'required');
-		$this->form_validation->set_rules('TPmunicipality-txt', 'municipality', 'required');
-		$this->form_validation->set_rules('TPstreet-txt', 'street', 'required');
+
+		$this->form_validation->set_rules('TPcontainer-txt_r', 'container', 'required');
+		$this->form_validation->set_rules('TPhousehold-txt_r', 'household', 'required');
+		$this->form_validation->set_rules('TPbarangay-txt_r', 'barangay', 'required');
+		$this->form_validation->set_rules('TPdate-txt_r', 'date', 'required');
+		$this->form_validation->set_rules('TPinspector-txt_r', 'inspector', 'required');
+		$this->form_validation->set_rules('TPmunicipality-txt_r', 'municipality', 'required');
+		$this->form_validation->set_rules('TPstreet-txt_r', 'street', 'required');
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('mobile/ls_form.php',$data);
+			$this->load->view('mobile/ls_form',$data);
 		}
 		else
 		{
-			$this->load->view('mobile/home.php');
 			$this->load->model('larval_survey');
 			$data = array(
-			'TPcreatedby-txt' => $this->input->post('TPcreatedby-txt'),
-			'TPcreatedon-txt' => $this->input->post('TPcreatedon-txt'),
-			'TPlastupdatedby-txt' => $this->input->post('TPlastupdatedby-txt'),
-			'TPlastupdatedon-txt' => $this->input->post('TPlastupdatedon-txt'),			
-			'TPcontainer-txt' => $this->input->post('TPcontainer-txt'),
-			'TPhousehold-txt' => $this->input->post('TPhousehold-txt'),
-			'TPresult-rd' => $this->input->post('TPresult-rd'),
-			'TPbarangay-txt' => $this->input->post('TPbarangay-txt'), 
-			'TPdate-txt' => $this->input->post('TPdate-txt'), 
-			'TPinspector-txt' => $this->input->post('TPinspector-txt'), 			
-			'TPmunicipality-txt' => $this->input->post('TPmunicipality-txt'),
-			'TPstreet-txt' => $this->input->post('TPstreet-txt')
-		);
-		
-		$this->larval_survey->addLS_report($data); 
+						'TPcreatedby-txt'		=>	$this->session->userdata('TPusername'),
+						'TPcreatedon-txt' 		=>	date("Y-m-d H:i:s"),
+						'TPlastupdatedby-txt' 	=> 	$this->session->userdata('TPusername'),
+						'TPlastupdatedon-txt' 	=> 	date("Y-m-d H:i:s"),			
+						'TPcontainer-txt' 		=> 	$this->input->post('TPcontainer-txt_r'),
+						'TPhousehold-txt' 		=> 	$this->input->post('TPhousehold-txt_r'),
+						'TPresult-rd' 			=>	$this->input->post('TPresult-rd'),
+						'TPbarangay-txt' 		=>	$this->input->post('TPbarangay-txt_r'), 
+						'TPdate-txt' 			=>	$this->input->post('TPdate-txt_r'), 		// TODO to be continued..
+						'TPinspector-txt' 		=>	$this->input->post('TPinspector-txt_r'), 			
+						'TPmunicipality-txt' 	=>	$this->input->post('TPmunicipality-txt_r'),
+						'TPstreet-txt' 			=>	$this->input->post('TPstreet-txt_r'),
+						'lat'					=>	$this->input->post('lat'),
+						'lng'					=>	$this->input->post('lng')
+					);
+			//$this->larval_survey->addLS_report($data);
+			$this->larval_survey->add($data);
+			
+			$return_data['result'] = 'Your entry has been recorded.';
+			$this->load->view('mobile/ls_form',$return_data);
 		}
 	}
 }

@@ -4,10 +4,8 @@ class Login extends CI_Controller
 	public function index()
 	{
 		$data['title'] = 'Login';
-		
 		$this->form_validation->set_rules('mob_username-txt_r', 'Username', 'required');
 		$this->form_validation->set_rules('mob_password-txt_r', 'Password', 'required');
-		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('mobile/login');
@@ -15,21 +13,13 @@ class Login extends CI_Controller
 		else
 		{
 			$this->load->view('mobile/home');
-			
-			//$mob_username = $this->input->post('mob_username-txt_r');
-			//$mob_pass = $this->input->post('mob_password-txt_r');
-			var_dump('test');
-			$mob_username = $_POST['mob_username-txt_r'];
-			$mob_pass = $_POST['mob_password-txt_r'];
-			
-			echo "Dear" . $mob_username . " Hope you live well in " . $mob_pass . ".";
 		}
 	}
 	
 	function check()
 	{
-		//$this->form_validation->set_rules('TPusername-txt', 'Username', 'required');
-		//$this->form_validation->set_rules('TPpassword-txt', 'Password', 'required');
+		$this->form_validation->set_rules('mob_username-txt_r', 'Username', 'required');
+		$this->form_validation->set_rules('mob_password-txt_r', 'Password', 'required');
 			
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -40,10 +30,10 @@ class Login extends CI_Controller
 		{
 			$this->load->model('mod_login');
 			$data = array(
-					'TPusername-txt' => $this->input->post('mob_username-txt'),
-					'TPpassword-txt' => $this->input->post('mob_password-txt')
+					'TPusername-txt' => $this->input->post('mob_username-txt_r'),
+					'TPpassword-txt' => $this->input->post('mob_password-txt_r')
 			);
-				
+			
 			$userinfo  = $this->mod_login->check($data);
 			if($userinfo != false)
 			{
@@ -54,11 +44,11 @@ class Login extends CI_Controller
 				$this->session->set_userdata('TPlastname', $userinfo[0]['TPlastname'] );
 				$this->session->set_userdata('logged_in', true);
 				//redirect(substr(base_url(), 0, -1) . '/index.php/');
-				$this->load->view('mobile/index.php');
+				$this->load->view('mobile/home');
 			}
 			else
 			{
-				$this->load->view('mobile/index.php');
+				$this->load->view('mobile/login');
 			}
 		}
 	}

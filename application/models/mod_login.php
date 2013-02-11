@@ -8,7 +8,8 @@ class Mod_login extends CI_Model
 			$this->load->database('default');
 		}
 		
-		function check($data){
+		function check($data)
+		{
 			
 			$qString = 'CALL '; 
 			$qString .= "login ('"; // name of stored procedure
@@ -21,26 +22,25 @@ class Mod_login extends CI_Model
 			
 			if($q->num_rows() > 0) 
 			{
-			foreach ($q->result() as $row) {
-			
-			$data2[]=array(
-				'TPusername'=>$row->user_username , 
-				'TPtype'=>$row->user_type ,
-				'TPfirstname'=> $row->user_firstname ,
-				'TPmiddlename'=> $row->user_middlename ,
-				'TPlastname'=> $row->user_lastname ,
-				);
-
-			}
-			return $data2;
-			}
-			
-			else return false;
+				foreach ($q->result() as $row) {
+				
+				$data2[] = array(
+					'TPusername'=>$row->user_username , 
+					'TPtype'=>$row->user_type ,
+					'TPfirstname'=> $row->user_firstname ,
+					'TPmiddlename'=> $row->user_middlename ,
+					'TPlastname'=> $row->user_lastname ,
+					);
 	
-
+				}
+				return $data2;
+			}
+			else 
+				return false;
 		}
 		
-		function add_user($data){
+		function add_user($data)
+		{
 			
 			$qString = 'CALL '; 
 			$qString .= "add_user ('"; // name of stored procedure
