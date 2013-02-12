@@ -5,7 +5,13 @@ $this->load->view('templates/header',$data);
 ?>
 
 <!-- CONTENT -->
-Success!
+<center>
+
+<h2>
+Update Success!
+</h2>
+</center>
+
 
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

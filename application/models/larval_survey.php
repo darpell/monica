@@ -94,6 +94,116 @@ class Larval_survey extends CI_Model
 			$this->db->insert('ls_report_main', $insert_main_data);
 		}
 	}
+	function searchcase($data)
+	{
+		$qString = 'CALL ';
+		$qString .= "view_larvalreport ('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data['TPtrack-txt'] . "','" .
+		$data['TPdatefrom-txt']. "','".
+		$data['TPdateto-txt'] . "','".
+		$data['TPsort-dd'] . "'". ")";
+			
+		$q = $this->db->query($qString);
+			
+		$data2[]=array(
+				'tracking_number'=>'Tracking Number',
+				'ls_household'=> 'Name of Household',
+				'ls_container'=> 'Container',
+				'created_by'=> 'Submitted By',
+				'created_on'=> 'Submitted On',
+		);
+		if($q->num_rows() > 0)
+		{
+			foreach ($q->result() as $row) {
+				$date= explode ('-', $row->created_on);
+					
+				$data2[]=array(
+						'tracking_number'=> anchor(base_url('index.php/larval_survey/view_survey/').'/'. $row->tracking_number ,  $row->tracking_number  , 'target="_blank"'),
+						'ls_household'=>$row->ls_household ,
+						'ls_container'=> $row->ls_container,
+						'created_by'=> $row->created_by,
+						'created_on'=> $date[1].'/'.$date[2].'/'.$date[0],
+				);
+			}
+		}
+		else
+		{
+			$data2[] =array(
+					'tracking_number'=> '</td><td align="center" colspan="13">No Results Found',
+			);
+		}
+		$q->free_result();
+		return $data2;
+	}
+	
+	function getReportInfo($data)
+	{
+		$qString = 'CALL ';
+		$qString .= "get_larvalreport ('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+			
+		$data['track'] . "'". ")";
+			
+		$q = $this->db->query($qString);
+			
+		if($q->num_rows() > 0)
+		{
+			foreach ($q->result() as $row) {
+				$date= explode ('-', $row->created_on);
+				$data = array(
+						'tracking' => $row->tracking_number,
+						'TPhousehold-txt' => $row->ls_household,
+						'TPresult-rd' =>$row->ls_result,
+						'TPcontainer-txt' => $row->ls_container,
+						'TPcreatedby-txt' =>$row->created_by,
+						'TPcreatedon-txt' => $date[1].'/'.$date[2].'/'.$date[0],
+				);
+					
+			}
+		}
+		else
+		{
+			$data[] =null;
+		}
+		$q->free_result();
+		return $data;
+	}
+	function updateResult($data)
+	{
+		$qString = 'CALL ';
+		$qString .= "update_larval_survey ('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data['track'] . "','" .
+		$data['result'] . "'". ")";
+			
+		$q = $this->db->query($qString);
+			
+		if($q->num_rows() > 0)
+		{
+			foreach ($q->result() as $row) {
+				$date= explode ('-', $row->created_on);
+				$data = array(
+						'tracking' => $row->tracking_number,
+						'TPhousehold-txt' => $row->ls_household,
+						'TPresult-rd' =>$row->ls_result,
+						'TPcontainer-txt' => $row->ls_container,
+						'TPcreatedby-txt' =>$row->created_by,
+						'TPcreatedon-txt' => $date[1].'/'.$date[2].'/'.$date[0],
+				);
+					
+			}
+		}
+		else
+		{
+			$data[] =null;
+		}
+		$q->free_result();
+		return $data;
+	}
 }
 
 /* End of larval_survey.php */
