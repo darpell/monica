@@ -15,7 +15,7 @@ class Pages extends CI_Controller
 					$this->load->view('mobile/home',$data);
 				}
 				else
-					redirect(base_url('mobile/login'));
+					redirect(site_url('mobile/login'));
 			}
 			else if ($page == 'checklocation')
 				$this->load->view('mobile/current_pos');	
@@ -26,11 +26,13 @@ class Pages extends CI_Controller
 			else if ($page == 'riskmap')
 				$this->load->view('mobile/riskmap');
 			
-			else if ($page =='larval_survey')
+			else if ($page == 'larval_survey')
 			{
 				$data['result'] = null;
 				$this->load->view('mobile/ls_form', $data);
 			}
+			else if ($page == 'user')
+				$this->load->view('mobile/user');
 		}
 		
 		else 

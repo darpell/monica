@@ -31,9 +31,10 @@
     <div data-role="content" style="width:100%; height:100%;padding:0;">
         <div id="currentLocation" style="position:absolute; width:100%; height:100%;"></div>
     </div><!-- /content -->
-    <script type="text/javascript"
+    <!-- <script type="text/javascript"
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-9o53l2-ccgNGON3JbUefG9aEmV09ikA&sensor=true">
-        </script>
+        </script> -->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 		 <script>
 		if (navigator.geolocation) {
 			var timeoutVal = 10 * 1000 * 1000;

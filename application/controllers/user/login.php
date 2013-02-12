@@ -95,7 +95,8 @@ class Login extends CI_Controller
 	function logout()
 	{
 		$this->session->sess_destroy();
-		redirect('/login/', 'refresh');
+		//redirect('/login/', 'refresh');
+		redirect(base_url());
 	}
 }
 

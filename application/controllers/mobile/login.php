@@ -55,12 +55,6 @@ class Login extends CI_Controller
 			}
 		}
 	}
-	
-	function logout()
-	{
-		$this->session->sess_destroy();
-		redirect('/mobile/login/', 'refresh');
-	}
 }
 
 /* End of file mobile/login.php */
