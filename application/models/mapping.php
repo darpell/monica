@@ -55,7 +55,7 @@ class Mapping extends CI_Model
 						$row->node_lng . "%%" ;
 					}
 					$q->free_result();
-					return $data;
+					return substr($data,0,-2);
 				}
 				else
 				{
@@ -83,7 +83,7 @@ class Mapping extends CI_Model
 					}
 					
 					$q->free_result();
-					return $data2;
+					return substr($data2,0,-2);
 				}
 				else
 				{
@@ -189,7 +189,7 @@ class Mapping extends CI_Model
 					$row->node_lng . "%%" ;
 				}
 				$q->free_result();
-				return $data;
+				return substr($data,0,-2);
 			}
 			else
 			{
@@ -220,7 +220,7 @@ class Mapping extends CI_Model
 					$row->amount . "%%" ;
 				}
 				$q->free_result();
-				return $data;
+				return substr($data,0,-2);
 			}
 			else
 			{
@@ -314,7 +314,7 @@ class Mapping extends CI_Model
 					$row->amount . "%%" ;
 				}
 				$q->free_result();
-				return $data;
+				return substr($data,0,-2);
 			}
 			else
 			{
