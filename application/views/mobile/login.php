@@ -36,6 +36,7 @@
 			        
 			        // If validation passes, show Transition content
 			        $('#contentTransition').show();
+			        setTimeout('',2000);
 				});
 			});
 			

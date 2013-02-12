@@ -128,12 +128,6 @@ function initialize(){
 	fix unneeded form inputs
 -->
 
-	<!-- name of inspector -->
-	<label for="TPinspector-txt">Name of Inspector:</label>
-	<label style="color:red"><?php echo form_error('TPinspector-txt_r'); ?></label>
-	<input type="text" name="TPinspector-txt_r" id="TPinspector-txt" value="" data-mini="true" />
-	<!-- /name of inspector -->
-
 	<!-- date -->
 	<label for="TPdate-txt"> Date: </label>
 	<label style="color:red"><?php echo form_error('TPdate-txt_r'); ?></label>
@@ -143,7 +137,7 @@ function initialize(){
 	<!-- barangay -->
 	<label for="TPbarangay-txt"> Barangay: </label>
 	<label style="color:red"><?php echo form_error('TPbarangay-txt_r'); ?></label>
-	<input type="text" name="TPbarangay-txt_r" id="TPbarangay-txt" data-mini="true" />
+	<input type="text" name="TPbarangay-txt_r" id="TPbarangay-txt" data-mini="true" readonly />
 	<!-- /barangay -->
 	
 	<!-- lat & lng -->
@@ -154,13 +148,13 @@ function initialize(){
 	<!-- street -->
 	<label for="TPstreet-txt"> Street: </label>
 	<label style="color:red"><?php echo form_error('TPstreet-txt_r'); ?></label>
-	<input type="text" name="TPstreet-txt_r" id="TPstreet-txt" data-mini="true" />
+	<input type="text" name="TPstreet-txt_r" id="TPstreet-txt" data-mini="true" readonly/>
 	<!-- /street -->
 
 	<!-- municipality -->
 	<label for="TPmunicipality-txt"> Municipality: </label>
 	<label style="color:red"><?php echo form_error('TPmunicipality-txt_r'); ?></label>
-	<input type="text" name="TPmunicipality-txt_r" id="TPmunicipality-txt" data-mini="true" />
+	<input type="text" name="TPmunicipality-txt_r" id="TPmunicipality-txt" data-mini="true" readonly/>
 	<!-- /municipality -->
 
 	<!-- household -->
@@ -168,20 +162,6 @@ function initialize(){
 	<label style="color:red"><?php echo form_error('TPhousehold-txt_r'); ?></label>
 	<input type="text" name="TPhousehold-txt_r" id="TPhousehold-txt" value="<?php echo set_value('patientno'); ?>" data-mini="true" />
 	<!-- /household -->
-
-	<!-- result -->
-	<div data-role="fieldcontain">
-		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-			<legend> Survey Result </legend>
-			
-			<input type="radio" name="TPresult-rd" id="TPresult-rd1" value="negative" checked="checked" />
-			<label for="TPresult-rd1"> Negative </label>
-			
-			<input type="radio" name="TPresult-rd" id="TPresult-rd2" value="positive" />
-			<label for="TPresult-rd2"> Positive </label>
-			
-		</fieldset>
-	</div><!-- /result -->
 
 	<!-- container -->
 	<label for="TPcontainer-txt">Type of Container</label>
