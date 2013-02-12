@@ -58,7 +58,7 @@ function createMarker(map,point,image,info)
 function load() {
 	
       var map = new google.maps.Map(document.getElementById("map"), {
-        center: new google.maps.LatLng(1.690276, 103.866119),
+        center: new google.maps.LatLng(14.291416, 120.930206),
         zoom: 9,
         mapTypeId: 'roadmap'
       });
