@@ -135,7 +135,7 @@ class Crform extends CI_Controller
 		
 		//scripts if none keep '' 
 		$data['script'] = 'view_casereport';
-		
+		$data['title']= "searchcases";
 		//for table result for search
 		$data['table'] = $this->case_report->searchcase($data); 
 		

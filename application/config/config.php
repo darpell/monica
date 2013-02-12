@@ -14,7 +14,11 @@
 | path to your installation.
 |
 */
+<<<<<<< HEAD
 $config['base_url']	= 'http://10.100.220.24/workspace/monica';
+=======
+$config['base_url']	= 'http://localhost/workspace/monica';
+>>>>>>> branch 'master' of https://github.com/darpell/monica.git
 $config['css'] = 'styles/style.css';
 
 /*

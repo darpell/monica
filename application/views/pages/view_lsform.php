@@ -8,14 +8,10 @@
 $attributes = array(
 						'id' => 'TPcr-form'
 					);
-echo form_open('case_report/searchCaseReport',$attributes); ?>
-    <td>Name of DRU:</td>
-    <td ><input type="text" id="TPdru-txt" name="TPdru-txt" /></td>
+echo form_open('larval_survey/searchLarvalReport',$attributes); ?>
+    <td>Tracking Number:</td>
+    <td ><input type="text" id="TPtrack-txt" name="TPtrack-txt" /></td>
 	
-  </tr>
-  <tr>
-  	<td>City/Municipality:</td>
-	<td><input type="text" id="TPcity-txt" name="TPcity-txt" /></td>
   </tr>
   <tr>
     <td width="100">Date of Entry:</td>
@@ -26,9 +22,8 @@ echo form_open('case_report/searchCaseReport',$attributes); ?>
   <tr>
   <td width="100">Sort By:</td>
   <td><select name="TPsort-dd">
-  <option value="cr_dru" selected="selected">DRU</option>
-  <option value="cr_city">City/Municipality</option>
-  <option value="cr_type">Type</option>
+  <option value="tracking_number" selected="selected">Tracking Number</option>
+  <option value="created_on">Date</option>
   </select>
   </td>
   </tr>

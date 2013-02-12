@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><?php echo $title ?> - Dengue Information</title>
+<title><?php echo $title; ?> - Dengue Information</title>
 <?php
 echo link_tag('styles/style.css');
 if($script != "")
@@ -19,6 +19,7 @@ if($script != "")
                 <li><?= anchor(base_url('index.php'),'Home')?></li>
                 <li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
                 <li><?= anchor(base_url('index.php/case_report/viewCaseReport'),'Update Cases')?></li>
+                <li><?= anchor(base_url('index.php/larval_survey/viewLarvalReport'),'Update Surveys')?></li>
             	<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
  				<li><?= anchor(base_url('index.php/case_report/testChart'),'Surveillance Report ')?></li>           
             </ul>
