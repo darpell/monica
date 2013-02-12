@@ -8,7 +8,6 @@ class Pages extends CI_Controller
 		{			
 			//$data['title'] = 'Login';
 			if ($page == 'home')
-<<<<<<< HEAD
 			{
 				if ($this->session->userdata('TPusername') != null)
 				{
@@ -18,10 +17,6 @@ class Pages extends CI_Controller
 				else
 					redirect(site_url('mobile/login'));
 			}
-=======
-				$this->load->view('mobile/home');
-	
->>>>>>> branch 'master' of https://github.com/darpell/monica.git
 			else if ($page == 'checklocation')
 				$this->load->view('mobile/current_pos');	
 					
@@ -30,8 +25,6 @@ class Pages extends CI_Controller
 			
 			else if ($page == 'riskmap')
 				$this->load->view('mobile/riskmap');
-			
-<<<<<<< HEAD
 			else if ($page == 'larval_survey')
 			{
 				$data['result'] = null;
@@ -39,10 +32,8 @@ class Pages extends CI_Controller
 			}
 			else if ($page == 'user')
 				$this->load->view('mobile/user');
-=======
 			else if ($page =='larval_survey')
 				$this->load->view('mobile/ls_form');
->>>>>>> branch 'master' of https://github.com/darpell/monica.git
 		}
 		
 		else 
