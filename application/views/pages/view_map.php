@@ -134,71 +134,77 @@ function load() {
 	      	
 			else if(document.getElementById('type').value.toString()=="denguecase")
 			{
-				//var bcount = new Array();
-				var bcount=splitter(document.getElementById('dataCount').value.toString());
-				
-				var str = document.getElementById('data').value.toString();
-				str = str.split("%%");
+				//*DECLARATION OF VALUES AND CONTAINERS
 				var x1=999;
 				var x2=-999;
 				var y1=999;
 				var y2=-999;
+				var currPoly = 1;
+				var latLng = [];
+				//-------------------*/
+				
+				//*STRING SPLITTER
+				var str = document.getElementById('data').value.toString();
+				str = str.split("%%");
 				var data2 = new Array();
 				for (var i = 0; i < str.length; i++)
 				{
 					data2[i] = str[i].split("&&");
-				}
-				alert(data2);
+				}//alert("Data2 has a length of "+data2.length);
+				//-------------------*/
 				
-					var ctr2 = 0;
-					for (var _i=1; _i <= data2[data2.length-1][0]; _i++)
-					{	
-						var  latLng = [];
-						var bermudaTriangle = [];
-						
-						var ctr = 0;
-						if(ctr2>0)
-							ctr = ctr2;
-						
-						while(ctr <= data2.length-1)
-						{
-							if ((_i == data2[ctr][0]))
-							{	//alert(_i+" is equal to "+data2[ctr][0]);
-								if(parseFloat(data2[ctr][1]) < x1)
-								{x1=parseFloat(data2[ctr][1]);}
-								if(parseFloat(data2[ctr][2]) < y1)
-								{y1=parseFloat(data2[ctr][2]);}
-								if(parseFloat(data2[ctr][1]) > x2)
-								{x2=parseFloat(data2[ctr][1]);}
-								if(parseFloat(data2[ctr][2]) > y2)
-								{y2=parseFloat(data2[ctr][2]);}
-								
-								latLng.push(new google.maps.LatLng(parseFloat(data2[ctr][1]), parseFloat(data2[ctr][2])));
-								if(ctr == data2.length)
+				for (var _i=0; _i <= data2.length-1;)
+				{//alert("Iterating through index "+_i);
+					if(currPoly==data2[_i][0])
+					{//alert("Current polygon index number "+currPoly+" == "+data2[_i][0]);
+						//*CENTROID LOCATOR
+						if(parseFloat(data2[_i][1]) < x1)
+						{x1=parseFloat(data2[_i][1]);}
+						if(parseFloat(data2[_i][2]) < y1)
+						{y1=parseFloat(data2[_i][2]);}
+						if(parseFloat(data2[_i][1]) > x2)
+						{x2=parseFloat(data2[_i][1]);}
+						if(parseFloat(data2[_i][2]) > y2)
+						{y2=parseFloat(data2[_i][2]);}
+						//-------------------*/
+
+						latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
+						//alert("Added "+latLng[latLng.length-1]+" to list.");
+						_i++;
+					}
+					else
+					{alert("Current polygon index number "+currPoly+" != "+data2[_i][0]);
+
+						//*CREATION OF POLYGON
+						var bermudaTriangle = new google.maps.Polygon(
 								{
-									bermudaTriangle = new google.maps.Polygon(
-											{
-												paths: latLng,
-												fillColor: "#FF0000",
-												fillOpacity:0.3
-											});
-										var centroidX = x1 + ((x2 - x1) * 0.5);
-										var centroidY = y1 + ((y2 - y1) * 0.5);
-										var image;
-									if(bcount[_i][1]!=null)
-									{
-										image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[_i][2]+'|ff776b';
-									}
-									else
-									{
-										image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=0|ff776b';
-									}
-									var point = new google.maps.LatLng(centroidX,centroidY);
-									createMarker(map,point,image,bcount[_i][1]);
-						           
-									bermudaTriangle.setMap(map);
-								}
-							}
+									paths: latLng,
+									fillColor: "#FF0000",
+									fillOpacity:0.3
+								});
+						//-------------------*/
+						
+						/*CREATION OF CENTROID POINT
+						var centroidX = x1 + ((x2 - x1) * 0.5);
+						var centroidY = y1 + ((y2 - y1) * 0.5);
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly][2]+'|ff776b';
+						var point = new google.maps.LatLng(centroidX,centroidY);
+						createMarker(map,point,image,bcount[_i][1]);
+						//-------------------*/
+			           
+						bermudaTriangle.setMap(map);
+
+						x1=999;
+						x2=-999;
+						y1=999;
+						y2=-999;
+						currPoly++;
+						//latLng=null;						
+					}
+				}
+				/*
+				
+								
 							else
 							{	//alert(_i+" is NOT equal to "+data2[ctr][0]);
 								bermudaTriangle = new google.maps.Polygon(
@@ -223,7 +229,7 @@ function load() {
 					           
 								bermudaTriangle.setMap(map);
 
-								ctr2 = ctr;
+								currPolygon = ctr;
 								ctr = data2.length;
 								x1=999;
 								x2=-999;
@@ -233,6 +239,8 @@ function load() {
 							ctr++;
 						}//end of LOOP
 					}//end of LOOP
+					//*/
+				
         	}//end of IF
 
         
