@@ -17,6 +17,7 @@ class Pages extends CI_Controller
 				else
 					redirect(site_url('mobile/login'));
 			}
+			
 			else if ($page == 'checklocation')
 				$this->load->view('mobile/current_pos');	
 					
@@ -24,14 +25,15 @@ class Pages extends CI_Controller
 				$this->load->view('mobile/casemap');
 			
 			else if ($page == 'riskmap')
-				$this->load->view('mobile/riskmap');
-			else if ($page == 'larval_survey')
 			{
-				$data['result'] = null;
-				$this->load->view('mobile/ls_form', $data);
+				$this->load->model('larval_mapping');
+				$points = $this->larval_mapping->getPoints();
+				$this->load->view('mobile/riskmap');
 			}
+			
 			else if ($page == 'user')
 				$this->load->view('mobile/user');
+			
 			else if ($page =='larval_survey')
 				$this->load->view('mobile/ls_form');
 		}

@@ -13,8 +13,9 @@
 This is <b><?php if($percent > 0) echo $percent . '% higher'; else echo $percent . '% lower';?> </b>compared to the same time period last year <b>(<?php echo $totalprev;?> )</b>.</p>
 <br />
 <h4>Geographic Distribution</h4>
-<p>Most of the cases were from the following regions: National Capital Region (22.24%),
-Region IV-A (14.08%) and Region III (13.65%)</p>
+<!-- <p>Most of the cases were from the following regions: National Capital Region (22.24%),
+Region IV-A (14.08%) and Region III (13.65%)</p>-->
+<p> WORK IN PROGRESS </p>
 <br />
 <h4>Profile of Cases</h4>
 
