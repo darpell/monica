@@ -4,8 +4,8 @@ class Pages extends CI_Controller
 	public function view($page)
 	{
 		$this->load->library('mobile_detect');
-		if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
-		{			
+		/*if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
+		{		*/	
 			//$data['title'] = 'Login';
 			if ($page == 'home')
 			{
@@ -27,8 +27,8 @@ class Pages extends CI_Controller
 			else if ($page == 'riskmap')
 			{
 				$this->load->model('larval_mapping');
-				$points = $this->larval_mapping->getPoints();
-				$this->load->view('mobile/riskmap');
+				$data['points'] = $this->larval_mapping->getPoints();
+				$this->load->view('mobile/riskmap', $data);
 			}
 			
 			else if ($page == 'user')
@@ -36,12 +36,12 @@ class Pages extends CI_Controller
 			
 			else if ($page =='larval_survey')
 				$this->load->view('mobile/ls_form');
-		}
+		/*}
 		
 		else 
 		{
 			redirect(base_url());
-		} 
+		} */
 	}
 }
 

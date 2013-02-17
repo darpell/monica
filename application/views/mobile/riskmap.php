@@ -8,39 +8,47 @@ html {height:100%}
 body {height:100%;margin:0;padding:0}
 #googleMap {height:100%}
 </style>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+<script>
+		var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
+		function initialize()
+		{
+			var mapProp = {
+			  center: dasma,
+			  zoom: 10,//15,
+			  mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+			for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value  ; pt_ctr++)
+			{
+				new google.maps.Marker({
+						position:new google.maps.LatLng(
+								document.getElementById("pt_lat" + pt_ctr).value,
+								document.getElementById("pt_lng" + pt_ctr).value
+						)
+					}).setMap(map);
+			}
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
 </head>
 
 <body>
 <div data-role="page" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
 	<div data-role="content" style="width:100%; height:100%">
-	<script>
-		var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
-		function initialize()
-		{
-			var mapProp = {
-			  center:dasma,
-			  zoom:15,
-			  mapTypeId:google.maps.MapTypeId.ROADMAP
-			  };
-			var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-	
-			var myCity = new google.maps.Circle({
-			  center:dasma,
-			  radius:200,
-			  strokeColor:"#0000FF",
-			  strokeOpacity:0.8,
-			  strokeWeight:2,
-			  fillColor:"#0000FF",
-			  fillOpacity:0.4
-			  });
-	
-			myCity.setMap(map);
-		}
-
-		google.maps.event.addDomListener(window, 'load', initialize);
-	</script>
-	
-	<input type="hidden" value="<?php echo ''; ?>">
+	<input type="hidden" id="result_length" value="<?php echo count($points); ?>" />
+	<?php for ($ctr = 0; $ctr < count($points); $ctr++) {?>
+		<input type="hidden" id="pt_lat<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_lat']; ?>"			/>
+		<input type="hidden" id="pt_lng<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_lng']; ?>"			/>
+		<input type="hidden" id="pt_household<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_household']; ?>"	/>
+		<input type="hidden" id="pt_result<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_result']; ?>"		/>
+		<input type="hidden" id="pt_created_on<?= $ctr ?>" 	value="<?php echo $points[$ctr]['created_on']; ?>"		/>
+		<input type="hidden" id="pt_container<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_container']; ?>"	/>
+	<?php } ?>
 	
 		<div id="googleMap"></div>
 	</div><!-- /content -->

@@ -141,6 +141,7 @@ function load() {
 				var y2=-999;
 				var currPoly = 1;
 				var latLng = [];
+				var bcount=splitter(document.getElementById('dataCount').value.toString());
 				//-------------------*/
 				
 				//*STRING SPLITTER
@@ -173,7 +174,7 @@ function load() {
 						_i++;
 					}
 					else
-					{alert("Current polygon index number "+currPoly+" != "+data2[_i][0]);
+					{//alert("Current polygon index number "+currPoly+" != "+data2[_i][0]+" latLng contains "+latLng);
 
 						//*CREATION OF POLYGON
 						var bermudaTriangle = new google.maps.Polygon(
@@ -184,63 +185,42 @@ function load() {
 								});
 						//-------------------*/
 						
-						/*CREATION OF CENTROID POINT
+						//*CREATION OF CENTROID POINT
 						var centroidX = x1 + ((x2 - x1) * 0.5);
 						var centroidY = y1 + ((y2 - y1) * 0.5);
-						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly][2]+'|ff776b';
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,bcount[_i][1]);
+						createMarker(map,point,image,bcount[currPoly-1][1]);
 						//-------------------*/
 			           
 						bermudaTriangle.setMap(map);
+						latLng = [];
 
 						x1=999;
 						x2=-999;
 						y1=999;
 						y2=-999;
-						currPoly++;
-						//latLng=null;						
+						currPoly++;					
 					}
 				}
-				/*
+				alert(bcount[currPoly-1][1]);
+				var bermudaTriangle = new google.maps.Polygon(
+						{
+							paths: latLng,
+							fillColor: "#FF0000",
+							fillOpacity:0.3
+						});
+				//-------------------*/
 				
-								
-							else
-							{	//alert(_i+" is NOT equal to "+data2[ctr][0]);
-								bermudaTriangle = new google.maps.Polygon(
-										{
-											paths: latLng,
-											fillColor: "#FF0000",
-											fillOpacity:0.3
-										});
-									var centroidX = x1 + ((x2 - x1) * 0.5);
-									var centroidY = y1 + ((y2 - y1) * 0.5);
-									var image;
-								if(bcount[_i][1]!=null)
-								{
-									image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[_i][2]+'|ff776b';
-								}
-								else
-								{
-									image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=0|ff776b';
-								}
-								var point = new google.maps.LatLng(centroidX,centroidY);
-								createMarker(map,point,image,bcount[_i][1]);
-					           
-								bermudaTriangle.setMap(map);
-
-								currPolygon = ctr;
-								ctr = data2.length;
-								x1=999;
-								x2=-999;
-								y1=999;
-								y2=-999;
-							}
-							ctr++;
-						}//end of LOOP
-					}//end of LOOP
-					//*/
-				
+				//*CREATION OF CENTROID POINT
+				var centroidX = x1 + ((x2 - x1) * 0.5);
+				var centroidY = y1 + ((y2 - y1) * 0.5);
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+				var point = new google.maps.LatLng(centroidX,centroidY);
+				createMarker(map,point,image,bcount[currPoly-1][1]);
+				//-------------------*/
+	           
+				bermudaTriangle.setMap(map);
         	}//end of IF
 
         

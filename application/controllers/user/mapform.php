@@ -20,6 +20,7 @@ class Mapform extends CI_Controller
 			$this->load->view('pages/success');
 		}
 	}
+	
 	function mapByType()
 	{	
 		$this->load->model('Mapping');
