@@ -32,7 +32,7 @@ class Mapform extends CI_Controller
 		
 		//for table result for search
 		$data['table'] = null; 
-		$data['options']=$this->Mapping->getNodeTypes();
+		//$data['options']=$this->Mapping->getNodeTypes();
 		
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		//*

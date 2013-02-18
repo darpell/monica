@@ -227,6 +227,7 @@ class Mapping extends CI_Model
 			}
 		}
 		//*/
+		/*
 		function getNodeInfo($data)
 		{
 			//echo $data['node_type'];			
@@ -256,8 +257,7 @@ class Mapping extends CI_Model
 				$q->free_result();
 				return 0;
 			}
-			//*/
-		}
+		}//*/
 		function getBarangayCount($data2)
 		{
 			//echo $data['node_type'];			
@@ -289,7 +289,7 @@ class Mapping extends CI_Model
 			}
 			//*/
 		}
-		function getNodeTypes()
+		/*function getNodeTypes()
 		{
 			//echo $data['node_type'];			
 			$qString = 'CALL '; 
@@ -318,8 +318,8 @@ class Mapping extends CI_Model
 				$q->free_result();
 				return 0;
 			}
-			//*/
-		}
+			
+		}//*/
 		function getBarangays()
 		{
 			//echo $data['node_type'];			
