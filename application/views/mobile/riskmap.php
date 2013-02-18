@@ -9,18 +9,44 @@ body {height:100%;margin:0;padding:0}
 #googleMap {height:100%}
 </style>
 
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
+<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
 
 <script>
 		var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
 		function initialize()
 		{
 			var mapProp = {
+				center: dasma,
+				zoom: 10,//15,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			var mcOptions = {gridSize: 50, maxZoom: 15};
+			var markers = [];
+			for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value  ; pt_ctr++) 
+			{
+			      var marker = 
+					    new google.maps.Marker({
+							position:new google.maps.LatLng(
+									document.getElementById("pt_lat" + pt_ctr).value,
+									document.getElementById("pt_lng" + pt_ctr).value
+							)
+					});
+				markers.push(marker);
+			}
+			//mc.addMarkers(markers);
+			var mc = new MarkerClusterer(map, markers, mcOptions);
+			
+			/*
+			//alert('test');
+			var mapProp = {
 			  center: dasma,
 			  zoom: 10,//15,
 			  mapTypeId: google.maps.MapTypeId.ROADMAP
 			  };
 			var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			
 
 			for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value  ; pt_ctr++)
 			{
@@ -30,9 +56,9 @@ body {height:100%;margin:0;padding:0}
 								document.getElementById("pt_lng" + pt_ctr).value
 						)
 					}).setMap(map);
-			}
+			}*/
 		}
-
+		//window.onload = initialize;
 		google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
 </head>
