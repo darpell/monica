@@ -63,7 +63,7 @@ class Mapping extends CI_Model
 					return 0;
 				}
 			}
-			else 
+			else if($data['node_type']=="denguecase")
 			{
 				$qString = 'CALL '; 
 				$qString .= "get_all_polygon_points ()"; // name of stored procedure
@@ -91,6 +91,66 @@ class Mapping extends CI_Model
 					return 0;
 				}
 				
+			}
+			else
+			{
+				//QUERY LARVAL INFORMATION
+				$qString = 'CALL ';
+				$qString .= "view_nodes_type('"; // name of stored procedure
+				$qString .=
+				//variables needed by the stored procedure
+				$data['date1']. "','".
+				$data['date2']. "'". ")";
+				
+				$q = $this->db->query($qString);
+				//*
+				if($q->num_rows() > 0)
+				{	$data = "";
+				foreach ($q->result() as $row)
+				{
+					$data .=
+					"larvalpositive" . "&&" .
+					$row->reference_no . "&&" .
+					$row->node_lat . "&&" .
+					$row->node_lng . "%%" ;
+				}
+				$q->free_result();
+				$data = substr($data,0,-2);
+				}
+				else
+				{
+					$q->free_result();
+					//return null;
+				}
+				
+				//QUERY POLYGON INFORMATION
+				$qString = 'CALL ';
+				$qString .= "get_all_polygon_points ()"; // name of stored procedure
+				
+				$q = $this->db->query($qString);
+				//*
+				$data .= "%&";
+				if($q->num_rows() > 0)
+				{	
+				foreach ($q->result() as $row)
+				{
+				
+					$data .=
+					$row->polygon_ID . "&&" .
+					$row->point_lat . "&&" .
+					$row->point_lng . "&&" .
+					$row->polygon_name . "%%" ;
+				}
+					
+				$q->free_result();
+				$data = substr($data,0,-2);
+				}
+				else
+				{
+					$q->free_result();
+					//return null;
+				}
+				return $data;
 			}
 			//*/
 		}
@@ -207,7 +267,7 @@ class Mapping extends CI_Model
 			//variables needed by the stored procedure
 			$data2['date1']. "','". 
 			$data2['date2']. "'". ")";
-			echo $qString." END ";
+			$qString." END ";
 			$q = $this->db->query($qString);
 			//*
 			if($q->num_rows() > 0) 

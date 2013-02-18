@@ -14,11 +14,13 @@ echo form_open('mapping/mapByType'); //*/
 		<div id="info" class="info"><h4>
 		Select 'denguecase' to view dengue cases per area.<br />
 		Select 'larvalpositive' to view positive larval samplings.<br />
+		Select 'both' to view overlays displaying both larval positives and dengue cases.<br />
 		</h4></div>
 	<?php 
 		$options=array(
 			"denguecase"=>"denguecase",
-			"larvalpositive"=>"larvalpositive"
+			"larvalpositive"=>"larvalpositive",
+			"both"=>"both"
 		);
 		echo form_dropdown('NDtype-ddl', $options, $options["denguecase"]);
 	?>

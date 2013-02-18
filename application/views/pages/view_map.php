@@ -4,7 +4,7 @@
 <!-- CONTENT -->
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
-var infoWindow2 = new google.maps.InfoWindow({});
+var infoWindow = new google.maps.InfoWindow({});
 var customIcons = {
 		  larvalpositive: {
 	        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png',
@@ -35,13 +35,25 @@ function splitter(str){
 
 function createMarker(map,point,image,info)
 {
-	var icon = customIcons[type] || {};
-    var centroidMarker = new google.maps.Marker({
-      map: map,
-      position: point,
-      icon: image,
-      shadow: icon.shadow
-    });
+	var centroidMarker;
+	if(image==null)
+	{
+		centroidMarker = new google.maps.Marker({
+		  position: point,
+		  map: map,
+		  shadow: icon.shadow
+		});
+	}
+	else
+	{
+		var icon = customIcons[type] || {};
+	    centroidMarker = new google.maps.Marker({
+	      map: map,
+	      position: point,
+	      icon: image,
+	      shadow: icon.shadow
+	    });
+	}
 
 	 /*
 	centroidMarker.info = new google.maps.InfoWindow({
@@ -50,8 +62,8 @@ function createMarker(map,point,image,info)
 	//*/
 	  
 	google.maps.event.addListener(centroidMarker, 'mouseover', function() {
-		infoWindow2.setContent(info);
-		infoWindow2.open(map, this);
+		infoWindow.setContent(info);
+		infoWindow.open(map, this);
 	});
 }
 	
@@ -74,6 +86,7 @@ function load() {
 		  	
 		  		var nodes = document.getElementById("data").value;
 		  		var data = splitter(nodes);
+		  		alert(data);
 		  		
 		  		for (var i = 0; i < data.length; i++)
 		  		{
@@ -82,33 +95,21 @@ function load() {
 		  			lat[i] = data[i][2];
 		  			lng[i] = data[i][3];
 		  		}
-		          
-			      var infoWindow = new google.maps.InfoWindow;
-			
-			//
-				
-				//alert(document.getElementById('type').value);
-				    
-			            for (var i = 0; i < data.length; i++) 
-			            //*
-			            {
-			            var address = refNumber[i];
+		  		
+			    for (var i = 0; i < data.length; i++) 
+			    {
+			    	var address = refNumber[i];
 			            
-			            var type = nodeType[i];
-			            var point = new google.maps.LatLng(
-			                parseFloat(lat[i]),
-			                parseFloat(lng[i]));
-			            var html = "<b>" + name + "</b> <br/>" + address;
-			            var icon = customIcons[type] || {};
-			            var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+refNumber[i]+'|ff776b';
-			            var marker = new google.maps.Marker({
-			              map: map,
-			              position: point,
-			              icon: image,
-			              shadow: icon.shadow
-			            });
-						
-			            var circle = new google.maps.Circle({
+			    	var type = nodeType[i];
+			   		var point = new google.maps.LatLng(
+			        	parseFloat(lat[i]),
+			        	parseFloat(lng[i]));
+			    	var html = "<b>" + name + "</b> <br/>" + address;
+			   		var icon = customIcons[type] || {};
+			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=L|ff776b';
+			            
+			 		createMarker(map,point,image,html);
+			 		var circle = new google.maps.Circle({
 						center:point,
 						radius:200,
 						strokeColor:"#0000FF",
@@ -116,11 +117,8 @@ function load() {
 						strokeWeight:2,
 						fillColor:"#0000FF",
 						fillOpacity:0.4
-						});
-					
-						circle.setMap(map); 
-						bindInfoWindow(marker, map, infoWindow, html);
-						
+					});
+					circle.setMap(map); 
 				}
       		}
 			//end of IF
@@ -222,16 +220,140 @@ function load() {
 	           
 				bermudaTriangle.setMap(map);
         	}//end of IF
+			//VIEW BOUNDARY
+			
+	      	//---------------------------------------------------------
+	      	//
+	      	//BOTH OVERLAYS
+	      	//
+	      	//---------------------------------------------------------
+	      				
+        	else
+        	{
+            	//*Data handler, SPLITTER
+				var str = document.getElementById('data').value.toString();
+				str = str.split("%&");
+				var dataLarval = splitter(str[0]);
+				var dataDengue = splitter(str[1]);
+				//alert (dataLarval);
+				//alert (dataDengue);
+				//-------------------*/
+				
+        		//*DECLARATION OF VALUES AND CONTAINERS
+				var x1=999;
+				var x2=-999;
+				var y1=999;
+				var y2=-999;
+				var currPoly = 1;
+				var latLng = [];
+				var bcount=splitter(document.getElementById('dataCount').value.toString());
+				//-------------------*/
+				
+				for (var _i=0; _i <= dataDengue.length-1;)
+				{//alert("Iterating through index "+_i);
+					if(currPoly==dataDengue[_i][0])
+					{//alert("Current polygon index number "+currPoly+" == "+data2[_i][0]);
+						//*CENTROID LOCATOR
+						if(parseFloat(dataDengue[_i][1]) < x1)
+						{x1=parseFloat(dataDengue[_i][1]);}
+						if(parseFloat(dataDengue[_i][2]) < y1)
+						{y1=parseFloat(dataDengue[_i][2]);}
+						if(parseFloat(dataDengue[_i][1]) > x2)
+						{x2=parseFloat(dataDengue[_i][1]);}
+						if(parseFloat(dataDengue[_i][2]) > y2)
+						{y2=parseFloat(dataDengue[_i][2]);}
+						//-------------------*/
+
+						latLng.push(new google.maps.LatLng(parseFloat(dataDengue[_i][1]), parseFloat(dataDengue[_i][2])));
+						//alert("Added "+latLng[latLng.length-1]+" to list.");
+						_i++;
+					}
+					else
+					{//alert("Current polygon index number "+currPoly+" != "+data2[_i][0]+" latLng contains "+latLng);
+
+						//*CREATION OF POLYGON
+						var bermudaTriangle = new google.maps.Polygon(
+								{
+									paths: latLng,
+									fillColor: "#FF0000",
+									fillOpacity:0.3
+								});
+						//-------------------*/
+						
+						//*CREATION OF CENTROID POINT
+						var centroidX = x1 + ((x2 - x1) * 0.5);
+						var centroidY = y1 + ((y2 - y1) * 0.5);
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+						var point = new google.maps.LatLng(centroidX,centroidY);
+						createMarker(map,point,image,bcount[currPoly-1][1]);
+						//-------------------*/
+			           
+						bermudaTriangle.setMap(map);
+						latLng = [];
+
+						x1=999;
+						x2=-999;
+						y1=999;
+						y2=-999;
+						currPoly++;					
+					}
+				}
+				alert(bcount[currPoly-1][1]);
+				var bermudaTriangle = new google.maps.Polygon(
+						{
+							paths: latLng,
+							fillColor: "#FF0000",
+							fillOpacity:0.3
+						});
+				//-------------------*/
+				
+				//*CREATION OF CENTROID POINT
+				var centroidX = x1 + ((x2 - x1) * 0.5);
+				var centroidY = y1 + ((y2 - y1) * 0.5);
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+				var point = new google.maps.LatLng(centroidX,centroidY);
+				createMarker(map,point,image,bcount[currPoly-1][1]);
+				//-------------------*/
+	           
+				bermudaTriangle.setMap(map);
+				
+            	
+		  		for (var i = 0; i < dataLarval.length; i++)
+		  		{
+		  			nodeType[i] = dataLarval[i][0];		
+		  			refNumber[i] = dataLarval[i][1];
+		  			lat[i] = dataLarval[i][2];
+		  			lng[i] = dataLarval[i][3];
+		  		}
+		  		
+			    for (var i = 0; i < dataLarval.length; i++) 
+			    {
+			    	var address = refNumber[i];
+			            
+			    	var type = nodeType[i];
+			   		var point = new google.maps.LatLng(
+			        	parseFloat(lat[i]),
+			        	parseFloat(lng[i]));
+			    	var html = "<b>" + name + "</b> <br/>" + address;
+			   		var icon = customIcons[type] || {};
+			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=L|ff776b';
+			            
+			 		createMarker(map,point,image,html);
+			 		var circle = new google.maps.Circle({
+						center:point,
+						radius:200,
+						strokeColor:"#0000FF",
+						strokeOpacity:0.8,
+						strokeWeight:2,
+						fillColor:"#0000FF",
+						fillOpacity:0.4
+					});
+					circle.setMap(map); 
+				}
+        	}
 
         
 }
-  function bindInfoWindow(marker, map, infoWindow, html) {
-    google.maps.event.addListener(marker, 'click', function() {
-  	  var info ='<?php print $nodes;?><a href="http://www.google.com"> check google! </a>';
-      infoWindow.setContent(info);
-      infoWindow.open(map, marker);
-    });
-  }
   function doNothing() {}
 
 google.maps.event.addDomListener(window, 'load', initialize);
