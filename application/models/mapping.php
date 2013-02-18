@@ -50,9 +50,9 @@ class Mapping extends CI_Model
 					{
 						$data .=
 						"larvalpositive" . "&&" . 
-						$row->reference_no . "&&" . 
-						$row->node_lat . "&&" . 
-						$row->node_lng . "%%" ;
+						$row->ls_no . "&&" . 
+						$row->ls_lat . "&&" . 
+						$row->ls_lng . "%%" ;
 					}
 					$q->free_result();
 					return substr($data,0,-2);
@@ -110,9 +110,9 @@ class Mapping extends CI_Model
 				{
 					$data .=
 					"larvalpositive" . "&&" .
-					$row->reference_no . "&&" .
-					$row->node_lat . "&&" .
-					$row->node_lng . "%%" ;
+					$row->ls_no . "&&" .
+					$row->ls_lat . "&&" .
+					$row->ls_lng . "%%" ;
 				}
 				$q->free_result();
 				$data = substr($data,0,-2);
@@ -402,8 +402,13 @@ class Mapping extends CI_Model
 				{
 					$data .=
 					$row->created_on . "&&" .
-					$row->node_lat . "&&" . 
-					$row->node_lng . "%%" ;
+					$row->ls_lat . "&&" . 
+					$row->ls_lng . "&&" .
+					$row->ls_result . "&&" .
+					$row->ls_household . "&&" .
+					$row->ls_container . "&&" . 
+					$row->ls_updated_by . "&&" . 
+					$row->ls_updated_on . "%%" ;
 				}
 				$q->free_result();
 				return $data;
