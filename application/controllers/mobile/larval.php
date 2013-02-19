@@ -16,7 +16,17 @@ class Larval extends CI_Controller
 	
 	function filterPoints()
 	{
-		$this->load->view('mobile/larval_dialog');
+		//$this->form_validation->set_rules('place-ddl','cluster','required');
+		$this->form_validation->set_rules('date1','starting date','required');
+		$this->form_validation->set_rules('date1','ending date','required');
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('mobile/larval_dialog');
+		}
+		else
+		{
+			$this->load->view('mobile/larval_dialog');
+		}
 	}
 }
 

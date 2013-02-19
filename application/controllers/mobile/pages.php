@@ -72,13 +72,6 @@ class Pages extends CI_Controller
 				}
 			}
 			
-			else if ($page == 'riskmap')
-			{
-				$this->load->model('larval_mapping');
-				$data['points'] = $this->larval_mapping->getPoints();
-				$this->load->view('mobile/riskmap', $data);
-			}
-			
 			else if ($page == 'user')
 				$this->load->view('mobile/user');
 			
