@@ -8,7 +8,7 @@ $this->load->view('templates/header',$data);
 <center>
 
 <h2>
-Update Success!
+ Success!
 </h2>
 </center>
 
