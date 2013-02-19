@@ -8,18 +8,18 @@ $attributes = array(
 					);
 echo form_open('login/add_user',$attributes); ?>
 <h3>Registration</h3>
-
+<?php if($result != null) echo '<h5><label style="color:red">The username is not available</label></h5>'?>
  <h5>Username:</h5>
 <label style="color:red"><?php echo form_error('TPusername-txt'); ?></label>
 <input type="text" name="TPusername-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
 
 <h5>Password</h5>
 <label style="color:red"><?php echo form_error('TPpassword-txt'); ?></label>
-<input type="text" name="TPpassword-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
+<input type="password" name="TPpassword-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
 
 <h5>Repeat Password</h5>
 <label style="color:red"><?php echo form_error('TPpassword2-txt'); ?></label>
-<input type="text" name="TPpassword2-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
+<input type="password" name="TPpassword2-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
 
 <h5>First Name</h5>
 <label style="color:red"><?php echo form_error('TPfirstname-txt'); ?></label>
@@ -37,11 +37,12 @@ echo form_open('login/add_user',$attributes); ?>
 <label style="color:red"><?php echo form_error('sex'); ?></label>
 <?php 
 $options = array(
-                  '1'  => 'Type 1',
-                  '2'    => 'Type 2'
+                  'Barangay Health Worker'  => 'Barangay Health Worker',
+                  'DRU'    => 'DRU',
+				  'CHO'    => 'City Health Officer'
                 );
 $js = 'id="TPtype-dd"';
-echo form_dropdown('TPtype-dd', $options, 'Type 1',$js);
+echo form_dropdown('TPtype-dd', $options, 'Barangay Health Worker',$js);
 ?>
 
 <div><input type="submit" value="Submit" /></div>

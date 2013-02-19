@@ -15,7 +15,7 @@ echo form_open('login/check',$attributes); ?>
 
 <h5>Password</h5>
 <label style="color:red"><?php echo form_error('TPpassword-txt'); ?></label>
-<input type="text" name="TPpassword-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
+<input type="password" name="TPpassword-txt" value="<?php echo set_value('patientno'); ?>" size="50" />
 
 <div><input type="submit" value="Submit" /></div>
 
