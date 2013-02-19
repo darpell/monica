@@ -14,53 +14,74 @@
 	<script src="js\jquery-ui-map-3.0\ui\min\jquery.ui.map.full.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="js\jquery-ui-map-3.0\ui\jquery.ui.map.js"></script>
 
-<script type="text/java">
-	// Wait for Cordova to load
-    // 
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    // Cordova is loaded and it is now safe to make calls Cordova methods
-    //
-    function onDeviceReady() {
-        checkConnection();
-    }
-
-function checkConnection() {
-        var networkState = navigator.connection.type;
-
-        var states = {};
-        states[Connection.UNKNOWN]  = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI]     = 'WiFi connection';
-        states[Connection.CELL_2G]  = 'Cell 2G connection';
-        states[Connection.CELL_3G]  = 'Cell 3G connection';
-        states[Connection.CELL_4G]  = 'Cell 4G connection';
-        states[Connection.NONE]     = 'No network connection';
-
-		if (networkState == Connection.NONE) { showConnectionError(states[networkState]); }
-		
-        alert('Connection type: ' + states[networkState]);
-    }
-
-function alertDismissed() {
-        // do something
-    }
-	
-function showConnectionError(networkState) {
-        navigator.notification.alert(
-            networkState,  // message
-            alertDismissed,         // callback
-            'Connection Error',            // title
-            'Okay'                  // buttonName
-        );
-    }
-</script>
-
 
 <script type="text/javascript">
+    
 	var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
+	var infoWindow = new google.maps.InfoWindow({});
+	var customIcons = {
+			  larvalpositive: {
+		        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png',
+		        shadow: 'http://labs.google.com/ridefinder/images/mm_20_shadow.png'
+		      },
+		      denguecase: {
+		        icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png',
+		        shadow: 'http://labs.google.com/ridefinder/images/mm_20_shadow.png'
+		      }
+		    };
+
+	function splitter(str){
+		
+		str = str.split("%%");
+		
+		var data = new Array();
+		for (var i = 0; i < str.length; i++)
+		{
+			data[i] = str[i].split("&&");
+		}
+		return data;
+		}
+
+		var refNumber = new Array();
+		var nodeType = new Array();
+		var lat = new Array();
+		var lng = new Array();
+
+	function createMarker(map,point,image,info)
+	{
+		var centroidMarker;
+		if(image==null)
+		{
+			centroidMarker = new google.maps.Marker({
+			  position: point,
+			  map: map,
+			  shadow: icon.shadow
+			});
+		}
+		else
+		{
+			var icon = customIcons[type] || {};
+		    centroidMarker = new google.maps.Marker({
+		      map: map,
+		      position: point,
+		      icon: image,
+		      shadow: icon.shadow
+		    });
+		}
+		  
+		google.maps.event.addListener(centroidMarker, 'mouseover', function() {
+			infoWindow.setContent(info);
+			infoWindow.open(map, this);
+		});
+	}
+		
 function initialize()
 {
+	var map = new google.maps.Map(document.getElementById("googleMap"), {
+        center: new google.maps.LatLng(14.291416, 120.930206),
+        zoom: 9,
+        mapTypeId: 'roadmap'
+      });
 	//*DECLARATION OF VALUES AND CONTAINERS
 	var x1=999;
 	var x2=-999;
@@ -149,6 +170,9 @@ function initialize()
    
 	bermudaTriangle.setMap(map);
 }
+
+function doNothing() {}
+
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
@@ -164,7 +188,7 @@ body {height:100%;margin:0;padding:0}
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
 </form>
 <body onload="load()">
-<div id="map"></div>
+<div id="googleMap"></div>
 
 </body>
 </html>
