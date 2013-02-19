@@ -35,39 +35,24 @@ body {height:100%;margin:0;padding:0}
 					});
 				markers.push(marker);
 			}
-			//mc.addMarkers(markers);
 			var mc = new MarkerClusterer(map, markers, mcOptions);
-			
-			/*
-			//alert('test');
-			var mapProp = {
-			  center: dasma,
-			  zoom: 10,//15,
-			  mapTypeId: google.maps.MapTypeId.ROADMAP
-			  };
-			var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-			
-
-			for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value  ; pt_ctr++)
-			{
-				new google.maps.Marker({
-						position:new google.maps.LatLng(
-								document.getElementById("pt_lat" + pt_ctr).value,
-								document.getElementById("pt_lng" + pt_ctr).value
-						)
-					}).setMap(map);
-			}*/
 		}
-		//window.onload = initialize;
 		google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
 </head>
 
 <body>
 <div data-role="page" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
+	<div data-role="header" data-position="fixed"> 
+    	<h2> Current Location </h2> 
+    	<a href="#" data-rel="panel" data-icon="gear" class="ui-btn-right"> Options </a>
+    </div> <!-- /header-->
 	<div data-role="content" style="width:100%; height:100%">
 	<input type="hidden" id="result_length" value="<?php echo count($points); ?>" />
 	<?php for ($ctr = 0; $ctr < count($points); $ctr++) {?>
+		<input type="hidden" id="pt_barangay<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_barangay']; ?>"	/>
+		<input type="hidden" id="pt_street<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_street']; ?>"	/>
+		<input type="hidden" id="pt_municipality<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_municipality']; ?>"	/>
 		<input type="hidden" id="pt_lat<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_lat']; ?>"			/>
 		<input type="hidden" id="pt_lng<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_lng']; ?>"			/>
 		<input type="hidden" id="pt_household<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_household']; ?>"	/>
