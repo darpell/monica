@@ -79,7 +79,7 @@ function initialize()
 {
 	var map = new google.maps.Map(document.getElementById("googleMap"), {
         center: new google.maps.LatLng(14.291416, 120.930206),
-        zoom: 9,
+        zoom: 13,
         mapTypeId: 'roadmap'
       });
 	//*DECLARATION OF VALUES AND CONTAINERS
@@ -136,9 +136,9 @@ function initialize()
 			//*CREATION OF CENTROID POINT
 			var centroidX = x1 + ((x2 - x1) * 0.5);
 			var centroidY = y1 + ((y2 - y1) * 0.5);
-			var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+			var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
 			var point = new google.maps.LatLng(centroidX,centroidY);
-			createMarker(map,point,image,bcount[currPoly-1][1]);
+			createMarker(map,point,image,bcount[currPoly-1][0]);
 			//-------------------*/
            
 			bermudaTriangle.setMap(map);
@@ -163,10 +163,10 @@ function initialize()
 	//*CREATION OF CENTROID POINT
 	var centroidX = x1 + ((x2 - x1) * 0.5);
 	var centroidY = y1 + ((y2 - y1) * 0.5);
-	var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+	var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
 	var point = new google.maps.LatLng(centroidX,centroidY);
-	createMarker(map,point,image,bcount[currPoly-1][1]);
-	//-------------------*/
+	createMarker(map,point,image,bcount[currPoly-1][0]);
+	/-------------------*/
    
 	bermudaTriangle.setMap(map);
 }

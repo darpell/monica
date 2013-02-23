@@ -71,7 +71,7 @@ function load() {
 	
       var map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(14.291416, 120.930206),
-        zoom: 9,
+        zoom: 13,
         mapTypeId: 'roadmap'
       });
 		
@@ -105,8 +105,8 @@ function load() {
 			        	parseFloat(lat[i]),
 			        	parseFloat(lng[i]));
 			    	var html = "<b>" + name + "</b> <br/>" + address;
-			   		var icon = customIcons[type] || {};
-			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=L|ff776b';
+			   		//var icon = customIcons[type] || {};
+			  		var image = 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-128e4d/shapecolor-light/shadow-1/border-white/symbolstyle-dark/symbolshadowstyle-no/gradient-no/eggs.png';
 			            
 			 		createMarker(map,point,image,html);
 			 		var circle = new google.maps.Circle({
@@ -149,7 +149,7 @@ function load() {
 				for (var i = 0; i < str.length; i++)
 				{
 					data2[i] = str[i].split("&&");
-				}//alert("Data2 has a length of "+data2.length);
+				}alert(data2);alert(bcount);
 				//-------------------*/
 				
 				for (var _i=0; _i <= data2.length-1;)
@@ -186,9 +186,9 @@ function load() {
 						//*CREATION OF CENTROID POINT
 						var centroidX = x1 + ((x2 - x1) * 0.5);
 						var centroidY = y1 + ((y2 - y1) * 0.5);
-						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,bcount[currPoly-1][1]);
+						createMarker(map,point,image,bcount[currPoly-1][0]);
 						//-------------------*/
 			           
 						bermudaTriangle.setMap(map);
@@ -201,7 +201,7 @@ function load() {
 						currPoly++;					
 					}
 				}
-				alert(bcount[currPoly-1][1]);
+				//alert(bcount[currPoly-1][1]);
 				var bermudaTriangle = new google.maps.Polygon(
 						{
 							paths: latLng,
@@ -213,9 +213,9 @@ function load() {
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
-				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,bcount[currPoly-1][1]);
+				createMarker(map,point,image,bcount[currPoly-1][0]);
 				//-------------------*/
 	           
 				bermudaTriangle.setMap(map);
@@ -235,7 +235,7 @@ function load() {
 				str = str.split("%&");
 				var dataLarval = splitter(str[0]);
 				var dataDengue = splitter(str[1]);
-				alert (dataLarval);
+				//alert (dataLarval);
 				//alert (dataDengue);
 				//-------------------*/
 				
@@ -283,9 +283,9 @@ function load() {
 						//*CREATION OF CENTROID POINT
 						var centroidX = x1 + ((x2 - x1) * 0.5);
 						var centroidY = y1 + ((y2 - y1) * 0.5);
-						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,bcount[currPoly-1][1]);
+						createMarker(map,point,image,bcount[currPoly-1][0]);
 						//-------------------*/
 			           
 						bermudaTriangle.setMap(map);
@@ -310,9 +310,9 @@ function load() {
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
-				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][2]+'|ff776b';
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,bcount[currPoly-1][1]);
+				createMarker(map,point,image,bcount[currPoly-1][0]);
 				//-------------------*/
 	           
 				bermudaTriangle.setMap(map);
@@ -336,7 +336,7 @@ function load() {
 			        	parseFloat(lng[i]));
 			    	var html = "<b>" + name + "</b> <br/>" + address;
 			   		var icon = customIcons[type] || {};
-			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=L|ff776b';
+			   		var image = 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-128e4d/shapecolor-light/shadow-1/border-white/symbolstyle-dark/symbolshadowstyle-no/gradient-no/eggs.png';
 			            
 			 		createMarker(map,point,image,html);
 			 		var circle = new google.maps.Circle({
