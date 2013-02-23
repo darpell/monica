@@ -275,9 +275,9 @@ class Mapping extends CI_Model
 				foreach ($q->result() as $row) 
 				{
 					$data .=
-					$row->polygon_ID . "&&" .
-					$row->cr_barangay . "&&" . 
-					$row->amount . "%%" ;
+					$row->barangay . "&&" . 
+					$row->amount . "&&" . 
+					$row->polygon_ID . "%%" ;
 				}
 				$q->free_result();
 				return substr($data,0,-2);
