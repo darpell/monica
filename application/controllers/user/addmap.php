@@ -7,11 +7,26 @@ class Addmap extends CI_Controller
 		$data['title'] = 'Add boundary';
 		//scripts if none keep '' 
 		$data['script'] = '';
-		$data['options']=$this->Mapping->getBarangays();
-		
+				
+		//for table result for search
+		$data['table'] = null;
+				
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
-		{
+		{	
+			$barangayWithPolygon[]=$this->Mapping->getBarangays();
+			$allBarangays[]=$this->Mapping->getAllBarangays();
+			$data['options']=array_diff($allBarangays[0],$barangayWithPolygon[0]);
+			//print_r(array_diff($allBarangays[0],$barangayWithPolygon[0]));
+			$data2['date1']='2010-01-01';
+			$data2['date2']='2015-01-01';
+			$data['date1']='2010-01-01';
+			$data['date2']='2015-01-01';
+			$data['node_type']="denguecase";
+			$data['nodes'] = $this->Mapping->mapByType($data);
+			$data['bcount'] = $this->Mapping->getBarangayCount($data2);
+			$this->load->library('table');
+			
 			$this->load->view('pages/add_map',$data);
 		}
 		else
@@ -22,12 +37,11 @@ class Addmap extends CI_Controller
 	function addPolygon()
 	{
 		$this->load->model('Mapping');
-		$data['title'] = 'Add Polygon';
+		$data['title'] = 'Add boundary';
 		$data['script'] = '';
 		
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		//*
-			$this->load->view('pages/add_map',$data);
 			
 			$coords= explode (')(', $this->input->post('hide'));
 			$coords[0]=substr_replace($coords[0],"",0,1);
@@ -52,6 +66,20 @@ class Addmap extends CI_Controller
 				$this->Mapping->addPolygon($id,$lat,$lng,$this->input->post('NDtypeddl'));
 			}
 		$this->Mapping->addPolygon($id,$lat,$lng,$this->input->post('NDtypeddl'));
+		
+		$barangayWithPolygon[]=$this->Mapping->getBarangays();
+		$allBarangays[]=$this->Mapping->getAllBarangays();
+		$data['options']=array_diff($allBarangays[0],$barangayWithPolygon[0]);
+		$data2['date1']='2010-01-01';
+		$data2['date2']='2015-01-01';
+		$data['date1']='2010-01-01';
+		$data['date2']='2015-01-01';
+		$data['node_type']="denguecase";
+		$data['nodes'] = $this->Mapping->mapByType($data);
+		$data['bcount'] = $this->Mapping->getBarangayCount($data2);
+		$this->load->library('table');
+		
+		$this->load->view('pages/add_map',$data);
 		//*/
 	}
 }

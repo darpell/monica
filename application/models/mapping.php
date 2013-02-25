@@ -274,10 +274,16 @@ class Mapping extends CI_Model
 			{	$data = "";
 				foreach ($q->result() as $row) 
 				{
-					$data .=
-					$row->barangay . "&&" . 
-					$row->amount . "&&" . 
-					$row->polygon_ID . "%%" ;
+					if($row->polygon_ID===NULL)
+					{
+					}
+					else
+					{
+						$data .=
+						$row->barangay . "&&" . 
+						$row->amount . "&&" . 
+						$row->polygon_ID . "%%" ;
+					}
 				}
 				$q->free_result();
 				return substr($data,0,-2);
@@ -335,10 +341,35 @@ class Mapping extends CI_Model
 			{
 				foreach ($q->result() as $row) 
 				{
-					$data[]=array
-					(
-						$row->cr_barangay=>$row->cr_barangay
-					);
+					$data[]=$row->barangay;
+				}
+				
+				$q->free_result();
+				return $data;
+			}
+			else
+			{
+				$q->free_result();
+				return 0;
+			}
+			//*/
+		}
+		function getAllBarangays()
+		{
+			//echo $data['node_type'];			
+			$qString = 'CALL '; 
+			$qString .= "get_allbarangays("; // name of stored procedure
+			$qString .= 
+			//variables needed by the stored procedure
+			")";
+			
+			$q = $this->db->query($qString);
+			//*
+			if($q->num_rows() > 0) 
+			{
+				foreach ($q->result() as $row) 
+				{
+					$data[$row->barangay]= $row->barangay;
 				}
 				
 				$q->free_result();

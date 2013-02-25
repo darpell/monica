@@ -34,11 +34,12 @@ class Pages extends CI_Controller
 				//*
 				if ($this->form_validation->run('') == FALSE)
 				{
+						/*
 						//$date1= explode ('/', $this->input->post('date1'));
 						//$date2= explode ('/', $this->input->post('date2'));
 						//$this->input->post('date1')."CFYVGBHJK";
 						//$this->input->post('date2')."CFYVGBHJK<br/>";
-
+						
 						$data2['date1']='2010-01-01';
 						$data2['date2']='2015-01-01';
 						$data['date1']='2010-01-01';
@@ -51,6 +52,20 @@ class Pages extends CI_Controller
 						
 						$data['node_type']="denguecase";
 						
+						$data['nodes'] = $this->Mapping->mapByType($data);
+						$data['bcount'] = $this->Mapping->getBarangayCount($data2);
+						$this->load->library('table');
+						//*/
+						
+						$barangayWithPolygon[]=$this->Mapping->getBarangays();
+						$allBarangays[]=$this->Mapping->getAllBarangays();
+						$data['options']=array_diff($allBarangays[0],$barangayWithPolygon[0]);
+						//print_r(array_diff($allBarangays[0],$barangayWithPolygon[0]));
+						$data2['date1']='2010-01-01';
+						$data2['date2']='2015-01-01';
+						$data['date1']='2010-01-01';
+						$data['date2']='2015-01-01';
+						$data['node_type']="denguecase";
 						$data['nodes'] = $this->Mapping->mapByType($data);
 						$data['bcount'] = $this->Mapping->getBarangayCount($data2);
 						$this->load->library('table');
