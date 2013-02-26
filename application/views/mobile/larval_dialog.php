@@ -22,17 +22,13 @@
 				   <option value="brgy"> Barangay </option>
 				   <option value="city"> City </option>
 				</select>
-			    <label for="date1"> From: </label> <?php echo form_error('date1'); ?>
-			    <input type="text" style="background-color:#CCCCCC;" name="date1" id="date1" value="01/01/2011" readonly="true" />
-			    <a href="javascript:NewCal('date1','mmddyyyy')">
-			    	<img src="<?php echo base_url('/application/views/cal.gif'); ?>" width="16" height="16" border="0" alt="Pick a date">
-			    </a> 
 			    
-			    <label for="date2"> To: </label> <?php echo form_error('date2'); ?>
-			    <input type="text" style="background-color:#CCCCCC;"name="date2" id="date2" value="01/01/2020" readonly="true" />
-			    <a href="javascript:NewCal('date2','mmddyyyy')">
-			    	<img src="<?php echo base_url('/application/views/cal.gif'); ?>" width="16" height="16" border="0" alt="Pick a date">
-			    </a>
+				<label for="begin_date"> From: </label>
+				<input name="begin_date" id="begin_date" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+			    
+			    <label for="end_date"> To: </label>
+				<input name="end_date" id="end_date" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+					
 			    <input type="submit" value="Submit" />
 			</form>     
 			<a href="<?php echo site_url('mobile/riskmap');?>" data-role="button" data-rel="back" data-theme="c" data-transition="slide"> Cancel </a>    

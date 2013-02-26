@@ -43,7 +43,7 @@ body {height:100%;margin:0;padding:0}
 
 <body>
 <div data-role="page" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
-	<div data-role="header" data-position="fixed"> 
+	<div data-role="header" ><!-- data-position="fixed"> -->
     	<h2> Current Location </h2> 
     	<a href="<?php echo site_url('mobile/larval_dialog');?>" data-rel="panel" data-icon="gear" class="ui-btn-right"> Filter Results </a>
     </div> <!-- /header-->
