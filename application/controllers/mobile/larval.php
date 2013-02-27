@@ -31,7 +31,14 @@ class Larval extends CI_Controller
 			$begin = date('Y-m-d', strtotime($this->input->post('begin_date')));
 			$end = date('Y-m-d', strtotime($this->input->post('end_date')));
 			$place = $this->input->post('place-ddl');
-			$value = ($this->input->post('place-ddl') == NULL) ? NULL : '';
+				if ($place == 'brgy')
+					$value = $this->input->post('brgy_op');
+				else if ($place == 'street')
+					$value = $this->input->post('street_op');
+				else if ($place == 'city')
+					$value = $this->input->post('city_op');
+				else
+					$value = NULL;
 			$data['points'] = $this->larval_mapping->getPoints($begin,$end,$place,$value);
 
 			$this->load->view('mobile/larval_dialog',$data);
