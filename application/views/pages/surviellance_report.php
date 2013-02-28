@@ -15,8 +15,45 @@ This is <b><?php if($percent > 0) echo $percent . '% higher'; else echo $percent
 <h4>Geographic Distribution</h4>
 <!-- <p>Most of the cases were from the following regions: National Capital Region (22.24%),
 Region IV-A (14.08%) and Region III (13.65%)</p>-->
-<p> WORK IN PROGRESS </p>
+
 <br />
+
+<?php if($table != null) {?>
+<center>
+<div>
+
+<?php 
+
+$tmpl = array (
+                    'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',
+
+                    'heading_row_start'   => '<tr>',
+                    'heading_row_end'     => '</tr>',
+                    'heading_cell_start'  => '<th id="result" scope="col">',
+                    'heading_cell_end'    => '</th>',
+
+                    'row_start'           => '<tr>',
+                    'row_end'             => '</tr>',
+                    'cell_start'          => '<td align="center">',
+                    'cell_end'            => '</td>',
+
+                    'row_alt_start'       => '<tr style="background-color: #e3e3e3">',
+                    'row_alt_end'         => '</tr>',
+                    'cell_alt_start'      => '<td align="center">',
+                    'cell_alt_end'        => '</td>',
+
+                    'table_close'         => '</table>'
+              );
+
+$this->table->set_template($tmpl);
+
+echo $this->table->generate($table); 
+?>
+<br />
+
+</div>
+</center>
+<?php } ?>
 <h4>Profile of Cases</h4>
 
 <p>Ages of cases ranged from less than 1 month to 90 years old (median = 12.67 years).

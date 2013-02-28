@@ -275,7 +275,7 @@ class Crform extends CI_Controller
 		$mn12 = 0;
 		for ($i = 0; $i < (count($data2)-1); $i++)
 		{	
-			if($data2[$i][2] == 2012)
+			if($data2[$i][2] == $data['year'])
 			{
 			if ($data2[$i][1] == 1) 
 			{$mn1 = $data2[$i][0];}
@@ -302,7 +302,7 @@ class Crform extends CI_Controller
 			if ($data2[$i][1] == 12) 
 			{$mn12 = $data2[$i][0];}
 			}
-			else if($data2[$i][2] == 2011)
+			else if($data2[$i][2] == $data['year'] - 1)
 			{
 			if ($data2[$i][1] == 1) 
 			{$m1 = $data2[$i][0];}
@@ -412,6 +412,10 @@ class Crform extends CI_Controller
 			
 			$data['percent'] = round($data['totalcur']/$data['totalprev'] , 2);
 			$data['percent'] =  $data['percent'] * 100;
+			
+			$this->load->library('table');
+			$data['table'] = $this->Case_report->get_report_data_barangay($data);
+
 			$this->load->view('pages/surviellance_report', $data);
 			//$this->load->view('templates/footer');
 		}
@@ -420,6 +424,12 @@ class Crform extends CI_Controller
 			$this->load->view('pages/success');
 		}
 	
+	}
+	function view_reports()
+	{
+		$data['title'] = 'Add report';
+		$data['script'] = '';
+		$this->load->view('pages/view_report', $data);
 	}
 }
 

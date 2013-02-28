@@ -247,6 +247,7 @@
 			{	$data = "";
 				foreach ($q->result() as $row) 
 				{
+					
 					$data .=
 					$row->num . "&&" .  
 					$row->month  . "&&" .
@@ -259,6 +260,175 @@
 			{
 				return 0;
 			}
+		}
+		function  get_report_data_barangay($data)
+		{
+			$year  = $data['year'];
+			$qString = 'CALL ';
+			$qString .= "get_report_data_barangay('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			$year . "'". ")";
+			$data2[]=array(
+					'Barangay'=>'Barangay',
+					$year => $year,
+					$year-1 => $year -1,
+					'% Change'=> '% Change',
+					'Deaths ' . $year => 'Deaths ' . $year,
+					'CFRC' => 'CFR(%)',
+					'Deaths ' . $year-1 => 'Deaths ' . ($year-1),
+					'CFRP' => 'CFR(%)',
+					
+			);
+			$q = $this->db->query($qString);
+			if($q->num_rows() > 0)
+			{	
+			foreach ($q->result() as $row)
+			{$search = null; 
+				for ($i = 0; $i <  count($data2); $i++)
+				{
+					if($row->cr_barangay == $data2[$i]['Barangay'])
+						$search = $i;
+				}	
+				
+				if( $search == null)
+				{
+					if($row->year == $year)
+						$data2[]=array(
+							'Barangay'=>$row->cr_barangay,
+							$year => $row->ctr,
+							$year-1 =>  0,
+							'% Change'=> 0,
+							'Deaths ' . $year => 0,
+							'CFRC' => 0,
+							'Deaths ' . $year-1 => 0,
+							'CFRP' => 0,
+						);
+					else
+						$data2[]=array(
+								'Barangay'=>$row->cr_barangay,
+								$year => 0,
+								$year-1 =>  $row->ctr,
+								'% Change'=> 0,
+								'Deaths ' . $year => 0,
+								'CFRC' => 0,
+								'Deaths ' . $year-1 => 0,
+								'CFRP' => 0,
+						);
+				}
+				else
+				{
+					if($row->year == $year)
+					{
+						$data2[$search][$year] = $row->ctr;
+					}
+					else 
+					{
+						$data2[$search][$year-1] = $row->ctr;
+					}
+				}
+			}
+			for ($i = 1; $i <  count($data2); $i++)
+			{
+			if($data2[$i][$year-1] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] > $data2[$i][$year-1])
+			$data2[$i]['% Change'] = ((round(($data2[$i][$year-1] / $data2[$i][$year])*100,2))-100)*-1;
+			
+			else if($data2[$i][$year-1] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] < $data2[$i][$year-1])
+			$data2[$i]['% Change'] = ((round(($data2[$i][$year] / $data2[$i][$year-1])*100,2))-100);
+			else 
+			$data2[$i]['% Change'] = 'N/A';
+			}
+			$totalcur=0;
+			$totalprev=0;
+			$totalchange=0;
+			for ($i = 1; $i <  count($data2); $i++)
+			{
+			$totalprev +=$data2[$i][$year-1];
+			$totalcur +=$data2[$i][$year];
+			}
+			if($totalprev<$totalcur)
+			$totalchange = ((round(($totalprev / $totalcur)*100,2))-100)*-1;
+			else
+			$totalchange = ((round(($totalcur / $totalprev)*100,2))-100);
+			
+			$data2[]=array(
+					'Barangay'=>'Total',
+					$year => $totalcur,
+					$year-1 => $totalprev,
+					'% Change'=> $totalchange,
+					'Deaths ' . $year => 0,
+					'CFRC' => 0,
+					'Deaths ' . $year-1 => 0,
+					'CFRP' => 0,
+					);
+					
+					
+			$qString = 'CALL ';
+			$qString .= "get_report_data_deaths('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			$year . "'". ")";
+			$q = $this->db->query($qString);
+			if($q->num_rows() > 0)
+			{
+				
+				foreach ($q->result() as $row)
+				{$search = null;
+				for ($i = 0; $i <  count($data2); $i++)
+				{
+				if($row->cr_barangay == $data2[$i]['Barangay'])
+						$search = $i;
+				}
+				if($row->year == $year)
+					{
+						$data2[$search]['Deaths ' . $year] = $row->ctr;
+					}
+				else
+					{
+						$data2[$search]['Deaths ' . $year-1] = $row->ctr;
+					}
+					}
+			}
+			
+			for ($i = 1; $i <  count($data2); $i++)
+			{
+			if($data2[$i]['Deaths ' . $year] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] > $data2[$i]['Deaths ' . $year])
+				$data2[$i]['CFRC'] = ((round(($data2[$i]['Deaths ' . $year] / $data2[$i][$year])*100,2)));
+					
+			else
+				$data2[$i]['CFRC'] = 'N/A';
+			}
+			for ($i = 1; $i <  count($data2); $i++)
+			{
+			if($data2[$i]['Deaths ' . $year-1] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] > $data2[$i]['Deaths ' . $year-1])
+				$data2[$i]['CFRP'] = ((round(($data2[$i]['Deaths ' . $year-1] / $data2[$i][$year])*100,2)));
+					
+				else
+					$data2[$i]['CFRP'] = 'N/A';
+			}
+				$totalcur=0;
+				$totalprev=0;
+				for ($i = 1; $i <  count($data2); $i++)
+				{
+				$totalprev +=$data2[$i]['Deaths ' . $year-1];
+				$totalcur +=$data2[$i]['Deaths ' . $year];
+				}
+				$ctr = count($data2)-1;
+				$data2[$ctr]['Deaths ' . $year] = $totalcur;
+				$data2[$ctr]['Deaths ' . $year-1] = $totalprev;
+				
+				$data2[$ctr]['CFRC'] = ((round(($totalcur / $data2[$ctr][$year])*100,2)));
+				$data2[$ctr]['CFRP'] = ((round(($totalprev / $data2[$ctr][$year-1])*100,2)));
+
+					
+			
+			return $data2;
+			}
+			else
+			{
+				return 0;
+			}
+			
 		}
 		
 	}
