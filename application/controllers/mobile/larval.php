@@ -41,7 +41,7 @@ class Larval extends CI_Controller
 					$value = NULL;
 			$data['points'] = $this->larval_mapping->getPoints($begin,$end,$place,$value);
 
-			$this->load->view('mobile/larval_dialog',$data);
+			$this->load->view('mobile/riskmap',$data);
 		}
 	}
 }

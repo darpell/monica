@@ -14,7 +14,7 @@ class Larval_mapping extends CI_Model
 			$this->db->join('ls_report_header', 'ls_report_main.ls_no = ls_report_header.ls_no');
 			if ($place != NULL)
 			{
-				$this->db->where(checkplace($place),$value);
+				$this->db->where($this->checkPlace($place),$value);
 			}
 			
 		if ($begin_date === FALSE || $end_date === FALSE)
@@ -39,7 +39,7 @@ class Larval_mapping extends CI_Model
 		}
 		else if ($place == 'city')
 		{
-			return 'ls_city';
+			return 'ls_municipality';
 		}
 		else if ($place == 'street')
 		{

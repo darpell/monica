@@ -35,6 +35,10 @@ $(document).ready(function(){
 			$('#street_div').hide();
 		}
 	});
+
+	$('#brgy_div').hide();
+	$('#city_div').hide();
+	$('#street_div').hide();
 });
 </script>
 </head> 
@@ -48,7 +52,7 @@ $(document).ready(function(){
 		</div>
 
 		<div data-role="content" data-theme="c">
-			<form action="larval_dialog" method="post">
+			<form action="larval_dialog" method="post" data-ajax="false">
 			<label for="place-ddl" class="select"> Filter by: </label>
 				<select id="place-ddl" name="place-ddl" data-mini="true">
 				   <option value="NULL"> None </option>
@@ -81,18 +85,21 @@ $(document).ready(function(){
 					</select>
 				</div>
 			    
+			    <!-- TODO
+				    http://pastebin.com/dtyVuy5H
+				    http://stackoverflow.com/questions/13568969/get-jquery-mobile-datebox-running-typeerror-a-mobile-datebox-is-undefined
+			     -->
 				<label for="begin_date"> From: </label>
-				<input name="begin_date" id="begin_date" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+				<input name="begin_date" id="begin_date" type="date" data-role="datebox" data-options='{"mode":"calbox", "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "useNewStyle":true}' />
 			    
 			    <label for="end_date"> To: </label>
-				<input name="end_date" id="end_date" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+				<input name="end_date" id="end_date" type="date" data-role="datebox" data-options='{"mode":"calbox", "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "useTodayButton": true, "useNewStyle":true}' />
 					
 			    <input type="submit" value="Submit" />
 			</form>     
 			<a href="<?php echo site_url('mobile/riskmap');?>" data-role="button" data-theme="c"> Cancel </a>    
 		</div>
-	</div>
-
+</div>
 
 </body>
 </html>
