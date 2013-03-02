@@ -86,7 +86,7 @@ function load() {
 		  	
 		  		var nodes = document.getElementById("data").value;
 		  		var data = splitter(nodes);
-		  		alert(data);
+		  		//alert(data);
 		  		
 		  		for (var i = 0; i < data.length; i++)
 		  		{
@@ -139,6 +139,7 @@ function load() {
 				var y2=-999;
 				var currPoly = 1;
 				var latLng = [];
+				var nodeInfoCounter=0;
 				var bcount=splitter(document.getElementById('dataCount').value.toString());
 				//-------------------*/
 				
@@ -149,13 +150,16 @@ function load() {
 				for (var i = 0; i < str.length; i++)
 				{
 					data2[i] = str[i].split("&&");
-				}alert(data2);alert(bcount);
+				}
+				//alert(data2);
+				//alert(bcount);
 				//-------------------*/
 				
 				for (var _i=0; _i <= data2.length-1;)
 				{//alert("Iterating through index "+_i);
 					if(currPoly==data2[_i][0])
 					{//alert("Current polygon index number "+currPoly+" == "+data2[_i][0]);
+						currName=data2[_i][3];
 						//*CENTROID LOCATOR
 						if(parseFloat(data2[_i][1]) < x1)
 						{x1=parseFloat(data2[_i][1]);}
@@ -168,7 +172,6 @@ function load() {
 						//-------------------*/
 
 						latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
-						//alert("Added "+latLng[latLng.length-1]+" to list.");
 						_i++;
 					}
 					else
@@ -186,9 +189,10 @@ function load() {
 						//*CREATION OF CENTROID POINT
 						var centroidX = x1 + ((x2 - x1) * 0.5);
 						var centroidY = y1 + ((y2 - y1) * 0.5);
-						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[nodeInfoCounter][1]+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,bcount[currPoly-1][0]);
+						createMarker(map,point,image,bcount[nodeInfoCounter][0]);
+						nodeInfoCounter++;
 						//-------------------*/
 			           
 						bermudaTriangle.setMap(map);
@@ -198,7 +202,11 @@ function load() {
 						x2=-999;
 						y1=999;
 						y2=-999;
-						currPoly++;					
+						currPoly++;
+						while(currPoly!=data2[_i][0])
+						{
+							currPoly++;
+						}	
 					}
 				}
 				//alert(bcount[currPoly-1][1]);
@@ -213,9 +221,9 @@ function load() {
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
-				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[bcount.length-1][1]+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,bcount[currPoly-1][0]);
+				createMarker(map,point,image,bcount[bcount.length-1][0]);
 				//-------------------*/
 	           
 				bermudaTriangle.setMap(map);
@@ -246,13 +254,15 @@ function load() {
 				var y2=-999;
 				var currPoly = 1;
 				var latLng = [];
+				var nodeInfoCounter=0;
 				var bcount=splitter(document.getElementById('dataCount').value.toString());
 				//-------------------*/
 				
 				for (var _i=0; _i <= dataDengue.length-1;)
 				{//alert("Iterating through index "+_i);
 					if(currPoly==dataDengue[_i][0])
-					{//alert("Current polygon index number "+currPoly+" == "+data2[_i][0]);
+					{//alert("Current polygon index number "+currPoly+" == "+dataDengue[_i][0]);
+						currName=dataDengue[_i][3];
 						//*CENTROID LOCATOR
 						if(parseFloat(dataDengue[_i][1]) < x1)
 						{x1=parseFloat(dataDengue[_i][1]);}
@@ -265,11 +275,10 @@ function load() {
 						//-------------------*/
 
 						latLng.push(new google.maps.LatLng(parseFloat(dataDengue[_i][1]), parseFloat(dataDengue[_i][2])));
-						//alert("Added "+latLng[latLng.length-1]+" to list.");
 						_i++;
 					}
 					else
-					{//alert("Current polygon index number "+currPoly+" != "+data2[_i][0]+" latLng contains "+latLng);
+					{//alert("Current polygon index number "+currPoly+" != "+dataDengue[_i][0]+" latLng contains "+latLng);
 
 						//*CREATION OF POLYGON
 						var bermudaTriangle = new google.maps.Polygon(
@@ -283,9 +292,10 @@ function load() {
 						//*CREATION OF CENTROID POINT
 						var centroidX = x1 + ((x2 - x1) * 0.5);
 						var centroidY = y1 + ((y2 - y1) * 0.5);
-						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[nodeInfoCounter][1]+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,bcount[currPoly-1][0]);
+						createMarker(map,point,image,bcount[nodeInfoCounter][0]);
+						nodeInfoCounter++;
 						//-------------------*/
 			           
 						bermudaTriangle.setMap(map);
@@ -295,10 +305,14 @@ function load() {
 						x2=-999;
 						y1=999;
 						y2=-999;
-						currPoly++;					
+						currPoly++;
+						while(currPoly!=dataDengue[_i][0])
+						{
+							currPoly++;
+						}	
 					}
 				}
-				alert(bcount[currPoly-1][1]);
+				//alert(bcount[currPoly-1][1]);
 				var bermudaTriangle = new google.maps.Polygon(
 						{
 							paths: latLng,
@@ -310,9 +324,9 @@ function load() {
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
-				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[bcount.length-1][1]+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,bcount[currPoly-1][0]);
+				createMarker(map,point,image,bcount[bcount.length-1][0]);
 				//-------------------*/
 	           
 				bermudaTriangle.setMap(map);
@@ -397,7 +411,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	    To: <input type="text" style="background-color:#CCCCCC;"name="date2" id="date2" value="01/01/2020" readonly="true" /><a href="javascript:NewCal('date2','mmddyyyy')"><img src="<?php echo $this->config->item('base_url'); ?>/application/views/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a> 
 		<br />
 		<br />
-		<div><input type="submit" value="Submit" /></div>
+		<div><input type="submit" value="Sort" /></div>
 		</form> 
 	</td>
 </tr>

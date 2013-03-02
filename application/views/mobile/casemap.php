@@ -89,6 +89,7 @@ function initialize()
 	var y2=-999;
 	var currPoly = 1;
 	var latLng = [];
+	var nodeInfoCounter=0;
 	var bcount=splitter(document.getElementById('dataCount').value.toString());
 	//-------------------*/
 	
@@ -99,13 +100,16 @@ function initialize()
 	for (var i = 0; i < str.length; i++)
 	{
 		data2[i] = str[i].split("&&");
-	}//alert("Data2 has a length of "+data2.length);
+	}
+	//alert(data2);
+	alert(bcount);
 	//-------------------*/
 	
 	for (var _i=0; _i <= data2.length-1;)
 	{//alert("Iterating through index "+_i);
 		if(currPoly==data2[_i][0])
 		{//alert("Current polygon index number "+currPoly+" == "+data2[_i][0]);
+			currName=data2[_i][3];
 			//*CENTROID LOCATOR
 			if(parseFloat(data2[_i][1]) < x1)
 			{x1=parseFloat(data2[_i][1]);}
@@ -118,7 +122,6 @@ function initialize()
 			//-------------------*/
 
 			latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
-			//alert("Added "+latLng[latLng.length-1]+" to list.");
 			_i++;
 		}
 		else
@@ -136,9 +139,10 @@ function initialize()
 			//*CREATION OF CENTROID POINT
 			var centroidX = x1 + ((x2 - x1) * 0.5);
 			var centroidY = y1 + ((y2 - y1) * 0.5);
-			var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
+			var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[nodeInfoCounter][1]+'|ff776b';
 			var point = new google.maps.LatLng(centroidX,centroidY);
-			createMarker(map,point,image,bcount[currPoly-1][0]);
+			createMarker(map,point,image,bcount[nodeInfoCounter][0]);
+			nodeInfoCounter++;
 			//-------------------*/
            
 			bermudaTriangle.setMap(map);
@@ -148,10 +152,14 @@ function initialize()
 			x2=-999;
 			y1=999;
 			y2=-999;
-			currPoly++;					
+			currPoly++;
+			while(currPoly!=data2[_i][0])
+			{
+				currPoly++;
+			}	
 		}
 	}
-	alert(bcount[currPoly-1][1]);
+	//alert(bcount[currPoly-1][1]);
 	var bermudaTriangle = new google.maps.Polygon(
 			{
 				paths: latLng,
@@ -163,10 +171,10 @@ function initialize()
 	//*CREATION OF CENTROID POINT
 	var centroidX = x1 + ((x2 - x1) * 0.5);
 	var centroidY = y1 + ((y2 - y1) * 0.5);
-	var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[currPoly-1][1]+'|ff776b';
+	var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[bcount.length-1][1]+'|ff776b';
 	var point = new google.maps.LatLng(centroidX,centroidY);
-	createMarker(map,point,image,bcount[currPoly-1][0]);
-	/-------------------*/
+	createMarker(map,point,image,bcount[bcount.length-1][0]);
+	//-------------------*/
    
 	bermudaTriangle.setMap(map);
 }
