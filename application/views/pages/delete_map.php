@@ -180,9 +180,9 @@
 			 //
 			 //
 			 ////////////////////////////////////////
-			 var creator = new PolygonCreator(map);
+			 //var creator = new PolygonCreator(map);
 
-			 //reset
+			 /*
 			 $('#reset').click(function(){ 
 			 		creator.destroy();
 			 		creator=null;
@@ -191,18 +191,15 @@
 		 			$('#dataPanel').append('<b>Polygon cleared</b><br/>');
 		 			$("#dataPanel").scrollTop($("#dataPanel")[0].scrollHeight);
 			 });
-			 //reset
+			 //*/
 			 $('#save').click(function(){ 
-				 if(null==creator.showData()){
-			 			$('#dataPanel').append('<b>Please first create a polygon</b><br/>');
+			 			$('#dataPanel').append('<b>Polygon deleted</b><br/>');
 			 			$("#dataPanel").scrollTop($("#dataPanel")[0].scrollHeight);
-			 		}else{
-			 			$('#dataPanel').append('<b>Polygon saved</b>: '+creator.showData()+'<br/>');
-			 			$("#dataPanel").scrollTop($("#dataPanel")[0].scrollHeight);
-			 			alert("HOORAY!");
-			 			document.getElementById("hide").value = creator.showData();
+			 			//alert("HOORAY!");
+			 			//document.getElementById("hide").value = creator.showData();
+			 			//alert(document.getElementById('NDtypeddl').value.toString());
+			 			//alert("leputa");
 			 			document.forms["myform"].submit();
-			 		}
 			 });
 		};	
 
@@ -220,7 +217,6 @@
 	    <div id="map" style="width: 100%%; height: 600px"></div>
 	</td>
 	<td style="width:49%; height:400px">
-		<input id="reset" value="Reset" type="button" class="navi"/>
 		
 		<!-- <form action="" method='post' onsubmit='return confirm("Sure?")'> -->
 		
@@ -229,7 +225,7 @@
 		$fdata = array(
               'name'   => 'myform'
             );
-		echo form_open('addmap/addPolygon',$fdata); ?>
+		echo form_open('deletemap/delPolygon',$fdata); ?>
 		<?php 
 		echo form_dropdown('NDtypeddl', $options);
 		//print_r($options);
