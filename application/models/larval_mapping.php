@@ -12,12 +12,12 @@ class Larval_mapping extends CI_Model
 		$this->db->select('ls_barangay, ls_street, ls_municipality, ls_household, ls_container, ls_result, created_on, ls_lat, ls_lng');
 			$this->db->from('ls_report_main');
 			$this->db->join('ls_report_header', 'ls_report_main.ls_no = ls_report_header.ls_no');
-			if ($place != NULL)
+			if ($place != NULL && $place != 'NULL')
 			{
-				$this->db->where(checkplace($place),$value);
+				$this->db->where($this->checkPlace($place),$value);
 			}
 			
-		if ($begin_date === FALSE || $end_date === FALSE)
+		if ($begin_date === FALSE && $end_date === FALSE)
 		{
 			$query = $this->db->get();
 				return $query->result_array();
@@ -39,7 +39,7 @@ class Larval_mapping extends CI_Model
 		}
 		else if ($place == 'city')
 		{
-			return 'ls_city';
+			return 'ls_municipality';
 		}
 		else if ($place == 'street')
 		{

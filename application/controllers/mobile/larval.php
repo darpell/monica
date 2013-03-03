@@ -17,7 +17,7 @@ class Larval extends CI_Controller
 	function filterPoints()
 	{
 		//$this->form_validation->set_rules('place-ddl','cluster','required');
-		$this->form_validation->set_rules('begin_date','starting date','required');
+		$this->form_validation->set_rules('begin_date','starting date','required|callback_checkDateInput[' + $this->input->post('end_date') + ']');
 		$this->form_validation->set_rules('end_date','ending date','required');
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -41,8 +41,21 @@ class Larval extends CI_Controller
 					$value = NULL;
 			$data['points'] = $this->larval_mapping->getPoints($begin,$end,$place,$value);
 
-			$this->load->view('mobile/larval_dialog',$data);
+			$this->load->view('mobile/riskmap',$data);
 		}
+	}
+	
+	function checkDateInput($begin,$end)
+	{
+		$begin = date('Y-m-d', strtotime($begin));
+		$end = date('Y-m-d', strtotime($end));
+		if ($begin > $end)
+		{
+			$this->form_validation->set_message('check_date_input','Invalid date range');
+			return FALSE;
+		}
+		else
+			return TRUE;
 	}
 }
 

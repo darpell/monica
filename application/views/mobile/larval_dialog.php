@@ -7,34 +7,6 @@ $(document).ready(function(){
 	$('#brgy_div').hide();
 	$('#city_div').hide();
 	$('#street_div').hide();
-	
-	$('#place-ddl').change(function(){
-		value = $('#place-ddl').val();
-		if (value == 'street')
-		{
-			$('#brgy_div').hide();
-			$('#city_div').hide();
-			$('#street_div').show();
-		}
-		else if (value == 'brgy')
-		{
-			$('#brgy_div').show();
-			$('#city_div').hide();
-			$('#street_div').hide();
-		}
-		else if (value == 'city')
-		{
-			$('#brgy_div').hide();
-			$('#city_div').show();
-			$('#street_div').hide();
-		}
-		else
-		{
-			$('#brgy_div').hide();
-			$('#city_div').hide();
-			$('#street_div').hide();
-		}
-	});
 });
 </script>
 </head> 
@@ -48,7 +20,7 @@ $(document).ready(function(){
 		</div>
 
 		<div data-role="content" data-theme="c">
-			<form action="larval_dialog" method="post">
+			<form action="larval_dialog" method="post" data-ajax="false">
 			<label for="place-ddl" class="select"> Filter by: </label>
 				<select id="place-ddl" name="place-ddl" data-mini="true">
 				   <option value="NULL"> None </option>
@@ -56,6 +28,36 @@ $(document).ready(function(){
 				   <option value="brgy"> Barangay </option>
 				   <option value="city"> City </option>
 				</select>
+				
+				<script>
+					$('#place-ddl').change(function(){
+						value = $('#place-ddl').val();
+						if (value == 'street')
+						{
+							$('#brgy_div').hide();
+							$('#city_div').hide();
+							$('#street_div').show();
+						}
+						else if (value == 'brgy')
+						{
+							$('#brgy_div').show();
+							$('#city_div').hide();
+							$('#street_div').hide();
+						}
+						else if (value == 'city')
+						{
+							$('#brgy_div').hide();
+							$('#city_div').show();
+							$('#street_div').hide();
+						}
+						else
+						{
+							$('#brgy_div').hide();
+							$('#city_div').hide();
+							$('#street_div').hide();
+						}
+					});
+				</script>
 				
 				<div id="brgy_div">
 					<select id="brgy_op" name="brgy_op" date-mini="true">
@@ -81,18 +83,21 @@ $(document).ready(function(){
 					</select>
 				</div>
 			    
+			    <!-- TODO
+				    http://pastebin.com/dtyVuy5H
+				    http://stackoverflow.com/questions/13568969/get-jquery-mobile-datebox-running-typeerror-a-mobile-datebox-is-undefined
+			     -->
 				<label for="begin_date"> From: </label>
-				<input name="begin_date" id="begin_date" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+				<input name="begin_date" id="begin_date" type="date" data-role="datebox" data-options='{"mode":"calbox", "beforeToday": true, "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "noButtonFocusMode": true, "useNewStyle":true}' />
 			    
 			    <label for="end_date"> To: </label>
-				<input name="end_date" id="end_date" type="text" data-role="datebox" data-options='{"mode":"calbox", "useNewStyle":true}' />
+				<input name="end_date" id="end_date" type="date" data-role="datebox" data-options='{"mode":"calbox", "beforeToday": true, "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "useTodayButton": true, "noButtonFocusMode": true, "useNewStyle":true}' />
 					
 			    <input type="submit" value="Submit" />
 			</form>     
-			<a href="<?php echo site_url('mobile/riskmap');?>" data-role="button" data-theme="c"> Cancel </a>    
+			<a href="<?php echo site_url('mobile/riskmap');?>" data-role="button" data-theme="c" data-ajax="false"> Cancel </a>    
 		</div>
-	</div>
-
+</div>
 
 </body>
 </html>

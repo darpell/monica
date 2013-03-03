@@ -19,6 +19,16 @@ class Mapping extends CI_Model
 			$name . "'". ")";
 			$query = $this->db->query($qString);
 		}
+	function delPolygon($name)
+		{
+			$qString = 'CALL '; 
+			$qString .= "delete_polygon('"; // name of stored procedure
+			$qString .= 
+			//variables needed by the stored procedur
+			$name . "'". ")";
+			echo $qString;
+			$query = $this->db->query($qString);
+		}
 	function getPolygonNumberMax()
 		{
 			$qString = 'CALL getMAX_polygon_number';
@@ -341,10 +351,11 @@ class Mapping extends CI_Model
 			{
 				foreach ($q->result() as $row) 
 				{
-					$data[]=$row->barangay;
+					$data[$row->barangay]= $row->barangay;
 				}
 				
 				$q->free_result();
+				//print_r($data);
 				return $data;
 			}
 			else
@@ -373,6 +384,7 @@ class Mapping extends CI_Model
 				}
 				
 				$q->free_result();
+				//print_r($data);
 				return $data;
 			}
 			else
