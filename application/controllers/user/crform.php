@@ -431,6 +431,14 @@ class Crform extends CI_Controller
 		$data['script'] = '';
 		$this->load->view('pages/view_report', $data);
 	}
+	function get_denguecases()
+	{
+		$this->load->model('Case_report');
+		$q = $this->uri->segment(3,"");
+		$q = str_replace("%20"," ", $q);
+		$data =  $this->Case_report->get_denguecases($q);
+		print ($data);
+	}
 }
 
 /* End of file user/crform.php */

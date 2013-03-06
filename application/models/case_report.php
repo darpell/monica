@@ -346,6 +346,7 @@
 			$totalprev +=$data2[$i][$year-1];
 			$totalcur +=$data2[$i][$year];
 			}
+
 			if($totalprev<$totalcur)
 			$totalchange = ((round(($totalprev / $totalcur)*100,2))-100)*-1;
 			else
@@ -429,6 +430,37 @@
 				return 0;
 			}
 			
+		}
+		function get_denguecases($q)
+		{
+			
+			
+			$q = $this->db->query("SELECT * FROM case_report_main WHERE cr_barangay = '".$q."'");
+			$data = '';
+			$data .= "<table border='1'>
+<tr>
+<th>Case Report No.</th>
+<th>Patient No.</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Sex</th>
+</tr>";
+			
+			foreach ($q->result() as $row)
+			{
+				$data .=  "<tr>";
+				$data .=  "<td>".$row->cr_no ."</td>";
+				$data .=  "<td>".$row->cr_patient_no ."</td>";
+				$data .=  "<td>".$row->cr_first_name  ."</td>";
+				$data .=   "<td>".$row->cr_last_name ."</td>";
+				$data .=  "<td>".$row->cr_sex ."</td>";
+				$data .=  "</tr>";
+			}
+			$data .= "</table>";
+			
+			
+			$data2 = "afklasfkla";
+			return $data;
 		}
 		
 	}

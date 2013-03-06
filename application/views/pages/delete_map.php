@@ -138,12 +138,25 @@
 									});
 							//-------------------*/
 							
+							//*BARANGAY MARKER INFORMATION EXTRACTION
+							var locationname="";
+							var casecount=0;
+							for(i=0;i<=bcount.length-1;i++)
+							{
+								if(bcount[i][0]===currName)
+								{
+									locationname=bcount[i][0];//alert(locationname);
+									casecount=bcount[i][1];
+								}
+							}
+							//-------------------*/
+						
 							//*CREATION OF CENTROID POINT
 							var centroidX = x1 + ((x2 - x1) * 0.5);
 							var centroidY = y1 + ((y2 - y1) * 0.5);
-							var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[nodeInfoCounter][1]+'|ff776b';
+							var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 							var point = new google.maps.LatLng(centroidX,centroidY);
-							createMarker(map,point,image,bcount[nodeInfoCounter][0]);
+							createMarker(map,point,image,locationname);
 							nodeInfoCounter++;
 							//-------------------*/
 				           
@@ -166,16 +179,31 @@
 							{
 								paths: latLng,
 								fillColor: "#FF0000",
-								fillOpacity:0.3
+								fillOpacity:0.3,
+								clickable: false
 							});
+					//-------------------*/
+					
+					//*BARANGAY MARKER INFORMATION EXTRACTION
+					var locationname="";
+					var casecount=0;
+					for(i=0;i<=bcount.length-1;i++)
+					{
+						if(bcount[i][0]===currName)
+						{
+							locationname=bcount[i][0];//alert(locationname);
+							casecount=bcount[i][1];
+						}
+					}
 					//-------------------*/
 					
 					//*CREATION OF CENTROID POINT
 					var centroidX = x1 + ((x2 - x1) * 0.5);
 					var centroidY = y1 + ((y2 - y1) * 0.5);
-					var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[bcount.length-1][1]+'|ff776b';
+					var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 					var point = new google.maps.LatLng(centroidX,centroidY);
-					createMarker(map,point,image,bcount[bcount.length-1][0]);
+					createMarker(map,point,image,locationname);
+					nodeInfoCounter++;
 					//-------------------*/
 		           
 					bermudaTriangle.setMap(map);

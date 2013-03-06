@@ -3,7 +3,43 @@
 
 <!-- CONTENT -->
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
 <script>
+
+function loadXMLDoc(q)
+{
+	
+
+var xmlhttp;
+if (q=="")
+  {
+	  
+  //document.getElementById("txtHint").innerHTML="";
+  //return;
+  }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+ 
+xmlhttp.onreadystatechange=function()
+  {
+	
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+   // document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+    alert(xmlhttp.responseText);
+    }
+  }
+  var url = 'http://localhost/workspace/monica/index.php/case_report/get_denguecases/' + q;
+  xmlhttp.open("post",url,false);
+xmlhttp.send(null);
+
+}
 var infoWindow = new google.maps.InfoWindow({});
 var customIcons = {
 		  larvalpositive: {
@@ -64,7 +100,14 @@ function createMarker(map,point,image,info)
 	google.maps.event.addListener(centroidMarker, 'mouseover', function() {
 		infoWindow.setContent(info);
 		infoWindow.open(map, this);
+
 	});
+		google.maps.event.addListener(centroidMarker, 'click', function() {
+			loadXMLDoc(info);
+	});
+	/*google.maps.event.addListener(centroidMarker, 'onClick', function() {
+		
+	});*/
 }
 	
 function load() {
@@ -140,6 +183,7 @@ function load() {
 				var currPoly = 1;
 				var latLng = [];
 				var nodeInfoCounter=0;
+				alert(document.getElementById('dataCount').value.toString());
 				var bcount=splitter(document.getElementById('dataCount').value.toString());
 				//-------------------*/
 				
@@ -186,12 +230,25 @@ function load() {
 								});
 						//-------------------*/
 						
+						//*BARANGAY MARKER INFORMATION EXTRACTION
+						var locationname="";
+						var casecount=0;
+						for(i=0;i<=bcount.length-1;i++)
+						{
+							if(bcount[i][0]===currName)
+							{
+								locationname=bcount[i][0];//alert(locationname);
+								casecount=bcount[i][1];
+							}
+						}
+						//-------------------*/
+						
 						//*CREATION OF CENTROID POINT
 						var centroidX = x1 + ((x2 - x1) * 0.5);
 						var centroidY = y1 + ((y2 - y1) * 0.5);
-						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[nodeInfoCounter][1]+'|ff776b';
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,bcount[nodeInfoCounter][0]);
+						createMarker(map,point,image,locationname);
 						nodeInfoCounter++;
 						//-------------------*/
 			           
@@ -209,7 +266,7 @@ function load() {
 						}	
 					}
 				}
-				//alert(bcount[currPoly-1][1]);
+				//*CREATION OF POLYGON
 				var bermudaTriangle = new google.maps.Polygon(
 						{
 							paths: latLng,
@@ -218,12 +275,26 @@ function load() {
 						});
 				//-------------------*/
 				
+				//*BARANGAY MARKER INFORMATION EXTRACTION
+				var locationname="";
+				var casecount=0;
+				for(i=0;i<=bcount.length-1;i++)
+				{
+					if(bcount[i][0]===currName)
+					{
+						locationname=bcount[i][0];//alert(locationname);
+						casecount=bcount[i][1];
+					}
+				}
+				//-------------------*/
+				
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
-				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[bcount.length-1][1]+'|ff776b';
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,bcount[bcount.length-1][0]);
+				createMarker(map,point,image,locationname);
+				nodeInfoCounter++;
 				//-------------------*/
 	           
 				bermudaTriangle.setMap(map);
@@ -289,12 +360,25 @@ function load() {
 								});
 						//-------------------*/
 						
+						//*BARANGAY MARKER INFORMATION EXTRACTION
+						var locationname="";
+						var casecount=0;
+						for(i=0;i<=bcount.length-1;i++)
+						{
+							if(bcount[i][0]===currName)
+							{
+								locationname=bcount[i][0];
+								casecount=bcount[i][1];
+							}
+						}
+						//-------------------*/
+						
 						//*CREATION OF CENTROID POINT
 						var centroidX = x1 + ((x2 - x1) * 0.5);
 						var centroidY = y1 + ((y2 - y1) * 0.5);
-						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[nodeInfoCounter][1]+'|ff776b';
+						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,bcount[nodeInfoCounter][0]);
+						createMarker(map,point,image,locationname);
 						nodeInfoCounter++;
 						//-------------------*/
 			           
@@ -321,12 +405,26 @@ function load() {
 						});
 				//-------------------*/
 				
+				//*BARANGAY MARKER INFORMATION EXTRACTION
+				var locationname="";
+				var casecount=0;
+				for(i=0;i<=bcount.length-1;i++)
+				{
+					if(bcount[i][0]===currName)
+					{
+						locationname=bcount[i][0];
+						casecount=bcount[i][1];
+					}
+				}
+				//-------------------*/
+				
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
-				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+bcount[bcount.length-1][1]+'|ff776b';
+				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,bcount[bcount.length-1][0]);
+				createMarker(map,point,image,locationname);
+				nodeInfoCounter++;
 				//-------------------*/
 	           
 				bermudaTriangle.setMap(map);

@@ -272,6 +272,22 @@ class Mapping extends CI_Model
 		{
 			//echo $data['node_type'];			
 			$qString = 'CALL '; 
+			$qString .= "get_allbarangays()";
+			$q = $this->db->query($qString);
+			//*
+			$data = "";
+			if($q->num_rows() > 0) 
+			{
+				foreach ($q->result() as $row) 
+				{
+					$data .=
+					$row->barangay . "&&0&&0%%";
+				}
+			}
+			$q->free_result();
+			
+			//echo $data['node_type'];			
+			$qString = 'CALL '; 
 			$qString .= "get_brangay_count('"; // name of stored procedure
 			$qString .= 
 			//variables needed by the stored procedure
@@ -281,19 +297,13 @@ class Mapping extends CI_Model
 			$q = $this->db->query($qString);
 			//*
 			if($q->num_rows() > 0) 
-			{	$data = "";
+			{
 				foreach ($q->result() as $row) 
 				{
-					if($row->polygon_ID===NULL)
-					{
-					}
-					else
-					{
-						$data .=
-						$row->barangay . "&&" . 
-						$row->amount . "&&" . 
-						$row->polygon_ID . "%%" ;
-					}
+					$data .=
+					$row->barangay . "&&" . 
+					$row->amount . "&&" . 
+					$row->polygon_ID . "%%" ;
 				}
 				$q->free_result();
 				return substr($data,0,-2);
@@ -301,7 +311,7 @@ class Mapping extends CI_Model
 			else
 			{
 				$q->free_result();
-				return 0;
+				return substr($data,0,-2);
 			}
 			//*/
 		}
