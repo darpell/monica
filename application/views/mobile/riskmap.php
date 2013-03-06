@@ -41,15 +41,7 @@ body {height:100%;margin:0;padding:0}
 	</script>
 </head>
 
-<body>
-<div data-role="page" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
-	<div data-role="header" ><!-- data-position="fixed"> -->
-    	<h2> Current Location </h2> 
-    	<a href="<?php echo site_url('mobile/larval_dialog');?>" data-rel="panel" data-icon="gear" class="ui-btn-right" data-transition="slide"> Filter Results </a>
-    	<a href="<?php echo site_url('mobile/riskmap');?>" data-rel="panel" data-icon="gear" class="ui-btn-left" data-ajax="false"> Show All </a>
-    </div> <!-- /header-->
-	<div data-role="content" style="width:100%; height:100%">
-	<input type="hidden" id="result_length" value="<?php echo count($points); ?>" />
+<input type="hidden" id="result_length" value="<?php echo count($points); ?>" />
 	<?php for ($ctr = 0; $ctr < count($points); $ctr++) {?>
 		<input type="hidden" id="pt_barangay<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_barangay']; ?>"	/>
 		<input type="hidden" id="pt_street<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_street']; ?>"	/>
@@ -61,6 +53,16 @@ body {height:100%;margin:0;padding:0}
 		<input type="hidden" id="pt_created_on<?= $ctr ?>" 	value="<?php echo $points[$ctr]['created_on']; ?>"		/>
 		<input type="hidden" id="pt_container<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_container']; ?>"	/>
 	<?php } ?>
+
+<body>
+<div data-role="page" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
+	<div data-role="header" ><!-- data-position="fixed"> -->
+    	<h2> Larval Location </h2> 
+    	<a href="<?php echo site_url('mobile/larval_dialog');?>" data-rel="panel" data-icon="gear" class="ui-btn-right" data-transition="slide"> Filter Results </a>
+    	<a href="<?php echo site_url('mobile/riskmap');?>" data-rel="panel" data-icon="gear" class="ui-btn-left" data-ajax="false"> Show All </a>
+    </div> <!-- /header-->
+	<div data-role="content" style="width:100%; height:100%">
+	
 	
 		<div id="googleMap"></div>
 	</div><!-- /content -->
