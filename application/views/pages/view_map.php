@@ -126,10 +126,10 @@ function load() {
     	
       if(document.getElementById('type').value.toString()=="larvalpositive")
           {
-		  	
+				var dist = splitter(document.getElementById('dist').value.toString());
 		  		var nodes = document.getElementById("data").value;
 		  		var data = splitter(nodes);
-		  		//alert(data);
+		  		alert(dist);
 		  		
 		  		for (var i = 0; i < data.length; i++)
 		  		{
@@ -140,20 +140,22 @@ function load() {
 		  		}
 		  		
 			    for (var i = 0; i < data.length; i++) 
-			    {
-			    	var address = refNumber[i];
-			            
+			    {			            
 			    	var type = nodeType[i];
 			   		var point = new google.maps.LatLng(
 			        	parseFloat(lat[i]),
 			        	parseFloat(lng[i]));
-			    	var html = "<b>" + name + "</b> <br/>" + address;
+			    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] 
+			    	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
+			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + dist[i][1]+" ("+ dist[i][2]+")"
+			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + dist[i][3]+" ("+ dist[i][4]+")";
 			   		//var icon = customIcons[type] || {};
 			  		var image = 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-128e4d/shapecolor-light/shadow-1/border-white/symbolstyle-dark/symbolshadowstyle-no/gradient-no/eggs.png';
 			            
 			 		createMarker(map,point,image,html);
 			 		var circle = new google.maps.Circle({
 						center:point,
+						//radius:0.002328109220390699168278872384883,
 						radius:200,
 						strokeColor:"#0000FF",
 						strokeOpacity:0.8,
@@ -183,7 +185,6 @@ function load() {
 				var currPoly = 1;
 				var latLng = [];
 				var nodeInfoCounter=0;
-				alert(document.getElementById('dataCount').value.toString());
 				var bcount=splitter(document.getElementById('dataCount').value.toString());
 				//-------------------*/
 				
@@ -476,10 +477,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
 <input type = 'hidden' id ='data' name='data' value='<?php echo $nodes?>'>
 <input type = 'hidden' id ='dataCount' name='dataCount' value='<?php echo $bcount?>'>
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
+<input type = 'hidden' id ='dist' name='dist' value='<?php echo $dist?>'>
 </form>
 <body onload="load()">
-<div class="body">
-		<div class="blog">
 <table border="1" width=100%>
 <tr>
 	<td style="width:69%; height:400px">
@@ -516,7 +516,5 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	</td>
 </tr>
 </table>
-</div>
-</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

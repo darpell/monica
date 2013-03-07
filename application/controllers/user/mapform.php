@@ -51,6 +51,7 @@ class Mapform extends CI_Controller
 				
 				$data['nodes'] = $this->Mapping->mapByType($data);			
 				$data['bcount'] = $this->Mapping->getBarangayCount($data2);
+				$data['dist'] = $this->Mapping->calculateDistanceFormula($data2);
 				$this->load->library('table');
 				$this->load->view('pages/view_map',$data);
 			}

@@ -164,37 +164,87 @@ class Mapping extends CI_Model
 			}
 			//*/
 		}
-	/*
-	function mapPolygon($data)
+		//*
+	function calculateDistanceFormula($data)
 		{
-			//echo $data['node_type'];			
-			$qString = 'CALL '; 
-			$qString .= "get_polygon_points ('"; // name of stored procedure
-			$qString .= 
+			//QUERY LARVAL INFORMATION
+			$qString = 'CALL ';
+			$qString .= "view_nodes_type('"; // name of stored procedure
+			$qString .=
 			//variables needed by the stored procedure
-			$data['polygon_name'] . "'". ")";
+			$data['date1']. "','".
+			$data['date2']. "'". ")";
 			
 			$q = $this->db->query($qString);
 			//*
+			$data=[];
+			$ctr=0;
 			if($q->num_rows() > 0) 
-			{	$data = "";
+			{	
 				foreach ($q->result() as $row) 
 				{
-					$data .=
-					$row->polygon_name . "&&" . 
-					$row->point_lat . "&&" . 
-					$row->point_lng . "%%" ;
+					$data[$ctr][0] =$row->tracking_number;
+					$data[$ctr][1] =$row->ls_lat;
+					$data[$ctr][2] =$row->ls_lng;
+					$ctr++;
 				}
-				
-				$q->free_result();
-				return $data;
 			}
 			else
 			{
-				$q->free_result();
-				return 0;
+				$data[0][0]=0;
+				$data[0][1]=0;
+				$data[0][2]=0;
 			}
+			$dist="";
+				echo count($data);
+			for($i=0;$i<=count($data)-1;$i++)
+			{
+				$amount200a=0;
+				$amount200p=0;
+				$amount50a=0;
+				$amount50p=0;
+				$distance;
+				for($_i=0;$_i<=count($data)-1;$_i++)
+				{
+					if($data[$i][0]===$data[$_i][0])
+					{
+					}
+					else
+					{
+						echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
+						$distance = sqrt(($data[$_i][1]-$data[$i][1])*($data[$_i][1]-$data[$i][1]) + ($data[$_i][2]-$data[$i][2])*($data[$_i][2]-$data[$i][2]));
+						//*
+						//if($i===1)
+						{
+							//echo "<(".$data[$_i][1]." minus ".$data[$i][1]." multiplied by ".$data[$_i][1]." minus ".$data[$i][1].") plus (".$data[$_i][2]." minus ".$data[$i][2]." multiplied by ".$data[$_i][2]." minus ".$data[$i][2].")>";
+							echo $distance." Distance End... ";
+						}//*/
+						if ($distance<=50)
+						{
+							$amount50a++;
+							$amount200a++;
+						}
+						else if (($distance<=200))
+						{
+							$amount200a++;
+						}
+					}
+					$_i++;
+				}
+				$amount200p=100*number_format($amount200a/count($data),2,'.','');
+				$amount50p=100*number_format($amount50a/count($data),2,'.','');
+				/*
+				$dist[$i][0]=$data[$i][0];
+				$dist[$i][1]=$amount200a;
+				$dist[$i][2]=$amount200p;
+				$dist[$i][3]=$amount50a;
+				$dist[$i][4]=$amount50p;
+				//*/
+				$dist.=$data[$i][0]."&&".$amount200a."&&".$amount200p."&&".$amount50a."&&".$amount50p."%%";
+			}
+			return substr($dist,0,-2);;
 		}
+		/*
 	function mapAllPolygon()//all polygons
 		{
 			//echo $data['node_type'];			
