@@ -1,7 +1,10 @@
 <!-- HEADER -->
 <?php $this->load->view('templates/header');?>
 
-<!-- CONTENT --><?php 
+<!-- CONTENT -->
+<div class="body">
+		<div class="blog">
+<?php 
 $attributes = array(
 						'id' => 'TPcr-form'
 					);
@@ -60,6 +63,7 @@ echo form_open('larval_survey/addls',$attributes); ?>
 <div><input type="submit" value="Submit" /></div>
 
 </form>
-
+</div>
+</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

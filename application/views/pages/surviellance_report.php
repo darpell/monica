@@ -3,6 +3,8 @@
 
 <!-- CONTENT -->
 <body>
+<div class="body">
+		<div class="blog">
 <center>
 <h2> DENGUE SURVEILLANCE REPORT </h2>
 <br />
@@ -79,6 +81,8 @@ if($agegroup == 4)
 <center><div id="chart_div"></div>
 <div id="chart_div1"></div>
 </center>
+</div>
+</div>
 <body>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

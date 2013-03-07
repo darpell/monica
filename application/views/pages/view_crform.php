@@ -2,7 +2,9 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
-<table  border="1"  align="center">
+<div class="body">
+		<div class="blog">
+<table  border="1" align="center">
 <tr>
 <?php 
 $attributes = array(
@@ -43,7 +45,6 @@ echo form_open('case_report/searchCaseReport',$attributes); ?>
 
 
 <?php if($table != null) {?>
-<center>
 <div>
 
 <?php 
@@ -74,9 +75,9 @@ $this->table->set_template($tmpl);
 echo $this->table->generate($table); 
 ?>
 <br />
-</center>
 </div>
 <?php } ?>
-
+</div>
+</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

@@ -2,6 +2,8 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
+<div class="body">
+		<div class="blog">
 <?php 
 $attributes = array(
 						'id' => 'TPlogin'
@@ -20,6 +22,7 @@ echo form_open('login/check',$attributes); ?>
 <div><input type="submit" value="Submit" /></div>
 
 <?= form_close(); ?>
-
+		</div>
+	</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

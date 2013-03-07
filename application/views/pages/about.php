@@ -2,7 +2,11 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
-<h1> About </h1>
+<div class="body">
+		<div class="blog">
+		
+		</div>
+	</div>
 
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

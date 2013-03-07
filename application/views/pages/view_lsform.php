@@ -2,6 +2,8 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
+<div class="body">
+		<div class="blog">
 <table  border="1"  align="center">
 <tr>
 <?php 
@@ -72,6 +74,7 @@ echo $this->table->generate($table);
 </center>
 </div>
 <?php } ?>
-
+</div>
+</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

@@ -2,6 +2,8 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
+<div class="body">
+		<div class="blog">
 <?php if($table != null) {?>
 
 <div>
@@ -37,7 +39,7 @@ echo $this->table->generate($table);
 
 </div>
 <?php } ?>
-
-
+</div>
+</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

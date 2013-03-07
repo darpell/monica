@@ -2,6 +2,8 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
+<div class="body">
+		<div class="blog">
 <?php 
 $attributes = array(
 						'id' => 'TPregister'
@@ -48,6 +50,7 @@ echo form_dropdown('TPtype-dd', $options, 'Barangay Health Worker',$js);
 <div><input type="submit" value="Submit" /></div>
 
 </form>
-
+</div>
+</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

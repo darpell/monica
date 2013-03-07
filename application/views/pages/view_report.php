@@ -2,6 +2,8 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
+<div class="body">
+		<div class="blog">
 <table  border="1"  align="center">
 <tr>
 <?php 
@@ -21,9 +23,8 @@ echo form_open('case_report/testchart',$attributes); ?>
   <td> <input type="submit" class="submitButton" value="View"/><?php echo form_close(); ?></td>
   </tr>
 	</table>
-</div>
 <p />
-
-
+</div>
+</div>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

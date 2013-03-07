@@ -244,6 +244,9 @@
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
 </form>
 <body onload="load()">
+<div class="body">
+		<div class="blog">
+		
 	<table border="1" width=100%>
 <tr>
 	<td style="width:49%" rowspan="2">
@@ -275,6 +278,8 @@
 		<div id='dataPanel' class="dataPanel"></div>
 	</td>
 </tr>
-</table> 
+</table>
+</div>
+</div> 
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>
