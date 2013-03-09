@@ -68,16 +68,16 @@ function splitter(str){
 	var nodeType = new Array();
 	var lat = new Array();
 	var lng = new Array();
+	var id=new Array();
 
 function createMarker(map,point,image,info)
 {
 	var centroidMarker;
-	if(image==null)
+	if(image===null)
 	{
 		centroidMarker = new google.maps.Marker({
 		  position: point,
-		  map: map,
-		  shadow: icon.shadow
+		  map: map
 		});
 	}
 	else
@@ -86,8 +86,7 @@ function createMarker(map,point,image,info)
 	    centroidMarker = new google.maps.Marker({
 	      map: map,
 	      position: point,
-	      icon: image,
-	      shadow: icon.shadow
+	      icon: image
 	    });
 	}
 
@@ -129,7 +128,7 @@ function load() {
 				var dist = splitter(document.getElementById('dist').value.toString());
 		  		var nodes = document.getElementById("data").value;
 		  		var data = splitter(nodes);
-		  		alert(dist);
+		  		//alert(dist);
 		  		
 		  		for (var i = 0; i < data.length; i++)
 		  		{
@@ -137,20 +136,39 @@ function load() {
 		  			refNumber[i] = data[i][1];
 		  			lat[i] = data[i][2];
 		  			lng[i] = data[i][3];
+		  			id[i]=data[i][4];
 		  		}
 		  		
 			    for (var i = 0; i < data.length; i++) 
-			    {			            
+			    {
+				    var amount50a="fail";
+				    var amount50p="fail";
+				    var amount200a="fail";
+				    var amount200p="fail";
+				    for(var _i=0; _i < data.length; _i++)
+				    {
+					    //alert("Comparing "+id[i]+" to "+dist[_i][0]);
+					    if(id[i]===dist[_i][0])
+					    {
+					    	 amount50a=dist[_i][1];
+							 amount50p=dist[_i][2];
+							 amount200a=dist[_i][3];
+							 amount200p=dist[_i][4];
+					    }
+				    }			            
 			    	var type = nodeType[i];
 			   		var point = new google.maps.LatLng(
 			        	parseFloat(lat[i]),
 			        	parseFloat(lng[i]));
 			    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] 
 			    	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
-			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + dist[i][1]+" ("+ dist[i][2]+")"
-			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + dist[i][3]+" ("+ dist[i][4]+")";
+			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + amount50a+" ("+ amount50p+"%)"
+			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + amount200a+" ("+ amount200p+"%)";
 			   		//var icon = customIcons[type] || {};
-			  		var image = 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-128e4d/shapecolor-light/shadow-1/border-white/symbolstyle-dark/symbolshadowstyle-no/gradient-no/eggs.png';
+			   		if((amount50p>=25)||(amount200p>=50))
+			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=!|FF0000|000000';
+			  		else
+			  		var image = null;
 			            
 			 		createMarker(map,point,image,html);
 			 		var circle = new google.maps.Circle({
@@ -165,7 +183,7 @@ function load() {
 					});
 					circle.setMap(map); 
 				}
-      		}
+      	}
 			//end of IF
 			//VIEW BOUNDARY
 			
@@ -315,6 +333,8 @@ function load() {
 				str = str.split("%&");
 				var dataLarval = splitter(str[0]);
 				var dataDengue = splitter(str[1]);
+				var dist = splitter(document.getElementById('dist').value.toString());
+				var bcount=splitter(document.getElementById('dataCount').value.toString());
 				//alert (dataLarval);
 				//alert (dataDengue);
 				//-------------------*/
@@ -327,7 +347,6 @@ function load() {
 				var currPoly = 1;
 				var latLng = [];
 				var nodeInfoCounter=0;
-				var bcount=splitter(document.getElementById('dataCount').value.toString());
 				//-------------------*/
 				
 				for (var _i=0; _i <= dataDengue.length-1;)
@@ -430,30 +449,50 @@ function load() {
 	           
 				bermudaTriangle.setMap(map);
 				
-            	
 		  		for (var i = 0; i < dataLarval.length; i++)
 		  		{
 		  			nodeType[i] = dataLarval[i][0];		
 		  			refNumber[i] = dataLarval[i][1];
 		  			lat[i] = dataLarval[i][2];
 		  			lng[i] = dataLarval[i][3];
+		  			id[i]=dataLarval[i][4];
 		  		}
 		  		
 			    for (var i = 0; i < dataLarval.length; i++) 
 			    {
-			    	var address = refNumber[i];
-			            
+				    var amount50a="fail";
+				    var amount50p="fail";
+				    var amount200a="fail";
+				    var amount200p="fail";
+				    for(var _i=0; _i < dataLarval.length; _i++)
+				    {
+					    //alert("Comparing "+id[i]+" to "+dist[_i][0]);
+					    if(id[i]===dist[_i][0])
+					    {
+					    	 amount50a=dist[_i][1];
+							 amount50p=dist[_i][2];
+							 amount200a=dist[_i][3];
+							 amount200p=dist[_i][4];
+					    }
+				    }			            
 			    	var type = nodeType[i];
 			   		var point = new google.maps.LatLng(
 			        	parseFloat(lat[i]),
 			        	parseFloat(lng[i]));
-			    	var html = "<b>" + name + "</b> <br/>" + address;
-			   		var icon = customIcons[type] || {};
-			   		var image = 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-128e4d/shapecolor-light/shadow-1/border-white/symbolstyle-dark/symbolshadowstyle-no/gradient-no/eggs.png';
+			    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] 
+			    	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
+			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + amount50a+" ("+ amount50p+"%)"
+			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + amount200a+" ("+ amount200p+"%)";
+			   		//var icon = customIcons[type] || {};
+			   		if((amount50p>=25)||(amount200p>=50))
+			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=!|FF0000|000000';
+			  		else
+			  		var image = null;
 			            
 			 		createMarker(map,point,image,html);
 			 		var circle = new google.maps.Circle({
 						center:point,
+						//radius:0.002328109220390699168278872384883,
 						radius:200,
 						strokeColor:"#0000FF",
 						strokeOpacity:0.8,

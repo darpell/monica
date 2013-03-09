@@ -62,7 +62,8 @@ class Mapping extends CI_Model
 						"larvalpositive" . "&&" . 
 						$row->ls_no . "&&" . 
 						$row->ls_lat . "&&" . 
-						$row->ls_lng . "%%" ;
+						$row->ls_lng . "&&" . 
+						$row->tracking_number . "%%" ;
 					}
 					$q->free_result();
 					return substr($data,0,-2);
@@ -119,10 +120,11 @@ class Mapping extends CI_Model
 				foreach ($q->result() as $row)
 				{
 					$data .=
-					"larvalpositive" . "&&" .
-					$row->ls_no . "&&" .
-					$row->ls_lat . "&&" .
-					$row->ls_lng . "%%" ;
+					"larvalpositive" . "&&" . 
+					$row->ls_no . "&&" . 
+					$row->ls_lat . "&&" . 
+					$row->ls_lng . "&&" . 
+					$row->tracking_number . "%%" ;
 				}
 				$q->free_result();
 				$data = substr($data,0,-2);
@@ -196,7 +198,7 @@ class Mapping extends CI_Model
 				$data[0][2]=0;
 			}
 			$dist="";
-				echo count($data);
+			echo count($data);
 			for($i=0;$i<=count($data)-1;$i++)
 			{
 				$amount200a=0;
@@ -206,30 +208,33 @@ class Mapping extends CI_Model
 				$distance;
 				for($_i=0;$_i<=count($data)-1;$_i++)
 				{
+					$distance=0;
 					if($data[$i][0]===$data[$_i][0])
 					{
 					}
 					else
 					{
-						echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
-						$distance = sqrt(($data[$_i][1]-$data[$i][1])*($data[$_i][1]-$data[$i][1]) + ($data[$_i][2]-$data[$i][2])*($data[$_i][2]-$data[$i][2]));
-						//*
-						//if($i===1)
-						{
-							//echo "<(".$data[$_i][1]." minus ".$data[$i][1]." multiplied by ".$data[$_i][1]." minus ".$data[$i][1].") plus (".$data[$_i][2]." minus ".$data[$i][2]." multiplied by ".$data[$_i][2]." minus ".$data[$i][2].")>";
-							echo $distance." Distance End... ";
-						}//*/
-						if ($distance<=50)
+						//echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
+						$lat_a = $data[$i][1] * PI()/180;
+				        $lat_b = $data[$_i][1] * PI()/180;
+				        $long_a = $data[$i][2] * PI()/180;
+				        $long_b = $data[$_i][2] * PI()/180;
+				        $distance =
+				                acos(
+				                        sin($lat_a ) * sin($lat_b) +
+				                        cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+				                ) * 6371;
+				        $distance*=1000;
+                		if ($distance<=50)
 						{
 							$amount50a++;
 							$amount200a++;
 						}
-						else if (($distance<=200))
+						else if ($distance<=200)
 						{
 							$amount200a++;
 						}
 					}
-					$_i++;
 				}
 				$amount200p=100*number_format($amount200a/count($data),2,'.','');
 				$amount50p=100*number_format($amount50a/count($data),2,'.','');
@@ -511,7 +516,8 @@ class Mapping extends CI_Model
 					$row->ls_household . "&&" .
 					$row->ls_container . "&&" . 
 					$row->ls_updated_by . "&&" . 
-					$row->ls_updated_on . "%%" ;
+					$row->ls_updated_on . "&&" . 
+					$row->tracking_number . "%%" ;
 				}
 				$q->free_result();
 				return $data;
