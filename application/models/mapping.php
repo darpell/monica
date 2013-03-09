@@ -120,10 +120,11 @@ class Mapping extends CI_Model
 				foreach ($q->result() as $row)
 				{
 					$data .=
-					"larvalpositive" . "&&" .
-					$row->ls_no . "&&" .
-					$row->ls_lat . "&&" .
-					$row->ls_lng . "%%" ;
+					"larvalpositive" . "&&" . 
+					$row->ls_no . "&&" . 
+					$row->ls_lat . "&&" . 
+					$row->ls_lng . "&&" . 
+					$row->tracking_number . "%%" ;
 				}
 				$q->free_result();
 				$data = substr($data,0,-2);
@@ -200,7 +201,6 @@ class Mapping extends CI_Model
 			echo count($data);
 			for($i=0;$i<=count($data)-1;$i++)
 			{
-				echo(" ALERT ");
 				$amount200a=0;
 				$amount200p=0;
 				$amount50a=0;
