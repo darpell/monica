@@ -20,10 +20,6 @@
 	var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
 	var infoWindow = new google.maps.InfoWindow({});
 	var customIcons = {
-			  larvalpositive: {
-		        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png',
-		        shadow: 'http://labs.google.com/ridefinder/images/mm_20_shadow.png'
-		      },
 		      denguecase: {
 		        icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png',
 		        shadow: 'http://labs.google.com/ridefinder/images/mm_20_shadow.png'
@@ -102,7 +98,7 @@ function initialize()
 		data2[i] = str[i].split("&&");
 	}
 	//alert(data2);
-	alert(bcount);
+	//alert(bcount);
 	//-------------------*/
 	
 	for (var _i=0; _i <= data2.length-1;)
@@ -217,13 +213,21 @@ body {height:100%;margin:0;padding:0}
 #googleMap {height:100%}
 </style>
 </head>
-<form>
 <input type = 'hidden' id ='data' name='data' value='<?php echo $nodes?>'>
 <input type = 'hidden' id ='dataCount' name='dataCount' value='<?php echo $bcount?>'>
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
-</form>
 <body onload="load()">
-<div id="googleMap"></div>
+<div data-role="page" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
+	<div data-role="header" ><!-- data-position="fixed"> -->
+    	<h2> Case Map </h2> 
+    	<a href="<?php echo site_url('mobile/case_dialog');?>" data-rel="panel" data-icon="gear" class="ui-btn-right" data-transition="slide"> Filter Results </a>
+    	<a href="<?php echo site_url('mobile/casemap');?>" data-rel="panel" data-icon="gear" class="ui-btn-left" data-ajax="false"> Show All </a>
+    </div> <!-- /header-->
+	<div data-role="content" style="width:100%; height:100%">
 
+		<div id="googleMap"></div>
+	
+	</div><!-- /content -->
+</div><!-- /page -->
 </body>
 </html>

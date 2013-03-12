@@ -20,7 +20,7 @@ class Pages extends CI_Controller
 			
 			else if ($page == 'checklocation')
 				$this->load->view('mobile/current_pos');	
-					
+			/*	
 			else if ($page == 'casemap')
 			{
 			$this->load->model('Mapping');
@@ -30,7 +30,7 @@ class Pages extends CI_Controller
 				
 				$data['table'] = null;
 				
-				/** Validation rules could be seen at application/config/form_validation.php **/
+				/** Validation rules could be seen at application/config/form_validation.php
 				//*
 				if ($this->form_validation->run('') == FALSE)
 				{
@@ -55,7 +55,7 @@ class Pages extends CI_Controller
 						$data['nodes'] = $this->Mapping->mapByType($data);
 						$data['bcount'] = $this->Mapping->getBarangayCount($data2);
 						$this->load->library('table');
-						//*/
+						//**-------------
 						
 						$barangayWithPolygon[]=$this->Mapping->getBarangays();
 						$allBarangays[]=$this->Mapping->getAllBarangays();
@@ -76,7 +76,7 @@ class Pages extends CI_Controller
 					$this->load->view('pages/success');
 				}
 			}
-			
+			*/
 			else if ($page == 'user')
 				$this->load->view('mobile/user');
 			
