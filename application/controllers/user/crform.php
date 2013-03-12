@@ -179,7 +179,7 @@ class Crform extends CI_Controller
 	}
 	function update_patient()
 	{	$this->redirectLogin();
-		$this->load->model('mod_login');		
+		$this->load->model('case_report');		
 		$data['patientno'] = $this->uri->segment(3,"");
 		
 		/* css */
@@ -192,13 +192,13 @@ class Crform extends CI_Controller
 		$data['script'] = 'view_casereport';
 		
 		//for table result for search
-		$data['info'] = $this->mod_login->get_user($data); 
+		$data['info'] = $this->case_report->getPatientInfo($data); 
 		
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		if ($this->form_validation->run('') == FALSE)
 		{
 			$this->load->library('table');
-			$this->load->view('pages/approve_user',$data);
+			$this->load->view('pages/update_patient',$data);
 		}
 		else
 		{

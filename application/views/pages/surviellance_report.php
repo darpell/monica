@@ -78,10 +78,11 @@ if($agegroup == 4)
 <input type = 'hidden' id ='data1' name='data1' value='<?php echo $report_data_cases;?>'>
 </form>
 
+
+</div>
 <center><div id="chart_div"></div>
 <div id="chart_div1"></div>
 </center>
-</div>
 </div>
 <body>
 <!-- FOOTER -->

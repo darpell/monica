@@ -166,25 +166,54 @@ class Login extends CI_Controller
 	}
 	function approve_user()
 	{	
+	
+		$data['title'] = 'Registration Page';
+		$data['script'] = '';
+		$data['result'] =  null;
 		$this->load->model('mod_login');
+		$users = $this->mod_login->get_users();
+		$this->form_validation->set_rules('TPusername-txt', 'username', 'required');
+		$this->form_validation->set_rules('TPpassword-txt', 'password', 'required|matches[TPpassword2-txt]');
+		$this->form_validation->set_rules('TPpassword2-txt', 'repeat password', 'required');
+		$this->form_validation->set_rules('TPfirstname-txt', 'first name', 'required');
+		$this->form_validation->set_rules('TPmiddlename-txt', 'middle name', 'required');
+		$this->form_validation->set_rules('TPlastname-txt', 'last name', 'required');
 		
-		$data = array(
+		/** Validation rules could be seen at application/config/form_validation.php **/
+		if ($this->form_validation->run('') == FALSE)
+		{
+			$this->load->view('pages/view_register',$data);
+		}
+		else
+		{
+				$data = array(
 				'TPusername-txt' => $this->input->post('TPusername-txt'),
-				'TPtype-dd' => $this->input->post('TPtype-dd'),
-				'TPapproval-rd' => $this->input->post('TPapproval-rd')
-					);
-
-			$this->mod_login->approve_user($data);
+				'TPpassword-txt' => $this->input->post('TPpassword-txt'),
+				'TPfirstname-txt' => $this->input->post('TPfirstname-txt'),
+				'TPmiddlename-txt' => $this->input->post('TPmiddlename-txt'),
+				'TPlastname-txt' => $this->input->post('TPlastname-txt'),
+				'TPtype-dd' => $this->input->post('TPtype-dd')
+			);
+		
+			$this->mod_login->update_user($data);
 			$data['script'] = '';
-			$data['result'] =  null;
-			$this->load->view('pages/success' , $data);	
-	}
+			$this->load->view('pages/success' , $data);
+			}
+			
+		}
+	
 	function logout()
 	{
 		$this->session->sess_destroy();
 		//redirect('/login/', 'refresh');
 		redirect(base_url());
 	}
+	function admin_functions()
+	{
+		$data['script'] = '';
+		$this->load->view('pages/admin' , $data);
+	}
+	
 }
 
 /* End of file user/login.php */
