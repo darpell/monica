@@ -51,7 +51,7 @@ class Mod_login extends CI_Model
 				$data['TPtype-dd']. "','" .
 				$data['TPmiddlename-txt'] . "','" .
 				$data['TPlastname-txt'] . "','" .
-				 $data['TPfirstname-txt']. "'," . "'u'" . ")";
+				 $data['TPfirstname-txt']. "'," . "'A'" . ")";
 			
 			
 			$query = $this->db->query($qString);
@@ -84,6 +84,7 @@ class Mod_login extends CI_Model
 				
 			$data2[]=array(
 					'username'=>'Username',
+					'password'=>'Password',
 					'usertype'=> 'User Type',
 					'firstname'=> 'Firstname',
 					'middlename'=> 'Middlename',
@@ -95,6 +96,7 @@ class Mod_login extends CI_Model
 						
 					$data2[]=array(
 							'username'=> anchor(base_url('index.php/login/view_user/').'/'. $row->user_username ,  $row->user_username  , 'target="_blank"'),
+							'password'=>$row->user_password,
 							'usertype'=>$row->user_type ,
 							'firstname'=> $row->user_firstname,
 							'middlename'=> $row->user_middlename,
@@ -128,6 +130,7 @@ class Mod_login extends CI_Model
 			
 					$data2=array(
 							'username'=> $row->user_username,
+							'password'=> $row->user_password,
 							'usertype'=>$row->user_type ,
 							'firstname'=> $row->user_firstname,
 							'middlename'=> $row->user_middlename,
@@ -143,16 +146,19 @@ class Mod_login extends CI_Model
 			return $data2;
 				
 		}
-		function approve_user($data)
+		function update_user($data)
 		{
 			
 			$qString = 'CALL ';
-			$qString .= "approve_user ('"; // name of stored procedure
+			$qString .= "update_user ('"; // name of stored procedure
 			$qString .=
 			//variables needed by the stored procedure
 			$data['TPusername-txt'] . "','" .
-			$data['TPtype-dd']. "','" .
-			$data['TPapproval-rd'] . "')" ;
+					$data['TPpassword-txt'] . "','" .
+					$data['TPtype-dd']. "','" .
+					$data['TPmiddlename-txt'] . "','" .
+					$data['TPlastname-txt'] . "','" .
+					$data['TPfirstname-txt']. "'," . "'A'" . ")";
 			
 			$q = $this->db->query($qString);
 		}

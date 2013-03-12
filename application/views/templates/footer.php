@@ -53,6 +53,7 @@
                	<li><?= anchor(base_url('index.php/larval_survey/viewLarvalReport'),'Update Surveys')?></li>
             	<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
  				<li><?= anchor(base_url('index.php/case_report/testChart'),'Surveillance Report ')?></li>
+ 				<li><?= anchor(base_url('index.php/login/admin'),'Admin Functions')?></li>
 			</ul>
 			<p>
 				Copyright 20123 &copy; Department of Health. All rights reserved.
