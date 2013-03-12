@@ -23,11 +23,8 @@ class Crform extends CI_Controller
 		{
 			$this->load->view('mobile/index.php');
 		}
-		else{
-		$this->load->library('session');
-		$this->load->helper(array('form', 'url'));
-		if($this->session->userdata('logged_in') != TRUE )
-		redirect(substr(base_url(), 0, -1) . '/index.php/login');
+		elseif ($this->session->userdata('logged_in') != TRUE ){
+			redirect(substr(base_url(), 0, -1) . '/index.php/login');
 		}
 	}
 	function addcase()

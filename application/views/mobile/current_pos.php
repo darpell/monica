@@ -63,7 +63,7 @@
 			});
 			
 			var contentString = "<b>Timestamp:</b> " + parseTimestamp(position.timestamp) + "<br/><b>User location:</b> lat " + position.coords.latitude + ", long " + position.coords.longitude + ", accuracy " + position.coords.accuracy;
-			var btn = '<div id="info_content"> <button onclick="loadContent()"> Add Larval Incidence </button></div>';
+			var btn = '<div id="info_content"> <button onclick="window.open(&quot;<?= site_url('mobile/larval_survey') ?>&quot;);"> Add Larval Incidence </button></div>';
 			var infowindow = new google.maps.InfoWindow({
 				content: contentString + btn
 			});

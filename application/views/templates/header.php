@@ -8,15 +8,36 @@ echo link_tag('styles/style2.css');
 if($script != "")
 	$this->load->view('scripts/'.$script);
 ?>
+
+<?php if ($this->session->userdata('TPusername') == true) {?>
+	<style>
+	.header div div > a {
+		display:block;
+		float:right;
+		margin:0 19px 0 0;
+		width:201px;
+		height:54px;
+		background:url(<?= base_url('/images/logout1.png')?>);
+		text-indent:-99999px;
+	}
+	.header div div > a:hover {
+		background:url(<?= base_url('/images/logout2.png')?>);
+	}
+	</style>
+<?php }?>
+
 </head>
 <body>
 <!-- <div id="main_container"> -->
-
 <div class="header">
 		<div>
-			<a href="<?= base_url('index.php') ?>" id="logo"><img src="<?= base_url('/images/logo.png'); ?>" alt="logo"></a>
+			<a href="<?= base_url('index.php') ?>" id="logo"><img src="<?= base_url('/images/logo.png') ?>" alt="logo"></a>
 			<div>
+			<?php if ($this->session->userdata('TPusername') == FALSE) {?>
 				<a href="<?= base_url('index.php/login') ?>">Login</a>
+			<?php } else {?>
+				<a href="<?= base_url('index.php/logout') ?>">Logout</a>
+			<?php } ?>
 				<ul>
 					<li class="selected"><?= anchor(base_url('index.php'),'Home')?></li>
                 	<li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
