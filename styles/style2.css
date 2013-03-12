@@ -1250,7 +1250,7 @@ p a:hover, a:hover {
 /*------------------------- Footer -------------------------*/
 .footer {
 	background:url(../images/bg-footer.jpg) repeat-x left top;
-	height:250px;
+	height:285px;
 	padding:38px 0 3px;
 }
 .footer div:first-child {
@@ -1298,7 +1298,7 @@ p a:hover, a:hover {
 .footer div:first-child div {
 	float:left;
 	margin:0 0 0 20px;
-	padding:0 23px 0 27px;
+	padding:0 140px 0 27px;
 	width:auto;
 }
 .footer div:first-child div ul {

@@ -2,10 +2,11 @@
 <?php $this->load->view('templates/header');?>
 
 <!-- CONTENT -->
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
 <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
-<script>
+<script src="<?= base_url('scripts/OverlappingMarkerSpiderfier.js') ?>"></script>
 
+<script>
 function loadXMLDoc(q)
 {
 	
@@ -40,7 +41,7 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.send(null);
 
 }
-var infoWindow = new google.maps.InfoWindow({});
+var infoWindow = new google.maps.InfoWindow();
 var customIcons = {
 		  larvalpositive: {
 	        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png',
@@ -70,17 +71,19 @@ function splitter(str){
 	var lng = new Array();
 	var id=new Array();
 	var household = new Array();
-	var container=new Array();
+	var container = new Array();
 
 function createMarker(map,point,image,info)
 {
 	var centroidMarker;
-	if(image===null)
+	var oms = new OverlappingMarkerSpiderfier(map);
+	if(image === null)
 	{
 		centroidMarker = new google.maps.Marker({
 		  position: point,
 		  map: map
 		});
+		oms.addMarker(centroidMarker);
 	}
 	else
 	{
@@ -90,6 +93,7 @@ function createMarker(map,point,image,info)
 	      position: point,
 	      icon: image
 	    });
+	    oms.addMarker(centroidMarker);
 	}
 
 	 /*
@@ -98,11 +102,12 @@ function createMarker(map,point,image,info)
 	});
 	//*/
 	  
-	google.maps.event.addListener(centroidMarker, 'mouseover', function() {
+	google.maps.event.addListener(centroidMarker, 'click', function() {
 		infoWindow.setContent(info);
 		infoWindow.open(map, this);
 
 	});
+	
 		google.maps.event.addListener(centroidMarker, 'click', function() {
 			loadXMLDoc(info);
 	});
