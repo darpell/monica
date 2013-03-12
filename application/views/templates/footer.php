@@ -38,11 +38,6 @@
 				<a href="http://www.facebook.com/DOHgovph" id="facebook">Facebook</a> 
 				<a href="http://twitter.com/#!/DOHgovph" id="twitter">Twitter</a> 
 				<!-- <a href="http://freewebsitetemplates.com/go/googleplus/" id="googleplus">Google+</a> -->
-				<form action="about.html">
-					<h4>Newsletter Signup</h4>
-					<input type="text" value="Enter email address" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
-					<input type="submit" id="submit" value="">
-				</form>
 			</div>
 		</div>
 		<div>

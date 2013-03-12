@@ -105,7 +105,6 @@ function createMarker(map,point,image,info)
 	google.maps.event.addListener(centroidMarker, 'click', function() {
 		infoWindow.setContent(info);
 		infoWindow.open(map, this);
-
 	});
 	
 		google.maps.event.addListener(centroidMarker, 'click', function() {
@@ -192,7 +191,7 @@ function load() {
 			    	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
 			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + amount50a+" ("+ amount50p+"%)"
 			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + amount200a+" ("+ amount200p+"%)"
-			    	+ "<br/><br/>" + "<b>Household: </b>" + household[i]+" ("+ householdcount+"/"+ household.length +" occurances, "+householdpercent.toFixed(2)+"%)"
+			    	+ "<br/><br/>" + "<b>Household: </b>" + household[i]+" ("+ householdcount+"/"+ household.length +" occurrences, "+householdpercent.toFixed(2)+"%)"
 			    	+ " <br/>" + "<b>Container: </b>" + container[i]+" ("+ containercount+"/"+ container.length +" occurances, "+containerpercent.toFixed(2)+"%)";
 			   		//var icon = customIcons[type] || {};
 			   		if((amount50p>=25)||(amount200p>=50))

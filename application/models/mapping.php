@@ -200,7 +200,7 @@ class Mapping extends CI_Model
 				$data[0][2]=0;
 			}
 			$dist="";
-			echo count($data);
+			//echo count($data);
 			for($i=0;$i<=count($data)-1;$i++)
 			{
 				$amount200a=0;

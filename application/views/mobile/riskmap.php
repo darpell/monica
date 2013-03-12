@@ -37,9 +37,16 @@ body {height:100%;margin:0;padding:0}
 									document.getElementById("pt_lng" + pt_ctr).value
 							)
 					});
-				oms.addMarker(marker)
+				oms.addMarker(marker);
 				markers.push(marker);
 			}
+
+			var iw = new google.maps.InfoWindow();
+			oms.addListener('click', function(marker) {
+			  iw.setContent('test');
+			  iw.open(map, marker);
+			});
+			
 			var mc = new MarkerClusterer(map, markers, mcOptions);
 		}
 		google.maps.event.addDomListener(window, 'load', initialize);
