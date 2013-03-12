@@ -63,7 +63,9 @@ class Mapping extends CI_Model
 						$row->ls_no . "&&" . 
 						$row->ls_lat . "&&" . 
 						$row->ls_lng . "&&" . 
-						$row->tracking_number . "%%" ;
+						$row->tracking_number . "&&" . 
+						$row->ls_household . "&&" .
+						$row->ls_container . "%%" ;
 					}
 					$q->free_result();
 					return substr($data,0,-2);

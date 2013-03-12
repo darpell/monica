@@ -69,6 +69,8 @@ function splitter(str){
 	var lat = new Array();
 	var lng = new Array();
 	var id=new Array();
+	var household = new Array();
+	var container=new Array();
 
 function createMarker(map,point,image,info)
 {
@@ -129,7 +131,6 @@ function load() {
 		  		var nodes = document.getElementById("data").value;
 		  		var data = splitter(nodes);
 		  		//alert(dist);
-		  		
 		  		for (var i = 0; i < data.length; i++)
 		  		{
 		  			nodeType[i] = data[i][0];		
@@ -137,7 +138,9 @@ function load() {
 		  			lat[i] = data[i][2];
 		  			lng[i] = data[i][3];
 		  			id[i]=data[i][4];
-		  		}
+		  			household[i]=data[i][5];
+		  			container[i]=data[i][6];
+		  		}//alert(household);alert(container);
 		  		
 			    for (var i = 0; i < data.length; i++) 
 			    {
@@ -157,13 +160,35 @@ function load() {
 					    }
 				    }			            
 			    	var type = nodeType[i];
+			    	var householdcount=0;
+			    	var containercount=0;
+			    	var householdpercent;
+			    	var containerpercent;
+		        	for(var __i=0; __i < household.length;__i++)
+		        	{
+			        	if(household[i]===household[__i])
+			        	{
+			        		householdcount++;
+			        	}
+		        	}
+		        	for(var __i=0; __i < container.length;__i++)
+		        	{
+			        	if(container[i]===container[__i])
+			        	{
+			        		containercount++;
+			        	}
+		        	}
+		        	householdpercent=householdcount/household.length*100;
+		        	containerpercent=containercount/container.length*100;
 			   		var point = new google.maps.LatLng(
 			        	parseFloat(lat[i]),
 			        	parseFloat(lng[i]));
 			    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] 
 			    	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
 			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + amount50a+" ("+ amount50p+"%)"
-			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + amount200a+" ("+ amount200p+"%)";
+			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + amount200a+" ("+ amount200p+"%)"
+			    	+ "<br/><br/>" + "<b>Household: </b>" + household[i]+" ("+ householdcount+"/"+ household.length +" occurances, "+householdpercent.toFixed(2)+"%)"
+			    	+ " <br/>" + "<b>Container: </b>" + container[i]+" ("+ containercount+"/"+ container.length +" occurances, "+containerpercent.toFixed(2)+"%)";
 			   		//var icon = customIcons[type] || {};
 			   		if((amount50p>=25)||(amount200p>=50))
 			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=!|FF0000|000000';
