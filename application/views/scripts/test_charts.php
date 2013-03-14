@@ -17,7 +17,7 @@
 		var today = new Date();
 		var dd = today.getDate();
 		var mm = today.getMonth()+1;
-		var yyyy = today.getFullYear() - 1;
+		var yyyy = today.getFullYear() -1 ;
 		if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
 		
 	  var str = document.getElementById("data").value;
@@ -184,7 +184,7 @@
         // Set chart options
 		var curtotal = parseInt(mn1) + parseInt(mn2) + parseInt(mn3) + parseInt(mn4) + parseInt(mn5) + parseInt(mn6) + parseInt(mn7) + parseInt(mn8) + parseInt(mn9) + parseInt(mn10) + parseInt(mn11) + parseInt(mn12);
         var options = {
-          title : 'Dengue Cases by Agegroup and Gender (N='+curtotal+') Dasmarinas City, Philippines as of '+today,
+          title : 'Fig.1 Dengue Cases by Agegroup and Gender Dasmarinas City, Philippines as of '+today,
           vAxis: {title: "Number Of Cases"},
           hAxis: {title: "Age Group"},
           seriesType: "bars",
@@ -217,7 +217,7 @@
         // Set chart options
 		var curtotal = parseInt(mn1) + parseInt(mn2) + parseInt(mn3) + parseInt(mn4) + parseInt(mn5) + parseInt(mn6) + parseInt(mn7) + parseInt(mn8) + parseInt(mn9) + parseInt(mn10) + parseInt(mn11) + parseInt(mn12);
         var options2 = {
-          title : 'Dengue Cases by Month, Dasmarinas, Philippines, ' + yyyy +' vs '+ (yyyy-1),
+          title : 'Fig.2 Dengue Cases by Month, Dasmarinas, Philippines, ' + yyyy +' vs '+ (yyyy-1),
           vAxis: {title: "Number Of Cases"},
           hAxis: {title: "Month"},
           seriesType: "line",

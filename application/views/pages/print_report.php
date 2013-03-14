@@ -1,6 +1,7 @@
-<!-- HEADER -->
-<?php $this->load->view('templates/header');?>
-
+<html>
+<?php if($script != "")
+	$this->load->view('scripts/'.$script);
+?>
 <script language="javascript" type="text/javascript">
 function PrintMeSubmitMe()
 {
@@ -9,20 +10,10 @@ window.print();
 </script>
 
 <!-- CONTENT -->
+<A HREF="javascript:window.print()">Print Page</A>
 <body>
 <div class="body">
 		<div class="blog">
-<?php 
-$attributes = array(
-						'id' => 'TPcr-form'
-					);
-echo form_open('case_report/print_report',$attributes); ?>
-<input type = 'hidden' id ='data' name='data' value='<?php echo $report_data_age;?>'>
-<input type = 'hidden' id ='data1' name='data1' value='<?php echo $report_data_cases;?>'>
-<input type = 'hidden' id ='datefrom' name='data' value='<?php echo $report_data_age;?>'>
-<input type = 'hidden' id ='dateto' name='data1' value='<?php echo $report_data_cases;?>'>
-<INPUT TYPE="submit" value= "PRINTABLE VERSION" 'target="_blank"'>
-</form>
 <center>
 <h2> DENGUE SURVEILLANCE REPORT </h2>
 <br />
@@ -39,10 +30,7 @@ Region IV-A (14.08%) and Region III (13.65%)</p>-->
 <br />
 
 <?php if($table != null) {?>
-<h4></>Table 1. DENGUE Cases & Deaths by Region</h4>
-<h6>Philippines, 2011 & 2012</h6>
 <center>
-
 <div>
 
 <?php 
@@ -77,7 +65,6 @@ echo $this->table->generate($table);
 </div>
 </center>
 <?php } ?>
-</br>
 <h4>Profile of Cases</h4>
 
 <p>Ages of cases ranged from less than 1 month to 90 years old (median = 12.67 years).
@@ -93,7 +80,7 @@ if($agegroup == 3)
 {echo '31 to 40 ' ;}
 if($agegroup == 4)
 {echo ' greater than 40 '; }
-?> years age group.(Fig.1)  There were 
+?> years age group.(Fig.1) There were 
 <?php 
 $c = count($table)-1;
 echo $table[$c]['Deathscur']; 
@@ -102,7 +89,14 @@ $c = count($table)-1;
 echo $table[$c]['CFRC']; 
 ?>%) reported.</p>
 
-
+<?php 
+$attributes = array(
+						'id' => 'TPcr-form'
+					);
+echo form_open('case_report/print_report',$attributes); ?>
+<input type = 'hidden' id ='data' name='data' value='<?php echo $report_data_age;?>'>
+<input type = 'hidden' id ='data1' name='data1' value='<?php echo $report_data_cases;?>'>
+</form>
 
 
 </div>
@@ -110,6 +104,6 @@ echo $table[$c]['CFRC'];
 <div id="chart_div1"></div>
 </center>
 </div>
-<body>
-<!-- FOOTER -->
-<?php $this->load->view('templates/footer');?>
+</body>
+</html>
+

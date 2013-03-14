@@ -274,9 +274,9 @@
 					$year => $year,
 					$year-1 => $year -1,
 					'% Change'=> '% Change',
-					'Deaths ' . $year => 'Deaths ' . $year,
+					'Deathscur' => 'Deaths ' . $year,
 					'CFRC' => 'CFR(%)',
-					'Deaths ' . $year-1 => 'Deaths ' . ($year-1),
+					'Deathsprev' => 'Deaths ' . ($year-1),
 					'CFRP' => 'CFR(%)',
 					
 			);
@@ -299,9 +299,9 @@
 							$year => $row->ctr,
 							$year-1 =>  0,
 							'% Change'=> 0,
-							'Deaths ' . $year => 0,
+							'Deathscur' => 0,
 							'CFRC' => 0,
-							'Deaths ' . $year-1 => 0,
+							'Deathsprev' => 0,
 							'CFRP' => 0,
 						);
 					else
@@ -310,9 +310,9 @@
 								$year => 0,
 								$year-1 =>  $row->ctr,
 								'% Change'=> 0,
-								'Deaths ' . $year => 0,
+								'Deathscur' => 0,
 								'CFRC' => 0,
-								'Deaths ' . $year-1 => 0,
+								'Deathsprev' => 0,
 								'CFRP' => 0,
 						);
 				}
@@ -357,9 +357,9 @@
 					$year => $totalcur,
 					$year-1 => $totalprev,
 					'% Change'=> $totalchange,
-					'Deaths ' . $year => 0,
+					'Deathscur' => 0,
 					'CFRC' => 0,
-					'Deaths ' . $year-1 => 0,
+					'Deathsprev' => 0,
 					'CFRP' => 0,
 					);
 					
@@ -382,27 +382,27 @@
 				}
 				if($row->year == $year)
 					{
-						$data2[$search]['Deaths ' . $year] = $row->ctr;
+						$data2[$search]['Deathscur'] = $row->ctr;
 					}
 				else
 					{
-						$data2[$search]['Deaths ' . $year-1] = $row->ctr;
+						$data2[$search]['Deathsprev'] = $row->ctr;
 					}
 					}
 			}
 			
 			for ($i = 1; $i <  count($data2); $i++)
 			{
-			if($data2[$i]['Deaths ' . $year] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] > $data2[$i]['Deaths ' . $year])
-				$data2[$i]['CFRC'] = ((round(($data2[$i]['Deaths ' . $year] / $data2[$i][$year])*100,2)));
+			if($data2[$i]['Deathscur'] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] > $data2[$i]['Deathscur'])
+				$data2[$i]['CFRC'] = ((round(($data2[$i]['Deathscur'] / $data2[$i][$year])*100,2)));
 					
 			else
 				$data2[$i]['CFRC'] = 'N/A';
 			}
 			for ($i = 1; $i <  count($data2); $i++)
 			{
-			if($data2[$i]['Deaths ' . $year-1] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] > $data2[$i]['Deaths ' . $year-1])
-				$data2[$i]['CFRP'] = ((round(($data2[$i]['Deaths ' . $year-1] / $data2[$i][$year])*100,2)));
+			if($data2[$i]['Deathsprev'] > 0 && $data2[$i][$year] > 0 && $data2[$i][$year] > $data2[$i]['Deathsprev'])
+				$data2[$i]['CFRP'] = ((round(($data2[$i]['Deathsprev'] / $data2[$i][$year])*100,2)));
 					
 				else
 					$data2[$i]['CFRP'] = 'N/A';
@@ -411,12 +411,12 @@
 				$totalprev=0;
 				for ($i = 1; $i <  count($data2); $i++)
 				{
-				$totalprev +=$data2[$i]['Deaths ' . $year-1];
-				$totalcur +=$data2[$i]['Deaths ' . $year];
+				$totalprev +=$data2[$i]['Deathsprev'];
+				$totalcur +=$data2[$i]['Deathscur'];
 				}
 				$ctr = count($data2)-1;
-				$data2[$ctr]['Deaths ' . $year] = $totalcur;
-				$data2[$ctr]['Deaths ' . $year-1] = $totalprev;
+				$data2[$ctr]['Deathscur'] = $totalcur;
+				$data2[$ctr]['Deathsprev'] = $totalprev;
 				
 				$data2[$ctr]['CFRC'] = ((round(($totalcur / $data2[$ctr][$year])*100,2)));
 				$data2[$ctr]['CFRP'] = ((round(($totalprev / $data2[$ctr][$year-1])*100,2)));

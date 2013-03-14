@@ -40,7 +40,6 @@ echo form_open('login/add_user',$attributes); ?>
 <?php 
 $options = array(
                   'Barangay Health Worker'  => 'Barangay Health Worker',
-                  'DRU'    => 'DRU',
 				  'CHO'    => 'City Health Officer'
                 );
 $js = 'id="TPtype-dd"';

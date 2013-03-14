@@ -1,4 +1,4 @@
-<!-- HEADER -->
+<!-- HEADER --> 
 <?php 
 $data['title'] = 'Success';
 $this->load->view('templates/header',$data);
