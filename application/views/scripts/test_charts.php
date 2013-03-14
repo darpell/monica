@@ -17,7 +17,7 @@
 		var today = new Date();
 		var dd = today.getDate();
 		var mm = today.getMonth()+1;
-		var yyyy = today.getFullYear() -1 ;
+		var yyyy = today.getFullYear() ;
 		if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
 		
 	  var str = document.getElementById("data").value;
@@ -199,7 +199,7 @@
 		
 		
 		var data3 = google.visualization.arrayToDataTable([
-          ['Month', '2012', '2011'],
+          ['Month', yyyy, yyyy-1],
           ['Jan',  parseInt(mn1),      parseInt(m1)],
           ['Feb',  parseInt(mn2),     parseInt( m2)],
           ['Mar',  parseInt(mn3),      parseInt(m3)],
@@ -220,7 +220,7 @@
           title : 'Fig.2 Dengue Cases by Month, Dasmarinas, Philippines, ' + yyyy +' vs '+ (yyyy-1),
           vAxis: {title: "Number Of Cases"},
           hAxis: {title: "Month"},
-          seriesType: "line",
+          seriesType: "bars",
           series: {1: {type: "line"}}
         };
 		

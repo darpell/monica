@@ -234,7 +234,7 @@ class Crform extends CI_Controller
 	function testchart()
 	{
 		$this->load->model('Case_report');
-		$data['year'] = '2012';
+		$data['year'] = '2013';
 		$data['title'] = 'Add report';
 		
 		$case = $this->Case_report->get_report_data_cases($data);
@@ -439,7 +439,7 @@ class Crform extends CI_Controller
 	function print_report()
 	{
 		$this->load->model('Case_report');
-		$data['year'] = '2012';
+		$data['year'] = '2013';
 		$data['title'] = 'Add report';
 		
 		$case = $this->Case_report->get_report_data_cases($data);

@@ -27,6 +27,7 @@ class Upload extends CI_Controller
 			$data['script'] = '';
 			$data['error'] =  $error;
 			$this->load->library('table');
+			$data['result'] = "";
 			$this->load->view('pages/view_upload',$data);
 		}
 		else
@@ -295,7 +296,7 @@ class Upload extends CI_Controller
 			'TPlastname-txt' => $familyname[$i],			
 			'TPage-txt' => $ageyears[$i],
 			'TPsex-dd' => $sex[$i],
-			'TPbirthdate-txt' =>  $date[2].'/'.$date[0].'/'.$date[1],
+			'TPbirthdate-txt' =>  $date[2].'-'.$date[0].'-'.$date[1],
 			'TPcity-txt' => $city[$i],
 			'TPbarangay-txt' => $barangay[$i], 
 			'TPstreet-txt' => 	$street[$i], 			
