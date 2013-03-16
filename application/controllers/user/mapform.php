@@ -32,13 +32,11 @@ class Mapform extends CI_Controller
 		
 		//for table result for search
 		$data['table'] = null; 
-		//$data['options']=$this->Mapping->getNodeTypes();
 		
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		//*
 		if ($this->form_validation->run('') == FALSE)
 		{ 
-			//if ($this->input->post('NDtype-ddl')=="larvalpositive")
 			{
 				$date1= explode ('/', $this->input->post('date1'));
 				$date2= explode ('/', $this->input->post('date2'));
@@ -48,23 +46,15 @@ class Mapform extends CI_Controller
 				$data2['date2']=$date2[2].'-'.$date2[0].'-'.$date2[1];
 				$data['date1']=$date1[2].'-'.$date1[0].'-'.$date1[1];
 				$data['date2']=$date2[2].'-'.$date2[0].'-'.$date2[1];
-				
-				$data['nodes'] = $this->Mapping->mapByType($data);			
+
+				$data['nodes'] = $this->Mapping->mapByType($data);
+				$data['bage'] = $this->Mapping->getBarangayAges($data2);
+				$data['binfo'] = $this->Mapping->getBarangayInfo($data2);
 				$data['bcount'] = $this->Mapping->getBarangayCount($data2);
 				$data['dist'] = $this->Mapping->calculateDistanceFormula($data2);
 				$this->load->library('table');
 				$this->load->view('pages/view_map',$data);
 			}
-			/*
-			
-			{
-				$data['nodes'] = $this->Mapping->getAllPolygon();
-				
-				$this->load->view('templates/header',$data);
-				$this->load->library('table');
-				$this->load->view('pages/view_map',$data);
-				$this->load->view('templates/footer');
-			}//*/
 		}
 		else
 		{

@@ -33,7 +33,7 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
    // document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
-    alert(xmlhttp.responseText);
+    //alert(xmlhttp.responseText);
     }
   }
   var url = 'http://localhost/workspace/monica/index.php/case_report/get_denguecases/' + q;
@@ -73,7 +73,7 @@ function splitter(str){
 	var household = new Array();
 	var container = new Array();
 
-function createMarker(map,point,image,info)
+function createMarker(map,point,image,info,bounce)
 {
 	var centroidMarker;
 	var oms = new OverlappingMarkerSpiderfier(map);
@@ -84,6 +84,10 @@ function createMarker(map,point,image,info)
 		  map: map
 		});
 		oms.addMarker(centroidMarker);
+		if(bounce !== null)
+		{
+		    centroidMarker.setAnimation(google.maps.Animation.BOUNCE);
+		}
 	}
 	else
 	{
@@ -95,7 +99,6 @@ function createMarker(map,point,image,info)
 	    });
 	    oms.addMarker(centroidMarker);
 	}
-
 	 /*
 	centroidMarker.info = new google.maps.InfoWindow({
 		content: info
@@ -118,8 +121,8 @@ function createMarker(map,point,image,info)
 function load() {
 	
       var map = new google.maps.Map(document.getElementById("map"), {
-        center: new google.maps.LatLng(14.291416, 120.930206),
-        zoom: 13,
+        center: new google.maps.LatLng(14.301716, 120.942506),
+        zoom: 14,
         mapTypeId: 'roadmap'
       });
 		
@@ -189,17 +192,19 @@ function load() {
 			        	parseFloat(lng[i]));
 			    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] 
 			    	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
-			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + amount50a+" ("+ amount50p+"%)"
-			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + amount200a+" ("+ amount200p+"%)"
-			    	+ "<br/><br/>" + "<b>Household: </b>" + household[i]+" ("+ householdcount+"/"+ household.length +" occurrences, "+householdpercent.toFixed(2)+"%)"
-			    	+ " <br/>" + "<b>Container: </b>" + container[i]+" ("+ containercount+"/"+ container.length +" occurances, "+containerpercent.toFixed(2)+"%)";
+			    	+ " <br/>" + "<b>Larval positives (LP) within: </b>"
+			    	+ " <br/>" + "<b>200m:</b>" + amount50a+" ("+ amount50p+"% of displayed LP)"
+			    	+ " <br/>" + "<b>50m:</b>" + amount200a+" ("+ amount200p+"% of displayed LP)"
+			    	+ "<br/><br/>" + "<b>Household: </b>" + household[i]+" ("+ householdcount+" of "+ household.length +" total occurrences, "+householdpercent.toFixed(2)+"%)"
+			    	+ " <br/>" + "<b>Container: </b>" + container[i]+" ("+ containercount+" of "+ container.length +" total occurances, "+containerpercent.toFixed(2)+"%)";
 			   		//var icon = customIcons[type] || {};
 			   		if((amount50p>=25)||(amount200p>=50))
-			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=!|FF0000|000000';
+			  		var bounce = 1;
 			  		else
+			  		var bounce = null;
 			  		var image = null;
 			            
-			 		createMarker(map,point,image,html);
+			 		createMarker(map,point,image,html,bounce);
 			 		var circle = new google.maps.Circle({
 						center:point,
 						//radius:0.002328109220390699168278872384883,
@@ -208,7 +213,8 @@ function load() {
 						strokeOpacity:0.8,
 						strokeWeight:2,
 						fillColor:"#0000FF",
-						fillOpacity:0.4
+						fillOpacity:0.4,
+						clickable:false
 					});
 					circle.setMap(map); 
 				}
@@ -232,19 +238,10 @@ function load() {
 				var currPoly = 1;
 				var latLng = [];
 				var nodeInfoCounter=0;
-				var bcount=splitter(document.getElementById('dataCount').value.toString());
-				//-------------------*/
-				
-				//*STRING SPLITTER
-				var str = document.getElementById('data').value.toString();
-				str = str.split("%%");
-				var data2 = new Array();
-				for (var i = 0; i < str.length; i++)
-				{
-					data2[i] = str[i].split("&&");
-				}
-				//alert(data2);
-				//alert(bcount);
+				var bcount=splitter(document.getElementById('dataBCount').value.toString());
+				var data2=splitter(document.getElementById('data').value.toString());
+				var binfo=splitter(document.getElementById('dataBInfo').value.toString());
+				var bage=splitter(document.getElementById('dataBAge').value.toString());
 				//-------------------*/
 				
 				for (var _i=0; _i <= data2.length-1;)
@@ -279,13 +276,62 @@ function load() {
 						//-------------------*/
 						
 						//*BARANGAY MARKER INFORMATION EXTRACTION
-						var locationname="";
+						var html="";
 						var casecount=0;
+						var countUnderage=0;
 						for(i=0;i<=bcount.length-1;i++)
 						{
 							if(bcount[i][0]===currName)
 							{
-								locationname=bcount[i][0];//alert(locationname);
+								var ageArr=[];
+								for(var __i=0;__i<bage.length;__i++)
+								{
+									if(bage[__i][0]==currName)
+									{
+										ageArr.push(bage[__i][1]);
+									}
+								}
+								var a = [], b = [], prev;
+								ageArr.sort();
+							    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
+								{
+									if(ageArr[___i]<18)
+										countUnderage++;
+							        if ( ageArr[___i] !== prev ) 
+								    {
+							            a.push(ageArr[___i]);
+							            b.push(1);
+							        }
+							        else 
+								    {
+							            b[b.length-1]++;
+							        }
+							        prev = ageArr[___i];
+							    }
+								html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
+								" <br/>" + "<b>Gender Distribution</b>" +
+								" <br/>" + "Female cases: " +binfo[i][1]+
+								" <br/>" + "Male cases: " +binfo[i][2]+"<br/><br/><b>Age Distribution:</b> Age(Amount)<br/>";
+								var limiter=1;
+								for(var ____i = 0; ____i< a.length; ____i++) 
+								{
+									html=html+a[____i]+"("+b[____i]+") ";
+									if(limiter==5)
+									{
+										html=html+"</br>";
+										limiter=0;
+									}
+									limiter++;
+								}
+								html=html+"<br/>"+
+								" <br/>" + "Youngest: " +binfo[i][3]+
+								" <br/>" + "Oldest: " +binfo[i][4]+
+								" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+								" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
+								" <br/>" + "<b>Outcome</b>" +
+								" <br/>" + "Alive: " +binfo[i][6]+
+								" <br/>" + "Deceased: " +binfo[i][7]+
+								" <br/>" + "Undetermined: " +binfo[i][8];;//alert(locationname);
 								casecount=bcount[i][1];
 							}
 						}
@@ -296,7 +342,7 @@ function load() {
 						var centroidY = y1 + ((y2 - y1) * 0.5);
 						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,locationname);
+						createMarker(map,point,image,html,null);
 						nodeInfoCounter++;
 						//-------------------*/
 			           
@@ -324,24 +370,73 @@ function load() {
 				//-------------------*/
 				
 				//*BARANGAY MARKER INFORMATION EXTRACTION
-				var locationname="";
-				var casecount=0;
-				for(i=0;i<=bcount.length-1;i++)
-				{
-					if(bcount[i][0]===currName)
-					{
-						locationname=bcount[i][0];//alert(locationname);
-						casecount=bcount[i][1];
-					}
-				}
-				//-------------------*/
+						var html="";
+						var casecount=0;
+						var countUnderage=0;
+						for(i=0;i<=bcount.length-1;i++)
+						{
+							if(bcount[i][0]===currName)
+							{
+								var ageArr=[];
+								for(var __i=0;__i<bage.length;__i++)
+								{
+									if(bage[__i][0]==currName)
+									{
+										ageArr.push(bage[__i][1]);
+									}
+								}
+								var a = [], b = [], prev;
+								ageArr.sort();
+							    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
+								{
+									if(ageArr[___i]<18)
+										countUnderage++;
+							        if ( ageArr[___i] !== prev ) 
+								    {
+							            a.push(ageArr[___i]);
+							            b.push(1);
+							        }
+							        else 
+								    {
+							            b[b.length-1]++;
+							        }
+							        prev = ageArr[___i];
+							    }
+								html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
+								" <br/>" + "<b>Gender Distribution</b>" +
+								" <br/>" + "Female cases: " +binfo[i][1]+
+								" <br/>" + "Male cases: " +binfo[i][2]+"<br/><br/><b>Age Distribution:</b> Age(Amount)<br/>";
+								var limiter=1;
+								for(var ____i = 0; ____i< a.length; ____i++) 
+								{
+									html=html+a[____i]+"("+b[____i]+") ";
+									if(limiter==5)
+									{
+										html=html+"</br>";
+										limiter=0;
+									}
+									limiter++;
+								}
+								html=html+"<br/>"+
+								" <br/>" + "Youngest: " +binfo[i][3]+
+								" <br/>" + "Oldest: " +binfo[i][4]+
+								" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+								" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
+								" <br/>" + "<b>Outcome</b>" +
+								" <br/>" + "Alive: " +binfo[i][6]+
+								" <br/>" + "Deceased: " +binfo[i][7]+
+								" <br/>" + "Undetermined: " +binfo[i][8];;//alert(locationname);
+								casecount=bcount[i][1];
+							}
+						}
+						//-------------------*/
 				
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
 				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,locationname);
+				createMarker(map,point,image,html);
 				nodeInfoCounter++;
 				//-------------------*/
 	           
@@ -363,9 +458,7 @@ function load() {
 				var dataLarval = splitter(str[0]);
 				var dataDengue = splitter(str[1]);
 				var dist = splitter(document.getElementById('dist').value.toString());
-				var bcount=splitter(document.getElementById('dataCount').value.toString());
-				//alert (dataLarval);
-				//alert (dataDengue);
+				var bcount=splitter(document.getElementById('dataBCount').value.toString());
 				//-------------------*/
 				
         		//*DECLARATION OF VALUES AND CONTAINERS
@@ -376,6 +469,8 @@ function load() {
 				var currPoly = 1;
 				var latLng = [];
 				var nodeInfoCounter=0;
+				var binfo=splitter(document.getElementById('dataBInfo').value.toString());
+				var bage=splitter(document.getElementById('dataBAge').value.toString());
 				//-------------------*/
 				
 				for (var _i=0; _i <= dataDengue.length-1;)
@@ -410,13 +505,62 @@ function load() {
 						//-------------------*/
 						
 						//*BARANGAY MARKER INFORMATION EXTRACTION
-						var locationname="";
+						var html="";
 						var casecount=0;
+						var countUnderage=0;
 						for(i=0;i<=bcount.length-1;i++)
 						{
 							if(bcount[i][0]===currName)
 							{
-								locationname=bcount[i][0];
+								var ageArr=[];
+								for(var __i=0;__i<bage.length;__i++)
+								{
+									if(bage[__i][0]==currName)
+									{
+										ageArr.push(bage[__i][1]);
+									}
+								}
+								var a = [], b = [], prev;
+								ageArr.sort();
+							    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
+								{
+									if(ageArr[___i]<18)
+										countUnderage++;
+							        if ( ageArr[___i] !== prev ) 
+								    {
+							            a.push(ageArr[___i]);
+							            b.push(1);
+							        }
+							        else 
+								    {
+							            b[b.length-1]++;
+							        }
+							        prev = ageArr[___i];
+							    }
+								html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
+								" <br/>" + "<b>Gender Distribution</b>" +
+								" <br/>" + "Female cases: " +binfo[i][1]+
+								" <br/>" + "Male cases: " +binfo[i][2]+"<br/><br/><b>Age Distribution:</b> Age(Amount)<br/>";
+								var limiter=1;
+								for(var ____i = 0; ____i< a.length; ____i++) 
+								{
+									html=html+a[____i]+"("+b[____i]+") ";
+									if(limiter==5)
+									{
+										html=html+"</br>";
+										limiter=0;
+									}
+									limiter++;
+								}
+								html=html+"<br/>"+
+								" <br/>" + "Youngest: " +binfo[i][3]+
+								" <br/>" + "Oldest: " +binfo[i][4]+
+								" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+								" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
+								" <br/>" + "<b>Outcome</b>" +
+								" <br/>" + "Alive: " +binfo[i][6]+
+								" <br/>" + "Deceased: " +binfo[i][7]+
+								" <br/>" + "Undetermined: " +binfo[i][8];;//alert(locationname);
 								casecount=bcount[i][1];
 							}
 						}
@@ -427,7 +571,7 @@ function load() {
 						var centroidY = y1 + ((y2 - y1) * 0.5);
 						var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 						var point = new google.maps.LatLng(centroidX,centroidY);
-						createMarker(map,point,image,locationname);
+						createMarker(map,point,image,html,null);
 						nodeInfoCounter++;
 						//-------------------*/
 			           
@@ -445,7 +589,7 @@ function load() {
 						}	
 					}
 				}
-				//alert(bcount[currPoly-1][1]);
+				//*CREATION OF POLYGON
 				var bermudaTriangle = new google.maps.Polygon(
 						{
 							paths: latLng,
@@ -455,37 +599,87 @@ function load() {
 				//-------------------*/
 				
 				//*BARANGAY MARKER INFORMATION EXTRACTION
-				var locationname="";
-				var casecount=0;
-				for(i=0;i<=bcount.length-1;i++)
-				{
-					if(bcount[i][0]===currName)
-					{
-						locationname=bcount[i][0];
-						casecount=bcount[i][1];
-					}
-				}
-				//-------------------*/
+						var html="";
+						var casecount=0;
+						var countUnderage=0;
+						for(i=0;i<=bcount.length-1;i++)
+						{
+							if(bcount[i][0]===currName)
+							{
+								var ageArr=[];
+								for(var __i=0;__i<bage.length;__i++)
+								{
+									if(bage[__i][0]==currName)
+									{
+										ageArr.push(bage[__i][1]);
+									}
+								}
+								var a = [], b = [], prev;
+								ageArr.sort();
+							    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
+								{
+									if(ageArr[___i]<18)
+										countUnderage++;
+							        if ( ageArr[___i] !== prev ) 
+								    {
+							            a.push(ageArr[___i]);
+							            b.push(1);
+							        }
+							        else 
+								    {
+							            b[b.length-1]++;
+							        }
+							        prev = ageArr[___i];
+							    }
+								html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
+								" <br/>" + "<b>Gender Distribution</b>" +
+								" <br/>" + "Female cases: " +binfo[i][1]+
+								" <br/>" + "Male cases: " +binfo[i][2]+"<br/><br/><b>Age Distribution:</b> Age(Amount)<br/>";
+								var limiter=1;
+								for(var ____i = 0; ____i< a.length; ____i++) 
+								{
+									html=html+a[____i]+"("+b[____i]+") ";
+									if(limiter==5)
+									{
+										html=html+"</br>";
+										limiter=0;
+									}
+									limiter++;
+								}
+								html=html+"<br/>"+
+								" <br/>" + "Youngest: " +binfo[i][3]+
+								" <br/>" + "Oldest: " +binfo[i][4]+
+								" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+								" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
+								" <br/>" + "<b>Outcome</b>" +
+								" <br/>" + "Alive: " +binfo[i][6]+
+								" <br/>" + "Deceased: " +binfo[i][7]+
+								" <br/>" + "Undetermined: " +binfo[i][8];;//alert(locationname);
+								casecount=bcount[i][1];
+							}
+						}
+						//-------------------*/
 				
 				//*CREATION OF CENTROID POINT
 				var centroidX = x1 + ((x2 - x1) * 0.5);
 				var centroidY = y1 + ((y2 - y1) * 0.5);
 				var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 				var point = new google.maps.LatLng(centroidX,centroidY);
-				createMarker(map,point,image,locationname);
+				createMarker(map,point,image,html);
 				nodeInfoCounter++;
 				//-------------------*/
 	           
 				bermudaTriangle.setMap(map);
-				
-		  		for (var i = 0; i < dataLarval.length; i++)
+				for (var i = 0; i < dataLarval.length; i++)
 		  		{
 		  			nodeType[i] = dataLarval[i][0];		
 		  			refNumber[i] = dataLarval[i][1];
 		  			lat[i] = dataLarval[i][2];
 		  			lng[i] = dataLarval[i][3];
 		  			id[i]=dataLarval[i][4];
-		  		}
+		  			household[i]=dataLarval[i][5];
+		  			container[i]=dataLarval[i][6];
+		  		}//alert(household);alert(container);
 		  		
 			    for (var i = 0; i < dataLarval.length; i++) 
 			    {
@@ -505,20 +699,44 @@ function load() {
 					    }
 				    }			            
 			    	var type = nodeType[i];
+			    	var householdcount=0;
+			    	var containercount=0;
+			    	var householdpercent;
+			    	var containerpercent;
+		        	for(var __i=0; __i < household.length;__i++)
+		        	{
+			        	if(household[i]===household[__i])
+			        	{
+			        		householdcount++;
+			        	}
+		        	}
+		        	for(var __i=0; __i < container.length;__i++)
+		        	{
+			        	if(container[i]===container[__i])
+			        	{
+			        		containercount++;
+			        	}
+		        	}
+		        	householdpercent=householdcount/household.length*100;
+		        	containerpercent=containercount/container.length*100;
 			   		var point = new google.maps.LatLng(
 			        	parseFloat(lat[i]),
 			        	parseFloat(lng[i]));
 			    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] 
 			    	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
-			    	+ " <br/>" + "<b>Amount of Nodes within 200m: </b>" + amount50a+" ("+ amount50p+"%)"
-			    	+ " <br/>" + "<b>Amount of Nodes within 50m: </b>" + amount200a+" ("+ amount200p+"%)";
+			    	+ " <br/>" + "<b>Larval positives (LP) within: </b>"
+			    	+ " <br/>" + "<b>200m:</b>" + amount50a+" ("+ amount50p+"% of displayed LP)"
+			    	+ " <br/>" + "<b>50m:</b>" + amount200a+" ("+ amount200p+"% of displayed LP)"
+			    	+ "<br/><br/>" + "<b>Household: </b>" + household[i]+" ("+ householdcount+" of "+ household.length +" total occurrences, "+householdpercent.toFixed(2)+"%)"
+			    	+ " <br/>" + "<b>Container: </b>" + container[i]+" ("+ containercount+" of "+ container.length +" total occurances, "+containerpercent.toFixed(2)+"%)";
 			   		//var icon = customIcons[type] || {};
 			   		if((amount50p>=25)||(amount200p>=50))
-			  		var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=!|FF0000|000000';
+			  		var bounce = 1;
 			  		else
+			  		var bounce = null;
 			  		var image = null;
 			            
-			 		createMarker(map,point,image,html);
+			 		createMarker(map,point,image,html,bounce);
 			 		var circle = new google.maps.Circle({
 						center:point,
 						//radius:0.002328109220390699168278872384883,
@@ -527,11 +745,12 @@ function load() {
 						strokeOpacity:0.8,
 						strokeWeight:2,
 						fillColor:"#0000FF",
-						fillOpacity:0.4
+						fillOpacity:0.4,
+						clickable:false
 					});
 					circle.setMap(map); 
 				}
-        	}
+        	}//END OF ELSE(BOTH)
 
         
 }
@@ -543,7 +762,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
 </head>
 <form>
 <input type = 'hidden' id ='data' name='data' value='<?php echo $nodes?>'>
-<input type = 'hidden' id ='dataCount' name='dataCount' value='<?php echo $bcount?>'>
+<input type = 'hidden' id ='dataBAge' name='dataBAge' value='<?php echo $bage?>'>
+<input type = 'hidden' id ='dataBInfo' name='dataBInfo' value='<?php echo $binfo?>'>
+<input type = 'hidden' id ='dataBCount' name='dataBCount' value='<?php echo $bcount?>'>
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='dist' name='dist' value='<?php echo $dist?>'>
 </form>

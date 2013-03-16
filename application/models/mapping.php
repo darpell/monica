@@ -126,7 +126,9 @@ class Mapping extends CI_Model
 					$row->ls_no . "&&" . 
 					$row->ls_lat . "&&" . 
 					$row->ls_lng . "&&" . 
-					$row->tracking_number . "%%" ;
+					$row->tracking_number . "&&" . 
+					$row->ls_household . "&&" .
+					$row->ls_container . "%%" ;
 				}
 				$q->free_result();
 				$data = substr($data,0,-2);
@@ -294,27 +296,41 @@ class Mapping extends CI_Model
 			}
 		}
 		//*/
-		/*
-		function getNodeInfo($data)
+		function getBarangayAges($data2)
 		{
-			//echo $data['node_type'];			
-			$qString = 'CALL '; 
-			$qString .= "view_node_info ('"; // name of stored procedure
-			$qString .= 
-			//variables needed by the stored procedure
-			$data['reference_no'] . "'". ")";
-			
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_empty_barangays()";
 			$q = $this->db->query($qString);
 			//*
-			if($q->num_rows() > 0) 
-			{	$data = "";
-				foreach ($q->result() as $row) 
+			$data = "";
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
 				{
 					$data .=
-					$row->node_type . "&&" . 
-					$row->reference_no . "&&" . 
-					$row->node_lat . "&&" . 
-					$row->node_lng . "%%" ;
+					$row->barangay . "&&0%%";
+				}
+			}
+			$q->free_result();
+				
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_case_ages('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			$data2['date1']. "','".
+			$data2['date2']. "'". ")";
+			$qString." END ";
+			$q = $this->db->query($qString);
+			//*
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					$data .=
+					$row->barangay . "&&" .
+					$row->cr_age . "%%" ;
 				}
 				$q->free_result();
 				return substr($data,0,-2);
@@ -322,14 +338,15 @@ class Mapping extends CI_Model
 			else
 			{
 				$q->free_result();
-				return 0;
+				return substr($data,0,-2);
 			}
-		}//*/
+			//*/
+		}
 		function getBarangayCount($data2)
 		{
 			//echo $data['node_type'];			
 			$qString = 'CALL '; 
-			$qString .= "get_allbarangays()";
+			$qString .= "get_empty_barangays()";
 			$q = $this->db->query($qString);
 			//*
 			$data = "";
@@ -372,37 +389,59 @@ class Mapping extends CI_Model
 			}
 			//*/
 		}
-		/*function getNodeTypes()
+		function getBarangayInfo($data2)
 		{
-			//echo $data['node_type'];			
-			$qString = 'CALL '; 
-			$qString .= "view_node_types("; // name of stored procedure
-			$qString .= 
-			//variables needed by the stored procedure
-			")";
-			
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_empty_barangays()";
 			$q = $this->db->query($qString);
 			//*
-			if($q->num_rows() > 0) 
+			$data = "";
+			if($q->num_rows() > 0)
 			{
-				foreach ($q->result() as $row) 
+				foreach ($q->result() as $row)
 				{
-					$data[]=array
-					(
-						$row->node_type=>$row->node_type
-					);
+					$data .=
+					$row->barangay . "&&0&&0&&0&&0&&0&&0&&0&&0%%";
 				}
+			}
+			$q->free_result();
 				
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_brangay_count('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			$data2['date1']. "','".
+			$data2['date2']. "'". ")";
+			$qString." END ";
+			$q = $this->db->query($qString);
+			//*
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					$data .=
+					$row->barangay . "&&" .
+					$row->gendF . "&&" .
+					$row->gendM . "&&" .
+					$row->ageMin . "&&" .
+					$row->ageMax . "&&" .
+					$row->ageAve . "&&" .
+					$row->outA . "&&" .
+					$row->outD . "&&" .
+					$row->outU . "%%" ;
+				}
 				$q->free_result();
-				return $data;
+				return substr($data,0,-2);
 			}
 			else
 			{
 				$q->free_result();
-				return 0;
+				return substr($data,0,-2);
 			}
-			
-		}//*/
+			//*/
+		}
 		function getBarangays()
 		{
 			//echo $data['node_type'];			
