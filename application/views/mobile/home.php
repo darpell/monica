@@ -52,6 +52,7 @@
     <div data-role="content" id="home_content">    
         <ul data-role="listview" data-autodividers="true" data-inset="true">
             <li><a href="<?php echo site_url('mobile/user');?>" data-ajax="false" data-transition="slide"> Login Details </a></li>
+            <li><a href="<?php echo site_url('mobile/tasks');?>" data-ajax="false" data-transition="slide"> Tasks <span class="ui-li-count"><?php echo $task_count; ?></span></a></li>
             <!-- <li><a href="" data-transition="slide"> Status &amp; Notifications </a></li> -->
         </ul>
         <ul data-role="listview" data-autodividers="true" data-inset="true">

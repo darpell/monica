@@ -11,6 +11,8 @@ class Pages extends CI_Controller
 			{
 				if ($this->session->userdata('TPusername') != null)
 				{
+					$this->load->model('tasks_model','tasks');
+					$data['task_count'] = $this->tasks->get_count();
 					$data['result'] = '';
 					$this->load->view('mobile/home',$data);
 				}
@@ -19,66 +21,14 @@ class Pages extends CI_Controller
 			}
 			
 			else if ($page == 'checklocation')
-				$this->load->view('mobile/current_pos');	
-			/*	
-			else if ($page == 'casemap')
-			{
-			$this->load->model('Mapping');
-				$data['title'] = 'View map';
-				//scripts if none keep ''
-				$data['script'] = 'view_casereport';
-				
-				$data['table'] = null;
-				
-				/** Validation rules could be seen at application/config/form_validation.php
-				//*
-				if ($this->form_validation->run('') == FALSE)
-				{
-						/*
-						//$date1= explode ('/', $this->input->post('date1'));
-						//$date2= explode ('/', $this->input->post('date2'));
-						//$this->input->post('date1')."CFYVGBHJK";
-						//$this->input->post('date2')."CFYVGBHJK<br/>";
-						
-						$data2['date1']='2010-01-01';
-						$data2['date2']='2015-01-01';
-						$data['date1']='2010-01-01';
-						$data['date2']='2015-01-01';
-						
-						//$data2['date1']=$date1[2].'-'.$date1[0].'-'.$date1[1];
-						//$data2['date2']=$date2[2].'-'.$date2[0].'-'.$date2[1];
-						//$data['date1']=$date1[2].'-'.$date1[0].'-'.$date1[1];
-						//$data['date2']=$date2[2].'-'.$date2[0].'-'.$date2[1];
-						
-						$data['node_type']="denguecase";
-						
-						$data['nodes'] = $this->Mapping->mapByType($data);
-						$data['bcount'] = $this->Mapping->getBarangayCount($data2);
-						$this->load->library('table');
-						//**-------------
-						
-						$barangayWithPolygon[]=$this->Mapping->getBarangays();
-						$allBarangays[]=$this->Mapping->getAllBarangays();
-						$data['options']=array_diff($allBarangays[0],$barangayWithPolygon[0]);
-						//print_r(array_diff($allBarangays[0],$barangayWithPolygon[0]));
-						$data2['date1']='2010-01-01';
-						$data2['date2']='2015-01-01';
-						$data['date1']='2010-01-01';
-						$data['date2']='2015-01-01';
-						$data['node_type']="denguecase";
-						$data['nodes'] = $this->Mapping->mapByType($data);
-						$data['bcount'] = $this->Mapping->getBarangayCount($data2);
-						$this->load->library('table');
-						$this->load->view('mobile/casemap',$data);
-				}
-				else
-				{
-					$this->load->view('pages/success');
-				}
-			}
-			*/
+				$this->load->view('mobile/current_pos');
+			
 			else if ($page == 'user')
-				$this->load->view('mobile/user');
+			{
+				$this->load->model('larval_mapping');
+				$data['last_visit'] = $this->larval_mapping->get_last_visit($this->session->userdata('TPusername'));
+				$this->load->view('mobile/user',$data);
+			}
 			
 			else if ($page =='larval_survey')
 				$this->load->view('mobile/ls_form');

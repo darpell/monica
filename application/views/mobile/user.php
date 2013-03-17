@@ -28,6 +28,10 @@
         		<td> <?php echo $this->session->userdata('TPlastname'); ?> </td>
         	</tr>
         	<tr>
+        		<td> Last Visit </td>
+        		<td> <?php echo $last_visit; ?> </td>
+        	</tr>
+        	<tr>
         		<td rowspan="2"> &nbsp;</td>	
         	</tr>
         	<tr>
