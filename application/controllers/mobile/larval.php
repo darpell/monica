@@ -10,20 +10,20 @@ class Larval extends CI_Controller
 	
 	function index()
 	{
-		$data['points'] = $this->larval_mapping->getPoints();
+		$data['points'] = $this->larval_mapping->get_points();
 		$this->load->view('mobile/riskmap', $data);
 	}
 	
-	function filterPoints()
+	function filter_points()
 	{
 		//$this->form_validation->set_rules('place-ddl','cluster','required');
-		$this->form_validation->set_rules('begin_date','starting date','required|callback_checkDateInput[' + $this->input->post('end_date') + ']');
+		$this->form_validation->set_rules('begin_date','starting date','required|callback_check_date_input[' + $this->input->post('end_date') + ']');
 		$this->form_validation->set_rules('end_date','ending date','required');
 		if ($this->form_validation->run() == FALSE)
 		{
-			$data['brgys'] = $this->larval_mapping->getBrgys();
-			$data['streets'] = $this->larval_mapping->getStreets();
-			$data['cities'] = $this->larval_mapping->getCities();
+			$data['brgys'] = $this->larval_mapping->get_brgys();
+			$data['streets'] = $this->larval_mapping->get_streets();
+			$data['cities'] = $this->larval_mapping->get_cities();
 			$this->load->view('mobile/larval_dialog',$data);
 		}
 		else
@@ -39,13 +39,13 @@ class Larval extends CI_Controller
 					$value = $this->input->post('city_op');
 				else
 					$value = NULL;
-			$data['points'] = $this->larval_mapping->getPoints($begin,$end,$place,$value);
+			$data['points'] = $this->larval_mapping->get_points($begin,$end,$place,$value);
 
 			$this->load->view('mobile/riskmap',$data);
 		}
 	}
 	
-	function checkDateInput($begin,$end)
+	function check_date_input($begin,$end)
 	{
 		$begin = date('Y-m-d', strtotime($begin));
 		$end = date('Y-m-d', strtotime($end));
