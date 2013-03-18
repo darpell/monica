@@ -85,7 +85,7 @@ class Larval_mapping extends CI_Model
 		if ($query->num_rows() > 0)
 		{
 			$row = $query->row_array();
-			return $row['ls_date'];
+			return $row;
 		}
 		return NULL;
 	}

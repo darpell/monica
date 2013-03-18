@@ -46,13 +46,14 @@
 <body>
 <div data-role="page" id="home" style="width:100%; height:100%;">
     <div data-role="header" data-id="myfooter" id="home_header" data-position="fixed">
-        <p style="font-size:medium;padding:5px;text-align:center;">Dengue Mapping</p>
+        <!-- <p style="font-size:medium;padding:5px;text-align:center;">Dengue Mapping</p> -->
+        <h1> Home </h1>
     </div><!-- /header -->
 
     <div data-role="content" id="home_content">    
         <ul data-role="listview" data-autodividers="true" data-inset="true">
-            <li><a href="<?php echo site_url('mobile/user');?>" data-ajax="false" data-transition="slide"> Login Details </a></li>
-            <li><a href="<?php echo site_url('mobile/tasks');?>" data-ajax="false" data-transition="slide"> Tasks <span class="ui-li-count"><?php echo $task_count; ?></span></a></li>
+            <li><a href="<?php echo site_url('mobile/page/user');?>" data-transition="slide"> Login Details </a></li>
+            <li><a href="<?php echo site_url('mobile/tasks');?>" data-transition="slide"> Tasks <span class="ui-li-count"><?php echo $task_count['task_count']; ?></span></a></li>
             <!-- <li><a href="" data-transition="slide"> Status &amp; Notifications </a></li> -->
         </ul>
         <ul data-role="listview" data-autodividers="true" data-inset="true">
@@ -61,8 +62,8 @@
         	
         </ul>
         <ul data-role="listview" data-autodividers="true" data-inset="true">
-			<li> <a href="<?php echo site_url('mobile/checklocation');?>" data-ajax="false" data-transition="slide"> Plot Current Location </a> </li>
-        	<li> <a href="<?php echo site_url('mobile/larval_survey');?>" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
+			<li> <a href="<?php echo site_url('mobile/page/checklocation');?>" data-ajax="false" data-transition="slide"> Plot Current Location </a> </li>
+        	<li> <a href="<?php echo site_url('mobile/page/larval_survey');?>" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
         </ul>
         
         <br/><br/>

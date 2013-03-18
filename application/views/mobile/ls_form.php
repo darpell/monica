@@ -118,7 +118,8 @@ function initialize(){
 
 <div data-role="page" id="page2" style="width:100%; height:100%;">
     <div data-role="header" id="ls_header" name="ls_header" data-nobackbtn="true">
-        <h3>Larval Survey Report</h3>
+		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Cancel </a>
+        <h1>Larval Survey Report</h1>
     </div><!-- /header -->
     <div data-role="content" id="ls_content">
     

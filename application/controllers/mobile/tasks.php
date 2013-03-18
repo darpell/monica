@@ -10,14 +10,36 @@ class Tasks extends CI_Controller
 	
 	function index()
 	{
+		$data['result'] = '';
 		$data['tasks'] = $this->tasks->get_tasks();
 		$this->load->view('mobile/tasks.php', $data);
 	}
 	
 	function view($id)
 	{
+		$data['result'] = '';
 		$data['tasks'] = $this->tasks->get_tasks($id);
-		$this->load->view('mobile/tasks.php', $data);
+		$this->load->view('mobile/task_view.php', $data);
+	}
+	
+	function done()
+	{
+		$this->form_validation->set_rules('TPtask_remark', 'remark', 'required');
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['tasks'] = $this->tasks->get_tasks($this->input->post('task_no'));
+			$this->load->view('mobile/task_view.php', $data);
+		}
+		else
+		{
+			$this->tasks->task_done(
+								$this->input->post('task_no'),
+								$this->input->post('TPtask_remark')
+							);
+			$data['result'] = 'Your entry has been recorded.';
+			$data['tasks'] = $this->tasks->get_tasks();
+			$this->load->view('mobile/tasks.php', $data);
+		}
 	}
 }
 

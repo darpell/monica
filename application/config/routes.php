@@ -40,10 +40,11 @@
 
 $route['404_override'] = '';
 $route['mobile'] = 'mobile/pages/view/home';
-$route['mobile/(:any)'] = 'mobile/pages/view/$1';
+$route['mobile/page/(:any)'] = 'mobile/pages/view/$1';
 $route['mobile/login'] = 'mobile/login';
 $route['mobile/tasks'] = 'mobile/tasks';
-$route['mobile/tasks/(:any)'] = 'mobile/tasks/$1';
+$route['mobile/tasks/(:any)'] = 'mobile/tasks/view/$1';
+$route['mobile/tasks/done'] = 'mobile/tasks/done';
 $route['mobile/mob_check'] = 'mobile/login/mob_check';
 $route['mobile/addls'] = 'user/lsform/addls';
 $route['mobile/larval_dialog'] = 'mobile/larval/filter_points';
