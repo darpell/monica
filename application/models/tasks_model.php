@@ -7,15 +7,16 @@ class Tasks_model extends CI_Model
 		parent::__construct();
 	}
 	
-	function get_tasks($id = NULL)
+	function get_tasks($id = FALSE)
 	{
-		if ($id === NULL)
+		if ($id === FALSE)
 		{
-			$query = $this->db->get_where('tasks',array('task_no' => $id));
+
+			$query = $this->db->get('tasks');
 			return $query->result_array();
 			$query->free_result();
 		}
-		$query = $this->db->get('tasks');
+		$query = $this->db->get_where('tasks',array('task_no' => $id));
 		return $query->result_array();
 		$query->free_result();
 	}

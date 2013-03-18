@@ -11,8 +11,8 @@ class Pages extends CI_Controller
 			{
 				if ($this->session->userdata('TPusername') != null)
 				{
-					$this->load->model('tasks_model','tasks');
-					$data['task_count'] = $this->tasks->get_count();
+					$this->load->model('tasks_model');
+					$data['task_count'] = $this->tasks_model->get_count();
 					$data['result'] = '';
 					$this->load->view('mobile/home',$data);
 				}
