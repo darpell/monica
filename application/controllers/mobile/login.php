@@ -46,6 +46,8 @@ class Login extends CI_Controller
 				$this->session->set_userdata('logged_in', true);
 				//redirect(substr(base_url(), 0, -1) . '/index.php/');
 				$result_data['result'] = 'You have successfully logged in';
+				$this->load->model('tasks_model');
+				$result_data['task_count'] = $this->tasks_model->get_count_unaccomplished();
 				$this->load->view('mobile/home',$result_data);
 			}
 			else

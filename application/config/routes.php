@@ -40,11 +40,14 @@
 
 $route['404_override'] = '';
 $route['mobile'] = 'mobile/pages/view/home';
-$route['mobile/(:any)'] = 'mobile/pages/view/$1';
+$route['mobile/page/(:any)'] = 'mobile/pages/view/$1';
 $route['mobile/login'] = 'mobile/login';
+$route['mobile/tasks'] = 'mobile/tasks';
+$route['mobile/tasks/(:any)'] = 'mobile/tasks/view/$1';
+$route['mobile/tasks/done'] = 'mobile/tasks/done';
 $route['mobile/mob_check'] = 'mobile/login/mob_check';
 $route['mobile/addls'] = 'user/lsform/addls';
-$route['mobile/larval_dialog'] = 'mobile/larval/filterPoints';
+$route['mobile/larval_dialog'] = 'mobile/larval/filter_points';
 $route['mobile/case_dialog'] = 'mobile/cases/filterPoints';
 $route['mobile/riskmap'] = 'mobile/larval';
 $route['mobile/casemap'] = 'mobile/cases';
@@ -62,6 +65,8 @@ $route['login/(:any)'] = 'user/login/$1';
 $route['larval_survey'] = 'user/lsform';
 $route['larval_survey/(:any)'] = 'user/lsform/$1';
 $route['case_report/(:any)'] = 'user/crform/$1';
+$route['CHO'] = 'user/cho';
+$route['CHO/(:any)'] = 'user/cho/$1';
 $route['default_controller'] = 'user/pages/view';
 $route['logout'] = 'user/login/logout';
 $route['mobile/logout'] = 'user/login/logout';

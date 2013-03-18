@@ -56,14 +56,14 @@ body {height:100%;margin:0;padding:0}
 <input type="hidden" id="result_length" value="<?php echo count($points); ?>" />
 	<?php for ($ctr = 0; $ctr < count($points); $ctr++) {?>
 		<input type="hidden" id="pt_barangay<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_barangay']; ?>"	/>
-		<input type="hidden" id="pt_street<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_street']; ?>"	/>
-		<input type="hidden" id="pt_municipality<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_municipality']; ?>"	/>
-		<input type="hidden" id="pt_lat<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_lat']; ?>"			/>
-		<input type="hidden" id="pt_lng<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_lng']; ?>"			/>
-		<input type="hidden" id="pt_household<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_household']; ?>"	/>
-		<input type="hidden" id="pt_result<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_result']; ?>"		/>
-		<input type="hidden" id="pt_created_on<?= $ctr ?>" 	value="<?php echo $points[$ctr]['created_on']; ?>"		/>
-		<input type="hidden" id="pt_container<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_container']; ?>"	/>
+		<input type="hidden" id="pt_street<?= $ctr ?>" 			value="<?php echo $points[$ctr]['ls_street']; ?>"	/>
+		<input type="hidden" id="pt_municipality<?= $ctr ?>"	value="<?php echo $points[$ctr]['ls_municipality']; ?>"	/>
+		<input type="hidden" id="pt_lat<?= $ctr ?>" 			value="<?php echo $points[$ctr]['ls_lat']; ?>"			/>
+		<input type="hidden" id="pt_lng<?= $ctr ?>" 			value="<?php echo $points[$ctr]['ls_lng']; ?>"			/>
+		<input type="hidden" id="pt_household<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_household']; ?>"	/>
+		<input type="hidden" id="pt_result<?= $ctr ?>" 			value="<?php echo $points[$ctr]['ls_result']; ?>"		/>
+		<input type="hidden" id="pt_created_on<?= $ctr ?>" 		value="<?php echo $points[$ctr]['created_on']; ?>"		/>
+		<input type="hidden" id="pt_container<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_container']; ?>"	/>
 	<?php } ?>
 
 <body>
@@ -73,10 +73,10 @@ body {height:100%;margin:0;padding:0}
     	<a href="<?php echo site_url('mobile/larval_dialog');?>" data-rel="panel" data-icon="gear" class="ui-btn-right" data-transition="slide"> Filter Results </a>
     	<a href="<?php echo site_url('mobile/riskmap');?>" data-rel="panel" data-icon="gear" class="ui-btn-left" data-ajax="false"> Show All </a>
     </div> <!-- /header-->
-	<div data-role="content" style="width:100%; height:100%">
+	<div data-role="content" style="width:100%; height:100%;">
 	
 	
-		<div id="googleMap"></div>
+		<div id="googleMap" style="margin:-15px 0 0 -15px;"></div>
 	</div><!-- /content -->
 </div><!-- /page -->
 </body>
