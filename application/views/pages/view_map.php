@@ -778,28 +778,85 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		<form action="" method='post' onsubmit='return confirm("Sure?")'>
 		<label style="color:red"><?php echo form_error('NDtype-ddl'); ?></label>
 		<div id="info" class="info"><h4>
-		Select 'denguecase' to view dengue cases per area.<br />
-		Select 'larvalpositive' to view positive larval samplings.<br />
+		Select 'Barangay overlay' to view dengue cases per barangay.<br />
+		Select 'Larval overlay' to view positive larval samplings.<br />
 		Select 'both' to view overlays displaying both larval positives and dengue cases.<br />
 		</h4></div>
 		<?php 
 		$options=array(
-			"denguecase"=>"denguecase",
-			"larvalpositive"=>"larvalpositive",
-			"both"=>"both"
+			"both"=>"Both",
+			"denguecase"=>"Barangay overlay",
+			"larvalpositive"=>"Larval overlay"
 		);
 		echo form_dropdown('NDtype-ddl', $options, $node_type);
 		?>
 		<br />
 		<br />
 		
-	    Search Date
+	    Search Date <i>(It is currently <?php echo date('F d, Y');?>)</i>
 		<br />
+		<br /><!-- 
 	    From: <input type="text" style="background-color:#CCCCCC;" name="date1" id="date1" value="01/01/2011" readonly="true" /><a href="javascript:NewCal('date1','mmddyyyy')"><img src="<?php echo  $this->config->item('base_url'); ?>/application/views/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a> 
 		<br />
 	    To: <input type="text" style="background-color:#CCCCCC;"name="date2" id="date2" value="01/01/2020" readonly="true" /><a href="javascript:NewCal('date2','mmddyyyy')"><img src="<?php echo $this->config->item('base_url'); ?>/application/views/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a> 
 		<br />
-		<br />
+		<br /> -->
+		<?php 
+		$optionsMonths=array(
+			"01"=>"January",
+			"02"=>"February",
+			"03"=>"March",
+			"04"=>"April",
+			"05"=>"May",
+			"06"=>"June",
+			"07"=>"July",
+			"08"=>"August",
+			"09"=>"September",
+			"10"=>"October",
+			"11"=>"November",
+			"12"=>"December"
+		);
+		$optionsYear=array(
+			"1990"=>"1990",
+			"1991"=>"1991",
+			"1992"=>"1992",
+			"1993"=>"1993",
+			"1994"=>"1994",
+			"1995"=>"1995",
+			"1996"=>"1996",
+			"1997"=>"1997",
+			"1998"=>"1998",
+			"1999"=>"1999",
+			"2000"=>"2000",
+			"2001"=>"2001",
+			"2002"=>"2002",
+			"2003"=>"2003",
+			"2004"=>"2004",
+			"2005"=>"2005",
+			"2006"=>"2006",
+			"2007"=>"2007",
+			"2008"=>"2008",
+			"2009"=>"2009",
+			"2010"=>"2010",
+			"2011"=>"2011",
+			"2012"=>"2012",
+			"2013"=>"2013",
+			"2014"=>"2014",
+			"2015"=>"2015",
+			"2016"=>"2016",
+			"2017"=>"2017",
+			"2018"=>"2018",
+			"2019"=>"2019",
+			"2020"=>"2020"
+		);
+		echo "Start Date:";
+		echo form_dropdown('YearStart-ddl', $optionsYear,date('Y'));
+		echo form_dropdown('MonthStart-ddl', $optionsMonths,date('m'));
+		echo "<br/>";
+		echo " End Date:&#160;&#160;";
+		echo form_dropdown('YearEnd-ddl', $optionsYear,date('Y'));
+		echo form_dropdown('MonthEnd-ddl', $optionsMonths,date('m'));
+		?>
 		<div><input type="submit" value="Sort" /></div>
 		</form> 
 	</td>

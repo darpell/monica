@@ -135,6 +135,7 @@ class Mapping extends CI_Model
 				}
 				else
 				{
+					$data = "";
 					$q->free_result();
 					//return null;
 				}
