@@ -140,9 +140,9 @@ body {height:100%;margin:0;padding:0}
 <body>
 <div data-role="page" style="top:0;left:0; right:0; bottom:0;">
 	<div data-role="header" ><!-- data-position="fixed"> -->
-    	<h2> Larval Location </h2> 
-    	<a href="<?php echo site_url('mobile/larval_dialog');?>" data-rel="panel" data-icon="gear" class="ui-btn-right" data-transition="slide"> Filter Results </a>
-    	<a href="<?php echo site_url('mobile/riskmap');?>" data-rel="panel" data-icon="gear" class="ui-btn-left" data-ajax="false"> Show All </a>
+    	<h2> Larval Location </h2>
+		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Back </a>
+    	<a href="<?php echo site_url('mobile/riskmap_options');?>" data-icon="gear" class="ui-btn-right" data-ajax="false" data-role="button" data-inline="true" data-rel="dialog" data-transition="pop"> Options </a>
     </div> <!-- /header-->
 	<div data-role="content" style="width:100%; height:100%;">
 		<div id="googleMap" style="margin:-15px 0 0 -15px;"></div>

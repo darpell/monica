@@ -16,6 +16,11 @@ class Larval extends CI_Controller
 		$this->load->view('mobile/riskmap', $data);
 	}
 	
+	function options()
+	{
+		$this->load->view('mobile/riskmap_options');
+	}
+	
 	function filter_points()
 	{
 		//$this->form_validation->set_rules('place-ddl','cluster','required');
@@ -41,6 +46,9 @@ class Larval extends CI_Controller
 					$value = $this->input->post('city_op');
 				else
 					$value = NULL;
+				
+			$data['distance_formula_200'] = $this->larval_mapping->distance_formula('200',$begin,$end);
+			$data['distance_formula_50'] = $this->larval_mapping->distance_formula('50',$begin,$end);
 			$data['points'] = $this->larval_mapping->get_points($begin,$end,$place,$value);
 
 			$this->load->view('mobile/riskmap',$data);

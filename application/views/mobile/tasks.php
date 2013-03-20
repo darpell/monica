@@ -7,7 +7,7 @@
 <body>
 	<div data-role="page" id="main_task_page">
 		<div data-role="header">
-			<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Cancel </a>
+			<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Back </a>
 			<h1> Assigned Tasks </h1>
 		</div>
 		<div data-role="content">

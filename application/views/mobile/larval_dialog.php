@@ -15,8 +15,8 @@ $(document).ready(function(){
 <div data-role="page">
 	
 		<div data-role="header">
+			<a href="<?php echo site_url('mobile/riskmap');?>" data-ajax="false" data-icon="delete"> Back </a>
 			<h1>Filter Larval Nodes</h1>
-
 		</div>
 
 		<div data-role="content" data-theme="c">
@@ -93,9 +93,7 @@ $(document).ready(function(){
 			    <label for="end_date"> To: </label>
 				<input name="end_date" id="end_date" type="date" data-role="datebox" data-options='{"mode":"calbox", "beforeToday": true, "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "useTodayButton": true, "noButtonFocusMode": true, "useNewStyle":true}' />
 					
-			    <input type="submit" value="Submit" />
-			</form>     
-			<a href="<?php echo site_url('mobile/riskmap');?>" data-role="button" data-theme="c" data-ajax="false"> Cancel </a>    
+			    <input type="submit" value="Submit" />    
 		</div>
 </div>
 
