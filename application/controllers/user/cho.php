@@ -41,15 +41,30 @@ class Cho extends CI_Controller
 					'sent_to' => $this->input->post('name'),
 					'sent_by' => $this->session->userdata('TPusername')
 			);
+			$data['title'] = 'View Tasks';
+			$data['script'] = 'view_casereport';
+			$data['table_data']= $this->Cho_model->get_tasks();
+			$data['options']= $this->Cho_model->get_bhw();
+			$this->load->view('pages/view_tasks.php' , $data);
 		}
-		
-		
-		
-		
+
 	}
+	function dashboard()
+	{	$this->redirectLogin();
+	$this->load->model('Cho_model');
+		$data['title'] = 'View Tasks';
+		$data['script'] = 'view_casereport';
+		$data['table_data']= $this->Cho_model->get_tasks();
+		$data['options']= $this->Cho_model->get_bhw();
+		$data['barangay_count']= $this->Cho_model->get_barangay_count();
+		$data['age_count']= $this->Cho_model->get_age_count();
+		$this->load->view('pages/dashboard.php' , $data);
+	}
+	
+	
 	
 	
 }
 
-/* End of file user/crform.php */
-/* Location: ./application/controllers/user/crform.php */
+/* End of file user/cho.php */
+/* Location: ./application/controllers/user/cho.php */
