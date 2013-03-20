@@ -71,32 +71,61 @@ function splitter(str){//Data splitter
 	var id=new Array();
 	var household = new Array();
 	var container = new Array();
+	var createdOn = new Array();
+	
 
-function createMarker(map,point,image,info,bounce)//General marker creation
+function createMarker(map,point,image,info,bounce,isOld)//General marker creation
 {
 	var centroidMarker;
 	var oms = new OverlappingMarkerSpiderfier(map);
 	if(image === null)
 	{
-		centroidMarker = new google.maps.Marker({
-		  position: point,
-		  map: map
-		});
-		oms.addMarker(centroidMarker);
-		if(bounce !== null)
+		if(isOld===false)
 		{
-		    centroidMarker.setAnimation(google.maps.Animation.BOUNCE);
+			centroidMarker = new google.maps.Marker({
+			  position: point,
+			  map: map
+			});
+			oms.addMarker(centroidMarker);
+			if(bounce !== null)
+			{
+			    centroidMarker.setAnimation(google.maps.Animation.BOUNCE);
+			}
+		}
+		else
+		{
+			centroidMarker = new google.maps.Marker({
+				  position: point,
+				  map: map,
+			      icon: new google.maps.MarkerImage('https://maps.gstatic.com/mapfiles/ms2/micons/ltblue-dot.png'),
+			      shadow: new google.maps.MarkerImage('http://maps.gstatic.com/intl/en_us/mapfiles/markers/marker_sprite.png', 
+			    	      new google.maps.Size(37,34), 
+			    	      new google.maps.Point(20, 0), 
+			    	      new google.maps.Point(10, 34))
+				});
+				oms.addMarker(centroidMarker);
+				if(bounce !== null)
+				{
+				    centroidMarker.setAnimation(google.maps.Animation.BOUNCE);
+				}
 		}
 	}
 	else
 	{
-		var icon = customIcons[type] || {};
-	    centroidMarker = new google.maps.Marker({
-	      map: map,
-	      position: point,
-	      icon: image
-	    });
-	    oms.addMarker(centroidMarker);
+		centroidMarker = new google.maps.Marker({
+		      map: map,
+		      position: point,
+		      icon: image,
+		      shadow: new google.maps.MarkerImage('http://maps.gstatic.com/intl/en_us/mapfiles/markers/marker_sprite.png', 
+		    	      new google.maps.Size(37,34), 
+		    	      new google.maps.Point(20, 0), 
+		    	      new google.maps.Point(10, 34))
+		    });
+		
+	}
+	if (type!==null)
+	{
+		
 	}
 	 /*
 	centroidMarker.info = new google.maps.InfoWindow({
@@ -117,7 +146,7 @@ function createMarker(map,point,image,info,bounce)//General marker creation
 	});*/
 }
 
-function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge) {//Denguecase barangay polygon display
+function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge,isOld) {//Denguecase barangay polygon display
 
 	//*DECLARATION OF VALUES AND CONTAINERS
 	var x1=999;
@@ -165,7 +194,7 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge) {/
 			//-------------------*/
 			
 			//*BARANGAY MARKER INFORMATION EXTRACTION
-			var html="";
+			var html="<b><i>No Data to Display</b></i>";
 			var casecount=0;
 			var countUnderage=0;
 			for(var i=0;i<=bcount.length-1;i++)
@@ -215,12 +244,12 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge) {/
 					html=html+"<br/>"+
 					" <br/>" + "Youngest: " +binfo[i][3]+
 					" <br/>" + "Oldest: " +binfo[i][4]+
-					" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+					" <br/>" + "Below 18: " +countUnderage+"("+((countUnderage/parseFloat(bcount[i][1]))*100).toFixed(2)+"%)"+
 					" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
 					" <br/>" + "<b>Outcome</b>" +
 					" <br/>" + "Alive: " +binfo[i][6]+
 					" <br/>" + "Deceased: " +binfo[i][7]+
-					" <br/>" + "Undetermined: " +binfo[i][8];;//alert(locationname);
+					" <br/>" + "Undetermined: " +binfo[i][8];
 					casecount=bcount[i][1];
 				}
 			}
@@ -229,9 +258,21 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge) {/
 			//*CREATION OF CENTROID POINT
 			var centroidX = x1 + ((x2 - x1) * 0.5);
 			var centroidY = y1 + ((y2 - y1) * 0.5);
-			var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
-			var point = new google.maps.LatLng(centroidX,centroidY);
-			createMarker(map,point,image,html,null);
+			var image;
+			var point;
+			
+			if(isOld)
+			{
+				image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|8FD8D8';
+				point = new google.maps.LatLng(centroidX,centroidY);
+				
+			}
+			else
+			{
+				image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
+				point = new google.maps.LatLng(centroidX,centroidY+0.0010);
+			}
+			createMarker(map,point,image,html,null,true);
 			nodeInfoCounter++;
 			//-------------------*/
            
@@ -260,7 +301,7 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge) {/
 	//-------------------*/
 	
 	//*BARANGAY MARKER INFORMATION EXTRACTION
-			var html="";
+			var html="<b><i>No Data to Display</b></i>";
 			var casecount=0;
 			var countUnderage=0;
 			for(i=0;i<=bcount.length-1;i++)
@@ -310,12 +351,12 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge) {/
 					html=html+"<br/>"+
 					" <br/>" + "Youngest: " +binfo[i][3]+
 					" <br/>" + "Oldest: " +binfo[i][4]+
-					" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+					" <br/>" + "Below 18: " +countUnderage+"("+((countUnderage/parseFloat(bcount[i][1]))*100).toFixed(2)+"%)"+
 					" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
 					" <br/>" + "<b>Outcome</b>" +
 					" <br/>" + "Alive: " +binfo[i][6]+
 					" <br/>" + "Deceased: " +binfo[i][7]+
-					" <br/>" + "Undetermined: " +binfo[i][8];;//alert(locationname);
+					" <br/>" + "Undetermined: " +binfo[i][8];
 					casecount=bcount[i][1];
 				}
 			}
@@ -323,18 +364,30 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge) {/
 	
 	//*CREATION OF CENTROID POINT
 	var centroidX = x1 + ((x2 - x1) * 0.5);
-	var centroidY = y1 + ((y2 - y1) * 0.5);
-	var image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
-	var point = new google.maps.LatLng(centroidX,centroidY);
-	createMarker(map,point,image,html);
-	nodeInfoCounter++;
+			var centroidY = y1 + ((y2 - y1) * 0.5);
+			var image;
+			var point;
+			if(isOld)
+			{
+				image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|8FD8D8';
+				point = new google.maps.LatLng(centroidX,centroidY);
+				
+			}
+			else
+			{
+				image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
+				point = new google.maps.LatLng(centroidX,centroidY+0.0010);
+			}
+			createMarker(map,point,image,html,null,true);
+			nodeInfoCounter++;
 	//-------------------*/
    
 	bermudaTriangle.setMap(map);
 	
 }
 
-function mapLarvalOverlay(map,distance,datax) {//Larvalpositive nodes display
+function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes display
+{
 	
 	var dist = splitter(distance);
 	var data = splitter(datax);
@@ -348,6 +401,7 @@ function mapLarvalOverlay(map,distance,datax) {//Larvalpositive nodes display
 			id[i]=data[i][4];
 			household[i]=data[i][5];
 			container[i]=data[i][6];
+			createdOn[i]=data[i][7];
 		}//alert(household);alert(container);
 		
     for (var i = 0; i < data.length; i++) 
@@ -391,7 +445,7 @@ function mapLarvalOverlay(map,distance,datax) {//Larvalpositive nodes display
    		var point = new google.maps.LatLng(
         	parseFloat(lat[i]),
         	parseFloat(lng[i]));
-    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] 
+    	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] +" <i>("+createdOn[i]+")</i>"
     	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
     	+ " <br/>" + "<b>Larval positives (LP) within: </b>"
     	+ " <br/>" + "<b>200m:</b>" + amount50a+" ("+ amount50p+"% of displayed LP)"
@@ -405,19 +459,36 @@ function mapLarvalOverlay(map,distance,datax) {//Larvalpositive nodes display
   		else
   			bounce = null;
   		var image = null;
-            
- 		createMarker(map,point,image,html,bounce);
- 		var circle = new google.maps.Circle({
-			center:point,
-			//radius:0.002328109220390699168278872384883,
-			radius:200,
-			strokeColor:"#0000FF",
-			strokeOpacity:0.8,
-			strokeWeight:2,
-			fillColor:"#0000FF",
-			fillOpacity:0.4,
-			clickable:false
-		});
+  		var circle = null;
+		if(isOld)
+		{
+	 		createMarker(map,point,image,html,bounce,true);
+	 		circle = new google.maps.Circle({
+				center:point,
+				radius:200,
+				strokeColor:"#66CCCC",
+				strokeOpacity:0.4,
+				strokeWeight:1,
+				fillColor:"#66CCCC",
+				fillOpacity:0.4,
+				clickable:false
+			});
+		}
+		else
+		{
+	 		createMarker(map,point,image,html,bounce,false);
+	 		circle = new google.maps.Circle({
+				center:point,
+				radius:200,
+				strokeColor:"#0000FF",
+				strokeOpacity:0.4,
+				strokeWeight:1,
+				fillColor:"#0000FF",
+				fillOpacity:0.2,
+				clickable:false
+			});
+		}
+			
 		circle.setMap(map); 
 	}
 }
@@ -432,21 +503,27 @@ function load() {
     	
 	if(document.getElementById('type').value.toString()=="larvalpositive")
     {
-        mapLarvalOverlay(map,document.getElementById('dist').value,document.getElementById("data").value);
+        mapLarvalOverlay(map,document.getElementById('dist').value,document.getElementById("data").value,false);
+        mapLarvalOverlay(map,document.getElementById('Pdist').value,document.getElementById("Pdata").value,true);
     }
 	else if(document.getElementById('type').value.toString()=="denguecase")
 	{
-		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),document.getElementById('dataBAge').value.toString());
+		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),document.getElementById('dataBAge').value.toString(),false);
+		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('Pdata').value.toString(),document.getElementById('PdataBInfo').value.toString(),document.getElementById('PdataBAge').value.toString(),true);
     }
 	else
 	{
     	//*Data handler, SPLITTER
 		var str = document.getElementById('data').value.toString();
 		str = str.split("%&");
+		var Pstr = document.getElementById('Pdata').value.toString();
+		Pstr = Pstr.split("%&");
 		//-------------------*/
 		
-		mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0]);
-		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),document.getElementById('dataBAge').value.toString());
+		mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
+		mapLarvalOverlay(map,document.getElementById('Pdist').value.toString(),Pstr[0],true);
+		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),document.getElementById('dataBAge').value.toString(),false);
+		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),Pstr[1],document.getElementById('PdataBInfo').value.toString(),document.getElementById('PdataBAge').value.toString(),true);
 	}
 }
   function doNothing() {}
@@ -474,7 +551,7 @@ jQuery(document).ready(function(){
 <input type = 'hidden' id ='PdataBAge' name='PdataBAge' value='<?php echo $Pbage?>'>
 <input type = 'hidden' id ='PdataBInfo' name='PdataBInfo' value='<?php echo $Pbinfo?>'>
 <input type = 'hidden' id ='PdataBCount' name='PdataBCount' value='<?php echo $Pbcount?>'>
-<input type = 'hidden' id ='Ptype' name='Ptype' value='<?php echo $Pnode_type?>'>
+<input type = 'hidden' id ='Ptype' name='Ptype' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='Pdist' name='Pdist' value='<?php echo $Pdist?>'>
 </form>
 <body onload="load()">
