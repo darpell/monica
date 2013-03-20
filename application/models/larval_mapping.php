@@ -9,7 +9,7 @@ class Larval_mapping extends CI_Model
 	// returns the all larval points
 	function get_points($begin_date = FALSE, $end_date = FALSE, $place = NULL, $value = NULL)
 	{
-		$this->db->select('ls_barangay, ls_street, ls_municipality, ls_household, ls_container, ls_result, created_on, ls_lat, ls_lng');
+		//$this->db->select('ls_barangay, ls_street, ls_municipality, ls_household, ls_container, ls_result, created_on, ls_lat, ls_lng');
 			$this->db->from('ls_report_main');
 			$this->db->join('ls_report_header', 'ls_report_main.ls_no = ls_report_header.ls_no');
 			if ($place != NULL && $place != 'NULL')
@@ -88,6 +88,92 @@ class Larval_mapping extends CI_Model
 			return $row;
 		}
 		return NULL;
+	}
+	
+	function get_oldest_date()
+	{
+		$this->db->select('created_on');
+			$this->db->from('ls_report_main');
+			$this->db->order_by('created_on','asc');
+			$this->db->limit('1');
+		$query = $this->db->get();
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+			return $row['created_on'];
+		}
+		return NULL;
+	}
+	
+	function distance_formula($given_distance, $start_date = FALSE, $end_date = FALSE)
+	{
+		$return_data = [];
+		if ($start_date === FALSE || $end_date === FALSE)
+		{
+			$this->db->from('ls_report_main');
+				$this->db->join('ls_report_header', 'ls_report_main.ls_no = ls_report_header.ls_no');
+				$this->db->group_by('tracking_number');
+				$query = $this->db->get();
+		}
+		else
+		{
+			$this->db->from('ls_report_main');
+				$this->db->join('ls_report_header', 'ls_report_main.ls_no = ls_report_header.ls_no');
+				$this->db->where("last_updated_on BETWEEN '$start_date' AND '$end_date'");
+				$this->db->group_by('tracking_number');
+				$query = $this->db->get();
+		}
+		
+		if ($query->num_rows > 0)
+		{
+			$ctr = 0;
+			foreach ($query->result_array() as $row)
+			{
+				$data[$ctr]['track_no'] = $row['tracking_number'];
+				$data[$ctr]['lat'] = $row['ls_lat'];
+				$data[$ctr]['lng'] = $row['ls_lng'];
+				$ctr++;
+			}
+		}
+			
+		for ($i = 0; $i <= count($data)-1; $i++)
+		{
+			$amount = 0;
+			for ($_i = 0; $_i <= count($data)-1; $_i++)
+			{
+			if ($data[$i]['track_no'] === $data[$_i]['track_no']) {}
+			else
+			{
+							//echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
+				$lat_a = $data[$i]['lat'] * PI()/180;
+				$lat_b = $data[$_i]['lat'] * PI()/180;
+				$long_a = $data[$i]['lng'] * PI()/180;
+				$long_b = $data[$_i]['lng'] * PI()/180;
+				$distance = acos (
+								sin($lat_a ) * sin($lat_b) +
+								cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+								) * 6371;
+				$distance *= 1000;
+				if ($distance <= $given_distance)
+				{
+					$amount++;
+				}
+			}
+		}
+		
+		$percentage = 100 * number_format($amount / count($data), 2, '.', '');
+		
+		//$dist.=$data[$i][0]."&&".$amount200a."&&".$amount200p."&&".$amount50a."&&".$amount50p."%%";
+		
+		
+		array_push($return_data, array(	'tracking_no' => $data[$i]['track_no'],
+		'amount' => $amount,
+		'percentage' => $percentage)
+		);
+		
+		// return array('tracking_no' => '', 'amount' => '', 'percentage' => '');
+		}
+		return $return_data;
 	}
 }
 

@@ -12,6 +12,8 @@ class Pages extends CI_Controller
 				if ($this->session->userdata('TPusername') != null)
 				{
 					$this->load->model('tasks_model');
+					$this->load->model('larval_mapping');
+					$data['last_visit'] = $this->larval_mapping->get_last_visit($this->session->userdata('TPusername'));
 					$data['task_count'] = $this->tasks_model->get_count_unaccomplished();
 					$data['result'] = '';
 					$this->load->view('mobile/home',$data);
@@ -22,13 +24,6 @@ class Pages extends CI_Controller
 			
 			else if ($page == 'checklocation')
 				$this->load->view('mobile/current_pos');
-			
-			else if ($page == 'user')
-			{
-				$this->load->model('larval_mapping');
-				$data['last_visit'] = $this->larval_mapping->get_last_visit($this->session->userdata('TPusername'));
-				$this->load->view('mobile/user',$data);
-			}
 			
 			else if ($page =='larval_survey')
 				$this->load->view('mobile/ls_form');

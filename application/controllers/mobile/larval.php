@@ -10,6 +10,8 @@ class Larval extends CI_Controller
 	
 	function index()
 	{
+		$data['distance_formula_200'] = $this->larval_mapping->distance_formula('200');
+		$data['distance_formula_50'] = $this->larval_mapping->distance_formula('50');
 		$data['points'] = $this->larval_mapping->get_points();
 		$this->load->view('mobile/riskmap', $data);
 	}
