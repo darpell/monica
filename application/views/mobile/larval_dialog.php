@@ -59,7 +59,7 @@
 				</script>
 				
 				<div id="brgy_div">
-					<select id="brgy_op" name="brgy_op" date-mini="true">
+					<select id="brgy_op" name="brgy_op" data-mini="true">
 						<?php for ($ctr = 0; $ctr < count($brgys); $ctr++) {?>
 						<option value="<?= $brgys[$ctr]['ls_barangay'] ?>"> <?= $brgys[$ctr]['ls_barangay'] ?> </option>
 						<?php }?>
@@ -67,7 +67,7 @@
 				</div>
 				
 				<div id="street_div">
-					<select id="street_op" name="street_op" date-mini="true">
+					<select id="street_op" name="street_op" data-mini="true">
 						<?php for ($ctr = 0; $ctr < count($streets); $ctr++) {?>
 						<option value="<?= $streets[$ctr]['ls_street'] ?>"> <?= $streets[$ctr]['ls_street'] ?> </option>
 						<?php }?>
@@ -75,7 +75,7 @@
 				</div>
 				
 				<div id="city_div">
-					<select id="city_op" name="city_op" date-mini="true">
+					<select id="city_op" name="city_op" data-mini="true">
 						<?php for ($ctr = 0; $ctr < count($cities); $ctr++) {?>
 						<option value="<?= $cities[$ctr]['ls_municipality'] ?>"> <?= $cities[$ctr]['ls_municipality'] ?> </option>
 						<?php }?>
@@ -93,6 +93,7 @@
 				<input name="end_date" id="end_date" type="date" data-role="datebox" data-options='{"mode":"calbox", "beforeToday": true, "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "useTodayButton": true, "noButtonFocusMode": true, "useNewStyle":true}' />
 					
 			    <input type="submit" value="Submit" />    
+			    </form>
 		</div>
 </div>
 

@@ -118,7 +118,7 @@ function initialize(){
 <body onload="initialize()">
 
 <div data-role="page" id="page2" style="width:100%; height:100%;">
-    <div data-role="header" id="ls_header" name="ls_header" data-nobackbtn="true">
+    <div data-role="header" id="ls_header" data-nobackbtn="true">
 		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Cancel </a>
         <h1>Larval Survey Form</h1>
     </div><!-- /header -->
@@ -179,13 +179,13 @@ function initialize(){
 
     </div><!-- /content -->
     <!-- Dialogs -->
-          <div align="CENTER" data-role="content" id="contentDialog" name="contentDialog">	
+          <div align="CENTER" data-role="content" id="contentDialog">	
 	 <div>Please fill in all required fields before submitting the form.</div>
-	 <a id="buttonOK" name="buttonOK" href="#page2" data-role="button" data-inline="true">OK</a>
+	 <a id="buttonOK" href="#page2" data-role="button" data-inline="true">OK</a>
 	</div>	<!-- contentDialog -->
 	
   	<!-- contentTransition is displayed after the form is submitted until a response is received back. -->
-	<div data-role="content" id="contentTransition" name="contentTransition">	
+	<div data-role="content" id="contentTransition">	
 	 <div align="CENTER"><h4>Please wait while your data is being entered.</h4></div>
 	 <div align="CENTER"><img id="spin" name="spin" src="<?= base_url('images/wait.gif') ?>"/></div>
 	</div>	<!-- contentTransition -->
