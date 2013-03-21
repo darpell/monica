@@ -45,8 +45,7 @@ echo form_dropdown('TPsex-dd', $options, 'female',$js);
 
 <h5>Date of Birth</h5>
 <label style="color:red"><?php echo form_error('birthdate'); ?></label>
-<input type="text" name="TPbirthdate-txt" readonly = "true" id = "date1" value="<?php echo $info['TPbirthdate-txt'];  ?>" size="50" /><a href="javascript:NewCal('date1','mmddyyyy')"><img src="<?php echo  $this->config->item('base_url'); ?>/application/views/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
-
+<input type="text" name="TPbirthdate-txt" readonly = "true" id = "date1" value="<?php echo $info['TPbirthdate-txt'];  ?>" size="50" onClick = "javascript:NewCal('date1','mmddyyyy')"/>
 <h5>Province</h5>
 <label style="color:red"><?php echo form_error('address'); ?></label>
 <input type="text" name="TPprovince-txt" value="<?php echo $info['TPprovince-txt'];  ?>" size="50" />
@@ -70,11 +69,10 @@ echo form_dropdown('TPsex-dd', $options, 'female',$js);
 
 <h5>Date of Consultation</h5>
 <label style="color:red"><?php echo form_error('consuldate'); ?></label>
-<input type="text" name="TPconsuldate-txt" readonly = "true" value="<?php echo $info['TPconsuldate-txt'];  ?>" size="50" id="date2" /><a href="javascript:NewCal('date2','mmddyyyy')"><img src="<?php echo  $this->config->item('base_url'); ?>/application/views/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
-
+<input type="text" name="TPconsuldate-txt" readonly = "true" value="<?php echo $info['TPconsuldate-txt'];  ?>" size="50" id="date2" onClick = "javascript:NewCal('date2','mmddyyyy')" />
 <h5>Date onset of illness</h5>
 <label style="color:red"><?php echo form_error('birthdate'); ?></label>
-<input type="text" name="TPillnessdate-txt" readonly = "true" value="<?php echo $info['TPillnessdate-txt'];  ?>" size="50" id="date3" /><a href="javascript:NewCal('date3','mmddyyyy')"><img src="<?php echo  $this->config->item('base_url'); ?>/application/views/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+<input type="text" name="TPillnessdate-txt" readonly = "true" value="<?php echo $info['TPillnessdate-txt'];  ?>" size="50" id="date3" onClick = "javascript:NewCal('date3','mmddyyyy')" />
 
 <h5>Case Classification</h5>
 <label style="color:red"><?php echo form_error('classification'); ?></label>

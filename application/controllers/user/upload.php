@@ -16,7 +16,7 @@ class Upload extends CI_Controller
 	{
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'mdb';
-		$config['max_size'] = '0';
+		$config['max_size'] = '10000';
 		$this->load->library('upload' ,$config);
 		if ( ! $this->upload->do_upload())
 		{

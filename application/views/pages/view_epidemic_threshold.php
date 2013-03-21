@@ -3,12 +3,12 @@
 
 <!-- CONTENT -->
 <div class="body">
-		<div class="blog">
+		<div >
 <center>
 <?php if($table != null) {?>
 
 <div>
-
+<h3>Five years monthly record of cases (<?php echo (date('Y')-5).'-'.(date('Y')-1); ?>)</h3>
 <?php 
 
 $tmpl = array (
@@ -34,7 +34,7 @@ $tmpl = array (
 
 $this->table->set_template($tmpl);
 
-echo $this->table->generate($table); 
+echo $this->table->generate($table['data']); 
 ?>
 <br />
 

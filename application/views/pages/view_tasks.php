@@ -116,6 +116,9 @@ echo form_dropdown('name', $options);
 <h5>Date of Task Assignment</h5>
 <label style="color:red"><?php echo form_error('birthdate'); ?></label>
 <input type="text" name="TPtaskdate-txt" readonly = "true" id = "date1"size="50" value = "<?php echo date('m/d/y');?>"onClick= "javascript:NewCal('date1','mmddyyyy')"/>
+<h5>Task Header</h5>
+<label style="color:red"><?php echo form_error('TPtaskhead-txt'); ?></label>
+<input type="text" name="TPtaskhead-txt" size="100" />
 <h5>Task</h5>
 <label style="color:red"><?php echo form_error('TPtask-txt'); ?></label>
 <input type="text" name="TPtask-txt" size="100" />

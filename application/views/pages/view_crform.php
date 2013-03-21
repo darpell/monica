@@ -43,7 +43,7 @@ echo form_open('case_report/searchCaseReport',$attributes); ?>
 </div>
 <p />
 
-
+<center>
 <?php if($table != null) {?>
 <div>
 
@@ -77,6 +77,7 @@ echo $this->table->generate($table);
 <br />
 </div>
 <?php } ?>
+</center>
 </div>
 </div>
 <!-- FOOTER -->

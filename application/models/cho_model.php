@@ -24,6 +24,7 @@
 			{	$data =
 				'Name' . "&&" .
 				'Barangay' . "&&" .
+				'Task Header' . "&&" .
 				'Task' . "&&" .
 				'Status' . "&&" .
 				'Date Assigned'. "&&" .
@@ -38,6 +39,7 @@
 				$data .=
 				$name . "&&" .
 				$row->barangay . "&&" .
+				$row->task_header . "&&" .
 				$row->task . "&&" .
 				$status . "&&" .
 				$date[1].'/'.$date[2].'/'.$date[0]  . "&&" .
@@ -68,10 +70,7 @@
 			foreach ($q->result() as $row)
 			{	
 			$name = $row->user_firstname . ' ' . $row->user_middlename . ' ' . $row->user_lastname;
-			$data[$row->barangay]=array(
-				$row->user_username=>$name,
-				);
-		
+			$data[$row->barangay][$row->user_username]=$name;
 			}
 				
 			return $data;
@@ -86,7 +85,8 @@
 					$data['task'] . "','" .
 					$data['date_sent'] ."','".
 					$data['sent_to']. "','".
-					$data['sent_by']. "'". ")";
+					$data['sent_by']. "','".
+					$data['task_header']. "'". ")";
 			
 			$query = $this->db->query($qString);
 			$query->free_result();
@@ -137,6 +137,286 @@
 			}
 		
 			return $data;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		function epidemic_threshold()
+		{
+			$qString = 'CALL ';
+			$qString .= "epidemic_threshold ('"; // name of stored procedure
+			$qString .=
+			date('Y'). "'". ")";
+			
+			$ctr = date('Y') + 1;
+			$q = $this->db->query($qString);
+		
+			if($q->num_rows() > 0)
+			{	$sum=array(
+					'1'=>0,
+					'2'=>0,
+					'3'=> 0,
+					'4'=> 0,
+					'5'=> 0,
+					'6'=> 0,
+					'7'=> 0,
+					'8'=> 0,
+					'9'=> 0,
+					'10'=> 0,
+					'11'=> 0,
+					'12'=> 0,
+				);
+				$mean=array(
+						'1'=>0,
+						'2'=>0,
+						'3'=> 0,
+						'4'=> 0,
+						'5'=> 0,
+						'6'=> 0,
+						'7'=> 0,
+						'8'=> 0,
+						'9'=> 0,
+						'10'=> 0,
+						'11'=> 0,
+						'12'=> 0,
+				);
+				$sd=array(
+						'1'=>0,
+						'2'=>0,
+						'3'=> 0,
+						'4'=> 0,
+						'5'=> 0,
+						'6'=> 0,
+						'7'=> 0,
+						'8'=> 0,
+						'9'=> 0,
+						'10'=> 0,
+						'11'=> 0,
+						'12'=> 0,
+				);
+				$m2sd=array(
+						'1'=>0,
+						'2'=>0,
+						'3'=> 0,
+						'4'=> 0,
+						'5'=> 0,
+						'6'=> 0,
+						'7'=> 0,
+						'8'=> 0,
+						'9'=> 0,
+						'10'=> 0,
+						'11'=> 0,
+						'12'=> 0,
+				);
+				$csum=array(
+						'1'=>0,
+						'2'=>0,
+						'3'=> 0,
+						'4'=> 0,
+						'5'=> 0,
+						'6'=> 0,
+						'7'=> 0,
+						'8'=> 0,
+						'9'=> 0,
+						'10'=> 0,
+						'11'=> 0,
+						'12'=> 0,
+				);
+				$sdcsum=array(
+						'1'=>0,
+						'2'=>0,
+						'3'=> 0,
+						'4'=> 0,
+						'5'=> 0,
+						'6'=> 0,
+						'7'=> 0,
+						'8'=> 0,
+						'9'=> 0,
+						'10'=> 0,
+						'11'=> 0,
+						'12'=> 0,
+				);
+				$csum196sd=array(
+						'1'=>0,
+						'2'=>0,
+						'3'=> 0,
+						'4'=> 0,
+						'5'=> 0,
+						'6'=> 0,
+						'7'=> 0,
+						'8'=> 0,
+						'9'=> 0,
+						'10'=> 0,
+						'11'=> 0,
+						'12'=> 0,
+				);
+				$quartile=array(
+						'1'=>0,
+						'2'=>0,
+						'3'=> 0,
+						'4'=> 0,
+						'5'=> 0,
+						'6'=> 0,
+						'7'=> 0,
+						'8'=> 0,
+						'9'=> 0,
+						'10'=> 0,
+						'11'=> 0,
+						'12'=> 0,
+				);
+				$data[0]=array(
+					'Year'=>'Year',
+					'1'=> 'Jan.',
+					'2'=> 'Feb.',
+					'3'=> 'Mar.',
+					'4'=> 'Apr.',
+					'5'=> 'May',
+					'6'=> 'Jun.',
+					'7'=> 'Jul.',
+					'8'=> 'Aug.',
+					'9'=> 'Sept',
+					'10'=> 'Oct.',
+					'11'=> 'Nov.',
+					'12'=> 'Dec.',
+				);
+				for($i = 6 ; $i >= 1 ; $i-- )
+				{
+				$data[$i]['Year'] = $ctr - $i;
+				$data[$i]['1'] = 0;
+				$data[$i]['2'] = 0;
+				$data[$i]['3'] = 0;
+				$data[$i]['4'] = 0;
+				$data[$i]['5'] = 0;
+				$data[$i]['6']= 0;
+				$data[$i]['7']= 0;
+				$data[$i]['8'] = 0;
+				$data[$i]['9'] = 0;
+				$data[$i]['10']= 0;
+				$data[$i]['11'] = 0;
+				$data[$i]['12']= 0;
+				}
+			foreach ($q->result() as $row)
+			{	$year = $ctr - $row->year2;
+				$data[$year][$row->month] = $row->num;
+				
+				if($row->year2 != date('Y'))
+				$sum[$row->month] += $row->num;
+			}
+			
+			//mean
+			for($i = 1 ; $i <= 12 ; $i++ )
+				{
+					$mean[$i]= $sum[$i]/5;
+				}
+				
+			//sd
+			for($i = 2 ; $i <= 6  ; $i++ )
+				{	
+				for($s = 1 ; $s <= 12 ; $s++ )
+					{	
+						$sd[$s] += pow($data[$i][$s]-$mean[$s],2);
+					}
+				}
+			for($s = 1 ; $s <= 12 ; $s++ )
+			{
+				$sd[$s] = round(sqrt( $sd[$s]/4),0);
+			}
+			
+			//mean2sd
+			for($s = 1 ; $s <= 12 ; $s++ )
+			{
+				$m2sd[$s] = round($mean[$s] + (2 * $sd[$s]),0);
+			}
+				
+			//csum
+			for($s = 1 ; $s <= 12 ; $s++ )
+			{
+				if($s==1)
+				{
+					$csum[$s] = round(($sum[12] + $sum[1] + $sum[2])/15,0);
+				}
+				else if($s==12)
+				{
+					$csum[$s] = round(($sum[11] + $sum[12] + $sum[1])/15,0);
+				}
+				else
+				{
+					$csum[$s] = round(($sum[$s-1] + $sum[$s] + $sum[$s+1])/15,0);
+				}
+			}
+			
+			//sdcsum
+		
+				for($s = 1 ; $s <= 12 ; $s++ )
+				{
+					for($d = -1 ; $d <= 1 ; $d++ )
+					{
+						for($i = 2 ; $i <= 6  ; $i++ )
+						{
+						if($s==1)
+							{	if($d == -1)
+								$sdcsum[$s] += pow($data[$i][12]-$csum[$s],2);
+								else
+								$sdcsum[$s] += pow($data[$i][$s+$d]-$csum[$s],2);
+							}
+						else if($s==12)
+							{	if($d == 1 )
+								$sdcsum[$s] += pow($data[$i][1]-$csum[$s],2);
+								else
+								$sdcsum[$s] += pow($data[$i][$s+$d]-$csum[$s],2);
+							}
+						else
+							{
+								$sdcsum[$s] += pow($data[$i][$s+$d]-$csum[$s],2);
+							}
+						}
+
+					}
+				}
+				for($s = 1 ; $s <= 12 ; $s++ )
+				{
+					$sdcsum[$s] = round(sqrt( $sdcsum[$s]/14),0);
+				}
+				
+			//csum196sd
+			for($s = 1 ; $s <= 12 ; $s++ )
+			{
+				$csum196sd[$s] = round($csum[$s] + (1.96 * $sdcsum[$s]),0);
+			}
+			
+			//3rd quartile
+			for($s = 1 ; $s <= 12 ; $s++ )
+			{	$values = array();
+				for($i = 2 ; $i <= 6  ; $i++ )
+				{
+					array_push($values , $data[$i][$s]);
+				}
+				sort($values);
+				$count = count($values);
+					
+				$first = round( .25 * ( $count + 1 ) ) - 1;
+				$second = ($count % 2 == 0) ? ($values[($count / 2) - 1] + $values[$count / 2]) / 2 : $second = $values[($count + 1) / 2];
+				$third = round( .75 * ( $count + 1 ) ) - 1;
+				
+				$quartile[$s] = $values[$third-1];
+			}
+			
+			
+			$alldata = array(
+					'data'=> $data,
+					'sum'=> $sum,
+					'mean'=> $mean,
+					'sd'=> $sd,
+					'm2sd'=> $m2sd,
+					'csum'=> $csum,
+					'sdcsum'=> $sdcsum,
+					'csum196sd'=> $csum196sd,
+					'quartile'=> $quartile,
+					);
+		
+			return $alldata;
 			}
 			else
 			{

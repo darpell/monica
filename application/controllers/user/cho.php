@@ -23,7 +23,7 @@ class Cho extends CI_Controller
 		
 		
 		$this->form_validation->set_rules('TPtask-txt', 'Task', 'required');
-		
+		$this->form_validation->set_rules('TPtaskhead-txt', 'Task Header', 'required');
 		if ($this->form_validation->run('') == FALSE)
 		{
 		$data['title'] = 'View Tasks';
@@ -39,8 +39,10 @@ class Cho extends CI_Controller
 					'task' => $this->input->post('TPtask-txt'),
 					'date_sent' => $date[2].'/'.$date[0].'/'.$date[1],
 					'sent_to' => $this->input->post('name'),
-					'sent_by' => $this->session->userdata('TPusername')
+					'sent_by' => $this->session->userdata('TPusername'),
+					'task_header' =>  $this->input->post('TPtaskhead-txt')
 			);
+			$this->Cho_model->add_task($data);
 			$data['title'] = 'View Tasks';
 			$data['script'] = 'view_casereport';
 			$data['table_data']= $this->Cho_model->get_tasks();
@@ -59,6 +61,18 @@ class Cho extends CI_Controller
 		$data['barangay_count']= $this->Cho_model->get_barangay_count();
 		$data['age_count']= $this->Cho_model->get_age_count();
 		$this->load->view('pages/dashboard.php' , $data);
+	}
+	function epidemic_threshold()
+	{	
+		$this->load->model('Cho_model');
+		$data['title'] = 'View Tasks';
+		$data['script'] = '';
+		$data['table'] = $this->Cho_model->epidemic_threshold();
+		print_r($data['table']['quartile']);
+		$this->load->library('table');
+		$this->load->view('pages/view_epidemic_threshold.php' , $data);
+		
+	
 	}
 	
 	
