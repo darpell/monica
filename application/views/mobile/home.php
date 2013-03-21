@@ -32,6 +32,7 @@
         </ul>
         
         <ul data-role="listview" data-autodividers="true" data-inset="true">
+        	<li> <a href="<?php echo site_url('mobile/page/deng_info');?>" data-ajax="false" data-transition="slide"> dengue information </a> </li>
         	<li> <a href="<?php echo site_url('mobile/logout');?>" data-ajax="false" data-transition="slide"> Logout </a> </li>
         </ul>
         <br/><br/>

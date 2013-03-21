@@ -141,7 +141,7 @@ body {height:100%;margin:0;padding:0}
 <div data-role="page" style="top:0;left:0; right:0; bottom:0;">
 	<div data-role="header" ><!-- data-position="fixed"> -->
     	<h2> Larval Location </h2>
-		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Back </a>
+		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="arrow-l"> Back </a>
     	<a href="<?php echo site_url('mobile/riskmap_options');?>" data-icon="gear" class="ui-btn-right" data-ajax="false" data-role="button" data-inline="true" data-rel="dialog" data-transition="pop"> Options </a>
     </div> <!-- /header-->
 	<div data-role="content" style="width:100%; height:100%;">

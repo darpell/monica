@@ -6,9 +6,7 @@
 	<script src="http://j.maxmind.com/app/geoip.js"></script>-->
 
 
-	<script type="text/javascript"
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-9o53l2-ccgNGON3JbUefG9aEmV09ikA&sensor=true">
-    </script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
     <script type="text/javascript">
 		$( document ).bind( "mobileinit", function() {
 			// Make your jQuery Mobile framework configuration changes here!
