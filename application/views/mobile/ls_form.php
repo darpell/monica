@@ -19,6 +19,7 @@
     <script>
 var geocoder = new google.maps.Geocoder();
 function initialize(){
+	
         if (navigator.geolocation)
     {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -119,7 +120,7 @@ function initialize(){
 <div data-role="page" id="page2" style="width:100%; height:100%;">
     <div data-role="header" id="ls_header" name="ls_header" data-nobackbtn="true">
 		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Cancel </a>
-        <h1>Larval Survey Report</h1>
+        <h1>Larval Survey Form</h1>
     </div><!-- /header -->
     <div data-role="content" id="ls_content">
     
@@ -186,7 +187,7 @@ function initialize(){
   	<!-- contentTransition is displayed after the form is submitted until a response is received back. -->
 	<div data-role="content" id="contentTransition" name="contentTransition">	
 	 <div align="CENTER"><h4>Please wait while your data is being entered.</h4></div>
-	 <div align="CENTER"><img id="spin" name="spin" src="images/wait.gif"/></div>
+	 <div align="CENTER"><img id="spin" name="spin" src="<?= base_url('images/wait.gif') ?>"/></div>
 	</div>	<!-- contentTransition -->
 
 	<!-- /dialogs -->

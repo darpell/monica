@@ -2,18 +2,17 @@
 <?= $this->load->view('/mobile/templates/mob_header') ?>
 
 <!-- CONTENT -->
-<script type="text/javascript">
-$(document).ready(function(){
-	$('#brgy_div').hide();
-	$('#city_div').hide();
-	$('#street_div').hide();
-});
-</script>
 </head> 
 <body> 
 
 <div data-role="page">
-	
+	<script type="text/javascript">
+        $("div:jqmData(role='page'):last").bind('pageinit', function() {
+        	$('#brgy_div').hide();
+        	$('#city_div').hide();
+        	$('#street_div').hide();
+        });
+	</script>
 		<div data-role="header">
 			<a href="<?php echo site_url('mobile/riskmap');?>" data-ajax="false" data-icon="delete"> Back </a>
 			<h1>Filter Larval Nodes</h1>
