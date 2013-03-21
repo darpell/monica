@@ -216,7 +216,7 @@ body {height:100%;margin:0;padding:0}
 <input type = 'hidden' id ='data' name='data' value='<?php echo $nodes?>'>
 <input type = 'hidden' id ='dataCount' name='dataCount' value='<?php echo $bcount?>'>
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
-<body onload="load()">
+<body>
 <div data-role="page" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
 	<div data-role="header" ><!-- data-position="fixed"> -->
     	<h2> Case Map </h2> 

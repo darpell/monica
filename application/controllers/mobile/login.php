@@ -3,10 +3,9 @@ class Login extends CI_Controller
 {
 	public function index()
 	{
-		$data['title'] = 'Login';
-		
 		if ($this->form_validation->run() == FALSE)
 		{
+			$data['result'] = '';
 			$this->load->view('mobile/login');
 		}
 		else
@@ -17,8 +16,7 @@ class Login extends CI_Controller
 	
 	function mob_check()
 	{
-		$data['title'] = 'Login';
-		$data['script'] = '';
+		$data['result'] = '';
 		
 		$this->form_validation->set_rules('mob_username-txt_r', 'username', 'required');
 		$this->form_validation->set_rules('mob_password-txt_r', 'password', 'required');
@@ -49,7 +47,7 @@ class Login extends CI_Controller
 			}
 			else
 			{
-				$result_data['result'] = 'You are not authorized to use the service';
+				$result_data['result'] = 'Not valid username and/or password.';
 				$this->load->view('mobile/login',$result_data);
 			}
 		}
