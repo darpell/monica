@@ -63,9 +63,9 @@ class Lsform extends CI_Controller
 					);
 			//$this->larval_survey->addLS_report($data);
 			$this->larval_survey->add($data);
-			
+			//redirect('mobile');
 			$return_data['result'] = 'Your entry has been recorded.';
-			$this->load->view('mobile/home',$return_data);
+			$this->load->view('mobile/success',$return_data);
 		}
 	}
 	function viewLarvalReport()

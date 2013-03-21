@@ -26,8 +26,7 @@
 <div data-role="page" id="checklocation" style="position:absolute;top:0;left:0; right:0; bottom:0;width:100%; height:100%">
     <div data-role="header" data-position="fixed">
 		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Back </a>
-    	<h2> Current Location </h2> 
-    	<a href="#" data-rel="panel" data-icon="gear" class="ui-btn-right"> Options </a>
+    	<h2> Current Location </h2>
     </div> <!-- /header-->
     <div data-role="content" style="width:100%; height:100%;padding:0;">
         <div id="currentLocation" style="position:absolute; width:100%; height:100%;"></div>
@@ -64,7 +63,7 @@
 			});
 			
 			var contentString = "<b>Timestamp:</b> " + parseTimestamp(position.timestamp) + "<br/><b>User location:</b> lat " + position.coords.latitude + ", long " + position.coords.longitude + ", accuracy " + position.coords.accuracy;
-			var btn = '<div id="info_content"> <button onclick="window.open(&quot;<?= site_url('mobile/larval_survey') ?>&quot;);"> Add Larval Incidence </button></div>';
+			var btn = '<div id="info_content"> <button onclick="window.open(&quot;<?= site_url('mobile/page/larval_survey') ?>&quot;);"> Add Larval Incidence </button></div>';
 			var infowindow = new google.maps.InfoWindow({
 				content: contentString + btn
 			});

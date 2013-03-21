@@ -2,18 +2,17 @@
 <?= $this->load->view('/mobile/templates/mob_header') ?>
 
 <!-- CONTENT -->
-<script type="text/javascript">
-$(document).ready(function(){
-	$('#brgy_div').hide();
-	$('#city_div').hide();
-	$('#street_div').hide();
-});
-</script>
 </head> 
 <body> 
 
 <div data-role="page">
-	
+	<script type="text/javascript">
+        $("div:jqmData(role='page'):last").bind('pageinit', function() {
+        	$('#brgy_div').hide();
+        	$('#city_div').hide();
+        	$('#street_div').hide();
+        });
+	</script>
 		<div data-role="header">
 			<a href="<?php echo site_url('mobile/riskmap');?>" data-ajax="false" data-icon="delete"> Back </a>
 			<h1>Filter Larval Nodes</h1>
@@ -60,7 +59,7 @@ $(document).ready(function(){
 				</script>
 				
 				<div id="brgy_div">
-					<select id="brgy_op" name="brgy_op" date-mini="true">
+					<select id="brgy_op" name="brgy_op" data-mini="true">
 						<?php for ($ctr = 0; $ctr < count($brgys); $ctr++) {?>
 						<option value="<?= $brgys[$ctr]['ls_barangay'] ?>"> <?= $brgys[$ctr]['ls_barangay'] ?> </option>
 						<?php }?>
@@ -68,7 +67,7 @@ $(document).ready(function(){
 				</div>
 				
 				<div id="street_div">
-					<select id="street_op" name="street_op" date-mini="true">
+					<select id="street_op" name="street_op" data-mini="true">
 						<?php for ($ctr = 0; $ctr < count($streets); $ctr++) {?>
 						<option value="<?= $streets[$ctr]['ls_street'] ?>"> <?= $streets[$ctr]['ls_street'] ?> </option>
 						<?php }?>
@@ -76,7 +75,7 @@ $(document).ready(function(){
 				</div>
 				
 				<div id="city_div">
-					<select id="city_op" name="city_op" date-mini="true">
+					<select id="city_op" name="city_op" data-mini="true">
 						<?php for ($ctr = 0; $ctr < count($cities); $ctr++) {?>
 						<option value="<?= $cities[$ctr]['ls_municipality'] ?>"> <?= $cities[$ctr]['ls_municipality'] ?> </option>
 						<?php }?>
@@ -94,6 +93,7 @@ $(document).ready(function(){
 				<input name="end_date" id="end_date" type="date" data-role="datebox" data-options='{"mode":"calbox", "beforeToday": true, "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "useTodayButton": true, "noButtonFocusMode": true, "useNewStyle":true}' />
 					
 			    <input type="submit" value="Submit" />    
+			    </form>
 		</div>
 </div>
 

@@ -6,7 +6,7 @@ class Login extends CI_Controller
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['result'] = '';
-			$this->load->view('mobile/login');
+			$this->load->view('mobile/login',$data);
 		}
 		else
 		{
