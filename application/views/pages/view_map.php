@@ -462,7 +462,37 @@ google.maps.event.addDomListener(window, 'load', initialize);
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	  $("#old").change(function() {
-		  alert("1");
+		  if($("#old").val()==0)
+		  {
+			  var map = new google.maps.Map(document.getElementById("map"), {
+					center: new google.maps.LatLng(14.301716, 120.942506),
+					zoom: 14,
+					mapTypeId: 'roadmap'
+				});
+			    	
+				if(document.getElementById('type').value.toString()=="larvalpositive")
+			    {
+			        mapLarvalOverlay(map,document.getElementById('dist').value,document.getElementById("data").value,false);
+			    }
+				else if(document.getElementById('type').value.toString()=="denguecase")
+				{
+					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
+			    }
+				else
+				{
+			    	//*Data handler, SPLITTER
+					var str = document.getElementById('data').value.toString();
+					str = str.split("%&");
+					//-------------------*/
+					
+					mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
+					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
+				}
+		  }
+		  else
+		  {
+			  load();
+		  }
 	  });
 	});
 </script>
@@ -495,13 +525,12 @@ jQuery(document).ready(function(){
 		
 		<select name='old' id='old'>
 		  <option value="0">Hide</option>
-		  <option value="1">Display</option>
-		</select>
+		  <option value="1" selected>Display</option>
+		</select> barangay nodes containing old data.<br /><br />
 		
 		Select 'Barangay overlay' to view dengue cases per barangay.<br />
 		Select 'Larval overlay' to view positive larval samplings.<br />
 		Select 'both' to view overlays displaying both larval positives and dengue cases.<br />
-		</h4></div>
 		<?php 
 		$options=array(
 			"both"=>"Both",
@@ -509,8 +538,8 @@ jQuery(document).ready(function(){
 			"larvalpositive"=>"Larval overlay"
 		);
 		echo form_dropdown('NDtype-ddl', $options, $node_type);
-		?>
-		<br />
+		?></h4></div>
+		
 		<br />
 		
 	    Search Date <i>(It is currently <?php echo date('F d, Y');?>)</i>
