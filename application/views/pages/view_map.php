@@ -5,8 +5,15 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>    
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
 <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
-<script src="<?= base_url('scripts/OverlappingMarkerSpiderfier.js') ?>"></script>
-
+<script src="<?= base_url('scripts/OverlappingMarkerSpiderfier.js') ?>"></script><script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load('visualization', '1.1', {packages: ['controls','corechart']});
+</script>
+<script type="text/javascript">
+function drawVisualization() {
+	
+}
+</script>
 <script>
 function loadXMLDoc(q)
 {
@@ -74,8 +81,7 @@ function splitter(str){//Data splitter
 	var createdOn = new Array();
 	
 
-function createMarker(map,point,image,info,bounce,isOld)//General marker creation
-{
+function createMarker(map,point,image,info,bounce,isOld){//General marker creation
 	var centroidMarker;
 	var oms = new OverlappingMarkerSpiderfier(map);
 	if(image === null)
@@ -146,7 +152,7 @@ function createMarker(map,point,image,info,bounce,isOld)//General marker creatio
 	});*/
 }
 
-function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge,isOld) {//Denguecase barangay polygon display
+function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Denguecase barangay polygon display
 
 	//*DECLARATION OF VALUES AND CONTAINERS
 	var x1=999;
@@ -159,7 +165,7 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge,isO
 	var bcount=splitter(barangayCount);
 	var data2=splitter(datax);
 	var binfo=splitter(barangayInfo);
-	var bage=splitter(barangayAge);
+	//var bage=splitter(barangayAge);
 	//-------------------*/
 	
 	for (var _i=0; _i <= data2.length-1;)
@@ -196,56 +202,17 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge,isO
 			//*BARANGAY MARKER INFORMATION EXTRACTION
 			var html="<b><i>No Data to Display</b></i>";
 			var casecount=0;
-			var countUnderage=0;
+			//var countUnderage=0;
 			for(var i=0;i<=bcount.length-1;i++)
 			{
 				if(bcount[i][0]===currName)
 				{
-					var ageArr=[];
-					for(var __i=0;__i<bage.length;__i++)
-					{
-						if(bage[__i][0]==currName)
-						{
-							ageArr.push(bage[__i][1]);
-						}
-					}
-					var a = [], b = [], prev;
-					ageArr.sort();
-				    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
-					{
-						if(ageArr[___i]<18)
-							countUnderage++;
-				        if ( ageArr[___i] !== prev ) 
-					    {
-				            a.push(ageArr[___i]);
-				            b.push(1);
-				        }
-				        else 
-					    {
-				            b[b.length-1]++;
-				        }
-				        prev = ageArr[___i];
-				    }
 					html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
 					" <br/>" + "<b>Gender Distribution</b>" +
 					" <br/>" + "Female cases: " +binfo[i][1]+
-					" <br/>" + "Male cases: " +binfo[i][2]+"<br/><br/><b>Age Distribution:</b> Age(Amount)<br/>";
-					var limiter=1;
-					for(var ____i = 0; ____i< a.length; ____i++) 
-					{
-						html=html+a[____i]+"("+b[____i]+") ";
-						if(limiter==5)
-						{
-							html=html+"</br>";
-							limiter=0;
-						}
-						limiter++;
-					}
-					html=html+"<br/>"+
-					" <br/>" + "Youngest: " +binfo[i][3]+
-					" <br/>" + "Oldest: " +binfo[i][4]+
-					" <br/>" + "Below 18: " +countUnderage+"("+((countUnderage/parseFloat(bcount[i][1]))*100).toFixed(2)+"%)"+
-					" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
+					" <br/>" + "Male cases: " +binfo[i][2]+"<br/>";
+					
+					html=html+
 					" <br/>" + "<b>Outcome</b>" +
 					" <br/>" + "Alive: " +binfo[i][6]+
 					" <br/>" + "Deceased: " +binfo[i][7]+
@@ -308,51 +275,12 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,barangayAge,isO
 			{
 				if(bcount[i][0]===currName)
 				{
-					var ageArr=[];
-					for(var __i=0;__i<bage.length;__i++)
-					{
-						if(bage[__i][0]==currName)
-						{
-							ageArr.push(bage[__i][1]);
-						}
-					}
-					var a = [], b = [], prev;
-					ageArr.sort();
-				    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
-					{
-						if(ageArr[___i]<18)
-							countUnderage++;
-				        if ( ageArr[___i] !== prev ) 
-					    {
-				            a.push(ageArr[___i]);
-				            b.push(1);
-				        }
-				        else 
-					    {
-				            b[b.length-1]++;
-				        }
-				        prev = ageArr[___i];
-				    }
 					html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
 					" <br/>" + "<b>Gender Distribution</b>" +
 					" <br/>" + "Female cases: " +binfo[i][1]+
 					" <br/>" + "Male cases: " +binfo[i][2]+"<br/><br/><b>Age Distribution:</b> Age(Amount)<br/>";
-					var limiter=1;
-					for(var ____i = 0; ____i< a.length; ____i++) 
-					{
-						html=html+a[____i]+"("+b[____i]+") ";
-						if(limiter==5)
-						{
-							html=html+"</br>";
-							limiter=0;
-						}
-						limiter++;
-					}
-					html=html+"<br/>"+
-					" <br/>" + "Youngest: " +binfo[i][3]+
-					" <br/>" + "Oldest: " +binfo[i][4]+
-					" <br/>" + "Below 18: " +countUnderage+"("+((countUnderage/parseFloat(bcount[i][1]))*100).toFixed(2)+"%)"+
-					" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>" +
+					
+					html=html+
 					" <br/>" + "<b>Outcome</b>" +
 					" <br/>" + "Alive: " +binfo[i][6]+
 					" <br/>" + "Deceased: " +binfo[i][7]+
@@ -508,8 +436,8 @@ function load() {
     }
 	else if(document.getElementById('type').value.toString()=="denguecase")
 	{
-		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),document.getElementById('dataBAge').value.toString(),false);
-		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('Pdata').value.toString(),document.getElementById('PdataBInfo').value.toString(),document.getElementById('PdataBAge').value.toString(),true);
+		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
+		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('Pdata').value.toString(),document.getElementById('PdataBInfo').value.toString(),true);
     }
 	else
 	{
@@ -522,8 +450,8 @@ function load() {
 		
 		mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
 		mapLarvalOverlay(map,document.getElementById('Pdist').value.toString(),Pstr[0],true);
-		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),document.getElementById('dataBAge').value.toString(),false);
-		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),Pstr[1],document.getElementById('PdataBInfo').value.toString(),document.getElementById('PdataBAge').value.toString(),true);
+		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
+		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),Pstr[1],document.getElementById('PdataBInfo').value.toString(),true);
 	}
 }
   function doNothing() {}
@@ -541,15 +469,15 @@ jQuery(document).ready(function(){
 </head>
 <form>
 <input type = 'hidden' id ='data' name='data' value='<?php echo $nodes?>'>
-<input type = 'hidden' id ='dataBAge' name='dataBAge' value='<?php echo $bage?>'>
 <input type = 'hidden' id ='dataBInfo' name='dataBInfo' value='<?php echo $binfo?>'>
+<input type = 'hidden' id ='dataBAge' name='dataBAge' value='<?php echo $table1?>'>
 <input type = 'hidden' id ='dataBCount' name='dataBCount' value='<?php echo $bcount?>'>
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='dist' name='dist' value='<?php echo $dist?>'>
 
 <input type = 'hidden' id ='Pdata' name='Pdata' value='<?php echo $Pnodes?>'>
-<input type = 'hidden' id ='PdataBAge' name='PdataBAge' value='<?php echo $Pbage?>'>
 <input type = 'hidden' id ='PdataBInfo' name='PdataBInfo' value='<?php echo $Pbinfo?>'>
+<input type = 'hidden' id ='PdataBAge' name='PdataBAge' value='<?php echo $table2?>'>
 <input type = 'hidden' id ='PdataBCount' name='PdataBCount' value='<?php echo $Pbcount?>'>
 <input type = 'hidden' id ='Ptype' name='Ptype' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='Pdist' name='Pdist' value='<?php echo $Pdist?>'>
@@ -557,10 +485,10 @@ jQuery(document).ready(function(){
 <body onload="load()">
 <table border="1" width=100%>
 <tr>
-	<td style="width:69%; height:400px">
+	<td style="width:60%; height:600px" rowspan="2">
 	    <div id="map" style="width: 100%%; height: 600px"></div>
 	</td>
-	<td style="width:30%; height:400px">
+	<td style="width:40%; height:200px">
 		<form action="" method='post' onsubmit='return confirm("Sure?")'>
 		<label style="color:red"><?php echo form_error('NDtype-ddl'); ?></label>
 		<div id="info" class="info"><h4>
@@ -651,9 +579,38 @@ jQuery(document).ready(function(){
 		?>
 		<div><input type="submit" value="Sort" /></div>
 		</form> 
-		
+	</td>
+</tr>
+<tr>
+	<td style="width:40%; height:60%">
+	<div style="height: 100%; overflow: auto;">
+		<?php 
+		$tmpl = array (
+						'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',
+					    'heading_row_start'   => '<tr>',
+					    'heading_row_end'     => '</tr>',
+					    'heading_cell_start'  => '<th id="result" scope="col">',
+					    'heading_cell_end'    => '</th>',
+					    'row_start'           => '<tr>',
+					    'row_end'             => '</tr>',
+					    'cell_start'          => '<td align="center">',
+					    'cell_end'            => '</td>',
+					    'row_alt_start'       => '<tr style="background-color: #e3e3e3">',
+					    'row_alt_end'         => '</tr>',
+					    'cell_alt_start'      => '<td align="center">',
+					    'cell_alt_end'        => '</td>',
+					    'table_close'         => '</table>'
+					   );
+		$this->table->set_template($tmpl);
+		echo "<br/><center><b>Age Distribution:</b><br/><h4></>Table 1. Displaying Age Distribution for ".""."</h6><div>";
+		echo $this->table->generate($table2);?>
+		<?php echo "<br/><b>Age Distribution:</b><br/><h4></>Table 2. Displaying Age Distribution for ".""."</h6><center><div>";
+		echo $this->table->generate($table1);
+		?>
+	</div>
 	</td>
 </tr>
 </table>
+		
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

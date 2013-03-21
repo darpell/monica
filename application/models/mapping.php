@@ -303,45 +303,45 @@ class Mapping extends CI_Model
 		{
 			//echo $data['node_type'];
 			$qString = 'CALL ';
-			$qString .= "get_empty_barangays()";
-			$q = $this->db->query($qString);
-			//*
-			$data = "";
-			if($q->num_rows() > 0)
-			{
-				foreach ($q->result() as $row)
-				{
-					$data .=
-					$row->barangay . "&&0%%";
-				}
-			}
-			$q->free_result();
-				
-			//echo $data['node_type'];
-			$qString = 'CALL ';
 			$qString .= "get_case_ages('"; // name of stored procedure
 			$qString .=
 			//variables needed by the stored procedure
 			$data2['date1']. "','".
 			$data2['date2']. "'". ")";
 			$qString." END ";
+			$data[]=array(
+				'cr_barangay'=>'Barangay',
+				'pateintcount'=> 'Patient Count',
+				'agerange'=> 'Age Range'
+			);
+				
 			$q = $this->db->query($qString);
 			//*
 			if($q->num_rows() > 0)
 			{
 				foreach ($q->result() as $row)
 				{
-					$data .=
-					$row->barangay . "&&" .
-					$row->cr_age . "%%" ;
+					$agerange=null;
+					if($row->agerange*10==0)
+					{
+						$agerange = ($row->agerange*10)."-".(($row->agerange*10)+10);
+					}
+					else
+						$agerange = ($row->agerange*10+1)."-".(($row->agerange*10)+10);
+						
+					$data[]=array(
+						'cr_barangay'=> $row->cr_barangay,
+						'patientcount'=> $row->patientcount,
+						$agerange
+					);
 				}
 				$q->free_result();
-				return substr($data,0,-2);
+				return $data;
 			}
 			else
 			{
 				$q->free_result();
-				return substr($data,0,-2);
+				return $data;
 			}
 			//*/
 		}

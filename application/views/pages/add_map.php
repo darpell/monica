@@ -252,10 +252,10 @@
 		
 	<table border="1" width=100%>
 <tr>
-	<td style="width:49%" rowspan="2">
+	<td style="width:60%" rowspan="2">
 	    <div id="map" style="width: 100%%; height: 600px"></div>
 	</td>
-	<td style="width:49%; height:400px">
+	<td style="width:40%; height:400px">
 		<input id="reset" value="Reset" type="button" class="navi"/>
 		
 		<!-- <form action="" method='post' onsubmit='return confirm("Sure?")'> -->
@@ -278,7 +278,7 @@
 	</td>
 </tr>
 <tr>
-	<td style="width:49%">
+	<td style="width:40%">
 		<div id='dataPanel' class="dataPanel"></div>
 	</td>
 </tr>

@@ -9,10 +9,7 @@ class Mapform extends CI_Controller
 		$data['title'] = 'View map';
 		//scripts if none keep ''
 		$data['script'] = 'view_casereport';
-		
-		//for table result for search
-		$data['table'] = null;
-		
+				
 		/** Validation rules could be seen at application/config/form_validation.php **/
 		//*
 		if ($this->form_validation->run('') == FALSE)
@@ -29,7 +26,8 @@ class Mapform extends CI_Controller
 					$date1=date('Y-m-01');
 					$date2=date('Y-m-t');
 				}
-
+				
+				//*DATE MANIPULATION BEGINS HERE
 				//yyyy-mm-dd
 				$data['date1']=$date1;
 				$data['date2']=$date2;
@@ -78,6 +76,10 @@ class Mapform extends CI_Controller
 				$data['Pbcount'] = $this->Mapping->getBarangayCount($dateData2);
 				$data['Pdist'] = $this->Mapping->calculateDistanceFormula($dateData2);
 				//*/
+				//-------------------*/
+
+				$data['table1'] = $this->Mapping->getBarangayAges($dateData1);
+				$data['table2'] = $this->Mapping->getBarangayAges($dateData2);
 							
 				$this->load->library('table');
 				$this->load->view('pages/view_map',$data);
@@ -88,71 +90,34 @@ class Mapform extends CI_Controller
 			$this->load->view('pages/success');
 		}//*/
 	}
-	function mapPolygons()
-	{	
+	function getAgeData($bname,$date1,$date2)
+	{
 		$this->load->model('Mapping');
-		$data['polygon_name'] = $this->input->post('NDtype-ddl');
-		$data['title'] = 'View map';
-		
-		//scripts if none keep '' 
-		$data['script'] = 'view_casereport';
-		
-		//for table result for search
-		$data['table'] = null; 
-		$data['options2']=$this->Mapping->getBarangays();
-		
-		/** Validation rules could be seen at application/config/form_validation.php **/
-		//*
-		if ($this->form_validation->run('') == FALSE)
-		{ 
-			$data['nodes'] = $this->Mapping->mapByType($data);
-			$data['bcount'] = $this->Mapping->getBarangayCount();
-			$this->load->library('table');
-			$this->load->view('pages/view_map',$data);
-		}
-		else
+		if(strtotime($date1)>strtotime($date2))
 		{
-			$this->load->view('pages/success');
+			$temp=$date1;
+			$date1=$date2;
+			$date2=$temp;
 		}
-		//*/
-	}
-	function mapAllPolygons()
-	{	
-		$this->load->model('Mapping');
-		$data['title'] = 'View map';
-		//scripts if none keep ''
-		$data['script'] = 'view_casereport';
-		
-		//for table result for search
-		$data['table'] = null; 
-		$data['options2']=$this->Mapping->getBarangays();
-		
-		/** Validation rules could be seen at application/config/form_validation.php **/
-		//*
-		if ($this->form_validation->run('') == FALSE)
-		{ 
-			$data['nodes'] = $this->Mapping->mapAllPolygon();
-			$this->load->library('table');
-			$this->load->view('pages/view_map',$data);
-		}
-		else
+		$dates['date1']=$date1;
+		$dates['date2']=$date2;
+		$temp=$this->Mapping->getBarangayAges($dates);
+		$arrData[]=array(
+				'cr_barangay'=>'Barangay',
+				'pateintcount'=> 'Patient Count',
+				'agerange'=> 'Age Range'
+		);
+		foreach($q->result() as $row)
 		{
-			$this->load->view('pages/success');
+			if($row->cr_barangay===$bname)
+				$arrData[]=array(
+						'cr_barangay'=> $row->cr_barangay,
+						'pateintcount'=> $row->pateintcount,
+						'agerange'=> $row->agerange,
+				);
 		}
-		//*/
-	}
-	
-	function getNodeInfo($data)
-	{	
-		$this->load->model('Mapping');		
-		return $this->Mapping->getNodeInfo($data);
-	}
-	
-	function addNodeCluster($data)
-	{	
-		$this->load->model('Mapping');
-		return $this->Mapping->addNodeCluster($data);
-	}
+		return $arrData;
+	}	
 }
 
 /* End of file user/mapform.php */
