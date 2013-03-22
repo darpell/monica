@@ -513,6 +513,54 @@ jQuery(document).ready(function(){
 <input type = 'hidden' id ='Pdist' name='Pdist' value='<?php echo $Pdist?>'>
 </form>
 <body onload="load()">
+<?php 
+	$optionsMonths=array(
+		"01"=>"January",
+		"02"=>"February",
+		"03"=>"March",
+		"04"=>"April",
+		"05"=>"May",
+		"06"=>"June",
+		"07"=>"July",
+		"08"=>"August",
+		"09"=>"September",
+		"10"=>"October",
+		"11"=>"November",
+		"12"=>"December"
+	);
+	$optionsYear=array(
+		"1990"=>"1990",
+		"1991"=>"1991",
+		"1992"=>"1992",
+		"1993"=>"1993",
+		"1994"=>"1994",
+		"1995"=>"1995",
+		"1996"=>"1996",
+		"1997"=>"1997",
+		"1998"=>"1998",
+		"1999"=>"1999",
+		"2000"=>"2000",
+		"2001"=>"2001",
+		"2002"=>"2002",
+		"2003"=>"2003",
+		"2004"=>"2004",
+		"2005"=>"2005",
+		"2006"=>"2006",
+		"2007"=>"2007",
+		"2008"=>"2008",
+		"2009"=>"2009",
+		"2010"=>"2010",
+		"2011"=>"2011",
+		"2012"=>"2012",
+		"2013"=>"2013",
+		"2014"=>"2014",
+		"2015"=>"2015",
+		"2016"=>"2016",
+		"2017"=>"2017",
+		"2018"=>"2018",
+		"2019"=>"2019",
+		"2020"=>"2020"
+	);?>
 <table border="1" width=100%>
 <tr>
 	<td style="width:60%; height:600px" rowspan="2">
@@ -521,13 +569,10 @@ jQuery(document).ready(function(){
 	<td style="width:40%; height:200px">
 		<form action="" method='post' onsubmit='return confirm("Sure?")'>
 		<label style="color:red"><?php echo form_error('NDtype-ddl'); ?></label>
-		<div id="info" class="info"><h4>
+		<div id="info" class="info">
+		<i>(Today is <?php echo date('F d, Y');?>)</i>
 		
-		<select name='old' id='old'>
-		  <option value="0">Hide</option>
-		  <option value="1" selected>Display</option>
-		</select> barangay nodes containing old data.<br /><br />
-		
+		<h4>
 		Select 'Barangay overlay' to view dengue cases per barangay.<br />
 		Select 'Larval overlay' to view positive larval samplings.<br />
 		Select 'both' to view overlays displaying both larval positives and dengue cases.<br />
@@ -540,10 +585,9 @@ jQuery(document).ready(function(){
 		echo form_dropdown('NDtype-ddl', $options, $node_type);
 		?></h4></div>
 		
-		<br />
 		
-	    Search Date <i>(It is currently <?php echo date('F d, Y');?>)</i>
-		<br />
+		
+	    Main Search Date: <?php echo "<i>(Currently ".$cdate1." to ".$cdate2.")</i>"?>
 		<br /><!-- 
 	    From: <input type="text" style="background-color:#CCCCCC;" name="date1" id="date1" value="01/01/2011" readonly="true" /><a href="javascript:NewCal('date1','mmddyyyy')"><img src="<?php echo  $this->config->item('base_url'); ?>/application/views/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a> 
 		<br />
@@ -551,53 +595,7 @@ jQuery(document).ready(function(){
 		<br />
 		<br /> -->
 		<?php 
-		$optionsMonths=array(
-			"01"=>"January",
-			"02"=>"February",
-			"03"=>"March",
-			"04"=>"April",
-			"05"=>"May",
-			"06"=>"June",
-			"07"=>"July",
-			"08"=>"August",
-			"09"=>"September",
-			"10"=>"October",
-			"11"=>"November",
-			"12"=>"December"
-		);
-		$optionsYear=array(
-			"1990"=>"1990",
-			"1991"=>"1991",
-			"1992"=>"1992",
-			"1993"=>"1993",
-			"1994"=>"1994",
-			"1995"=>"1995",
-			"1996"=>"1996",
-			"1997"=>"1997",
-			"1998"=>"1998",
-			"1999"=>"1999",
-			"2000"=>"2000",
-			"2001"=>"2001",
-			"2002"=>"2002",
-			"2003"=>"2003",
-			"2004"=>"2004",
-			"2005"=>"2005",
-			"2006"=>"2006",
-			"2007"=>"2007",
-			"2008"=>"2008",
-			"2009"=>"2009",
-			"2010"=>"2010",
-			"2011"=>"2011",
-			"2012"=>"2012",
-			"2013"=>"2013",
-			"2014"=>"2014",
-			"2015"=>"2015",
-			"2016"=>"2016",
-			"2017"=>"2017",
-			"2018"=>"2018",
-			"2019"=>"2019",
-			"2020"=>"2020"
-		);
+		
 		echo "Start Date:";
 		echo form_dropdown('YearStart-ddl', $optionsYear,date('Y'));
 		echo form_dropdown('MonthStart-ddl', $optionsMonths,date('m'));
@@ -605,6 +603,29 @@ jQuery(document).ready(function(){
 		echo " End Date:&#160;&#160;";
 		echo form_dropdown('YearEnd-ddl', $optionsYear,date('Y'));
 		echo form_dropdown('MonthEnd-ddl', $optionsMonths,date('m'));
+		?>
+		<br/><br/>
+		<select name='old' id='old'>
+		  <option value="0">Hide</option>
+		  <option value="1" selected>Display</option>
+		</select> <b>barangay nodes containing old data.</b><br />
+		
+		<?php
+		echo "Old Data Comparison: <i>(Currently ".$pdate1." to ".$pdate2.")</i><br/>"; 	
+		?>
+		Use 
+		<select name='deflt' id='deflt'>
+		  <option value="0">custom</option>
+		  <option value="1" selected>default</option>
+		</select> date for old data comparison. <br/>
+		<?php
+		echo "Start Date:";
+		echo form_dropdown('PYearStart-ddl', $optionsYear,date('Y'));
+		echo form_dropdown('PMonthStart-ddl', $optionsMonths,date('m'));
+		echo "<br/>";
+		echo " End Date:&#160;&#160;";
+		echo form_dropdown('PYearEnd-ddl', $optionsYear,date('Y'));
+		echo form_dropdown('PMonthEnd-ddl', $optionsMonths,date('m'));
 		?>
 		<div><input type="submit" value="Sort" /></div>
 		</form> 

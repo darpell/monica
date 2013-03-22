@@ -58,6 +58,7 @@ class Mapping extends CI_Model
 				{	$data = "";
 					foreach ($q->result() as $row) 
 					{
+						if($row->ls_result=="positive")
 						$data .=
 						"larvalpositive" . "&&" . 
 						$row->ls_no . "&&" . 
