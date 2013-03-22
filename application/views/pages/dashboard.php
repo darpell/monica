@@ -4,7 +4,7 @@
 
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript">
-      google.load('visualization', '1.1', {packages: ['controls','corechart']});
+      google.load('visualization', '1.1', {packages: ['controls','corechart','gauge']});
     </script>
     <script type="text/javascript">
       function drawVisualization() {
@@ -14,9 +14,8 @@
     		var yyyy = today.getFullYear() ;
     		if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
 
-
+		//cases
     	var str2 = document.getElementById('barangay_count').value.toString();
-
 		str2 = str2.split("%%");
 		var data = new Array();
 		for (var i = 0; i < str2.length; i++)
@@ -24,6 +23,44 @@
 			data[i] = str2[i].split("&&");
 		}
 		data.pop();
+
+		//quartile
+		var quartile = document.getElementById('quartile').value.toString();
+		quartile = quartile.split("&&");
+		quartile.pop();
+		//csum
+		var csum = document.getElementById('csum').value.toString();
+		csum = csum.split("&&");
+		csum.pop();
+		//m2sd
+		var m2sd = document.getElementById('m2sd').value.toString();
+		m2sd = m2sd.split("&&");
+		m2sd.pop();
+		//csum192sd
+		var csum196sd = document.getElementById('csum196sd').value.toString();
+		csum196sd = csum196sd.split("&&");
+		csum196sd.pop();
+		//cases
+		var cases = document.getElementById('cases').value.toString();
+		cases = cases.split("&&");
+		cases.pop();
+		var today2 = new Date();
+
+		 var epi = google.visualization.arrayToDataTable([
+		            ['Label', 'Value'],
+		         	['3rd Quartile', Math.round(((cases[ today2.getMonth()]/quartile[ today2.getMonth()]))*100)],
+		            ['C-SUM', Math.round(((cases[ today2.getMonth()]/csum[ today2.getMonth()]))*100)],
+		            ['mean+2SD', Math.round(((cases[ today2.getMonth()]/m2sd[ today2.getMonth()]))*100)],
+		            ['C-SUM+1.96SD', Math.round(((cases[ today2.getMonth()]/csum196sd[ today2.getMonth()]))*100)],
+		                                                 ]);
+		 var epioptions = {
+		          redFrom: 90, redTo: 150,
+		          yellowFrom:75, yellowTo: 90,
+		          minorTicks: 0,
+		          max:150
+		        };
+				
+		
 			var m1 = 0;
 			var m2 = 0;
 			var m3 = 0;
@@ -159,13 +196,16 @@
               // Instantiate and draw our chart, passing in some options.
               var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
               chart.draw(data, options);
-
+              new google.visualization.Gauge(document.getElementById('visualization')).
+              draw(epi,epioptions);
       }
 
       google.setOnLoadCallback(drawVisualization);
     </script>
   <div class="body">
    <center>
+   <h3>Epidemic Threshold shown in Percentage</h3>
+   <div id="visualization" style="width: 600px; height: 150px;"></div>
    <h3>Dengue Cases Summary</h3>
     <div id="dashboard">
       <table>
@@ -198,6 +238,11 @@ echo form_open('CHO/view_tasks',$attributes); ?>
 <input type="hidden" name="table_data" id="table_data" value="<?php echo $table_data; ?>" />
 <input type="hidden" name="barangay_count" id="barangay_count" value="<?php echo $barangay_count; ?>" />
 <input type="hidden" name="age_count" id="age_count" value="<?php echo $age_count; ?>" />
+<input type="hidden" name="quartile" id="quartile" value="<?php echo $quartile; ?>" />
+<input type="hidden" name="csum" id="csum" value="<?php echo $csum; ?>" />
+<input type="hidden" name="m2sd" id="m2sd" value="<?php echo $m2sd; ?>" />
+<input type="hidden" name="csum196sd" id="csum196sd" value="<?php echo $csum196sd; ?>" />
+<input type="hidden" name="cases" id="cases" value="<?php echo $cases; ?>" />
 </div>
 
 
