@@ -426,18 +426,16 @@ function load() {
 	var map = new google.maps.Map(document.getElementById("map"), {
 		center: new google.maps.LatLng(14.301716, 120.942506),
 		zoom: 14,
-		mapTypeId: 'roadmap'
+		mapTypeId: 'hybrid'
 	});
     	
 	if(document.getElementById('type').value.toString()=="larvalpositive")
     {
         mapLarvalOverlay(map,document.getElementById('dist').value,document.getElementById("data").value,false);
-        mapLarvalOverlay(map,document.getElementById('Pdist').value,document.getElementById("Pdata").value,true);
     }
 	else if(document.getElementById('type').value.toString()=="denguecase")
 	{
 		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
-		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('Pdata').value.toString(),document.getElementById('PdataBInfo').value.toString(),true);
     }
 	else
 	{
@@ -449,9 +447,7 @@ function load() {
 		//-------------------*/
 		
 		mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
-		mapLarvalOverlay(map,document.getElementById('Pdist').value.toString(),Pstr[0],true);
 		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
-		mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),Pstr[1],document.getElementById('PdataBInfo').value.toString(),true);
 	}
 }
   function doNothing() {}
@@ -467,7 +463,7 @@ jQuery(document).ready(function(){
 			  var map = new google.maps.Map(document.getElementById("map"), {
 					center: new google.maps.LatLng(14.301716, 120.942506),
 					zoom: 14,
-					mapTypeId: 'roadmap'
+					mapTypeId: 'hybrid'
 				});
 			    	
 				if(document.getElementById('type').value.toString()=="larvalpositive")
