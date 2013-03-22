@@ -21,6 +21,9 @@
 
     	<ul data-role="listview" data-autodividers="true" data-inset="true" data-count-theme="b">
 			<li><a href="<?php echo site_url('mobile/tasks');?>" data-ajax="false" data-transition="slide"> Tasks <span class="ui-li-count"><?php echo $task_count['task_count']; ?></span></a></li>
+			<li> <a href="<?php echo site_url('mobile/page/checklocation');?>" data-ajax="false" data-transition="slide"> Report Suspected Case </a> </li>
+		</ul>
+		<ul data-role="listview" data-autodividers="true" data-inset="true" data-count-theme="b">
 			<li> <a href="<?php echo site_url('mobile/page/checklocation');?>" data-ajax="false" data-transition="slide"> Plot Current Location </a> </li>
         	<li> <a href="<?php echo site_url('mobile/page/larval_survey');?>" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
         </ul>

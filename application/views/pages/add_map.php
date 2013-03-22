@@ -248,7 +248,6 @@
 </form>
 <body onload="load()">
 <div class="body">
-		<div class="blog">
 		
 	<table border="1" width=100%>
 <tr>
@@ -282,8 +281,7 @@
 		<div id='dataPanel' class="dataPanel"></div>
 	</td>
 </tr>
-</table> 
-</div>
+</table>
 </div>
 
 <!-- FOOTER -->
