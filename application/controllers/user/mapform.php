@@ -64,8 +64,8 @@ class Mapform extends CI_Controller
 					$dateData2['date2']=date('Y-m-t', strtotime($dateData2['date2']));
 				}
 
-				echo $dateData2['date1']." to ".$dateData2['date2']." : ";
-				echo $dateData1['date1']." to ".$dateData1['date2'];
+				//echo $dateData2['date1']." to ".$dateData2['date2']." : ";
+				//echo $dateData1['date1']." to ".$dateData1['date2'];
 								
 				//*CURRENT DATE INTERVAL DATA EXTRACTION
 				$data['nodes'] = $this->Mapping->mapByType($data);
