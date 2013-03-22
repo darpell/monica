@@ -9,7 +9,7 @@
 
 	<div data-role="header">
 		<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="arrow-l"> Back </a>
-		<h1> &nbsp; </h1>
+		<h1> Brief Dengue Info </h1>
 	</div><!-- /header -->
 
 	<div data-role="content">
