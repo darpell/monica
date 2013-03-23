@@ -346,6 +346,205 @@ class Mapping extends CI_Model
 			}
 			//*/
 		}
+		function getBarangayAgesS($data2)//returns String for echoing directly to HTML
+		{
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_case_ages('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			$data2['cdate1']. "','".
+			$data2['cdate2']. "'". ")";
+			$qString." END ";
+			$q = $this->db->query($qString);
+		
+			$arr1=[];
+			$arr2=[];
+			$temparr1=[];
+			$temparr2=[];
+			$swapped=false;
+				
+			$data=null;
+		
+			//*
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					array_push($temparr1,array(
+						'cr_barangay'=>$row->cr_barangay,
+						'patientcount'=>$row->patientcount,
+						'agerange'=>$row->agerange
+					));
+				}
+			}
+			//*/
+			$q->free_result();
+		
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_case_ages('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			$data2['pdate1']. "','".
+			$data2['pdate2']. "'". ")";
+			$qString." END ";
+			$q = $this->db->query($qString);
+		
+			//*
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					array_push($temparr2,array(
+						'cr_barangay'=>$row->cr_barangay,
+						'patientcount'=>$row->patientcount,
+						'agerange'=>$row->agerange
+					));
+				}
+			}
+			//*/
+			$q->free_result();
+			if(count($temparr1)>=count($temparr2))
+			{
+				$arr1=$temparr1;
+				$arr2=$temparr2;
+			}
+			else
+			{
+				$arr1=$temparr2;
+				$arr2=$temparr1;
+				$swapped=true;
+			}
+			
+			$data.="
+				<table border='1' cellpadding='5' cellspacing='0' id='results' >
+				<tr>
+				<th>Barangay</th>
+				<th>Current Patient Count</th>
+				<th>Previous Patient Count</th>
+				<th>Age Range</th>
+				</tr>";
+			$isSpanned=false;
+			$llength=count($arr1);
+			$slength=count($arr2);
+			$arr1Pushtimes=0;
+			$arr2Pushtimes=0;
+			for($i=0;$i<$llength;$i++)
+			{
+				if(!array_key_exists($i, $arr1))
+				{
+					$arrTemp['cr_barangay']=$arr2[$i]['cr_barangay'];
+					$arrTemp['patientcount']=0;
+					$arrTemp['agerange']=$arr2[$i]['agerange'];
+					array_push($arr1,$arrTemp);
+				}
+				if(!array_key_exists($i, $arr2))
+				{
+					$arrTemp['cr_barangay']=$arr1[$i]['cr_barangay'];
+					$arrTemp['patientcount']=0;
+					$arrTemp['agerange']=$arr1[$i]['agerange'];
+					array_push($arr2,$arrTemp);
+				}
+				if($arr1[$i]['agerange']!=$arr2[$i]['agerange'])
+				{
+					if($arr1[$i]['agerange']<$arr2[$i]['agerange'])
+					{
+						$arrTemp['cr_barangay']=$arr1[$i]['cr_barangay'];
+						$arrTemp['patientcount']=0;
+						$arrTemp['agerange']=$arr1[$i]['agerange'];
+						
+						$newArray = array();
+						$inserted = false;							
+						foreach( $arr2 as $key => $value ) 
+						{							
+							if( !$inserted && $key === ($i+1) ) 
+							{
+								$newArray[ $i ] = $arrTemp;
+								$inserted = true;
+							}							
+							$newArray[ $key ] = $value;							
+						}
+						$arr2 = $newArray;
+						
+						$slength=count($arr2);
+					}
+					else
+					{
+						$arrTemp['cr_barangay']=$arr2[$i]['cr_barangay'];
+						$arrTemp['patientcount']=0;
+						$arrTemp['agerange']=$arr2[$i]['agerange'];
+						
+						$newArray = array();
+						$inserted = false;							
+						foreach( $arr1 as $key => $value ) 
+						{							
+							if( !$inserted && $key === ($i+1) ) 
+							{
+								$newArray[ $i ] = $arrTemp;
+								$inserted = true;
+							}							
+							$newArray[ $key ] = $value;							
+						}
+						$arr1 = $newArray;
+						
+						$llength=count($arr2);
+					}
+					if($slength>$llength)
+					{
+						$llength=$slength;
+					}
+				}
+			}
+			echo count($arr1)." ";
+			echo count($arr2)." ";
+			for($i=0; $i<count($arr1); $i++)
+			{
+				//ROW CREATION
+				if($i % 2 == 0 )
+				{
+					$data.="<tr style='background-color: #e3e3e3'>";
+				}
+				else
+				{
+					$data.="<tr>";
+				}
+				
+				//FIRST CELL (BARANGAY)
+				$ctr=1;
+				while(array_key_exists($i+$ctr,$arr1)&&$arr1[$i]['cr_barangay']==$arr1[$i+$ctr]['cr_barangay']&&!$isSpanned)
+				{
+					$ctr++;
+				}
+				if(!$isSpanned)
+				{
+					$data.=
+					"<td align='center' rowspan='".$ctr."'>".$row->cr_barangay."</td>";
+				}
+				if(array_key_exists($i+$ctr,$arr1)&&$arr1[$i]['cr_barangay']==$arr1[$i+1]['cr_barangay'])
+					$isSpanned=true;
+				else
+					$isSpanned=false;
+				
+				//SECOND AND THIRD CELLS (COUNT)
+				if($swapped)
+				$data.=
+					"<td align='center'>".$arr1[$i]['patientcount']."</td>".
+					"<td align='center'>".$arr2[$i]['patientcount']."</td>";
+				else
+				$data.=
+					"<td align='center'>".$arr2[$i]['patientcount']."</td>".
+					"<td align='center'>".$arr1[$i]['patientcount']."</td>";				
+				
+				//FOURTH CELL (AGERANGE)
+				$agerange = ($arr1[$i]['agerange']*10)."-".(($arr1[$i]['agerange']*10)+10);
+				$data.=
+					"<td align='center'>".$agerange."</td>".
+					"</tr>";
+			}
+			$data.="</table>";
+			return $data;
+		}
 		function getBarangayCount($data2)
 		{
 			//echo $data['node_type'];			

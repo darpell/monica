@@ -648,10 +648,10 @@ jQuery(document).ready(function(){
 					    'table_close'         => '</table>'
 					   );
 		$this->table->set_template($tmpl);
-		echo "<br/><center><b>Age Distribution:</b><br/><h4></>Table 1. Displaying Age Distribution for ".""."</h6><div>";
-		echo $this->table->generate($table2);?>
-		<?php echo "<br/><b>Age Distribution:</b><br/><h4></>Table 2. Displaying Age Distribution for ".""."</h6><center><div>";
-		echo $this->table->generate($table1);
+		echo "<br/><center><b>Age Distribution:</b><br/><h4></>Table 1. Displaying Age Distribution for period <br/><i>".$cdate1." to ".$cdate2."</i></h6>";
+		echo $this->table->generate($table1);?>
+		<?php echo "<br/><b>Age Distribution:</b><br/><h4></>Table 2. Displaying Age Distribution for period <br/><i>".$pdate1." to ".$pdate2."</i></h6><center>";
+		echo $this->table->generate($table2);
 		?>
 	</div>
 	</td>

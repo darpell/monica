@@ -93,6 +93,7 @@ class Mapform extends CI_Controller
 
 				$data['table1'] = $this->Mapping->getBarangayAges($dateData1);
 				$data['table2'] = $this->Mapping->getBarangayAges($dateData2);
+				//$data['test'] = $this->Mapping->getBarangayAgesS($data);
 							
 				$this->load->library('table');
 				$this->load->view('pages/view_map',$data);
