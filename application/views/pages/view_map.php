@@ -299,7 +299,6 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 			{
 				image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|8FD8D8';
 				point = new google.maps.LatLng(centroidX,centroidY);
-				
 			}
 			else
 			{
@@ -422,7 +421,7 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
 }
 	
 function load() {
-	
+
 	var map = new google.maps.Map(document.getElementById("map"), {
 		center: new google.maps.LatLng(14.301716, 120.942506),
 		zoom: 14,
@@ -442,8 +441,6 @@ function load() {
     	//*Data handler, SPLITTER
 		var str = document.getElementById('data').value.toString();
 		str = str.split("%&");
-		var Pstr = document.getElementById('Pdata').value.toString();
-		Pstr = Pstr.split("%&");
 		//-------------------*/
 		
 		mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
@@ -458,7 +455,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	  $("#old").change(function() {
-		  if($("#old").val()==0)
+		  if($("#old").val()==1)
 		  {
 			  var map = new google.maps.Map(document.getElementById("map"), {
 					center: new google.maps.LatLng(14.301716, 120.942506),
@@ -468,21 +465,27 @@ jQuery(document).ready(function(){
 			    	
 				if(document.getElementById('type').value.toString()=="larvalpositive")
 			    {
-			        mapLarvalOverlay(map,document.getElementById('dist').value,document.getElementById("data").value,false);
+					mapLarvalOverlay(map,document.getElementById('dist').value,document.getElementById("data").value,false);
+			        mapLarvalOverlay(map,document.getElementById('Pdist').value,document.getElementById("Pdata").value,true);
 			    }
 				else if(document.getElementById('type').value.toString()=="denguecase")
 				{
 					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
+					mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('Pdata').value.toString(),document.getElementById('PdataBInfo').value.toString(),true);
 			    }
 				else
 				{
 			    	//*Data handler, SPLITTER
 					var str = document.getElementById('data').value.toString();
 					str = str.split("%&");
+					var Pstr = document.getElementById('Pdata').value.toString();
+					Pstr = Pstr.split("%&");
 					//-------------------*/
 					
 					mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
+					mapLarvalOverlay(map,document.getElementById('Pdist').value.toString(),Pstr[0],true);
 					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
+					mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),Pstr[1],document.getElementById('PdataBInfo').value.toString(),true);
 				}
 		  }
 		  else
@@ -602,8 +605,8 @@ jQuery(document).ready(function(){
 		?>
 		<br/><br/>
 		<select name='old' id='old'>
-		  <option value="0">Hide</option>
-		  <option value="1" selected>Display</option>
+		  <option value="0" selected>Hide</option>
+		  <option value="1">Display</option>
 		</select> <b>barangay nodes containing old data.</b><br />
 		
 		<?php
@@ -613,7 +616,7 @@ jQuery(document).ready(function(){
 		<select name='deflt' id='deflt'>
 		  <option value="0">custom</option>
 		  <option value="1" selected>default</option>
-		</select> date for old data comparison. <br/>
+		</select> date for old data comparison. <i>Default is same length and period of the previous year(s)</i><br/>
 		<?php
 		echo "Start Date:";
 		echo form_dropdown('PYearStart-ddl', $optionsYear,date('Y'));
