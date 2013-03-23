@@ -9,14 +9,28 @@ class Immediate_case extends CI_Controller
 	
 	function index()
 	{
-		//$this->form_validation->set_rules('mob_username-txt_r', 'username', 'required');
-		//$this->form_validation->set_rules('mob_password-txt_r', 'password', 'required');
+		$this->load->view('mobile/immediate_case_form');
+	}
+	
+	function add()
+	{
+		$this->form_validation->set_rules('TPdate-txt_r', 'date', 'required');
+		$this->form_validation->set_rules('TPfname-txt_r', 'first name', 'required');
+		$this->form_validation->set_rules('TPlname-txt_r', 'last name', 'required');
+		$this->form_validation->set_rules('TPage-txt_r', 'age', 'required');
+		$this->form_validation->set_rules('TPsex-txt_r', 'gender', 'required');
+		$this->form_validation->set_rules('TPdob-txt_r', 'date of birth', 'required');
+		$this->form_validation->set_rules('TPaddress-txt_r', 'address', 'required');
+		$this->form_validation->set_rules('TPremarks-txt_r', 'remarks', 'required');
 			
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('immediate_case_form');
+			$this->load->view('mobile/immediate_case_form');
 		}
-		
+		else
+		{
+			
+		}
 	}
 }
 
