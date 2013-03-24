@@ -11,6 +11,12 @@ class Poi_model extends CI_Model
 	{
 		$this->db->insert('map_nodes',$data);
 	}
+	
+	function edit($id, $data)
+	{
+		$this->db->where('node_no');
+		$this->db->update('map_nodes',$data);
+	}
 }
 
 /* End of poi_model.php */
