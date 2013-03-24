@@ -48,6 +48,7 @@ xmlhttp.send(null);
 
 }
 var infoWindow = new google.maps.InfoWindow();
+infoWindow.setOptions({maxWidth:400});
 var customIcons = {
 		  larvalpositive: {
 	        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png',
@@ -81,16 +82,17 @@ function splitter(str){//Data splitter
 	var createdOn = new Array();
 	
 
-function createMarker(map,point,image,info,bounce,isOld){//General marker creation
+function createMarker(map,point,image,info,bounce,isOld,isPoI){//General marker creation
 	var centroidMarker;
 	var oms = new OverlappingMarkerSpiderfier(map);
-	if(image === null)
+	if(image === null && !isPoI)
 	{
 		if(isOld===false)
 		{
 			centroidMarker = new google.maps.Marker({
 			  position: point,
-			  map: map
+			  map: map,
+			  shadow:null
 			});
 			oms.addMarker(centroidMarker);
 			if(bounce !== null)
@@ -104,10 +106,6 @@ function createMarker(map,point,image,info,bounce,isOld){//General marker creati
 				  position: point,
 				  map: map,
 			      icon: new google.maps.MarkerImage('https://maps.gstatic.com/mapfiles/ms2/micons/ltblue-dot.png'),
-			      shadow: new google.maps.MarkerImage('http://maps.gstatic.com/intl/en_us/mapfiles/markers/marker_sprite.png', 
-			    	      new google.maps.Size(37,34), 
-			    	      new google.maps.Point(20, 0), 
-			    	      new google.maps.Point(10, 34))
 				});
 				oms.addMarker(centroidMarker);
 				if(bounce !== null)
@@ -116,18 +114,21 @@ function createMarker(map,point,image,info,bounce,isOld){//General marker creati
 				}
 		}
 	}
+	else if (isPoI)
+	{
+		var centroidMarker = new google.maps.Marker({  
+        position: point,   
+        map: map,  
+        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=I|FF0000|000000'  
+    	});  
+	}
 	else
 	{
 		centroidMarker = new google.maps.Marker({
 		      map: map,
 		      position: point,
 		      icon: image,
-		      shadow: new google.maps.MarkerImage('http://maps.gstatic.com/intl/en_us/mapfiles/markers/marker_sprite.png', 
-		    	      new google.maps.Size(37,34), 
-		    	      new google.maps.Point(20, 0), 
-		    	      new google.maps.Point(10, 34))
-		    });
-		
+			});
 	}
 	if (type!==null)
 	{
@@ -150,6 +151,19 @@ function createMarker(map,point,image,info,bounce,isOld){//General marker creati
 	/*google.maps.event.addListener(centroidMarker, 'onClick', function() {
 		
 	});*/
+}
+
+function mapPointsOfInterest(googleMap)
+{
+	var tempo=splitter(document.getElementById("interest").value.toString());
+	var length=tempo.length;
+	//alert(tempo);
+	for(var i=0;i<length;i++)
+	{
+		var point = new google.maps.LatLng(tempo[i][1],tempo[i][2]);
+		var html = "<b>"+tempo[i][0]+"</b><br/>"+tempo[i][3]+"<br/><br/><b>Location:</b> "+tempo[i][6]+" City, Barangay "+tempo[i][5]+"<br/><br/><b>Notes:</b> "+tempo[i][4]+"<br/><br/><i>Added on "+tempo[i][7]+"</i>";
+		createMarker(googleMap,point,null,html,false,false,true);
+	}
 }
 
 function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Denguecase barangay polygon display
@@ -190,6 +204,7 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 		else
 		{
 			//*CREATION OF POLYGON
+           if(!isOld)
 			var bermudaTriangle = new google.maps.Polygon(
 					{
 						paths: latLng,
@@ -239,10 +254,10 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 				image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 				point = new google.maps.LatLng(centroidX,centroidY+0.0010);
 			}
-			createMarker(map,point,image,html,null,true);
+			createMarker(map,point,image,html,null,true,false);
 			nodeInfoCounter++;
 			//-------------------*/
-           
+           if(!isOld)
 			bermudaTriangle.setMap(map);
 			latLng = [];
 
@@ -258,6 +273,7 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 		}
 	}
 	//*CREATION OF POLYGON
+    if(!isOld)
 	var bermudaTriangle = new google.maps.Polygon(
 			{
 				paths: latLng,
@@ -305,10 +321,10 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 				image = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+casecount+'|ff776b';
 				point = new google.maps.LatLng(centroidX,centroidY+0.0010);
 			}
-			createMarker(map,point,image,html,null,true);
+			createMarker(map,point,image,html,null,true,false);
 			nodeInfoCounter++;
 	//-------------------*/
-   
+   	if(!isOld)
 	bermudaTriangle.setMap(map);
 	
 }
@@ -389,29 +405,29 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
   		var circle = null;
 		if(isOld)
 		{
-	 		createMarker(map,point,image,html,bounce,true);
+	 		createMarker(map,point,image,html,bounce,true,false);
 	 		circle = new google.maps.Circle({
 				center:point,
 				radius:200,
 				strokeColor:"#66CCCC",
-				strokeOpacity:0.4,
+				strokeOpacity:0.7,
 				strokeWeight:1,
 				fillColor:"#66CCCC",
-				fillOpacity:0.4,
+				fillOpacity:0.05,
 				clickable:false
 			});
 		}
 		else
 		{
-	 		createMarker(map,point,image,html,bounce,false);
+	 		createMarker(map,point,image,html,bounce,false,false);
 	 		circle = new google.maps.Circle({
 				center:point,
 				radius:200,
 				strokeColor:"#0000FF",
-				strokeOpacity:0.4,
+				strokeOpacity:0.7,
 				strokeWeight:1,
 				fillColor:"#0000FF",
-				fillOpacity:0.2,
+				fillOpacity:0.05,
 				clickable:false
 			});
 		}
@@ -421,12 +437,12 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
 }
 	
 function load() {
-
 	var map = new google.maps.Map(document.getElementById("map"), {
 		center: new google.maps.LatLng(14.301716, 120.942506),
 		zoom: 14,
 		mapTypeId: 'hybrid'
 	});
+	mapPointsOfInterest(map);
     	
 	if(document.getElementById('type').value.toString()=="larvalpositive")
     {
@@ -462,6 +478,7 @@ jQuery(document).ready(function(){
 					zoom: 14,
 					mapTypeId: 'hybrid'
 				});
+				mapPointsOfInterest(map);
 			    	
 				if(document.getElementById('type').value.toString()=="larvalpositive")
 			    {
@@ -503,6 +520,8 @@ jQuery(document).ready(function(){
 <input type = 'hidden' id ='dataBCount' name='dataBCount' value='<?php echo $bcount?>'>
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='dist' name='dist' value='<?php echo $dist?>'>
+
+<input type = 'hidden' id ='interest' name='interest' value='<?php echo $interest?>'>
 
 <input type = 'hidden' id ='Pdata' name='Pdata' value='<?php echo $Pnodes?>'>
 <input type = 'hidden' id ='PdataBInfo' name='PdataBInfo' value='<?php echo $Pbinfo?>'>
@@ -607,7 +626,7 @@ jQuery(document).ready(function(){
 		<select name='old' id='old'>
 		  <option value="0" selected>Hide</option>
 		  <option value="1">Display</option>
-		</select> <b>barangay nodes containing old data.</b><br />
+		</select> <b> nodes containing old data.</b><br />
 		
 		<?php
 		echo "Old Data Comparison: <i>(Currently ".$pdate1." to ".$pdate2.")</i><br/>"; 	
@@ -631,7 +650,7 @@ jQuery(document).ready(function(){
 	</td>
 </tr>
 <tr>
-	<td style="width:40%; height:60%">
+	<td style="width:40%; height:60%" rowspan='2'>
 	<div style="height: 100%; overflow: auto;">
 		<?php 
 		$tmpl = array (
@@ -657,6 +676,37 @@ jQuery(document).ready(function(){
 		echo $this->table->generate($table2);
 		?>
 	</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<table>
+		<tr>
+		<td>
+			<h5>Legend</h5>
+		</td>
+		</tr>
+		<tr>
+		<td><img border="0" src="http://maps.google.com/mapfiles/marker.png"></td>
+		<td>Larval sampling, current search data. Bounces when 25% of all nodes returned by the search is within 50 meters or if 50% are within 200 meters.</td>
+		</tr>	
+		<tr>
+			<td><img border="0" src="http://maps.google.com/mapfiles/ms/micons/ltblue-dot.png"></td>
+			<td>"Old" Larval sampling. Same as previous, but uses old search data. <i>(Optionally activated)</i></td>
+		</tr>	
+		<tr>
+			<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=I|FF0000|000000"></td>
+			<td>Point of interest.</td>
+		</tr>	
+		<tr>
+			<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=4|ff776b"></td>
+			<td>Barangay marker, number is the amount of dengue cases for the period. Commonly located at the center of the barangay boundary. For irregularly shaped barangays, the location may vary.</td>
+		</tr>
+		<tr>
+			<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=4|8FD8D8"></td>
+			<td>"Old" Barangay Marker. Same as previous, but uses old search data. Located beside Barangay Marker <i>(Optionally activated)</i></td>
+		</tr>
+		</table>
 	</td>
 </tr>
 </table>

@@ -42,11 +42,9 @@ class Mapping extends CI_Model
 	function mapByType($data)
 		{
 			if($data['node_type']=="larvalpositive")
-			{
-				
-				//echo $data['node_type'];			
+			{		
 				$qString = 'CALL '; 
-				$qString .= "view_nodes_type('"; // name of stored procedure
+				$qString .= "view_larval_nodes('"; // name of stored procedure
 				$qString .= 
 				//variables needed by the stored procedure
 				$data['date1']. "','". 
@@ -111,7 +109,7 @@ class Mapping extends CI_Model
 			{
 				//QUERY LARVAL INFORMATION
 				$qString = 'CALL ';
-				$qString .= "view_nodes_type('"; // name of stored procedure
+				$qString .= "view_larval_nodes('"; // name of stored procedure
 				$qString .=
 				//variables needed by the stored procedure
 				$data['date1']. "','".
@@ -170,7 +168,7 @@ class Mapping extends CI_Model
 					$q->free_result();
 					//return null;
 				}
-				return $data;
+				return substr($data,0,-2);
 			}
 			//*/
 		}
@@ -179,7 +177,7 @@ class Mapping extends CI_Model
 		{
 			//QUERY LARVAL INFORMATION
 			$qString = 'CALL ';
-			$qString .= "view_nodes_type('"; // name of stored procedure
+			$qString .= "view_larval_nodes('"; // name of stored procedure
 			$qString .=
 			//variables needed by the stored procedure
 			$data['date1']. "','".
@@ -207,25 +205,22 @@ class Mapping extends CI_Model
 			}
 			$dist="";
 			//echo count($data);
-			for($i=0;$i<=count($data)-1;$i++)
+			$datalength=count($data);
+			for($i=0;$i<=$datalength-1;$i++)
 			{
 				$amount200a=0;
 				$amount200p=0;
 				$amount50a=0;
 				$amount50p=0;
-				$distance;
-				for($_i=0;$_i<=count($data)-1;$_i++)
+				$lat_a = $data[$i][1] * PI()/180;
+				$long_a = $data[$i][2] * PI()/180;
+				for($_i=0;$_i<=$datalength-1;$_i++)
 				{
 					$distance=0;
-					if($data[$i][0]===$data[$_i][0])
-					{
-					}
-					else
+					if($data[$i][0]!==$data[$_i][0])
 					{
 						//echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
-						$lat_a = $data[$i][1] * PI()/180;
 				        $lat_b = $data[$_i][1] * PI()/180;
-				        $long_a = $data[$i][2] * PI()/180;
 				        $long_b = $data[$_i][2] * PI()/180;
 				        $distance =
 				                acos(
@@ -246,52 +241,40 @@ class Mapping extends CI_Model
 				}
 				$amount200p=100*number_format($amount200a/count($data),2,'.','');
 				$amount50p=100*number_format($amount50a/count($data),2,'.','');
-				/*
-				$dist[$i][0]=$data[$i][0];
-				$dist[$i][1]=$amount200a;
-				$dist[$i][2]=$amount200p;
-				$dist[$i][3]=$amount50a;
-				$dist[$i][4]=$amount50p;
-				//*/
 				$dist.=$data[$i][0]."&&".$amount200a."&&".$amount200p."&&".$amount50a."&&".$amount50p."%%";
 			}
-			return substr($dist,0,-2);;
+			return substr($dist,0,-2);
 		}
-		/*
-	function mapAllPolygon()//all polygons
-		{
-			//echo $data['node_type'];			
+		//*
+	function getPointsOfInterest()//all polygons
+		{	
 			$qString = 'CALL '; 
-			$qString .= "get_all_polygon_points ()'"; // name of stored procedure
+			$qString .= "view_PoI_nodes()"; // name of stored procedure
 			
 			$q = $this->db->query($qString);
 			//*
+			$data="";
 			if($q->num_rows() > 0) 
 			{	
-				$greaterdata;
-				$data = "";
-				$name= $q[0]->polygon_name;
 				foreach ($q->result() as $row) 
 				{
-					if($name == $row->polygon_name)
-					{
-						$data .=
-						$row->polygon_name . "&&" . 
-						$row->point_lat . "&&" . 
-						$row->point_lng . "%%" ;
-					}
-					else 
-					{
-						$greaterdata[]=array
-						(
-							$row->node_type=>$row->node_type
-						);
-					}
-					$name= $row->polygon_name;
+					if($row->node_type==0)
+						$temp="Potential Source Area <br/><i>(Commonly bodies of water or abandoned areas)</i>";
+					else
+						$temp="Potential Risk Area <br/><i>(Commonly areas with high population density or traffic)</i>";
+					$data .=
+					$row->node_name . "&&" . 
+					$row->node_lat . "&&" . 
+					$row->node_lng . "&&" . 
+					$temp . "&&" . 
+					$row->node_notes . "&&" . 
+					$row->node_barangay . "&&" .
+					$row->node_city . "&&" . 
+					$row->node_addedOn . "%%" ;
 				}
 				
 				$q->free_result();
-				return $greaterdata;
+				return substr($data,0,-2);
 			}
 			else
 			{
@@ -302,7 +285,6 @@ class Mapping extends CI_Model
 		//*/
 		function getBarangayAges($data2)
 		{
-			//echo $data['node_type'];
 			$qString = 'CALL ';
 			$qString .= "get_case_ages('"; // name of stored procedure
 			$qString .=
@@ -348,7 +330,6 @@ class Mapping extends CI_Model
 		}
 		function getBarangayAgesS($data2)//returns String for echoing directly to HTML
 		{
-			//echo $data['node_type'];
 			$qString = 'CALL ';
 			$qString .= "get_case_ages('"; // name of stored procedure
 			$qString .=
@@ -381,7 +362,6 @@ class Mapping extends CI_Model
 			//*/
 			$q->free_result();
 		
-			//echo $data['node_type'];
 			$qString = 'CALL ';
 			$qString .= "get_case_ages('"; // name of stored procedure
 			$qString .=
@@ -546,8 +526,7 @@ class Mapping extends CI_Model
 			return $data;
 		}
 		function getBarangayCount($data2)
-		{
-			//echo $data['node_type'];			
+		{	
 			$qString = 'CALL '; 
 			$qString .= "get_empty_barangays()";
 			$q = $this->db->query($qString);
@@ -562,8 +541,7 @@ class Mapping extends CI_Model
 				}
 			}
 			$q->free_result();
-			
-			//echo $data['node_type'];			
+				
 			$qString = 'CALL '; 
 			$qString .= "get_brangay_count('"; // name of stored procedure
 			$qString .= 
@@ -594,7 +572,6 @@ class Mapping extends CI_Model
 		}
 		function getBarangayInfo($data2)
 		{
-			//echo $data['node_type'];
 			$qString = 'CALL ';
 			$qString .= "get_empty_barangays()";
 			$q = $this->db->query($qString);
@@ -610,7 +587,6 @@ class Mapping extends CI_Model
 			}
 			$q->free_result();
 				
-			//echo $data['node_type'];
 			$qString = 'CALL ';
 			$qString .= "get_brangay_count('"; // name of stored procedure
 			$qString .=
@@ -646,8 +622,7 @@ class Mapping extends CI_Model
 			//*/
 		}
 		function getBarangays()
-		{
-			//echo $data['node_type'];			
+		{		
 			$qString = 'CALL '; 
 			$qString .= "get_barangays("; // name of stored procedure
 			$qString .= 
@@ -675,8 +650,7 @@ class Mapping extends CI_Model
 			//*/
 		}
 		function getAllBarangays()
-		{
-			//echo $data['node_type'];			
+		{	
 			$qString = 'CALL '; 
 			$qString .= "get_allbarangays("; // name of stored procedure
 			$qString .= 
@@ -704,9 +678,7 @@ class Mapping extends CI_Model
 			//*/
 		}
 		function getNodes($data2)
-		{
-			
-			//echo $data['node_type'];			
+		{	
 			$qString = 'CALL '; 
 			$qString .= "get_brangay_count('"; // name of stored procedure
 			$qString .= 
@@ -736,11 +708,9 @@ class Mapping extends CI_Model
 			//*/
 		}
 		function getLarvals($data2)
-		{
-			
-			//echo $data['node_type'];			
+		{	
 			$qString = 'CALL '; 
-			$qString .= "view_nodes_type('"; // name of stored procedure
+			$qString .= "view_larval_nodes('"; // name of stored procedure
 			$qString .= 
 			//variables needed by the stored procedure
 			$data2['date1']. "','". 
@@ -764,7 +734,7 @@ class Mapping extends CI_Model
 					$row->tracking_number . "%%" ;
 				}
 				$q->free_result();
-				return $data;
+				return substr($data,0,-2);
 			}
 			else
 			{
