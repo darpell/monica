@@ -10,9 +10,14 @@ class Larval extends CI_Controller
 	
 	function index()
 	{
-		$data['distance_formula_200'] = $this->larval_mapping->distance_formula('200');
-		$data['distance_formula_50'] = $this->larval_mapping->distance_formula('50');
-		$data['points'] = $this->larval_mapping->get_points();
+		//setting this year's plotted nodes
+		$begin_date = '2012-01-01';//date("Y-m-d H:i:s");
+		$current_date = date("Y-m-d");
+		
+		$data['distance_formula_200'] = $this->larval_mapping->distance_formula('200', $begin_date, $current_date);
+		$data['distance_formula_50'] = $this->larval_mapping->distance_formula('50', $begin_date, $current_date);
+		
+		$data['points'] = $this->larval_mapping->get_points($begin_date, $current_date);
 		$this->load->view('mobile/riskmap', $data);
 	}
 	

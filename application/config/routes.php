@@ -47,6 +47,7 @@ $route['mobile/tasks/(:any)'] = 'mobile/tasks/view/$1';
 $route['mobile/tasks/done'] = 'mobile/tasks/done';
 $route['mobile/mob_check'] = 'mobile/login/mob_check';
 $route['mobile/page/addls'] = 'user/lsform/addls';
+$route['mobile/page/new_poi'] = 'mobile/poi/add';
 $route['mobile/immediate_case'] = 'mobile/immediate_case';
 $route['mobile/case_add'] = 'mobile/immediate_case/add';
 $route['mobile/riskmap_options'] = 'mobile/larval/options';

@@ -141,25 +141,25 @@ class Larval_mapping extends CI_Model
 			$amount = 0;
 			for ($_i = 0; $_i <= count($data)-1; $_i++)
 			{
-			if ($data[$i]['track_no'] === $data[$_i]['track_no']) {}
-			else
-			{
-							//echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
-				$lat_a = $data[$i]['lat'] * PI()/180;
-				$lat_b = $data[$_i]['lat'] * PI()/180;
-				$long_a = $data[$i]['lng'] * PI()/180;
-				$long_b = $data[$_i]['lng'] * PI()/180;
-				$distance = acos (
-								sin($lat_a ) * sin($lat_b) +
-								cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
-								) * 6371;
-				$distance *= 1000;
-				if ($distance <= $given_distance)
+				if ($data[$i]['track_no'] === $data[$_i]['track_no']) {}
+				else
 				{
-					$amount++;
+								//echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
+					$lat_a = $data[$i]['lat'] * PI()/180;
+					$lat_b = $data[$_i]['lat'] * PI()/180;
+					$long_a = $data[$i]['lng'] * PI()/180;
+					$long_b = $data[$_i]['lng'] * PI()/180;
+					$distance = acos (
+									sin($lat_a ) * sin($lat_b) +
+									cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+									) * 6371;
+					$distance *= 1000;
+					if ($distance <= $given_distance)
+					{
+						$amount++;
+					}
 				}
 			}
-		}
 		
 		$percentage = 100 * number_format($amount / count($data), 2, '.', '');
 		

@@ -28,6 +28,9 @@ class Pages extends CI_Controller
 			else if ($page == 'larval_survey')
 				$this->load->view('mobile/ls_form');
 			
+			else if ($page == 'point_of_interest')
+				$this->load->view('mobile/poi_form');
+				
 			else if ($page == 'deng_info')
 				$this->load->view('mobile/deng_info');
 		/*}

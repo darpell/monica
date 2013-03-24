@@ -64,7 +64,7 @@
 			
 			var contentString = "<b>Timestamp:</b> " + parseTimestamp(position.timestamp) + "<br/><b>User location:</b> lat " + position.coords.latitude + ", long " + position.coords.longitude + ", accuracy " + position.coords.accuracy;
 			var add_ls_btn = '<div id="add_ls_btn"> <button onclick="window.open(&quot;<?= site_url('mobile/page/larval_survey') ?>&quot;);"> Add Larval Incidence </button></div>';
-			var interest_btn = '<div id="interest_btn"> <button onclick="window.open(&quot;<?= site_url('mobile/page/larval_survey') ?>&quot;);"> Plot Area of Interest </button></div>';
+			var interest_btn = '<div id="interest_btn"> <button onclick="window.open(&quot;<?= site_url('mobile/page/point_of_interest') ?>&quot;);"> Plot Area of Interest </button></div>';
 
 			var infowindow = new google.maps.InfoWindow({
 				content: contentString + add_ls_btn + interest_btn

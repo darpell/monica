@@ -24,7 +24,8 @@
 		      }
 		    };
 
-	function splitter(str){
+	function splitter(str)
+	{
 		
 		str = str.split("%%");
 		
@@ -34,7 +35,7 @@
 			data[i] = str[i].split("&&");
 		}
 		return data;
-		}
+	}
 
 		var refNumber = new Array();
 		var nodeType = new Array();

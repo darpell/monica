@@ -25,7 +25,8 @@
 		</ul>
 		<ul data-role="listview" data-autodividers="true" data-inset="true" data-count-theme="b">
 			<li> <a href="<?php echo site_url('mobile/page/checklocation');?>" data-ajax="false" data-transition="slide"> Plot Current Location </a> </li>
-        	<li> <a href="<?php echo site_url('mobile/page/larval_survey');?>" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
+        	<li> <a href="<?php echo site_url('mobile/page/point_of_interest');?>" data-ajax="false" data-transition="slide"> Add Source/Risk Area </a> </li>
+           	<li> <a href="<?php echo site_url('mobile/page/larval_survey');?>" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
         </ul>
         
         <ul data-role="listview" data-autodividers="true" data-inset="true">
