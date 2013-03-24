@@ -160,7 +160,7 @@ function initialize(){
 	<!-- household -->
 	<label for="TPhousehold-txt"> Name of Household: </label>
 	<label style="color:red"><?php echo form_error('TPhousehold-txt_r'); ?></label>
-	<input type="text" name="TPhousehold-txt_r" id="TPhousehold-txt" value="<?php echo set_value('patientno'); ?>" data-mini="true" />
+	<input type="text" name="TPhousehold-txt_r" id="TPhousehold-txt" value="<?php echo set_value('TPhousehold-txt_r'); ?>" data-mini="true" />
 	<!-- /household -->
 
 	<!-- container -->

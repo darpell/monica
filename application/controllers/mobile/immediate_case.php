@@ -4,7 +4,7 @@ class Immediate_case extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		//$this->load->model('tasks_model','tasks');
+		$this->load->model('immediate_case_model','im_case');
 	}
 	
 	function index()
@@ -29,7 +29,21 @@ class Immediate_case extends CI_Controller
 		}
 		else
 		{
+			$input_data = array(
+					'f_name'		=>	$this->input->post('TPfname-txt_r'),
+					'l_name'		=>	$this->input->post('TPlname-txt_r'),
+					'age'			=>	$this->input->post('TPage-txt_r'),
+					'sex'			=>	$this->input->post('TPsex-txt_r'),
+					'dob'			=>	date('Y-m-d', strtotime($this->input->post('TPdob-txt_r'))),
+					'address'		=>	$this->input->post('TPaddress-txt_r'),
+					'remarks'		=>	$this->input->post('TPremarks-txt_r'),
+					'created_by'	=>	$this->session->userdata('TPusername'),
+					'created_on'	=>	date("Y-m-d H:i:s")
+				);
 			
+			$this->im_case->add($input_data);
+			$data['result'] = 'Your entry has been recorded';
+			$this->load->view('mobile/im_case_success',$data);
 		}
 	}
 }

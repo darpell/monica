@@ -72,7 +72,7 @@ $route['CHO'] = 'user/cho';
 $route['CHO/(:any)'] = 'user/cho/$1';
 $route['default_controller'] = 'user/pages/view';
 $route['logout'] = 'user/login/logout';
-$route['mobile/logout'] = 'user/login/logout';
+$route['mobile/logout'] = 'mobile/login/logout';
 $route['(:any)'] = 'user/pages/view/$1';
 
 
