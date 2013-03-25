@@ -86,17 +86,35 @@ class Cho extends CI_Controller
 		{
 			$data['cases'] .= $epidemic['data'][1][$s] .'&&';
 		}
+		if ($this->input->post('barangay') == null OR $this->input->post('barangay') == 'All' )
+		{$data['parameter'] = 'All';
+		$data['table'] = $this->Cho_model->epidemic_threshold();
+		}
+		else
+		{
+			$data['parameter'] = $this->input->post('barangay');
+			$data['table'] = $this->Cho_model->epidemic_threshold( $this->input->post('barangay'));
+		}
 
-		
-			
+		$data['barangay'] = $this->Cho_model->getAllBarangays();
+		$data['larval'] = $this->Cho_model->getPositiveSurveys();
 		$this->load->view('pages/dashboard.php' , $data);
 	}
 	function epidemic_threshold()
 	{	
 		$this->load->model('Cho_model');
+		if ($this->input->post('barangay') == null OR $this->input->post('barangay') == 'All' )
+		{$data['parameter'] = 'All';
+		$data['table'] = $this->Cho_model->epidemic_threshold();
+		}
+		else 
+		{
+		$data['parameter'] = $this->input->post('barangay');
+		$data['table'] = $this->Cho_model->epidemic_threshold( $this->input->post('barangay'));
+		}
+		$epidemic = $data['table'];
 		$data['title'] = 'View Tasks';
 		$data['script'] = '';
-		$data['table'] = $this->Cho_model->epidemic_threshold();
 		$data['arranged'] = array();
 		$data['arranged'][]=array(
 				'epidemic'=>'Epidemic Threshold',
@@ -174,53 +192,45 @@ class Cho extends CI_Controller
 				'12'=> $data['table']['csum196sd'][12],
 		);
 		$data['arranged'][]=$data['table']['data'][1];
-		$data['chart_data'] =  'Epidemic Threshold&&Jan.&&Feb.&&Mar.&&Apr.&&May.&&Jun.&&Jul.&&Aug.&&Sept.&&Oct.&&Nov.&&Dec.%%';
+		$data['chart_data'] =  'Jan.&&Feb.&&Mar.&&Apr.&&May.&&Jun.&&Jul.&&Aug.&&Sept.&&Oct.&&Nov.&&Dec.%%';
+
+		for($s = 1; $s < count($data['arranged']); $s++)
+		{
+			for($i = 1; $i<count($data['arranged'][$s]); $i++)
+			{
+				if($i == count($data['arranged'][$s])-1)
+					$data['chart_data'] .= $data['arranged'][$s][$i].'%%';
+				else 
+					$data['chart_data'] .= $data['arranged'][$s][$i].'&&';
+			}
+		}
 		
-		$data['chart_data'] .= 
-			$data['arranged'][1]['epidemic'].'&&'.
-			$data['arranged'][1][1].'&&'.
-			$data['arranged'][1][2].'&&'.
-			$data['arranged'][1][3].'&&'.
-			$data['arranged'][1][4].'&&'.
-			$data['arranged'][1][5].'&&'.
-			$data['arranged'][1][6].'&&'.			
-			$data['arranged'][1][7].'&&'.
-			$data['arranged'][1][8].'&&'.
-			$data['arranged'][1][9].'&&'.
-			$data['arranged'][1][10].'&&'.			
-			$data['arranged'][1][11].'&&'.
-			$data['arranged'][1][12].'%%';
-		
-		$data['chart_data'] .=
-		$data['arranged'][2]['epidemic'].'&&'.
-		$data['arranged'][2][1].'&&'.
-		$data['arranged'][2][2].'&&'.
-		$data['arranged'][2][3].'&&'.
-		$data['arranged'][2][4].'&&'.
-		$data['arranged'][2][5].'&&'.
-		$data['arranged'][2][6].'&&'.
-		$data['arranged'][2][7].'&&'.
-		$data['arranged'][2][8].'&&'.
-		$data['arranged'][2][9].'&&'.
-		$data['arranged'][2][10].'&&'.
-		$data['arranged'][2][11].'&&'.
-		$data['arranged'][2][12].'%%';
-		
-		$data['chart_data'] .=
-		$data['arranged'][3]['epidemic'].'&&'.
-		$data['arranged'][3][1].'&&'.
-		$data['arranged'][3][2].'&&'.
-		$data['arranged'][3][3].'&&'.
-		$data['arranged'][3][4].'&&'.
-		$data['arranged'][3][5].'&&'.
-		$data['arranged'][3][6].'&&'.
-		$data['arranged'][3][7].'&&'.
-		$data['arranged'][3][8].'&&'.
-		$data['arranged'][3][9].'&&'.
-		$data['arranged'][3][10].'&&'.
-		$data['arranged'][3][11].'&&'.
-		$data['arranged'][3][12].'%%';
-		
+		$data['quartile'] = '';
+		for($s = 1 ; $s < count($epidemic['quartile']) ; $s++ )
+		{
+			$data['quartile'] .= $epidemic['quartile'][$s] .'&&';
+		}
+		$data['csum'] = '';
+		for($s = 1 ; $s < count($epidemic['csum']) ; $s++ )
+		{
+			$data['csum'] .= $epidemic['csum'][$s] .'&&';
+		}
+		$data['m2sd'] = '';
+		for($s = 1 ; $s < count($epidemic['m2sd']) ; $s++ )
+		{
+			$data['m2sd'] .= $epidemic['m2sd'][$s] .'&&';
+		}
+		$data['csum196sd'] = '';
+		for($s = 1 ; $s < count($epidemic['csum196sd']) ; $s++ )
+		{
+			$data['csum196sd'] .= $epidemic['csum196sd'][$s] .'&&';
+		}
+		$data['cases'] = '';
+		for($s = 1 ; $s < count($epidemic['data'][1]) ; $s++ )
+		{
+			$data['cases'] .= $epidemic['data'][1][$s] .'&&';
+		}
+		$data['barangay'] = $this->Cho_model->getAllBarangays();
 		$this->load->library('table');
 		$this->load->view('pages/view_epidemic_threshold.php' , $data);
 		

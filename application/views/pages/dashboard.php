@@ -46,12 +46,47 @@
 		cases.pop();
 		var today2 = new Date();
 
+		//larval points
+		var str3 = document.getElementById('larval').value.toString();
+		str3 = str3.split("%%");
+		var larval = new Array();
+		for (var i = 0; i < str3.length; i++)
+		{
+			larval[i] = str3[i].split("&&");
+		}
+		larval.pop();
+		alert(larval);
+		var larval1 = 0;
+		var larval2 = 0;
+		var larval3 = 0;
+		var larval4 = 0;
+
+		for (var i = 0; i < larval.length; i++)
+		{	
+			if (larval[i][1] == 'LANGKAAN II') 
+			{larval1 = larval[i][0];}
+			if (larval[i][1] == 'SAMPALOC I') 
+			{larval2 = larval[i][0];}
+			if (larval[i][1] == 'SAN AGUSTIN I') 
+			{larval3 = larval[i][0];}
+			if (larval[i][1] == 'SAN AGUSTIN III') 
+			{larval4 = larval[i][0];}
+		}
+
+		
+		
+		var tquartile = Math.round(((cases[ today2.getMonth()]/quartile[ today2.getMonth()]))*100);
+		var tcsum =  Math.round(((cases[ today2.getMonth()]/csum[ today2.getMonth()]))*100);
+		var tmean2sd = Math.round(((cases[ today2.getMonth()]/m2sd[ today2.getMonth()]))*100);
+		var tcsum196sd = Math.round(((cases[ today2.getMonth()]/csum196sd[ today2.getMonth()]))*100);
+		
+
 		 var epi = google.visualization.arrayToDataTable([
 		            ['Label', 'Value'],
-		         	['3rd Quartile', Math.round(((cases[ today2.getMonth()]/quartile[ today2.getMonth()]))*100)],
-		            ['C-SUM', Math.round(((cases[ today2.getMonth()]/csum[ today2.getMonth()]))*100)],
-		            ['mean+2SD', Math.round(((cases[ today2.getMonth()]/m2sd[ today2.getMonth()]))*100)],
-		            ['C-SUM+1.96SD', Math.round(((cases[ today2.getMonth()]/csum196sd[ today2.getMonth()]))*100)],
+		         	['3rd Quartile', tquartile],
+		            ['C-SUM', tcsum] ,
+		            ['mean+2SD', tmean2sd ],
+		            ['C-SUM+1.96SD', tcsum196sd],
 		                                                 ]);
 		 var epioptions = {
 		          redFrom: 90, redTo: 150,
@@ -96,6 +131,35 @@
 				{m4 = data[i][0];}
 				}
 			}
+
+
+			//number of postive
+			
+			var xvalues = [68, 71 ,62 ,75, 58, 60, 67, 68, 71, 69, 68, 67, 63, 62, 60, 63, 65, 67, 63, 61];
+			//number of cases
+			var yvalues = [4.1, 4.6, 3.8, 4.4, 3.2, 3.1, 3.8, 4.1, 4.3, 3.7, 3.5, 3.2, 3.7, 3.3, 3.4, 4.0, 4.1, 3.8, 3.4, 3.6];
+			var n = 4; //number of barangays
+			var xyprod = 0; // sum of the products of x and y
+			var xsum = 0;
+			var ysum = 0;
+			var xsumsq = 0;
+			var ysumsq = 0;
+
+			for (var i = 0; i < n; i++)
+			{
+				xyprod = xyprod + (xvalues[i]*yvalues[i]);
+				xsum = xsum + xvalues[i];
+				ysum = ysum + yvalues[i];
+				xsumsq = xsumsq + (xvalues[i]*xvalues[i]);
+				ysumsq = ysumsq + (yvalues[i]*yvalues[i]);
+			}
+
+			//correlation formula
+
+			var a = (n*xyprod) - (xsum*ysum); //numerator
+			var b = Math.sqrt(((n*xsumsq)-(xsum*xsum)) * ((n*ysumsq)-(ysum*ysum))); //denominator
+			var r = a/b; //correlation result;
+			
  
           // Prepare the data
         var str = document.getElementById('age_count').value.toString();
@@ -186,6 +250,14 @@
                 seriesType: "bars",
                 series: {5: {type: "line"}}
               };
+         var options2 = {
+                 title : 'Correlation Between Larval Survey and Dengue Cases with a Correlation Result ' + r,
+                 vAxis: {title: "Number"},
+                 hAxis: {title: "Barangay"},
+                 seriesType: "line",
+                 series: {5: {type: "line"}}
+               };
+         
         var data = google.visualization.arrayToDataTable([
        	['Barangay', yyyy, yyyy-1],
         ['Langkaan II',  parseInt(mn1),      parseInt(m1)],
@@ -193,9 +265,21 @@
         ['San Agustin I',  parseInt(mn3),     parseInt(m3)],
         ['San Agustin III',  parseInt(mn4),      parseInt(m4)]
         ]);
+        var data2 = google.visualization.arrayToDataTable([
+         ['Barangay', 'No. of Cases', 'No. Positive Larval Points'],
+         ['Langkaan II',  parseInt(mn1),  parseInt(larval1)    ],
+         ['Sampaloc I',  parseInt(mn2),    parseInt(larval2)  ],
+         ['San Agustin I',  parseInt(mn3),  parseInt(larval3)   ],
+         ['San Agustin III',  parseInt(mn4),  parseInt(larval4)    ]
+         ]);
+        
               // Instantiate and draw our chart, passing in some options.
               var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
               chart.draw(data, options);
+
+              var chart2 = new google.visualization.ComboChart(document.getElementById('chart_div2'));
+              chart2.draw(data2, options2);
+              
               new google.visualization.Gauge(document.getElementById('visualization')).
               draw(epi,epioptions);
       }
@@ -224,14 +308,15 @@
       </table>
     </div>
    <div id='chart_div'></div>
+   <div id='chart_div2'></div>
    
    
-</center>
+
 <?php 
 $attributes = array(
 						'id' => 'TPcr-form'
 					);
-echo form_open('CHO/view_tasks',$attributes); ?>
+echo form_open('tweet/testpost',$attributes); ?>
 
 		<div class="blog">
 
@@ -243,6 +328,41 @@ echo form_open('CHO/view_tasks',$attributes); ?>
 <input type="hidden" name="m2sd" id="m2sd" value="<?php echo $m2sd; ?>" />
 <input type="hidden" name="csum196sd" id="csum196sd" value="<?php echo $csum196sd; ?>" />
 <input type="hidden" name="cases" id="cases" value="<?php echo $cases; ?>" />
+<input type="hidden" name="larval" id="larval" value="<?php echo $larval; ?>" />
+
+<input type="hidden" name="tquartile" id="tquartile" value="" />
+<input type="hidden" name="tcsum" id="tcsum" value="" />
+<input type="hidden" name="tm2sd" id="tm2sd" value="" />
+<input type="hidden" name="tcsum196sd" id="tcsum196sd" value="" />
+<input type="hidden" name="tcases" id="tcases" value="" />
+<h4>Tweet Status</h4>
+<table  border="1"  align="center">
+<tr>
+	<td><input type="radio" name="tweettype" value="epi" checked = "true"/></td>
+    <td>Epidemic Threshold</td> 
+    <td><input type="radio" name="epitype" value="quartile" checked = "true" /> 3rd Quartile <br/>
+	<input type="radio" name="epitype" value="csum" /> C-SUM <br/>
+	<input type="radio" name="epitype" value="mean2sd" /> mean+2SD <br/>
+	<input type="radio" name="epitype" value="csum196sd" /> C-SUM+1.96SD <br/></td>
+  </tr>
+  <tr>
+  <td ><input type="radio" name="tweettype" value="count" /></td>
+  <td>No. Of Cases</td>
+  <td></td>
+  </tr>
+  <tr>
+  <td><input type="radio" name="tweettype" value="fact" checked = "true"/></td>
+  <td>Random Fact about Dengue</td>
+  <td></td>
+  </tr>
+  <tr>
+  <td><input type="radio" name="tweettype" value="msg" checked = "true"/></td>
+  <td>Custom Tweet</td>
+  <td width = "500"><input type="text"  name= "customtweet" value="" style="width:500px;"/></td>
+  </tr>
+</table>
+<input type="submit" class="submitButton" value="Tweet"/><?php echo form_close(); ?>
+</center>
 </div>
 
 

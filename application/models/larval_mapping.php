@@ -135,20 +135,22 @@ class Larval_mapping extends CI_Model
 				$ctr++;
 			}
 		}
-			
-		for ($i = 0; $i <= count($data)-1; $i++)
+		
+		$array_ctr = count($data);
+		for ($i = 0; $i < $array_ctr; $i++)
 		{
 			$amount = 0;
-			for ($_i = 0; $_i <= count($data)-1; $_i++)
+			$lat_a = $data[$i]['lat'] * PI() / 180;
+			$long_a = $data[$i]['lng'] * PI() / 180;
+			
+			for ($_i = 0; $_i < $array_ctr; $_i++)
 			{
 				if ($data[$i]['track_no'] === $data[$_i]['track_no']) {}
 				else
 				{
 								//echo "Comparing ".$data[$i][0]." and ".$data[$_i][0]." ";
-					$lat_a = $data[$i]['lat'] * PI()/180;
-					$lat_b = $data[$_i]['lat'] * PI()/180;
-					$long_a = $data[$i]['lng'] * PI()/180;
-					$long_b = $data[$_i]['lng'] * PI()/180;
+					$lat_b = $data[$_i]['lat'] * PI() / 180;
+					$long_b = $data[$_i]['lng'] * PI() / 180;
 					$distance = acos (
 									sin($lat_a ) * sin($lat_b) +
 									cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
