@@ -45,19 +45,42 @@ class Case_report extends CI_Controller
 		$return_data['city'] = $this->input->post('place');
 		$return_data['brgy'] = '';
 		
-		$return_data['action'] = 'places';
-		$return_data['places'] = $this->case_report_mob->get_brgys($return_data['province'],$return_data['city']);
-		$this->load->view('mobile/case_report_filter', $return_data);
+		//$this->form_validation->set_rules('place-ddl','cluster','required');
+		$this->form_validation->set_rules('begin_date','starting date','required');
+		$this->form_validation->set_rules('end_date','ending date','required');
+		if ($this->form_validation->run() == FALSE)
+		{
+			if ($this->input->post('city') != '')
+				$return_data['city'] = $this->input->post('city');
+			
+			$return_data['action'] = 'brgys';
+			$return_data['places'] = $this->case_report_mob->get_brgys($return_data['province'],$return_data['city']);
+			$this->load->view('mobile/case_report_filter', $return_data);
+		}
+		else
+		{
+			$begin = date('Y-m-d', strtotime($this->input->post('begin_date')));
+			$end = date('Y-m-d', strtotime($this->input->post('end_date')));
+			
+			$return_data['city'] = $this->input->post('city');
+			$return_data['brgy'] = $this->input->post('place');
+		
+			$return_data['places'] = $this->case_report_mob->get_places($return_data['province'],$return_data['city'],$return_data['brgy'],$begin,$end);
+			$this->load->view('mobile/case_report_view', $return_data);
+		}
 	}
 	
-	function places()
+	function check_date_input($begin,$end)
 	{
-		$return_data['province'] = $this->input->post('province');
-		$return_data['city'] = $this->input->post('city');
-		$return_data['brgy'] = $this->input->post('place');
-		
-		$return_data['places'] = $this->case_report_mob->get_places($return_data['province'],$return_data['city'],$return_data['brgy']);
-		$this->load->view('mobile/case_report_view', $return_data);
+		$begin = date('Y-m-d', strtotime($begin));
+		$end = date('Y-m-d', strtotime($end));
+		if ($begin > $end)
+		{
+			$this->form_validation->set_message('check_date_input','Invalid date range');
+			return FALSE;
+		}
+		else
+			return TRUE;
 	}
 }
 

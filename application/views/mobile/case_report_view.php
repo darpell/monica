@@ -9,7 +9,6 @@
 	<div data-role="header" ><!-- data-position="fixed"> -->
     	<a href="<?php echo site_url('mobile/case_report');?>" data-ajax="false" data-icon="delete"> Cancel </a>
     	<h2> Street/Addess </h2>
-    	<!-- <a href="<?php echo site_url('mobile');?>" data-rel="panel" data-icon="gear" data-ajax="false"> Show All </a> -->
     </div> <!-- /header-->
 	<div data-role="content">
 		<input type="hidden" name="province" value="<?php echo $province;?>" />
@@ -18,9 +17,7 @@
 		<h2> Street/Addess </h2> <br/>
 		<ul data-role="listview">
 			<?php for ($i = 0; $i < count($places); $i++) :?>
-			<li>
-				   <?php echo $places[$i]['place'];?>
-			</li>
+			<li> <?php echo $places[$i]['place'];?> </li>
 			<?php endfor;?>
 		</ul>
 	</div><!-- /content -->
