@@ -59,6 +59,7 @@ $route['mobile/case_report_filter/province'] = 'mobile/case_report/province';
 $route['mobile/case_report_filter/cities'] = 'mobile/case_report/cities';
 $route['mobile/case_report_filter/brgys'] = 'mobile/case_report/brgys';
 $route['mobile/case_report_filter/places'] = 'mobile/case_report/places';
+$route['mobile/case_report_filter/filter_places'] = 'mobile/case_report/filter_places';
 $route['upload'] = 'user/upload';
 $route['case_report'] = 'user/crform';
 $route['upload/(:any)'] = 'user/upload/$1';

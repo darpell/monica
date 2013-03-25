@@ -64,13 +64,17 @@ class Case_report_mob extends CI_Model
 		return $this->db->get()->result_array();
 	}
 	
-	function get_places($province,$city,$brgy)
+	function get_places($province,$city,$brgy, $start_date = FALSE, $end_date = FALSE)
 	{
 		$this->db->select('cr_street as place');
 			$this->db->from('case_report_main');
 			$this->db->where('cr_province',$province);
 			$this->db->where('cr_city',$city);
 			$this->db->where('cr_barangay',$brgy);
+			
+			if ($start_date != FALSE && $end_date != FALSE)
+				$this->db->where("cr_date_onset BETWEEN '$start_date' AND '$end_date'");
+			
 			$this->db->group_by('cr_street');
 			
 		return $this->db->get()->result_array();
