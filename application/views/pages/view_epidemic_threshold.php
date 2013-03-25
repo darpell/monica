@@ -3,7 +3,7 @@
 <head>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
+      google.load("visualization", "1", {packages:["controls","gauge"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
           
@@ -16,30 +16,121 @@
   			data[i] = str2[i].split("&&");
   		}
   		data.pop();
-
+		
   		var datatable = new google.visualization.DataTable();
-		 //datatable.addColumn('string', 'Epidemic Threshold');
+		 datatable.addColumn('string', 'Month');
 		 datatable.addColumn('number', '3rd Quartile');
-		 datatable.addColumn('number', 'Current year');
+		 datatable.addColumn('number', 'C-SUM');
 		 datatable.addColumn('number', 'mean+2SD');
 		 datatable.addColumn('number', 'C-SUM+1.96SD');
 		 datatable.addColumn('number', 'Current year');
-			
-		 for (var i = 0; i < data.length; i++)
+		 datatable.addRows(data[0].length);
+		 for (var i = 0; i < data[0].length; i++)
 			{
-			 datatable.setCell(i, 0 , data2[i][0]);
-			 datatable.setCell(i, 1 , data2[i][1]);
-			 datatable.setCell(i, 2 , parseInt(data2[i][2]));
-			 
-					alert(data.length);
+			 datatable.setCell(i, 0 , data[0][i]);
+			 datatable.setCell(i, 1 ,parseInt( data[1][i]));
+			 datatable.setCell(i, 2 , parseInt(data[2][i]));
+			 datatable.setCell(i, 3 , parseInt(data[3][i]));
+			 datatable.setCell(i, 4 ,parseInt( data[4][i]));
+			 datatable.setCell(i, 5 , parseInt(data[5][i]));
 			}
-		 
-        var options = {
-          title: 'Epidemic Threshold Chart'
-        };
 
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(datatable, options);
+		    var columnsTable = new google.visualization.DataTable();
+		    columnsTable.addColumn('number', 'colIndex');
+		    columnsTable.addColumn('string', 'colLabel');
+		    var initState= {selectedValues: []};
+		    // put the columns into this data table (skip column 0)
+		    for (var i = 1; i < datatable.getNumberOfColumns(); i++) {
+		        columnsTable.addRow([i, datatable.getColumnLabel(i)]);
+		        initState.selectedValues.push(datatable.getColumnLabel(i));
+		    }
+
+		    var chart = new google.visualization.ChartWrapper({
+		        chartType: 'LineChart',
+		        containerId: 'chart_div',
+		        dataTable: datatable,
+		        options: {
+		            title: 'Epidemic Threshold Chart',
+		            height: 400
+		        }
+		    });
+
+		    chart.draw();
+
+		    var columnFilter = new google.visualization.ControlWrapper({
+		        controlType: 'CategoryFilter',
+		        containerId: 'colFilter_div',
+		        dataTable: columnsTable,
+		        options: {
+		            filterColumnLabel: 'colLabel',
+		            ui: {
+		                label: 'Columns',
+		                allowTyping: false,
+		                allowMultiple: true,
+		                selectedValuesLayout: 'belowStacked'
+		            }
+		        },
+		        state: initState
+		    });
+
+		    google.visualization.events.addListener(columnFilter, 'statechange', function () {
+		        var state = columnFilter.getState();
+		        var row;
+		        var columnIndices = [0];
+		        for (var i = 0; i < state.selectedValues.length; i++) {
+		            row = columnsTable.getFilteredRows([{column: 1, value: state.selectedValues[i]}])[0];
+		            columnIndices.push(columnsTable.getValue(row, 0));
+		        }
+		        // sort the indices into their original order
+		        columnIndices.sort(function (a, b) {
+		            return (a - b);
+		        });
+		        chart.setView({columns: columnIndices});
+		        chart.draw();
+		    });
+
+		    columnFilter.draw();
+
+			//quartile
+			var quartile = document.getElementById('quartile').value.toString();
+			quartile = quartile.split("&&");
+			quartile.pop();
+			//csum
+			var csum = document.getElementById('csum').value.toString();
+			csum = csum.split("&&");
+			csum.pop();
+			//m2sd
+			var m2sd = document.getElementById('m2sd').value.toString();
+			m2sd = m2sd.split("&&");
+			m2sd.pop();
+			//csum192sd
+			var csum196sd = document.getElementById('csum196sd').value.toString();
+			csum196sd = csum196sd.split("&&");
+			csum196sd.pop();
+			//cases
+			var cases = document.getElementById('cases').value.toString();
+			cases = cases.split("&&");
+			cases.pop();
+			var today2 = new Date();
+
+			 var epi = google.visualization.arrayToDataTable([
+			            ['Label', 'Value'],
+			         	['3rd Quartile', Math.round(((cases[ today2.getMonth()]/quartile[ today2.getMonth()]))*100)],
+			            ['C-SUM', Math.round(((cases[ today2.getMonth()]/csum[ today2.getMonth()]))*100)],
+			            ['mean+2SD', Math.round(((cases[ today2.getMonth()]/m2sd[ today2.getMonth()]))*100)],
+			            ['C-SUM+1.96SD', Math.round(((cases[ today2.getMonth()]/csum196sd[ today2.getMonth()]))*100)],
+			                                                 ]);
+			 var epioptions = {
+			          redFrom: 90, redTo: 150,
+			          yellowFrom:75, yellowTo: 90,
+			          minorTicks: 0,
+			          max:150
+			        };
+					
+
+		    
+            new google.visualization.Gauge(document.getElementById('visualization')).
+            draw(epi,epioptions);
       }
     </script>
   </head>
@@ -47,7 +138,30 @@
 <!-- CONTENT -->
 <div class="body">
 		<div >
-<center>
+<center><table>
+<tr>
+<td>
+<h3> Barangay:</td><td> 
+<?php 
+$attributes = array(
+						'id' => 'TPcr-form'
+					);
+
+echo form_open('CHO/epidemic_threshold',$attributes);
+echo form_dropdown('barangay', $barangay,array($parameter => $parameter)); 
+?>
+<input type="hidden" name="chart_data" id="chart_data" value="<?php echo $chart_data; ?>" />
+<input type="hidden" name="quartile" id="quartile" value="<?php echo $quartile; ?>" />
+<input type="hidden" name="csum" id="csum" value="<?php echo $csum; ?>" />
+<input type="hidden" name="m2sd" id="m2sd" value="<?php echo $m2sd; ?>" />
+<input type="hidden" name="csum196sd" id="csum196sd" value="<?php echo $csum196sd; ?>" />
+<input type="hidden" name="cases" id="cases" value="<?php echo $cases; ?>" />
+<input type="submit" value="View" />
+</h3>
+</td>
+</tr>
+</table>
+   <div id="visualization" style="width: 600px; height: 150px;"></div>
 <?php if($table != null) {?>
 
 <div>
@@ -124,15 +238,11 @@ echo $this->table->generate($arranged);
 
 </div>
 <?php } ?>
- <div id="chart_div" style="width: 900px; height: 500px;"></div>
+<div id="colFilter_div"></div>
+ <div id="chart_div"></div>
 </center>
 
-<?php 
-$attributes = array(
-						'id' => 'TPcr-form'
-					);
-echo form_open('CHO/view_tasks',$attributes); ?>
-<input type="hidden" name="chart_data" id="chart_data" value="<?php echo $chart_data; ?>" />
+
 
 </div>
 </div>
