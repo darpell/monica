@@ -94,7 +94,7 @@
 					var nodeInfoCounter=0;
 					var bcount=splitter(document.getElementById('dataCount').value.toString());
 					//-------------------*/
-					alert(bcount);
+					
 					//*STRING SPLITTER
 					var str = document.getElementById('data').value.toString();
 					str = str.split("%%");
@@ -125,6 +125,10 @@
 
 							latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
 							_i++;
+						}
+						else if(currPoly==1)
+						{
+							currPoly++;
 						}
 						else
 						{//alert("Current polygon index number "+currPoly+" != "+data2[_i][0]+" latLng contains "+latLng);
@@ -232,7 +236,7 @@
 			 		}else{
 			 			$('#dataPanel').append('<b>Polygon saved</b>: '+creator.showData()+'<br/>');
 			 			$("#dataPanel").scrollTop($("#dataPanel")[0].scrollHeight);
-			 			alert("HOORAY!");
+			 			alert("Polygon has been created.");
 			 			document.getElementById("hide").value = creator.showData();
 			 			document.forms["myform"].submit();
 			 		}
@@ -255,6 +259,14 @@
 	    <div id="map" style="width: 100%%; height: 600px"></div>
 	</td>
 	<td style="width:40%; height:400px">
+	<h2>Barangay Boundary Creation</h1><br/>
+	<table border='1'>
+		<tr><td width='75px'><b>Step 1: </b></td><td>Create a polygon in the map provided to the left.</td></tr>
+		<tr><td>Step 1.1: </td><td>After placing the nodes, click the first node to close the polygon.</td></tr>
+		<tr><td>Step 1.2: </td><td>Click reset to clear the polygon should you make a mistake.</td></tr>
+		<tr><td><b>Step 2: </b></td><td>Choose the barangay name from the dropdown, it contains all the barangays in the database that do not yet have a polygon associated with it.</td></tr>
+		<tr><td><b>Step 3: </b></td><td>Click submit to add the polygon to the database.</td></tr>
+		</table><br/><br/>
 		<input id="reset" value="Reset" type="button" class="navi"/>
 		
 		<!-- <form action="" method='post' onsubmit='return confirm("Sure?")'> -->

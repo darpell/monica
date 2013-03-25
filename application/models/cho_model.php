@@ -15,8 +15,7 @@
 			$qString = 'CALL ';
 			$qString .= "get_all_tasks ('"; // name of stored procedure
 			$qString .=
-			//variables needed by the stored procedure
-				
+			//variables needed by the stored procedure	
 			date('Y-m-d') . "'". ")";
 				
 			$q = $this->db->query($qString);
@@ -143,10 +142,18 @@
 				return 0;
 			}
 		}
-		function epidemic_threshold()
+		function epidemic_threshold($barangay = null)
 		{
 			$qString = 'CALL ';
-			$qString .= "epidemic_threshold ('"; // name of stored procedure
+			
+			if($barangay != null)
+			{	$qString .= "epidemic_threshold_barangay ('"; 
+				$qString .=$barangay . "','";	
+			}
+			else
+			{
+				$qString .= "epidemic_threshold ('"; 
+			}
 			$qString .=
 			date('Y'). "'". ")";
 			
@@ -422,6 +429,82 @@
 			{
 				return 0;
 			}
+		}
+		function getAllBarangays()
+		{
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_allbarangays("; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			")";
+			$data['All'] = 'All';	
+			$q = $this->db->query($qString);
+			//*
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					$data[$row->barangay]= $row->barangay;
+				}
+		
+				$q->free_result();
+				//print_r($data);
+				return $data;
+			}
+			else
+			{
+				$q->free_result();
+				return 0;
+			}
+			//*/
+		}
+		function getPositiveSurveys()
+		{
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "positive_larval_nodes('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			date('y-m-d'). "'". ")";
+			$q = $this->db->query($qString);
+			//*
+			if($q->num_rows() > 0)
+			{	$data ='';
+				foreach ($q->result() as $row)
+				{
+					$data .=
+				$row->ctr . "&&" .
+				$row->ls_barangay . "%%" ;
+				}
+				print_r($data);
+				return $data;
+			}
+			else
+			{
+				$q->free_result();
+				return 0;
+			}
+			//*/
+		}
+		function randomfact()
+		{
+			$fact[]='Dengue is a mosquito-borne viral infection. ';
+			$fact[]="The global incidence of dengue has grown dramatically in recent decades. About half of the world's population is now at risk.";
+			$fact[]='Severe dengue is a leading cause of serious illness and death among children in some Asian and Latin American countries.';
+			$fact[]='There is no specific treatment for dengue/ severe dengue, but early detection and access to proper medical care lowers fatality rates below 1%.';
+			$fact[]='Dengue is only really transmitted through mosquitoes. ';
+			$fact[]='Dengue infects 50-100 million people each year ';
+			$fact[]='Mothers who are pregnant and give birth while sick with Dengue Fever will share their sickness with their newborn child.';
+			$fact[]='The middle aged has more of a chance of mild symptoms';
+			$fact[]='The mosquito usually bites at dusk and dawn but may bite at any time during the day – especially indoors, in shady areas, or when the weather is cloudy, ';
+			$fact[]='mosquitos need to bite an infected human and then bite a new person to transmit the disease. This means that populated areas are more prone to risk.';
+			$fact[]='Cases of dengue fever increase during the rainy season.';
+			$fact[]='Dengue is transmitted through the bite of the Aedes Agypti mosquito.';
+			$fact[]='Dengue fever is not transmitted between humans.';
+			$fact[]='Dengue fever can be caught more than once (although it will never be the same type). Those who have contracted dengue fever in the past should be extra careful as dengue hemorrhagic fever seems to develop almost exclusively on patients that had had classic dengue fever before';
+			
+			return $fact[rand(0, (count($fact))-1)];
 		}
 	}
 

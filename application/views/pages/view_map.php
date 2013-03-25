@@ -211,6 +211,10 @@ function mapBarangayOverlay(map,barangayCount,barangayAge,datax,barangayInfo,isO
 			latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
 			_i++;
 		}
+		else if(currPoly==1)
+		{
+			currPoly++;
+		}
 		else
 		{
 			//*CREATION OF POLYGON
