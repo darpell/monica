@@ -11,14 +11,14 @@ class Tasks extends CI_Controller
 	function index()
 	{
 		$data['result'] = '';
-		$data['tasks'] = $this->tasks->get_tasks();
+		$data['tasks'] = $this->tasks->get_tasks($this->session->userdata('TPusername'));
 		$this->load->view('mobile/tasks.php', $data);
 	}
 	
 	function view($id)
 	{
 		$data['result'] = '';
-		$data['tasks'] = $this->tasks->get_tasks($id);
+		$data['tasks'] = $this->tasks->get_tasks($this->session->userdata('TPusername'),$id);
 		$this->load->view('mobile/task_view.php', $data);
 	}
 	

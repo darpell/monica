@@ -14,7 +14,7 @@ class Pages extends CI_Controller
 					$this->load->model('tasks_model');
 					$this->load->model('larval_mapping');
 					$data['last_visit'] = $this->larval_mapping->get_last_visit($this->session->userdata('TPusername'));
-					$data['task_count'] = $this->tasks_model->get_count_unaccomplished();
+					$data['task_count'] = $this->tasks_model->get_count_unaccomplished($this->session->userdata('TPusername'));
 					$data['result'] = '';
 					$this->load->view('mobile/home',$data);
 				}
