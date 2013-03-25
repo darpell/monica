@@ -14,7 +14,7 @@
 		<input type="hidden" name="province" value="<?php echo $province;?>" />
 			<input type="hidden" name="city" value="<?php echo $city;?>" />
 			<input type="hidden" name="brgy" value="<?php echo $brgy;?>" />
-		<h2> Street/Addess </h2> <br/>
+		<h2> Street/Addess at <?php echo ucfirst(strtolower($brgy)) . ', ' . ucfirst(strtolower($city)) . ', ' . ucfirst(strtolower($province));?> </h2> <br/>
 		<ul data-role="listview">
 			<?php for ($i = 0; $i < count($places); $i++) :?>
 			<li> <?php echo $places[$i]['place'];?> </li>

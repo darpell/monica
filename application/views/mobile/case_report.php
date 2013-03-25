@@ -15,7 +15,7 @@
 <div data-role="page" style="top:0;left:0; right:0; bottom:0;">
 	<div data-role="header" ><!-- data-position="fixed"> -->
     	<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="arrow-l"> Back </a>
-    	<h2> Case Reports </h2> 
+    	<h2> Case Info Reports </h2> 
     	<!-- <a href="<?php echo site_url('mobile');?>" data-rel="panel" data-icon="gear" data-ajax="false"> Show All </a> -->
     </div> <!-- /header-->
 	<div data-role="content">

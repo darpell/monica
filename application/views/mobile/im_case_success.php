@@ -8,7 +8,7 @@
 <div data-role="page">
 
 	<div data-role="header">
-		<h1> &nbsp; </h1>
+		<h1> Success </h1>
 	</div><!-- /header -->
 
 	<div data-role="content">	

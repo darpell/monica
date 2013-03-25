@@ -7,9 +7,9 @@
 			<div class="featured">
 				<div>
 					<p>
-						As The Saying Goes.. <br> You Don't Know What You've Got <br> 'Till It's Gone.
+						As The Saying Goes.. <br> An ounce of prevention <br> is better than a pound of cure
 					</p>
-					<h2>Plant A Tree. <br><br> Grow A Tree. <br><br> <span>Save The Future.</span></h2>
+					<h2> Monitor cases. <br><br> Check places. <br><br> <span>Save Lives.</span></h2>
 				</div>
 			</div>
 			<div class="section">

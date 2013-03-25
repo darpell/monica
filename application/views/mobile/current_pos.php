@@ -53,7 +53,7 @@
 			var options = {
 				zoom: 15,
 				center: pos,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
+				mapTypeId: google.maps.MapTypeId.SATELLITE
 			};
 			var map = new google.maps.Map(document.getElementById("currentLocation"), options);
 			var marker = new google.maps.Marker({
