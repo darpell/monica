@@ -258,7 +258,7 @@
 	    <div id="map" style="width: 100%%; height: 600px"></div>
 	</td>
 	<td style="width:49%; height:400px">
-		<b>ONCE SUBMITTED, CANNOT BE UNDONE</b><br/>
+		<b>Please make sure of your decision before submitting.</b><br/>
 		<!-- <form action="" method='post' onsubmit="return confirm('Sure?')"> -->
 		<form method="post" accept-charset="utf-8" action="<?php echo base_url();?>index.php/deletemap/delPolygon" name='myform'>
 		
@@ -272,7 +272,6 @@
 		<input type="hidden" id='hide' name="hide">
 		<input id="save" value="Submit" type="submit" class="navi"/>
 		</form>
-		<b>ONCE SUBMITTED, CANNOT BE UNDONE</b>
 	</td>
 </tr>
 <tr>
