@@ -69,7 +69,7 @@ class Mapform extends CI_Controller
 								
 				//*CURRENT DATE INTERVAL DATA EXTRACTION
 				$data['nodes'] = $this->Mapping->mapByType($data);
-				$data['bage'] = $this->Mapping->getBarangayAges($dateData1);
+				$data['bage'] = $this->Mapping->getBarangayAges2($dateData1);
 				$data['binfo'] = $this->Mapping->getBarangayInfo($dateData1);
 				$data['bcount'] = $this->Mapping->getBarangayCount($dateData1);
 				$data['dist'] = $this->Mapping->calculateDistanceFormula($dateData1);
@@ -84,7 +84,7 @@ class Mapform extends CI_Controller
 				
 				//*PREVIOUS DATE INTERVAL DATA EXTRACTION
 				$data['Pnodes'] = $this->Mapping->mapByType($data);
-				$data['Pbage'] = $this->Mapping->getBarangayAges($dateData2);
+				$data['Pbage'] = $this->Mapping->getBarangayAges2($dateData2);
 				$data['Pbinfo'] = $this->Mapping->getBarangayInfo($dateData2);
 				$data['Pbcount'] = $this->Mapping->getBarangayCount($dateData2);
 				$data['Pdist'] = $this->Mapping->calculateDistanceFormula($dateData2);

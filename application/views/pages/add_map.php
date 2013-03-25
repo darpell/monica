@@ -94,7 +94,7 @@
 					var nodeInfoCounter=0;
 					var bcount=splitter(document.getElementById('dataCount').value.toString());
 					//-------------------*/
-					
+					alert(bcount);
 					//*STRING SPLITTER
 					var str = document.getElementById('data').value.toString();
 					str = str.split("%%");
