@@ -31,7 +31,7 @@
         
         <ul data-role="listview" data-autodividers="true" data-inset="true">
             <li> <a href="<?php echo site_url('mobile/riskmap');?>" data-ajax="false" data-transition="slide"> Risk Map </a> </li>
-        	<li> <a href="<?php echo site_url('mobile/casemap');?>" data-ajax="false" data-transition="slide"> Case Map </a> </li>
+        	<li> <a href="<?php echo site_url('mobile/case_report');?>" data-ajax="false" data-transition="slide"> Case Reports </a> </li>
         	
         </ul>
         
