@@ -190,7 +190,6 @@ function mapBarangayOverlay(map,barangayCount,barangayAge,datax,barangayInfo,isO
 	var binfo=splitter(barangayInfo);
 	var bage=splitter(barangayAge);
 	var problem=false;
-	//alert(bcount);
 	//-------------------*/
 	
 	for (var _i=0; _i <= data2.length-1;)
@@ -407,10 +406,8 @@ function mapBarangayOverlay(map,barangayCount,barangayAge,datax,barangayInfo,isO
 
 function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes display
 {
-	
 	var dist = splitter(distance);
 	var data = splitter(datax);
-		//alert(dist);
 	for (var i = 0; i < data.length; i++)
 		{
 			nodeType[i] = data[i][0];		
@@ -421,7 +418,7 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
 			household[i]=data[i][5];
 			container[i]=data[i][6];
 			createdOn[i]=data[i][7];
-		}//alert(household);alert(container);
+		}//alert(lat);
 		
     for (var i = 0; i < data.length; i++) 
     {
@@ -462,8 +459,8 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
     	householdpercent=householdcount/household.length*100;
     	containerpercent=containercount/container.length*100;
    		var point = new google.maps.LatLng(
-        	parseFloat(lat[i]),
-        	parseFloat(lng[i]));
+        	lat[i],
+        	lng[i]);
     	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] +" <i>("+createdOn[i]+")</i>"
     	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
     	+ " <br/>" + "<b>Larval positives (LP) within: </b>"
