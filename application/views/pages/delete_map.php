@@ -93,6 +93,7 @@
 					var latLng = [];
 					var nodeInfoCounter=0;
 					var bcount=splitter(document.getElementById('dataCount').value.toString());
+					var problem=false;
 					//-------------------*/
 					
 					//*STRING SPLITTER
@@ -125,8 +126,9 @@
 
 							latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
 							_i++;
+							problem=true;
 						}
-						else if(currPoly==1)
+						else if(!problem)
 						{
 							currPoly++;
 						}
@@ -256,24 +258,21 @@
 	    <div id="map" style="width: 100%%; height: 600px"></div>
 	</td>
 	<td style="width:49%; height:400px">
-		
-		<!-- <form action="" method='post' onsubmit='return confirm("Sure?")'> -->
+		<b>ONCE SUBMITTED, CANNOT BE UNDONE</b><br/>
+		<!-- <form action="" method='post' onsubmit="return confirm('Sure?')"> -->
+		<form method="post" accept-charset="utf-8" action="<?php echo base_url();?>index.php/deletemap/delPolygon" name='myform'>
 		
 		<?php 
-		//print_r($options);
-		$fdata = array(
-              'name'   => 'myform'
-            );
-		echo form_open('deletemap/delPolygon',$fdata); ?>
-		<?php 
-		echo form_dropdown('NDtypeddl', $options);
-		//print_r($options);
+		if(count($options)==0)
+			echo "<b>NO MORE BORDERS TO DELETE</b>";
+		else
+			echo form_dropdown('NDtypeddl', $options);
 		?>
 		
 		<input type="hidden" id='hide' name="hide">
-		<input id="save" value="Submit" type="button" class="navi"/>
-		<!--<input id="save" value="Submit" type="submit" class="navi"/>-->
-		</form> 
+		<input id="save" value="Submit" type="submit" class="navi"/>
+		</form>
+		<b>ONCE SUBMITTED, CANNOT BE UNDONE</b>
 	</td>
 </tr>
 <tr>

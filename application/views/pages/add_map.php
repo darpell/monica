@@ -93,6 +93,7 @@
 					var latLng = [];
 					var nodeInfoCounter=0;
 					var bcount=splitter(document.getElementById('dataCount').value.toString());
+					var problem=false;
 					//-------------------*/
 					
 					//*STRING SPLITTER
@@ -125,8 +126,9 @@
 
 							latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
 							_i++;
+							problem=true;
 						}
-						else if(currPoly==1)
+						else if(!problem)
 						{
 							currPoly++;
 						}

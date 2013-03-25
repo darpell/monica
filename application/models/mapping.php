@@ -26,7 +26,7 @@ class Mapping extends CI_Model
 			$qString .= 
 			//variables needed by the stored procedur
 			$name . "'". ")";
-			echo $qString;
+			//echo $qString;
 			$query = $this->db->query($qString);
 		}
 	function getPolygonNumberMax()
@@ -690,13 +690,13 @@ class Mapping extends CI_Model
 				
 				$q->free_result();
 				//print_r($data);
-				return $data;
 			}
 			else
 			{
 				$q->free_result();
-				return 0;
+				$data[]=null;
 			}
+			return $data;
 			//*/
 		}
 		function getAllBarangays()
@@ -718,13 +718,13 @@ class Mapping extends CI_Model
 				
 				$q->free_result();
 				//print_r($data);
-				return $data;
 			}
 			else
 			{
 				$q->free_result();
-				return 0;
+				$data[]=null;
 			}
+		return $data;
 			//*/
 		}
 		function getNodes($data2)

@@ -189,6 +189,7 @@ function mapBarangayOverlay(map,barangayCount,barangayAge,datax,barangayInfo,isO
 	var data2=splitter(datax);
 	var binfo=splitter(barangayInfo);
 	var bage=splitter(barangayAge);
+	var problem=false;
 	//alert(bcount);
 	//-------------------*/
 	
@@ -210,8 +211,9 @@ function mapBarangayOverlay(map,barangayCount,barangayAge,datax,barangayInfo,isO
 
 			latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
 			_i++;
+			problem=true;
 		}
-		else if(currPoly==1)
+		else if(!problem)
 		{
 			currPoly++;
 		}
