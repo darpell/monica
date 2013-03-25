@@ -161,7 +161,6 @@ class Mapping extends CI_Model
 				}
 					
 				$q->free_result();
-				$data = substr($data,0,-2);
 				}
 				else
 				{
@@ -259,9 +258,13 @@ class Mapping extends CI_Model
 				foreach ($q->result() as $row) 
 				{
 					if($row->node_type==0)
+					{
 						$temp="Potential Source Area <br/><i>(Commonly bodies of water or abandoned areas)</i>";
+					}
 					else
+					{
 						$temp="Potential Risk Area <br/><i>(Commonly areas with high population density or traffic)</i>";
+					}
 					$data .=
 					$row->node_name . "&&" . 
 					$row->node_lat . "&&" . 
@@ -270,7 +273,8 @@ class Mapping extends CI_Model
 					$row->node_notes . "&&" . 
 					$row->node_barangay . "&&" .
 					$row->node_city . "&&" . 
-					$row->node_addedOn . "%%" ;
+					$row->node_addedOn . "&&" . 
+					$row->node_type . "%%" ;
 				}
 				
 				$q->free_result();
@@ -283,6 +287,52 @@ class Mapping extends CI_Model
 			}
 		}
 		//*/
+		function getBarangayAges2($data2)
+		{
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_empty_barangays()";
+			$q = $this->db->query($qString);
+			//*
+			$data = "";
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					$data .=
+					$row->barangay . "&&0%%";
+				}
+			}
+			$q->free_result();
+		
+			//echo $data['node_type'];
+			$qString = 'CALL ';
+			$qString .= "get_case_ages2('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			$data2['date1']. "','".
+			$data2['date2']. "'". ")";
+			$qString." END ";
+			$q = $this->db->query($qString);
+			//*
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					$data .=
+					$row->cr_barangay . "&&" .
+					$row->cr_age . "%%" ;
+				}
+				$q->free_result();
+				return substr($data,0,-2);
+			}
+			else
+			{
+				$q->free_result();
+				return substr($data,0,-2);
+			}
+			//*/
+		}
 		function getBarangayAges($data2)
 		{
 			$qString = 'CALL ';
@@ -537,7 +587,7 @@ class Mapping extends CI_Model
 				foreach ($q->result() as $row) 
 				{
 					$data .=
-					$row->barangay . "&&0&&0%%";
+					$row->barangay . "&&0&&".$row->polygon_ID."%%";
 				}
 			}
 			$q->free_result();

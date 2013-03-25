@@ -82,7 +82,7 @@ function splitter(str){//Data splitter
 	var createdOn = new Array();
 	
 
-function createMarker(map,point,image,info,bounce,isOld,isPoI){//General marker creation
+function createMarker(map,point,image,info,bounce,isOld,isPoI,RiskOrSource){//General marker creation
 	var centroidMarker;
 	var oms = new OverlappingMarkerSpiderfier(map);
 	if(image === null && !isPoI)
@@ -119,7 +119,7 @@ function createMarker(map,point,image,info,bounce,isOld,isPoI){//General marker 
 		var centroidMarker = new google.maps.Marker({  
         position: point,   
         map: map,  
-        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=I|FF0000|000000'  
+        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+RiskOrSource+'|FF0000|000000'  
     	});  
 	}
 	else
@@ -160,13 +160,22 @@ function mapPointsOfInterest(googleMap)
 	//alert(tempo);
 	for(var i=0;i<length;i++)
 	{
+		var tempoagain;
 		var point = new google.maps.LatLng(tempo[i][1],tempo[i][2]);
 		var html = "<b>"+tempo[i][0]+"</b><br/>"+tempo[i][3]+"<br/><br/><b>Location:</b> "+tempo[i][6]+" City, Barangay "+tempo[i][5]+"<br/><br/><b>Notes:</b> "+tempo[i][4]+"<br/><br/><i>Added on "+tempo[i][7]+"</i>";
-		createMarker(googleMap,point,null,html,false,false,true);
+		if(tempo[i][8]==0)
+		{
+			tempoagain="S";
+		}
+		else
+		{
+			tempoagain="R";
+		}
+		createMarker(googleMap,point,null,html,false,false,true,tempoagain);
 	}
 }
 
-function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Denguecase barangay polygon display
+function mapBarangayOverlay(map,barangayCount,barangayAge,datax,barangayInfo,isOld) {//Denguecase barangay polygon display
 
 	//*DECLARATION OF VALUES AND CONTAINERS
 	var x1=999;
@@ -179,7 +188,8 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 	var bcount=splitter(barangayCount);
 	var data2=splitter(datax);
 	var binfo=splitter(barangayInfo);
-	//var bage=splitter(barangayAge);
+	var bage=splitter(barangayAge);
+	//alert(bcount);
 	//-------------------*/
 	
 	for (var _i=0; _i <= data2.length-1;)
@@ -217,22 +227,53 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 			//*BARANGAY MARKER INFORMATION EXTRACTION
 			var html="<b><i>No Data to Display</b></i>";
 			var casecount=0;
-			//var countUnderage=0;
+			var countUnderage=0;
+			
 			for(var i=0;i<=bcount.length-1;i++)
 			{
 				if(bcount[i][0]===currName)
 				{
+					var ageArr=[];
+					for(var __i=0;__i<bage.length;__i++)
+					{
+						if(bage[__i][0]==currName)
+						{
+							ageArr.push(bage[__i][1]);
+						}
+					}
+					ageArr.sort();
+					
+				    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
+					{
+						if(ageArr[___i]<18)
+							countUnderage++;
+				    }
+					//alert(binfo[i]);
+					casecount=bcount[i][1];
+					
 					html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
 					" <br/>" + "<b>Gender Distribution</b>" +
 					" <br/>" + "Female cases: " +binfo[i][1]+
 					" <br/>" + "Male cases: " +binfo[i][2]+"<br/>";
+
+					if(casecount!=0)
+					html=html+"<br/><b>Age Distribution</b>"+
+					" <br/>" + "Youngest: " +binfo[i][3]+
+					" <br/>" + "Oldest: " +binfo[i][4]+
+					" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+					" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>";
+					else
+					html=html+"<br/><b>Age Distribution</b>"+
+					" <br/>" + "Youngest: 0" +
+					" <br/>" + "Oldest: 0" +
+					" <br/>" + "Below 18: 0(0%)" +
+					" <br/>" + "Average Age: 0" + " <br/>";
 					
 					html=html+
 					" <br/>" + "<b>Outcome</b>" +
 					" <br/>" + "Alive: " +binfo[i][6]+
 					" <br/>" + "Deceased: " +binfo[i][7]+
 					" <br/>" + "Undetermined: " +binfo[i][8];
-					casecount=bcount[i][1];
 				}
 			}
 			//-------------------*/
@@ -287,21 +328,50 @@ function mapBarangayOverlay(map,barangayCount,datax,barangayInfo,isOld) {//Dengu
 			var html="<b><i>No Data to Display</b></i>";
 			var casecount=0;
 			var countUnderage=0;
-			for(i=0;i<=bcount.length-1;i++)
+			for(i=0;i<bcount.length;i++)
 			{
 				if(bcount[i][0]===currName)
 				{
+					var ageArr=[];
+					for(var __i=0;__i<bage.length;__i++)
+					{
+						if(bage[__i][0]==currName)
+						{
+							ageArr.push(bage[__i][1]);
+						}
+					}
+					ageArr.sort();
+				    for ( var ___i = 0; ___i < ageArr.length; ___i++ ) 
+					{
+						if(ageArr[___i]<18)
+							countUnderage++;
+				    }
+					//alert(binfo[i]);
+					casecount=bcount[i][1];
+					
 					html="<b>" +binfo[i][0]+"</b> ("+bcount[i][1]+" cases)<br/><br/><b>DENGUE CASES INFORMATION</b>"+
 					" <br/>" + "<b>Gender Distribution</b>" +
 					" <br/>" + "Female cases: " +binfo[i][1]+
-					" <br/>" + "Male cases: " +binfo[i][2]+"<br/><br/><b>Age Distribution:</b> Age(Amount)<br/>";
+					" <br/>" + "Male cases: " +binfo[i][2]+"<br/>";
+
+					if(casecount!=0)
+					html=html+"<br/><b>Age Distribution</b>"+
+					" <br/>" + "Youngest: " +binfo[i][3]+
+					" <br/>" + "Oldest: " +binfo[i][4]+
+					" <br/>" + "Below 18: " +countUnderage+"("+(countUnderage/parseFloat(bcount[i][1])).toFixed(2)*100+"%)"+
+					" <br/>" + "Average Age: " +parseFloat(binfo[i][5]).toFixed(0)+" <br/>";
+					else
+					html=html+"<br/><b>Age Distribution</b>"+
+					" <br/>" + "Youngest: 0" +
+					" <br/>" + "Oldest: 0" +
+					" <br/>" + "Below 18: 0(0%)" +
+					" <br/>" + "Average Age: 0" + " <br/>";
 					
 					html=html+
 					" <br/>" + "<b>Outcome</b>" +
 					" <br/>" + "Alive: " +binfo[i][6]+
 					" <br/>" + "Deceased: " +binfo[i][7]+
 					" <br/>" + "Undetermined: " +binfo[i][8];
-					casecount=bcount[i][1];
 				}
 			}
 			//-------------------*/
@@ -450,7 +520,7 @@ function load() {
     }
 	else if(document.getElementById('type').value.toString()=="denguecase")
 	{
-		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
+		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('dataBAge').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
     }
 	else
 	{
@@ -460,7 +530,7 @@ function load() {
 		//-------------------*/
 		
 		mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
-		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
+		mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('dataBAge2').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
 	}
 }
   function doNothing() {}
@@ -487,8 +557,8 @@ jQuery(document).ready(function(){
 			    }
 				else if(document.getElementById('type').value.toString()=="denguecase")
 				{
-					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
-					mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('Pdata').value.toString(),document.getElementById('PdataBInfo').value.toString(),true);
+					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('dataBAge').value.toString(),document.getElementById('data').value.toString(),document.getElementById('dataBInfo').value.toString(),false);
+					mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('PdataBAge2').value.toString(),document.getElementById('Pdata').value.toString(),document.getElementById('PdataBInfo').value.toString(),true);
 			    }
 				else
 				{
@@ -501,8 +571,8 @@ jQuery(document).ready(function(){
 					
 					mapLarvalOverlay(map,document.getElementById('dist').value.toString(),str[0],false);
 					mapLarvalOverlay(map,document.getElementById('Pdist').value.toString(),Pstr[0],true);
-					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
-					mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),Pstr[1],document.getElementById('PdataBInfo').value.toString(),true);
+					mapBarangayOverlay(map,document.getElementById('dataBCount').value.toString(),document.getElementById('dataBAge').value.toString(),str[1],document.getElementById('dataBInfo').value.toString(),false);
+					mapBarangayOverlay(map,document.getElementById('PdataBCount').value.toString(),document.getElementById('PdataBAge2').value.toString(),Pstr[1],document.getElementById('PdataBInfo').value.toString(),true);
 				}
 		  }
 		  else
@@ -517,6 +587,7 @@ jQuery(document).ready(function(){
 <input type = 'hidden' id ='data' name='data' value='<?php echo $nodes?>'>
 <input type = 'hidden' id ='dataBInfo' name='dataBInfo' value='<?php echo $binfo?>'>
 <input type = 'hidden' id ='dataBAge' name='dataBAge' value='<?php echo $table1?>'>
+<input type = 'hidden' id ='dataBAge2' name='dataBAge2' value='<?php echo $bage?>'>
 <input type = 'hidden' id ='dataBCount' name='dataBCount' value='<?php echo $bcount?>'>
 <input type = 'hidden' id ='type' name='type' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='dist' name='dist' value='<?php echo $dist?>'>
@@ -526,6 +597,7 @@ jQuery(document).ready(function(){
 <input type = 'hidden' id ='Pdata' name='Pdata' value='<?php echo $Pnodes?>'>
 <input type = 'hidden' id ='PdataBInfo' name='PdataBInfo' value='<?php echo $Pbinfo?>'>
 <input type = 'hidden' id ='PdataBAge' name='PdataBAge' value='<?php echo $table2?>'>
+<input type = 'hidden' id ='PdataBAge2' name='PdataBAge2' value='<?php echo $Pbage?>'>
 <input type = 'hidden' id ='PdataBCount' name='PdataBCount' value='<?php echo $Pbcount?>'>
 <input type = 'hidden' id ='Ptype' name='Ptype' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='Pdist' name='Pdist' value='<?php echo $Pdist?>'>
@@ -695,8 +767,12 @@ jQuery(document).ready(function(){
 			<td>"Old" Larval sampling. Same as previous, but uses old search data. <i>(Optionally activated)</i></td>
 		</tr>	
 		<tr>
-			<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=I|FF0000|000000"></td>
-			<td>Point of interest.</td>
+			<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=S|FF0000|000000"></td>
+			<td>Point of interest. Possible source of Mosquitoes.</td>
+		</tr>	
+		<tr>
+			<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=R|FF0000|000000"></td>
+			<td>Point of interest. Possible risk area susceptible to Mosquito bites.</td>
 		</tr>	
 		<tr>
 			<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=4|ff776b"></td>
