@@ -62,7 +62,6 @@ class Addmap extends CI_Controller
 				$lat=floatval($lat);
 				$lng=floatval($lng);
 				
-				echo $id."      ".$lat."      ".$lng."      ".$this->input->post('NDtypeddl')."<br/>";
 				$this->Mapping->addPolygon($id,$lat,$lng,$this->input->post('NDtypeddl'));
 			}
 		$this->Mapping->addPolygon($id,$lat,$lng,$this->input->post('NDtypeddl'));

@@ -126,6 +126,10 @@
 							latLng.push(new google.maps.LatLng(parseFloat(data2[_i][1]), parseFloat(data2[_i][2])));
 							_i++;
 						}
+						else if(currPoly==1)
+						{
+							currPoly++;
+						}
 						else
 						{//alert("Current polygon index number "+currPoly+" != "+data2[_i][0]+" latLng contains "+latLng);
 
