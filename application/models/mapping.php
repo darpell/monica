@@ -64,8 +64,12 @@ class Mapping extends CI_Model
 						$row->ls_lng . "&&" . 
 						$row->tracking_number . "&&" . 
 						$row->ls_household . "&&" .
-						$row->ls_container . "&&" .
-						$row->created_on . "%%" ;
+						$row->ls_container . "&&".
+						$row->created_on . "&&".
+						$row->last_updated_on . "&&".
+						$row->ls_barangay . "&&".
+						$row->ls_street . "&&".
+						$row->created_by . "%%"  ;
 					}
 					$q->free_result();
 					return substr($data,0,-2);
@@ -129,7 +133,11 @@ class Mapping extends CI_Model
 					$row->tracking_number . "&&" . 
 					$row->ls_household . "&&" .
 					$row->ls_container . "&&".
-					$row->created_on . "%%"  ;
+					$row->created_on . "&&".
+					$row->last_updated_on . "&&".
+					$row->ls_barangay . "&&".
+					$row->ls_street . "&&".
+					$row->created_by . "%%"  ;
 				}
 				$q->free_result();
 				$data = substr($data,0,-2);

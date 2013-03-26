@@ -80,6 +80,10 @@ function splitter(str){//Data splitter
 	var household = new Array();
 	var container = new Array();
 	var createdOn = new Array();
+	var updatedOn = new Array();
+	var lbarangay = new Array();
+	var lstreet = new Array();
+	var createdBy = new Array();
 	
 
 function createMarker(map,point,image,info,bounce,isOld,isPoI,RiskOrSource){//General marker creation
@@ -151,6 +155,23 @@ function createMarker(map,point,image,info,bounce,isOld,isPoI,RiskOrSource){//Ge
 	/*google.maps.event.addListener(centroidMarker, 'onClick', function() {
 		
 	});*/
+}
+
+function countInstances(arr) {
+    var a = [], b = [], prev;
+
+    arr.sort();
+    for ( var i = 0; i < arr.length; i++ ) {
+        if ( arr[i] !== prev ) {
+            a.push(arr[i]);
+            b.push(1);
+        } else {
+            b[b.length-1]++;
+        }
+        prev = arr[i];
+    }
+
+    return [a, b];
 }
 
 function mapPointsOfInterest(googleMap)
@@ -418,7 +439,13 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
 			household[i]=data[i][5];
 			container[i]=data[i][6];
 			createdOn[i]=data[i][7];
+			updatedOn[i]=data[i][8];
+			lbarangay[i]=data[i][9];
+			lstreet[i]=data[i][10];
+			createdBy[i]=data[i][11];
 		}//alert(lat);
+		
+	var tempArrz=countInstances(lbarangay);
 		
     for (var i = 0; i < data.length; i++) 
     {
@@ -436,7 +463,7 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
 				 amount200a=dist[_i][3];
 				 amount200p=dist[_i][4];
 		    }
-	    }			            
+	    }			   
     	var type = nodeType[i];
     	var householdcount=0;
     	var containercount=0;
@@ -461,6 +488,13 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
    		var point = new google.maps.LatLng(
         	lat[i],
         	lng[i]);
+    	var amt=0;
+		for(var ii=0; ii<tempArrz.length;ii++)
+		{
+			if(tempArrz[0][ii]==lbarangay[i])
+				amt=tempArrz[1][ii];
+		}
+    	
     	var html = "<b>Larval Survey Report #: </b>" + refNumber[i] +" <i>("+createdOn[i]+")</i>"
     	+ " <br/>" + "<b>Tracking #: </b>" + dist[i][0]
     	+ " <br/>" + "<b>Larval positives (LP) within: </b>"
@@ -468,9 +502,15 @@ function mapLarvalOverlay(map,distance,datax,isOld) //Larvalpositive nodes displ
     	+ " <br/>" + "<b>50m:</b>" + amount200a+" ("+ amount200p+"% of displayed LP)"
     	+ "<br/><br/>" + "<b>Household: </b>" + household[i]+" ("+ householdcount+" of "+ household.length +" total occurrences, "+householdpercent.toFixed(2)+"%)"
     	+ " <br/>" + "<b>Container: </b>" + container[i]+" ("+ containercount+" of "+ container.length +" total occurances, "+containerpercent.toFixed(2)+"%)";
+
+		html=html+"<br/><br/><b>Location: </b>Barangay "+lbarangay[i]+", "+lstreet[i]+" Street."
+    	+ " <br/>" + "<b>Amount per barangay: </b>" + amt
+    	+ " <br/>" + "<b>Amount total: </b>" + container.length
+		+ "<br/>" + "<i>Created on "+createdOn[i]
+		+ " last updated on "+updatedOn[i]+"</i>";
    		//var icon = customIcons[type] || {};
    		var bounce;
-   		if((amount50p>=25)||(amount200p>=50))
+   		if((amount50p>=5)||(amount200p>=15))
   			bounce = 1;
   		else
   			bounce = null;
@@ -789,6 +829,21 @@ jQuery(document).ready(function(){
 	</td>
 </tr>
 </table>
+<!-- <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-text="<?php echo $bcount?>">Tweet</a> -->
+<script>/*
+	!function(d,s,id)
+	{
+		var js,fjs=d.getElementsByTagName(s)[0];
+		if(!d.getElementById(id))
+		{
+			js=d.createElement(s);
+			js.id=id;
+			js.src="https://platform.twitter.com/widgets.js";
+			fjs.parentNode.insertBefore(js,fjs);
+		}
+	}
+	(document,"script","twitter-wjs");//*/
+</script>
 		
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>
