@@ -42,14 +42,18 @@
 		</div>
 		<div>
 			<ul>
-				<li><?= anchor(base_url('index.php'),'Home')?></li>
-                <li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
-               	<li><?= anchor(base_url('index.php/case_report/viewCaseReport'),'Update Cases')?></li>
-               	<li><?= anchor(base_url('index.php/larval_survey/viewLarvalReport'),'Update Surveys')?></li>
-            	<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
- 				<li><?= anchor(base_url('index.php/case_report/testChart'),'Surveillance Report ')?></li>
- 				<li><?= anchor(base_url('index.php/login/admin'),'Admin Functions')?></li>
-			</ul>
+					<li class="selected"><?= anchor(base_url('index.php'),'Home')?></li>
+					<?php if($this->session->userdata('TPtype') == "CHO"){?>
+                	<li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
+                	<li><?= anchor(base_url('index.php/CHO/dashboard'),'Dashboard')?></li>
+                	<li><?= anchor(base_url('index.php/CHO/epidemic_threshold'),'Epidemic Threshold')?></li>
+                	<?php }?>
+            		<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
+ 					<li><?= anchor(base_url('index.php/case_report/testChart'),'Surveillance Report ')?></li>
+ 					<?php if($this->session->userdata('TPtype') == "CHO"){?>
+ 					<li><?= anchor(base_url('index.php/login/admin_functions'),'Admin Functions ')?></li>
+ 					<?php }?>
+				</ul>
 			<p>
 				Copyright 20123 &copy; Department of Health. All rights reserved.
 			</p>

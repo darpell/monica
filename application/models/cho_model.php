@@ -477,7 +477,6 @@
 				$row->ctr . "&&" .
 				$row->ls_barangay . "%%" ;
 				}
-				print_r($data);
 				return $data;
 			}
 			else
@@ -506,6 +505,35 @@
 			
 			return $fact[rand(0, (count($fact))-1)];
 		}
+		function get_immediate_cases()
+		{
+			$qString = 'CALL ';
+			$qString .= "get_immediate_case('"; // name of stored procedure
+			$qString .=
+			//variables needed by the stored procedure
+			date('y-m-d'). "'". ")";
+			$q = $this->db->query($qString);
+			//*
+			if($q->num_rows() > 0)
+			{	$data ='';
+			foreach ($q->result() as $row)
+			{
+				$data .=
+				$row->f_name.' '.$row->l_name . "&&" .
+				$row->age . "&&" .	
+				$row->sex . "&&" .
+				$row->address . "&&" .
+				$row->remarks . "%%" ;
+			}
+			return $data;
+			}
+			else
+			{
+				$q->free_result();
+				return 0;
+			}
+		}
+		
 	}
 
 /* End of cho_model.php */
