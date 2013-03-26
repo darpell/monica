@@ -3,6 +3,7 @@ class Upload extends CI_Controller
 {
 	public function index()
 	{
+		$this->redirectLogin();
 		$data['title'] = 'View patients';
 		$data['table'] = null;
 		$data['script'] = '';
@@ -11,9 +12,20 @@ class Upload extends CI_Controller
 		$data['result'] = "";
 		$this->load->view('pages/view_upload',$data);
 	}
+	function redirectLogin()
+	{	$this->load->library('mobile_detect');
+	if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
+	{
+		$this->load->view('mobile/index.php');
+	}
+	elseif ($this->session->userdata('logged_in') != TRUE && $this->session->userdata('TPtype') != 'CHO' ){
+		redirect(substr(base_url(), 0, -1) . '/index.php/login');
+	}
+	}
 	
 	function view()
-	{
+	{	
+		$this->redirectLogin();
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'mdb';
 		$config['max_size'] = '10000';
@@ -172,7 +184,7 @@ class Upload extends CI_Controller
 			}
 	}
 	function confirmUpload()
-	{		
+	{	$this->redirectLogin();	
 		if($this->input->post('TPsubmit') == 'Confirm Upload')
 		{
 		$this->load->model('Case_report');

@@ -1,12 +1,9 @@
-<?php
-/**
- * twconnect library configuration
- */
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-$config = array(
-  'consumer_key'    => 'QPMXQVU9lcpgt1bRUjLWg',
-  'consumer_secret' => 'eIR3yd9j3xxe1Y049xbyjVAm8ZFFn0URms6JvQQbbo',
-  'oauth_callback'      => 'http://localhost/workspace/monica/index.php/tweet/callback' // Default callback application path
-);
+$config['twitter_consumer_token']		= 'QPMXQVU9lcpgt1bRUjLWg';
+$config['twitter_consumer_secret']		= 'eIR3yd9j3xxe1Y049xbyjVAm8ZFFn0URms6JvQQbbo';
+$config['twitter_access_token']			= '1295280488-oODNE13B8QIxluzhf8e8RwhJFWsvlLsBGioSyzI';
+$config['twitter_access_secret']		= 'jlQOM6Xtmk6voAtuBZts2jUpvsvTUgk8cLOVYqPcQ';
 
-?>
+/* End of file twitter.php */
+/* Location: ./application/config/twitter.php */

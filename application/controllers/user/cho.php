@@ -332,6 +332,64 @@ class Cho extends CI_Controller
 		
 	
 	}
+	function tweet()
+	{	
+		$this->load->library('twitteroauth');
+		$this->load->model('Cho_model');
+		if ($this->input->post('tweettype') == 'epi')
+		{
+			$month = date('m');
+			$m = date("F",mktime(0,0,0,$month,1,2000));
+			
+			if ($this->input->post('epitype') == 'quartile')
+			{
+				$status = 'The Epidemic Threshold for the month of '.$m .' is at '. $this->input->post('tquartile') . '%.';
+			}
+			else if ($this->input->post('epitype') == 'csum')
+			{
+				$status = 'The Epidemic Threshold for the month of '.$m .' is at '. $this->input->post('tcsum') . '%.';
+			}
+			else if ($this->input->post('epitype') == 'mean2sd')
+			{
+				$status = 'The Epidemic Threshold for the month of '.$m .' is at '. $this->input->post('tm2sd2') . '%.';
+			}
+			else if ($this->input->post('epitype') == 'csum196sd')
+			{
+				$status = 'The Epidemic Threshold for the month of '.$m .' is at '. $this->input->post('tcsum196sd') . '%.';
+			}
+			
+			$parameters = array(
+					'status' => $status
+			);
+		}
+		else if ($this->input->post('tweettype') == 'count')
+		{
+			$month = date('m');
+			$m = date("F",mktime(0,0,0,$month,1,2000));
+			$status = 'The current number of cases for the month of '.$m .' are '. $this->input->post('tcases') . ' cases.';
+			$parameters = array(
+					'status' => $status
+			);
+		}
+		else if ($this->input->post('tweettype') == 'fact')
+		{
+			$msg = $this->Cho_model->randomfact();
+			$parameters = array(
+					'status' => $msg
+			);
+		}
+		else if ($this->input->post('tweettype') == 'msg')
+		{
+			$parameters = array(
+					'status' => $this->input->post('customtweet')
+			);
+		}
+		$connection = $this->twitteroauth->create('QPMXQVU9lcpgt1bRUjLWg', 'eIR3yd9j3xxe1Y049xbyjVAm8ZFFn0URms6JvQQbbo', '1295280488-oODNE13B8QIxluzhf8e8RwhJFWsvlLsBGioSyzI', 'jlQOM6Xtmk6voAtuBZts2jUpvsvTUgk8cLOVYqPcQ');
+		$content = $connection->get('account/verify_credentials');
+		$result = $connection->post('statuses/update', $parameters);
+		redirect('/CHO/dashboard/', 'refresh');
+	}
+	
 	
 	
 	

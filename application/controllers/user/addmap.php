@@ -2,7 +2,7 @@
 class Addmap extends CI_Controller
 {
 	public function index()
-	{		
+	{		$this->redirectLogin();
 		$this->load->model('Mapping');
 		$data['title'] = 'Add boundary';
 		//scripts if none keep '' 
@@ -34,8 +34,18 @@ class Addmap extends CI_Controller
 			$this->load->view('pages/success');
 		}
 	}
-	function addPolygon()
+	function redirectLogin()
+	{	$this->load->library('mobile_detect');
+	if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
 	{
+		$this->load->view('mobile/index.php');
+	}
+	elseif ($this->session->userdata('logged_in') != TRUE && $this->session->userdata('TPtype') != 'CHO' ){
+		redirect(substr(base_url(), 0, -1) . '/index.php/login');
+	}
+	}
+	function addPolygon()
+	{	$this->redirectLogin();
 		$this->load->model('Mapping');
 		$data['title'] = 'Add boundary';
 		$data['script'] = '';

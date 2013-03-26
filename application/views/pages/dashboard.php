@@ -303,6 +303,13 @@
          ['San Agustin I',  parseInt(mn3),  parseInt(larval3)   ],
          ['San Agustin III',  parseInt(mn4),  parseInt(larval4)    ]
          ]);
+
+        var sumofcases = parseInt(mn1)+parseInt(mn2)+parseInt(mn3)+parseInt(mn4);
+        document.getElementById('tquartile').value = tquartile;
+        document.getElementById('tcases').value = sumofcases;
+        document.getElementById('tcsum').value = tcsum;
+        document.getElementById('tm2sd2').value = tmean2sd;
+        document.getElementById('tcsum196sd').value = tcsum196sd;
         
               // Instantiate and draw our chart, passing in some options.
               var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
@@ -923,7 +930,7 @@
 $attributes = array(
 						'id' => 'TPcr-form'
 					);
-echo form_open('tweet/testpost',$attributes); ?>
+echo form_open('CHO/tweet',$attributes); ?>
 
 		<div class="blog">
 
@@ -940,11 +947,11 @@ echo form_open('tweet/testpost',$attributes); ?>
 
 <input type="hidden" name="tquartile" id="tquartile" value="" />
 <input type="hidden" name="tcsum" id="tcsum" value="" />
-<input type="hidden" name="tm2sd" id="tm2sd" value="" />
+<input type="hidden" name="tm2sd2" id="tm2sd2" value="" />
 <input type="hidden" name="tcsum196sd" id="tcsum196sd" value="" />
 <input type="hidden" name="tcases" id="tcases" value="" />
 
-<form>
+
 <input type = 'hidden' id ='data' name='data' value='<?php echo $nodes?>'>
 <input type = 'hidden' id ='dataBInfo' name='dataBInfo' value='<?php echo $binfo?>'>
 <input type = 'hidden' id ='dataBAge' name='dataBAge' value='<?php echo $table1?>'>
@@ -962,7 +969,7 @@ echo form_open('tweet/testpost',$attributes); ?>
 <input type = 'hidden' id ='PdataBCount' name='PdataBCount' value='<?php echo $Pbcount?>'>
 <input type = 'hidden' id ='Ptype' name='Ptype' value='<?php echo $node_type?>'>
 <input type = 'hidden' id ='Pdist' name='Pdist' value='<?php echo $Pdist?>'>
-</form>
+
 <body onload="load()">
 <h4>Larval Positives</h4>
 <table border="1" width=70%>

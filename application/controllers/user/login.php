@@ -17,6 +17,16 @@ class Login extends CI_Controller
 			$this->load->view('pages/success');
 		}
 	}
+	function redirectLogin()
+	{	$this->load->library('mobile_detect');
+	if ($this->mobile_detect->isTablet() || $this->mobile_detect->isMobile())
+	{
+		$this->load->view('mobile/index.php');
+	}
+	elseif ($this->session->userdata('logged_in') != TRUE && $this->session->userdata('TPtype') != 'CHO' ){
+		redirect(substr(base_url(), 0, -1) . '/index.php/login');
+	}
+	}
 	
 	function check()
 	{
@@ -62,7 +72,7 @@ class Login extends CI_Controller
 	}
 	
 	function add_user()
-	{
+	{	$this->redirectLogin();
 		$data['title'] = 'Registration Page';
 		$data['script'] = '';
 		$data['result'] =  null;
@@ -107,7 +117,7 @@ class Login extends CI_Controller
 		}
 	}
 	function unapproved_users()
-	{
+	{	$this->redirectLogin();
 		$this->load->model('mod_login');
 		
 		/* css */
@@ -135,7 +145,7 @@ class Login extends CI_Controller
 	}
 	
 	function view_user()
-	{
+	{	$this->redirectLogin();
 		$this->load->model('mod_login');
 		$data['username'] = $this->uri->segment(3,"");
 		
@@ -166,7 +176,7 @@ class Login extends CI_Controller
 	}
 	function approve_user()
 	{	
-	
+		$this->redirectLogin();
 		$data['title'] = 'Registration Page';
 		$data['script'] = '';
 		$data['result'] =  null;
@@ -209,7 +219,7 @@ class Login extends CI_Controller
 		redirect(base_url());
 	}
 	function admin_functions()
-	{
+	{	$this->redirectLogin();
 		$data['script'] = '';
 		$this->load->view('pages/admin' , $data);
 	}

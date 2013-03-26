@@ -46,9 +46,10 @@
 					<?php if($this->session->userdata('TPtype') == "CHO"){?>
                 	<li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
                 	<li><?= anchor(base_url('index.php/CHO/dashboard'),'Dashboard')?></li>
-                	<li><?= anchor(base_url('index.php/CHO/epidemic_threshold'),'Epidemic Threshold')?></li>
-                	<?php }?>
             		<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
+                	<?php }?>
+                	<li><?= anchor(base_url('index.php/CHO/epidemic_threshold'),'Epidemic Threshold')?></li>
+
  					<li><?= anchor(base_url('index.php/case_report/testChart'),'Surveillance Report ')?></li>
  					<?php if($this->session->userdata('TPtype') == "CHO"){?>
  					<li><?= anchor(base_url('index.php/login/admin_functions'),'Admin Functions ')?></li>
