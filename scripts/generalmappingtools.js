@@ -78,3 +78,4 @@ function mapPointsOfInterest(googleMap)
 		createMarker(googleMap,point,null,html,false,false,true,tempoagain);
 	}
 }
+

@@ -73,6 +73,7 @@ class Mapform extends CI_Controller
 				$data['binfo'] = $this->Mapping->getBarangayInfo($dateData1);
 				$data['bcount'] = $this->Mapping->getBarangayCount($dateData1);
 				$data['dist'] = $this->Mapping->calculateDistanceFormula($dateData1);
+				$data['weather'] = $this->Mapping->weatherMapping($dateData1);
 				//*/
 
 				$data['date1']=$dateData2['date1'];

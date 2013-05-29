@@ -180,6 +180,72 @@ class Mapping extends CI_Model
 			//*/
 		}
 		//*
+	function weatherMapping($data)
+	{
+		$qString = 'CALL ';
+		$qString .= "get_weather('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data['date1']. "','".
+		$data['date2']. "'". ")";
+		
+		$q = $this->db->query($qString);
+		$data="";
+		$ctr=0;
+		$color="";
+		if($q->num_rows() > 0) 
+		{
+			foreach ($q->result() as $row)
+			{
+				if($row->amount==0)
+				{
+					$color="C8FFFF";
+				}
+				else if($row->amount>0 && $row->amount<=5)
+				{
+					$color="96FFFF";
+				}
+				else if($row->amount>6 && $row->amount<=10)
+				{
+					$color="64FFFF";
+				}
+				else if($row->amount>11 && $row->amount<=15)
+				{
+					$color="32FFFF";
+				}
+				else if($row->amount>16 && $row->amount<=20)
+				{
+					$color="00FFFF";
+				}
+				else if($row->amount>21 && $row->amount<=25)
+				{
+					$color="00C8FF";
+				}
+				else if($row->amount>26 && $row->amount<=30)
+				{
+					$color="0096FF";
+				}
+				else if($row->amount>31 && $row->amount<=35)
+				{
+					$color="0064FF";
+				}
+				else if($row->amount>36 && $row->amount<=40)
+				{
+					$color="0032FF";
+				}
+				else if($row->amount>41 && $row->amount<=45)
+				{
+					$color="0000FF";
+				}
+				$data .=
+				$row->barangay . "&&" . 
+				$color . "%%";
+				$ctr++;
+			}
+		}
+		echo ($data);
+		return substr($data,0,-2);
+	}
 	function calculateDistanceFormula($data)
 		{
 			//QUERY LARVAL INFORMATION
