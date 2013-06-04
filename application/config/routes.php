@@ -78,6 +78,7 @@ $route['CHO'] = 'user/cho';
 $route['CHO/(:any)'] = 'user/cho/$1';
 $route['tweet'] = 'user/twtest';
 $route['tweet/(:any)'] = 'user/twtest/$1';
+$route['remap'] = 'user/remap';
 $route['default_controller'] = 'user/pages/view';
 $route['logout'] = 'user/login/logout';
 $route['mobile/logout'] = 'mobile/login/logout';
