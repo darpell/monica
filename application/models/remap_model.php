@@ -29,6 +29,19 @@ class Remap_model extends CI_Model
 		$query->free_result();
 	}
 	
+	function get_polygon_nodes($place = NULL)
+	{
+		if ($place === NULL)
+		{
+			$query = $this->db->get('map_polygons');
+			return $query->result_array();
+			$query->free_result();
+		}
+		$query = $this->db->get_where('map_polygons',array('polygon_name' => $place));
+		return $query->result_array();
+		$query->free_result();
+	}
+	
 }
 
 /* End of remap.php */

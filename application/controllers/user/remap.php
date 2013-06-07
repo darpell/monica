@@ -19,10 +19,13 @@ class Remap extends CI_Controller
 		$current_date = date("Y-m-d");
 		
 		// larval points
-		$data['points'] = $this->larval_mapping->get_points($begin_date, $current_date);
+		$data['points'] = NULL;//$this->larval_mapping->get_points($begin_date, $current_date);
 		
-		//risk nodes
+		// risk nodes
 		$data['map_nodes'] = $this->remap_model->get_map_nodes();//($begin_date, $current_date);
+		
+		// polygon nodes
+		$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
 		
 		$this->load->view('pages/remap',$data);
 	}	

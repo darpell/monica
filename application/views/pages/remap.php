@@ -54,96 +54,127 @@ body {height:100%;margin:0;padding:0}
 			var household = [];
 			var container = [];
 
-			/*
+			
 			var amount_200 = [];
 			var percent_200 = [];
 			var amount_50 = [];
 			var percent_50 = [];
-			*/
-				
-			for (var ctr = 0; ctr < document.getElementById("result_length").value; ctr++)
-			{
-				// distance formula necessities
-				tracking_no[ctr] = document.getElementById("pt_tracking_no" + ctr).value;
-		  		refNumber[ctr] = document.getElementById("pt_ref_no" + ctr).value;
-		  		household[ctr] = document.getElementById("pt_household" + ctr).value;
-		  		container[ctr] = document.getElementById("pt_container" + ctr).value;
-		  		/*amount_200[ctr] = document.getElementById("amount_200_" + ctr).value;
-				percent_200[ctr] = document.getElementById("percentage_200_" + ctr).value;
-		  		amount_50[ctr] = document.getElementById("amount_50_" + ctr).value;
-				percent_50[ctr] = document.getElementById("percentage_50_" + ctr).value;*/
-		  			
-				// end distance formula necessities
-			}
 			
-			for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value; pt_ctr++) 
+			if (document.getElementById("result_length").value != 0)
 			{
-				var marker = new google.maps.Marker({
-									position:new google.maps.LatLng(
-									document.getElementById("pt_lat" + pt_ctr).value,
-									document.getElementById("pt_lng" + pt_ctr).value
-							)
-					});
-
-
-				var householdcount = 0;
-				var containercount = 0;
-				for (var __i = 0; __i < household.length; __i++)
-		        {
-			       	if (household[pt_ctr] === household[__i])
-			       		householdcount++;
-			       	if (container[pt_ctr] === container[__i])
-			       		containercount++;
+				for (var ctr = 0; ctr < document.getElementById("result_length").value; ctr++)
+				{
+					// distance formula necessities
+					tracking_no[ctr] = document.getElementById("pt_tracking_no" + ctr).value;
+			  		refNumber[ctr] = document.getElementById("pt_ref_no" + ctr).value;
+			  		household[ctr] = document.getElementById("pt_household" + ctr).value;
+			  		container[ctr] = document.getElementById("pt_container" + ctr).value;
+			  		/*amount_200[ctr] = document.getElementById("amount_200_" + ctr).value;
+					percent_200[ctr] = document.getElementById("percentage_200_" + ctr).value;
+			  		amount_50[ctr] = document.getElementById("amount_50_" + ctr).value;
+					percent_50[ctr] = document.getElementById("percentage_50_" + ctr).value;*/
+			  			
+					// end distance formula necessities
 				}
-				var householdpercent = householdcount / household.length * 100;
-				var containerpercent = containercount / container.length * 100;
-					
-				// infowindow content
-				var html = "<b>Larval Survey Report #: </b>" + refNumber[pt_ctr]
-			    	+ " <br/>" + "<b>Tracking #: </b>" + tracking_no[pt_ctr]
-			    /*	+ " <br/>" + "<b>Larval positives (LP) within: </b>"
-			    	+ " <br/>" + "<b>200m:</b>" + amount_200[pt_ctr] +" ("+ percent_200[pt_ctr] +"% of displayed LP)"
-			    	+ " <br/>" + "<b>50m:</b>" + amount_50[pt_ctr] +" ("+ percent_50[pt_ctr] +"% of displayed LP)" */
-			    	+ "<br/><br/>" + "<b>Household: </b>" + household[pt_ctr] +" ("+ householdcount +" of "+ household.length +" total occurrences, "+ householdpercent.toFixed(2) + "%)"
-			    	+ " <br/>" + "<b>Container: </b>" + container[pt_ctr] +" ("+ containercount +" of "+ container.length +" total occurances, "+ containerpercent.toFixed(2) + "%)";
-				// end infowindow content
-				
-				marker.info = new google.maps.InfoWindow({
-							content: html
+			
+				for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value; pt_ctr++) 
+				{
+					var marker = new google.maps.Marker({
+										position:new google.maps.LatLng(
+										document.getElementById("pt_lat" + pt_ctr).value,
+										document.getElementById("pt_lng" + pt_ctr).value
+								)
 						});
-					oms.addListener('click', function(marker) {
-						 marker.info.open(map, marker);
-					});
+	
+	
+					var householdcount = 0;
+					var containercount = 0;
+					for (var __i = 0; __i < household.length; __i++)
+			        {
+				       	if (household[pt_ctr] === household[__i])
+				       		householdcount++;
+				       	if (container[pt_ctr] === container[__i])
+				       		containercount++;
+					}
+					var householdpercent = householdcount / household.length * 100;
+					var containerpercent = containercount / container.length * 100;
+						
+					// infowindow content
+					var html = "<b>Larval Survey Report #: </b>" + refNumber[pt_ctr]
+				    	+ " <br/>" + "<b>Tracking #: </b>" + tracking_no[pt_ctr]
+				    /*	+ " <br/>" + "<b>Larval positives (LP) within: </b>"
+				    	+ " <br/>" + "<b>200m:</b>" + amount_200[pt_ctr] +" ("+ percent_200[pt_ctr] +"% of displayed LP)"
+				    	+ " <br/>" + "<b>50m:</b>" + amount_50[pt_ctr] +" ("+ percent_50[pt_ctr] +"% of displayed LP)" */
+				    	+ "<br/><br/>" + "<b>Household: </b>" + household[pt_ctr] +" ("+ householdcount +" of "+ household.length +" total occurrences, "+ householdpercent.toFixed(2) + "%)"
+				    	+ " <br/>" + "<b>Container: </b>" + container[pt_ctr] +" ("+ containercount +" of "+ container.length +" total occurances, "+ containerpercent.toFixed(2) + "%)";
+					// end infowindow content
 					
-				oms.addMarker(marker);
-				markers.push(marker);
+					marker.info = new google.maps.InfoWindow({
+								content: html
+							});
+						oms.addListener('click', function(marker) {
+							 marker.info.open(map, marker);
+						});
+						
+					oms.addMarker(marker);
+					markers.push(marker);
+				} 
 			}
 
 			// Map Nodes
-			var node_markers = [];
+			//var node_markers = [];
 
-			for (var ctr = 0; ctr < document.getElementById("map_nodes_result_length").value; ctr++)
+			if (document.getElementById("map_nodes_result_length").value != 0)
 			{
-				var node_marker = new google.maps.Marker({
-										position:new google.maps.LatLng(
-										document.getElementById("nd_lat" + ctr).value,
-										document.getElementById("nd_lng" + ctr).value
-								)
+				for (var ctr = 0; ctr < document.getElementById("map_nodes_result_length").value; ctr++)
+				{
+					var node_marker = new google.maps.Marker({
+											position:new google.maps.LatLng(
+											document.getElementById("nd_lat" + ctr).value,
+											document.getElementById("nd_lng" + ctr).value
+									)
+							});
+	
+					node_marker.info = new google.maps.InfoWindow({
+								content: 'test'
+							});
+					oms.addListener('click', function(node_marker) {
+							node_marker.info.open(map, node_marker);
 						});
+						
+					oms.addMarker(node_marker);
+					markers.push(node_marker);
+				}
+			}
 
-				/*node_marker.info = new google.maps.InfoWindow({
-							content: 'test'
-						});*/
-				oms.addListener('click', function(node_marker) {
-						node_marker.info.open(map, node_marker);
-					});
+			if (document.getElementById("polygon_nodes_result_length").value == 0)
+			{
+				for (var ctr = 0; ctr < document.getElementById("polygon_nodes_result_length").value; ctr++)
+				{
+					var polygon_coords = [];
+					// TODO
 					
-				oms.addMarker(node_marker);
-				node_markers.push(node_marker);
+					var polygon_marker = new google.maps.Polygon({
+											position:new google.maps.LatLng(
+											document.getElementById("nd_lat" + ctr).value,
+											document.getElementById("nd_lng" + ctr).value
+									)
+							});
+	
+					node_marker.info = new google.maps.InfoWindow({
+								content: 'test'
+							});
+					oms.addListener('click', function(node_marker) {
+							node_marker.info.open(map, node_marker);
+						});
+						
+					oms.addMarker(node_marker);
+					markers.push(node_marker);
+				}
 			}
 			
 					
-			//var mc = new MarkerClusterer(map, markers, mcOptions);
+			var mc = new MarkerClusterer(map, markers, mcOptions);
 			//var mc_nodes = new MarkerClusterer(map, node_markers, mcOptions);
 		}
 		google.maps.event.addDomListener(window, 'load', initialize);
@@ -167,6 +198,7 @@ body {height:100%;margin:0;padding:0}
 	<?php //endfor;?>
 	<!-- /50m -->
 	
+	<?php if ($points != NULL){?>
 <input type="hidden" id="result_length" value="<?php echo count($points); ?>" />
 	<?php for ($ctr = 0; $ctr < count($points); $ctr++) {?>
 		<input type="hidden" id="pt_barangay<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_barangay']; ?>"	/>
@@ -180,7 +212,7 @@ body {height:100%;margin:0;padding:0}
 		<input type="hidden" id="pt_container<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_container']; ?>"	/>
 		<input type="hidden" id="pt_tracking_no<?= $ctr ?>" 	value="<?php echo $points[$ctr]['tracking_number']; ?>"	/>
 		<input type="hidden" id="pt_ref_no<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_no']; ?>"	/>
-	<?php } ?>
+	<?php }} else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
 	
 <!-- Dengue Risk Areas -->
 <input type="hidden" id="map_nodes_result_length" value="<?php echo count($map_nodes); ?>" />
@@ -196,6 +228,17 @@ body {height:100%;margin:0;padding:0}
 		<input type="hidden" id="nd_notes<?= $ctr ?>" 	value="<?php echo $map_nodes[$ctr]['node_notes']; ?>"	/>
 	<?php } ?>
 <!-- //end Dengue Risk Areas -->
+	
+	<!-- Polygon Nodes -->
+<input type="hidden" id="polygon_nodes_result_length" value="<?php echo count($polygon_nodes); ?>" />
+	<?php for ($ctr = 0; $ctr < count($polygon_nodes); $ctr++) {?>
+		<input type="hidden" id="pol_no<?= $ctr ?>" 	value="<?php echo $polygon_nodes[$ctr]['point_no']; ?>"		/>
+		<input type="hidden" id="pol_name<?= $ctr ?>" 	value="<?php echo $polygon_nodes[$ctr]['polygon_name']; ?>"	/>
+		<input type="hidden" id="pol_id<?= $ctr ?>"		value="<?php echo $polygon_nodes[$ctr]['polygon_ID']; ?>"	/>
+		<input type="hidden" id="pol_lat<?= $ctr ?>" 	value="<?php echo $polygon_nodes[$ctr]['point_lat']; ?>"	/>
+		<input type="hidden" id="pol_lng<?= $ctr ?>" 	value="<?php echo $polygon_nodes[$ctr]['point_lng']; ?>"	/>
+	<?php } ?>
+<!-- //end Polygon Nodes -->
 
 <body>
 	<div id="header-holder">
