@@ -121,14 +121,14 @@ body {height:100%;margin:0;padding:0}
 				} 
 			}
 
-			// Map Nodes
-			//var node_markers = [];
+			/** Map Nodes **/
+			//var node_markers*= [];
 
 			if (document.getElementById("map_nodes_result_length").value != 0)
 			{
+				var image = document.getElementById("node_icon").value;
 				for (var ctr = 0; ctr < document.getElementById("map_nodes_result_length").value; ctr++)
 				{
-					var image = document.getElementById("node_icon").value;
 					var node_marker = new google.maps.Marker({
 											position: new google.maps.LatLng(
 											document.getElementById("nd_lat" + ctr).value,
@@ -148,25 +148,40 @@ body {height:100%;margin:0;padding:0}
 					markers.push(node_marker);
 				}
 			}
+			//alert('test');
 
+			/** end Map Nodes **/
+			
+			/** Polygon **/
+			
 			if (document.getElementById("polygon_nodes_result_length").value != 0)
 			{
-				var polygons = [];
-				// TODO
+				var polygons = new Array();
+				var polygon_coords = new Array();
+				var pol_id_ctr = 0;
+				
 				for (var p_ctr = 0; p_ctr < document.getElementById("polygon_nodes_result_length").value; p_ctr++)
 				{
-					var polygon_coords = [];
-					polygon_coords.push(
-							 			new google.maps.LatLng(
-							 					document.getElementById("pol_lat" + p_ctr).value,
-												document.getElementById("pol_lng" + p_ctr).value	
-									 		)
-										);
-					polygons.push(polygon_coords);
+					if (pol_id_ctr == document.getElementById("pol_id" + p_ctr).value)
+					{
+						polygon_coords.push( 
+					 			new google.maps.LatLng(
+					 					document.getElementById("pol_lat" + p_ctr).value,
+										document.getElementById("pol_lng" + p_ctr).value
+							 		)
+								);
+						//alert(document.getElementById("pol_id" + p_ctr).value);
+					}
+					else
+					{
+						pol_id_ctr++;
+						polygons.push(polygon_coords);
+						polygon_coords = [];
+					}
 				}
-				alert(polygons);
-				
-				for (var ctr = 0; ctr < document.getElementById("polygon_nodes_result_length").value; ctr++)
+				//alert(polygons[1]);
+				//alert(pol_id_ctr);
+				for (var ctr = 0; ctr < pol_id_ctr; ctr++)
 				{
 					var polygon_marker = new google.maps.Polygon({
 											paths: polygons[ctr],
@@ -180,7 +195,8 @@ body {height:100%;margin:0;padding:0}
 					polygon_marker.setMap(map);
 				}
 			}
-			
+			alert('test');
+			/** end Polygon **/
 					
 			var mc = new MarkerClusterer(map, markers, mcOptions);
 			//var mc_nodes = new MarkerClusterer(map, node_markers, mcOptions);
