@@ -128,11 +128,13 @@ body {height:100%;margin:0;padding:0}
 			{
 				for (var ctr = 0; ctr < document.getElementById("map_nodes_result_length").value; ctr++)
 				{
+					var image = document.getElementById("node_icon").value;
 					var node_marker = new google.maps.Marker({
-											position:new google.maps.LatLng(
+											position: new google.maps.LatLng(
 											document.getElementById("nd_lat" + ctr).value,
-											document.getElementById("nd_lng" + ctr).value
-									)
+											document.getElementById("nd_lng" + ctr).value		
+										),
+										icon: image
 							});
 	
 					node_marker.info = new google.maps.InfoWindow({
@@ -147,29 +149,35 @@ body {height:100%;margin:0;padding:0}
 				}
 			}
 
-			if (document.getElementById("polygon_nodes_result_length").value == 0)
+			if (document.getElementById("polygon_nodes_result_length").value != 0)
 			{
-				for (var ctr = 0; ctr < document.getElementById("polygon_nodes_result_length").value; ctr++)
+				var polygons = [];
+				// TODO
+				for (var p_ctr = 0; p_ctr < document.getElementById("polygon_nodes_result_length").value; p_ctr++)
 				{
 					var polygon_coords = [];
-					// TODO
-					
+					polygon_coords.push(
+							 			new google.maps.LatLng(
+							 					document.getElementById("pol_lat" + p_ctr).value,
+												document.getElementById("pol_lng" + p_ctr).value	
+									 		)
+										);
+					polygons.push(polygon_coords);
+				}
+				alert(polygons);
+				
+				for (var ctr = 0; ctr < document.getElementById("polygon_nodes_result_length").value; ctr++)
+				{
 					var polygon_marker = new google.maps.Polygon({
-											position:new google.maps.LatLng(
-											document.getElementById("nd_lat" + ctr).value,
-											document.getElementById("nd_lng" + ctr).value
-									)
+											paths: polygons[ctr],
+											strokeColor: "#FF0000",
+										    strokeOpacity: 0.8,
+										    strokeWeight: 2,
+										    fillColor: "#FF0000",
+										    fillOpacity: 0.35		
 							});
 	
-					node_marker.info = new google.maps.InfoWindow({
-								content: 'test'
-							});
-					oms.addListener('click', function(node_marker) {
-							node_marker.info.open(map, node_marker);
-						});
-						
-					oms.addMarker(node_marker);
-					markers.push(node_marker);
+					polygon_marker.setMap(map);
 				}
 			}
 			
@@ -227,6 +235,7 @@ body {height:100%;margin:0;padding:0}
 		<input type="hidden" id="nd_addedOn<?= $ctr ?>"	value="<?php echo $map_nodes[$ctr]['node_addedOn']; ?>"		/>
 		<input type="hidden" id="nd_notes<?= $ctr ?>" 	value="<?php echo $map_nodes[$ctr]['node_notes']; ?>"	/>
 	<?php } ?>
+		<input type="hidden" id="node_icon" value="<?php echo base_url('/images/notice.png')?>" />
 <!-- //end Dengue Risk Areas -->
 	
 	<!-- Polygon Nodes -->
