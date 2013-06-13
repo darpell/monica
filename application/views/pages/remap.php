@@ -1,13 +1,13 @@
 <!DOCTYPE html> 
 <html> 
 <head>
-<!-- CONTENT -->
+<meta charset="utf-8"/>
     
 <style type="text/css">
 html {height:100%}
 body {height:100%;margin:0;padding:0}
 
-#header-holder	{ height:25%; }
+#header-holder	{ height:25%; width: 100% }
 #header-padder	{ padding:15px; }
 #upper-header	{ height:160px; width:parent; overflow:scroll; overflow-x:hidden; }
 
@@ -20,6 +20,16 @@ body {height:100%;margin:0;padding:0}
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather&sensor=true"></script>
 <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
 <script src="<?= base_url('scripts/OverlappingMarkerSpiderfier.js') ?>"></script>
+
+<link rel="stylesheet" href="<?php echo base_url('scripts/jQRangeSLider-5.1.1/css/iThing.css')?>"/>
+<link rel="stylesheet" href="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/lib/jquery-ui/css/smoothness/jquery-ui-1.8.10.custom.css')?>"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/lib/jquery-ui/js/jquery-ui-1.8.16.custom.min.js')?>"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/lib/jquery.mousewheel.min.js')?>"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/jQDateRangeSlider-min.js')?>"></script>
+
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/dateSliderDemo.js')?>"></script>
 
 <script>
 	
@@ -45,6 +55,8 @@ body {height:100%;margin:0;padding:0}
 				
 			var markers = [];
 
+			var oms = new OverlappingMarkerSpiderfier(map);
+
 			/** Map Nodes **/
 			//var node_markers*= [];
 
@@ -66,15 +78,15 @@ body {height:100%;margin:0;padding:0}
 								content: 'test'
 							});
 
-					google.maps.event.addListener(node_marker, 'click', function() {
+					/*google.maps.event.addListener(node_marker, 'click', function() {
 						node_marker_info.open(map,node_marker);
-						});
+						});*/
 					
-					/*oms.addListener('click', function(node_marker) {
-							node_marker.info.open(map, node_marker);
+					oms.addListener('click', function(node_marker) {
+							node_marker_info.open(map, node_marker);
 						});
 						
-					oms.addMarker(node_marker);*/
+					oms.addMarker(node_marker);
 					markers.push(node_marker);
 				}
 			}
@@ -109,9 +121,9 @@ body {height:100%;margin:0;padding:0}
 						polygon_coords = [];
 					}
 				}
-				//alert(polygons[1]);
+				//alert(polygons[0]);
 				//alert(pol_id_ctr);
-				for (var ctr = 0; ctr < pol_id_ctr; ctr++)
+				for (var ctr = 0; ctr <= pol_id_ctr; ctr++)
 				{
 					var polygon_marker = new google.maps.Polygon({
 											paths: polygons[ctr],
@@ -200,12 +212,49 @@ body {height:100%;margin:0;padding:0}
 		<div id="upper-header">
 		<?php echo form_open(); ?>
 		<?php echo form_fieldset();?>
-			Overlays <br/>
-				<label style="color:red"><?php echo form_error('TPsex-dd'); ?></label>
-				<?php echo form_checkbox('risk_area', 'risk_areas',TRUE); ?> Dengue Risk Areas <br/>
-				<?php echo form_checkbox('pidsr', 'pidsr_cases',TRUE); ?> Dengue Cases (from PIDSR) <br/>
-				<?php echo form_checkbox('plotted', 'plot_cases',TRUE); ?> Dengue Cases (as visited by BHWs) <br/>
-				<?php echo form_submit('submit','Submit'); ?>
+		<table>
+			<tr style="width:100%">
+				<td style="width:33%;border: 1px solid red"> &nbsp; </td>
+				<td style="width:33%;border: 1px solid red;">
+					<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/jDateQRangeSlider-min.js')?>"></script>
+					<br/><br/>
+					<div id="slider"></div>
+					<script>
+					//<!--
+						var today = new Date();
+						$("#slider").dateRangeSlider({
+								bounds:
+								{
+									min: new Date(2008, 6, 1),
+									max: today
+								},
+								defaultValues:
+								{
+									min: new Date((today.getFullYear()-1), today.getMonth(), today.getDate()),
+									max: today
+								}
+							});
+						var dateValues = $("#slider").dateRangeSlider("values");
+						//console.log(dateValues.min.toString() + " " + dateValues.max.toString());
+						//alert("min value is " + dateValues.min.toString() + "\n max value is " + dateValues.max.toString());
+					//-->
+					</script>
+					<article style="padding:50px 20px">
+					
+					
+					
+					</article>
+				</td>
+				<td style="width:33%;border: 1px solid red">
+					Overlays <br/>
+						<label style="color:red"><?php echo form_error('TPsex-dd'); ?></label>
+						<?php echo form_checkbox('risk_area', 'risk_areas',TRUE); ?> Dengue Risk Areas <br/>
+						<?php echo form_checkbox('pidsr', 'pidsr_cases',TRUE); ?> Dengue Cases (from PIDSR) <br/>
+						<?php echo form_checkbox('plotted', 'plot_cases',TRUE); ?> Dengue Cases (as visited by BHWs) <br/>
+						<?php echo form_submit('submit','Submit'); ?>
+				</td>
+			</tr>
+		</table>		
 		<?php echo form_fieldset_close();?>
 		<?php echo form_close(); ?>
 		</div>

@@ -28,7 +28,12 @@ class Remap extends CI_Controller
 		$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
 		
 		$this->load->view('pages/remap',$data);
-	}	
+	}
+	
+	public function filter()
+	{
+		//$this->input->post();
+	}
 }
 
 /* End of file remap.php */
