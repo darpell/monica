@@ -217,7 +217,6 @@ body {height:100%;margin:0;padding:0}
 				<td style="width:33%;border: 1px solid red"> &nbsp; </td>
 				<td style="width:33%;border: 1px solid red;">
 					<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/jDateQRangeSlider-min.js')?>"></script>
-					<br/><br/>
 					<div id="slider"></div>
 					<script>
 					//<!--
@@ -239,11 +238,7 @@ body {height:100%;margin:0;padding:0}
 						//alert("min value is " + dateValues.min.toString() + "\n max value is " + dateValues.max.toString());
 					//-->
 					</script>
-					<article style="padding:50px 20px">
 					
-					
-					
-					</article>
 				</td>
 				<td style="width:33%;border: 1px solid red">
 					Overlays <br/>
@@ -257,6 +252,18 @@ body {height:100%;margin:0;padding:0}
 		</table>		
 		<?php echo form_fieldset_close();?>
 		<?php echo form_close(); ?>
+		<script>
+		$('form').submit(function(event){
+			var postData = {
+					'beginDate'		: dateValues.min.toString(),
+					'endDate'		: dateValues.max.toString(),
+					'risk_area_c'	: document.getElementById("map_nodes_result_length").value,
+					'pidsr_c'		: document.getElementById("map_nodes_result_length").value,
+					'plotted_c'		: document.getElementById("map_nodes_result_length").value
+				};
+			$.post('http://www.google.com');
+			});
+		</script>
 		</div>
 	</div>
 	
