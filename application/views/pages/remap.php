@@ -236,7 +236,16 @@ body {height:100%;margin:0;padding:0}
 						var dateValues = $("#slider").dateRangeSlider("values");
 						//console.log(dateValues.min.toString() + " " + dateValues.max.toString());
 						//alert("min value is " + dateValues.min.toString() + "\n max value is " + dateValues.max.toString());
-					//-->
+						//-->		
+						$("#slider").bind("valuesChanged", function(e, data){
+							var dateValues = $("#slider").dateRangeSlider("values");
+							//alert("Values changed to "+dateValues.min.toString()+" and "+dateValues.max.toString()+"!");
+							$('input[name=beginDate]').val(dateValues.min.toString());
+							$('input[name=endDate]').val(dateValues.max.toString());
+							$('input[name=risk_area_c]').val(document.getElementById("map_nodes_result_length").value);
+							$('input[name=pidsr_c]').val(document.getElementById("map_nodes_result_length").value);
+							$('input[name=plotted_c]').val(document.getElementById("map_nodes_result_length").value);
+						});					
 					</script>
 					
 				</td>
@@ -250,20 +259,13 @@ body {height:100%;margin:0;padding:0}
 				</td>
 			</tr>
 		</table>		
+		<input type="hidden" id="beginDate" name="beginDate" value="<?php echo $begin_date?>" />	
+		<input type="hidden" id="endDate" name="endDate" value="<?php echo $current_date?>" />	
+		<input type="hidden" id="risk_area_c" name="risk_area_c" value="0" />	
+		<input type="hidden" id="pidsr_c" name="pidsr_c" value="0" />	
+		<input type="hidden" id="plotted_c" name="plotted_c" value="0" />
 		<?php echo form_fieldset_close();?>
 		<?php echo form_close(); ?>
-		<script>
-		$('form').submit(function(event){
-			var postData = {
-					'beginDate'		: dateValues.min.toString(),
-					'endDate'		: dateValues.max.toString(),
-					'risk_area_c'	: document.getElementById("map_nodes_result_length").value,
-					'pidsr_c'		: document.getElementById("map_nodes_result_length").value,
-					'plotted_c'		: document.getElementById("map_nodes_result_length").value
-				};
-			$.post('http://www.google.com');
-			});
-		</script>
 		</div>
 	</div>
 	
