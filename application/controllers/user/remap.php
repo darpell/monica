@@ -21,8 +21,8 @@ class Remap extends CI_Controller
 		{
 			$beginDate = $this->input->post('beginDate');
 			$endDate = $this->input->post('endDate');
-			//print_r($beginDate);
-			//print_r($endDate);
+			print_r($beginDate);
+			print_r($endDate);
 			$data['begin_date'] = $beginDate;
 			$data['end_date'] = $endDate;
 		}//*/
@@ -38,7 +38,7 @@ class Remap extends CI_Controller
 		$current_date = date("Y-m-d");
 		
 		// larval points
-		$data['points'] = NULL;//$this->larval_mapping->get_points($begin_date, $current_date);
+		$data['points'] = $this->larval_mapping->get_points($begin_date, $current_date);
 		
 		// risk nodes
 		$data['map_nodes'] = $this->remap_model->get_map_nodes();//($begin_date, $current_date);
@@ -47,11 +47,6 @@ class Remap extends CI_Controller
 		$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
 		
 		$this->load->view('pages/remap',$data);
-	}
-	
-	public function filter()
-	{
-		//$this->input->post();
 	}
 }
 

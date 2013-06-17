@@ -17,7 +17,7 @@ body {height:100%;margin:0;padding:0}
 #googleMap		{ height:75%; width:65% }
 </style>
 
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather&sensor=true"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
 <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
 <script src="<?= base_url('scripts/OverlappingMarkerSpiderfier.js') ?>"></script>
 
@@ -34,6 +34,7 @@ body {height:100%;margin:0;padding:0}
 <script>
 	
 		var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
+		var heatmap, map, pointArray;
 		function initialize()
 		{
 			var mapProp = {
@@ -41,7 +42,7 @@ body {height:100%;margin:0;padding:0}
 				zoom: 12,
 				mapTypeId: google.maps.MapTypeId.TERRAIN
 			};
-			var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
 			/** Weather and Clouds Layer **/
 			var weatherLayer = new google.maps.weather.WeatherLayer({
@@ -52,10 +53,31 @@ body {height:100%;margin:0;padding:0}
 				var cloudLayer = new google.maps.weather.CloudLayer();
 				cloudLayer.setMap(map);
 			/** end of Weather and Clouds Layer **/
-				
+			
+			var cases = new Array();
 			var markers = [];
 
 			var oms = new OverlappingMarkerSpiderfier(map);
+
+
+			/** Sample Larval Data used as case data **/
+			if (document.getElementById("result_length").value != 0)
+			{
+				//var case_img = document.getElementById("case_icon").value;
+				for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value; pt_ctr++) 
+				{
+					cases.push(new google.maps.LatLng(
+							document.getElementById("pt_lat" + pt_ctr).value,
+							document.getElementById("pt_lng" + pt_ctr).value
+							));
+				}
+				pointArray = new google.maps.MVCArray();
+				heatmap = new google.maps.visualization.HeatmapLayer({
+					  data: cases
+					});
+					heatmap.setMap(map);
+			}
+			/** end of sample data**/
 
 			/** Map Nodes **/
 			//var node_markers*= [];
@@ -142,6 +164,41 @@ body {height:100%;margin:0;padding:0}
 					
 			//var mc = new MarkerClusterer(map, markers, mcOptions);
 		}
+
+
+		function toggleHeatmap() {
+		  heatmap.setMap(heatmap.getMap() ? null : map);
+		}
+
+		function changeGradient() {
+		  var gradient = [
+		    'rgba(0, 255, 255, 0)',
+		    'rgba(0, 255, 255, 1)',
+		    'rgba(0, 191, 255, 1)',
+		    'rgba(0, 127, 255, 1)',
+		    'rgba(0, 63, 255, 1)',
+		    'rgba(0, 0, 255, 1)',
+		    'rgba(0, 0, 223, 1)',
+		    'rgba(0, 0, 191, 1)',
+		    'rgba(0, 0, 159, 1)',
+		    'rgba(0, 0, 127, 1)',
+		    'rgba(63, 0, 91, 1)',
+		    'rgba(127, 0, 63, 1)',
+		    'rgba(191, 0, 31, 1)',
+		    'rgba(255, 0, 0, 1)'
+		  ]
+		  heatmap.setOptions({
+		    gradient: heatmap.get('gradient') ? null : gradient
+		  });
+		}
+
+		function changeRadius() {
+		  heatmap.setOptions({radius: heatmap.get('radius') ? null : 20});
+		}
+
+		function changeOpacity() {
+		  heatmap.setOptions({opacity: heatmap.get('opacity') ? null : 0.2});
+		}
 		google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
 </head>
@@ -177,7 +234,8 @@ body {height:100%;margin:0;padding:0}
 		<input type="hidden" id="pt_container<?= $ctr ?>" 		value="<?php echo $points[$ctr]['ls_container']; ?>"	/>
 		<input type="hidden" id="pt_tracking_no<?= $ctr ?>" 	value="<?php echo $points[$ctr]['tracking_number']; ?>"	/>
 		<input type="hidden" id="pt_ref_no<?= $ctr ?>" 	value="<?php echo $points[$ctr]['ls_no']; ?>"	/>
-	<?php }} else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
+	<?php }?> <input type="hidden" id="case_icon" value="<?php echo base_url('/images/arrow.png')?>" />
+	<?php } else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
 	
 <!-- Dengue Risk Areas -->
 <input type="hidden" id="map_nodes_result_length" value="<?php echo count($map_nodes); ?>" />
@@ -240,8 +298,8 @@ body {height:100%;margin:0;padding:0}
 						$("#slider").bind("valuesChanged", function(e, data){
 							var dateValues = $("#slider").dateRangeSlider("values");
 							//alert("Values changed to "+dateValues.min.toString()+" and "+dateValues.max.toString()+"!");
-							$('input[name=beginDate]').val(dateValues.min.toString());
-							$('input[name=endDate]').val(dateValues.max.toString());
+							$('input[name=beginDate]').val(dateValues.min.getFullYear() + "-" + dateValues.min.getMonth() + "-" + dateValues.min.getDate());
+							$('input[name=endDate]').val(dateValues.max.getFullYear() + "-" + dateValues.max.getMonth() + "-" + dateValues.max.getDate());
 							$('input[name=risk_area_c]').val(document.getElementById("map_nodes_result_length").value);
 							$('input[name=pidsr_c]').val(document.getElementById("map_nodes_result_length").value);
 							$('input[name=plotted_c]').val(document.getElementById("map_nodes_result_length").value);
@@ -259,8 +317,8 @@ body {height:100%;margin:0;padding:0}
 				</td>
 			</tr>
 		</table>		
-		<input type="hidden" id="beginDate" name="beginDate" value="<?php echo $begin_date?>" />	
-		<input type="hidden" id="endDate" name="endDate" value="<?php echo $current_date?>" />	
+		<input type="hidden" id="beginDate" name="beginDate" value="<?php echo $begin_date;?>" />	
+		<input type="hidden" id="endDate" name="endDate" value="<?php echo $end_date;?>" />	
 		<input type="hidden" id="risk_area_c" name="risk_area_c" value="0" />	
 		<input type="hidden" id="pidsr_c" name="pidsr_c" value="0" />	
 		<input type="hidden" id="plotted_c" name="plotted_c" value="0" />
