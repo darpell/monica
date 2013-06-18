@@ -125,7 +125,7 @@ body {height:100%;margin:0;padding:0}
 				var pol_id_ctr = 0;
 				
 				for (var p_ctr = 0; p_ctr < document.getElementById("polygon_nodes_result_length").value; p_ctr++)
-				{
+				{//alert(document.getElementById("pol_id" + p_ctr).value);
 					if (pol_id_ctr == document.getElementById("pol_id" + p_ctr).value)
 					{
 						polygon_coords.push( 
@@ -143,10 +143,13 @@ body {height:100%;margin:0;padding:0}
 						polygon_coords = [];
 					}
 				}
+				pol_id_ctr++;
+				polygons.push(polygon_coords);
+				polygon_coords = [];
 				//alert(polygons[0]);
 				//alert(pol_id_ctr);
-				for (var ctr = 0; ctr <= pol_id_ctr; ctr++)
-				{
+				for (var ctr = 1; ctr < pol_id_ctr; ctr++)
+				{//alert(polygons[ctr]);
 					var polygon_marker = new google.maps.Polygon({
 											paths: polygons[ctr],
 											strokeColor: "#FF0000",
