@@ -3,18 +3,15 @@
 <head>
 <meta charset="utf-8"/>
     
-<style type="text/css">
-html {height:100%}
-body {height:100%;margin:0;padding:0}
-
-#header-holder	{ height:25%; width: 100% }
-#header-padder	{ padding:15px; }
-#upper-header	{ height:160px; width:parent; overflow:scroll; overflow-x:hidden; }
-
-#sidebar-holder	{ border:1px solid red; align:right; }
-#sidebar		{ border:1px solid blue; }
-
-#googleMap		{ height:75%; width:65% }
+<style>
+html { height:100% }
+body { height:100%;margin:0;padding:0 }
+#container { height:100%; width:100% }
+#header { border:1px solid red; margin:10px;padding: 10px; }
+#sidebar { float:right; width:35%; height:85%; border:1px solid blue; margin: 0px 10px 10px 10px;padding: 10px; }
+#sidebar-higher { height:50%; }
+#sidebar-lower { height:50% }
+#googleMap { width:60%; height:90%; margin: 10px; }
 </style>
 
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
@@ -30,6 +27,18 @@ body {height:100%;margin:0;padding:0}
 <script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/jQDateRangeSlider-min.js')?>"></script>
 
 <script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/dateSliderDemo.js')?>"></script>
+
+<script>
+	$(function() {
+		var tabs = $( "#tabs" ).tabs();
+		tabs.find( ".ui-tabs-nav" ).sortable({
+				axis: "x",
+				stop: function() {
+				tabs.tabs( "refresh" );
+			}
+		});
+	});
+</script>
 
 <script>
 	
@@ -269,14 +278,21 @@ body {height:100%;margin:0;padding:0}
 <!-- //end Polygon Nodes -->
 
 <body>
-	<div id="header-holder">
-	<div id="header-padder">
-		<div id="upper-header">
+	<div id="container">
+	<div id="header">
 		<?php echo form_open(); ?>
 		<?php echo form_fieldset();?>
 		<table>
 			<tr style="width:100%">
 				<td style="width:33%;border: 1px solid red"> &nbsp; </td>
+				<td style="width:33%;border: 1px solid red">
+					Overlays <br/>
+						<label style="color:red"><?php echo form_error('TPsex-dd'); ?></label>
+						<?php echo form_checkbox('overlays[]', 'risk_areas',TRUE); ?> Dengue Risk Areas <br/>
+						<?php echo form_checkbox('overlays[]', 'pidsr_cases',TRUE); ?> Dengue Cases (from PIDSR) <br/>
+						<?php echo form_checkbox('overlays[]', 'plot_cases',TRUE); ?> Dengue Cases (as visited by BHWs) <br/>
+						<?php echo form_submit('submit','Submit'); ?>
+				</td>
 				<td style="width:33%;border: 1px solid red;">
 					<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/jDateQRangeSlider-min.js')?>"></script>
 					<div id="slider"></div>
@@ -311,14 +327,6 @@ body {height:100%;margin:0;padding:0}
 					</script>
 					
 				</td>
-				<td style="width:33%;border: 1px solid red">
-					Overlays <br/>
-						<label style="color:red"><?php echo form_error('TPsex-dd'); ?></label>
-						<?php echo form_checkbox('overlays[]', 'risk_areas',TRUE); ?> Dengue Risk Areas <br/>
-						<?php echo form_checkbox('overlays[]', 'pidsr_cases',TRUE); ?> Dengue Cases (from PIDSR) <br/>
-						<?php echo form_checkbox('overlays[]', 'plot_cases',TRUE); ?> Dengue Cases (as visited by BHWs) <br/>
-						<?php echo form_submit('submit','Submit'); ?>
-				</td>
 			</tr>
 		</table>		
 		<input type="hidden" id="beginDate" name="beginDate" value="<?php echo $begin_date;?>" />	
@@ -328,12 +336,35 @@ body {height:100%;margin:0;padding:0}
 		<input type="hidden" id="plotted_c" name="plotted_c" value="0" />
 		<?php echo form_fieldset_close();?>
 		<?php echo form_close(); ?>
+	</div>
+	
+	<!-- Sidebar -->
+	<div id="sidebar">
+		<div id="sidebar-higher"></div>
+		<div id="sidebar-lower">
+			<div id="tabs">
+				<ul>
+					<li><a href="#tabs-1">Tab 1</a></li>
+					<li><a href="#tabs-2">Tab 2</a></li>
+					<li><a href="#tabs-3">Tab 3</a></li>
+				</ul>
+				<div id="tabs-1">
+					test1
+				</div>
+				<div id="tabs-2">
+					test2
+				</div>
+				<div id="tabs-3">
+					test3
+				</div>
+			</div>
 		</div>
 	</div>
+	<!-- end Sidebar -->
 	
-	</div>
-	
+	<!-- Map div -->
 	<div id="googleMap"></div>
-	
+	<!-- //Map div -->
+</div>
 </body>
 </html>
