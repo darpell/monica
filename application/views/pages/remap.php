@@ -112,7 +112,6 @@ body {height:100%;margin:0;padding:0}
 					markers.push(node_marker);
 				}
 			}
-			//alert('test');
 
 			/** end Map Nodes **/
 			
@@ -241,6 +240,7 @@ body {height:100%;margin:0;padding:0}
 	<?php } else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
 	
 <!-- Dengue Risk Areas -->
+	<?php if ($map_nodes != NULL){?>
 <input type="hidden" id="map_nodes_result_length" value="<?php echo count($map_nodes); ?>" />
 	<?php for ($ctr = 0; $ctr < count($map_nodes); $ctr++) {?>
 		<input type="hidden" id="nd_no<?= $ctr ?>" 		value="<?php echo $map_nodes[$ctr]['node_no']; ?>"	/>
@@ -254,6 +254,7 @@ body {height:100%;margin:0;padding:0}
 		<input type="hidden" id="nd_notes<?= $ctr ?>" 	value="<?php echo $map_nodes[$ctr]['node_notes']; ?>"	/>
 	<?php } ?>
 		<input type="hidden" id="node_icon" value="<?php echo base_url('/images/notice.png')?>" />
+	<?php } else { ?> <input type="hidden" id="map_nodes_result_length" value="0" /> <?php } ?>
 <!-- //end Dengue Risk Areas -->
 	
 	<!-- Polygon Nodes -->
@@ -303,9 +304,9 @@ body {height:100%;margin:0;padding:0}
 							//alert("Values changed to "+dateValues.min.toString()+" and "+dateValues.max.toString()+"!");
 							$('input[name=beginDate]').val(dateValues.min.getFullYear() + "-" + dateValues.min.getMonth() + "-" + dateValues.min.getDate());
 							$('input[name=endDate]').val(dateValues.max.getFullYear() + "-" + dateValues.max.getMonth() + "-" + dateValues.max.getDate());
-							$('input[name=risk_area_c]').val(document.getElementById("map_nodes_result_length").value);
-							$('input[name=pidsr_c]').val(document.getElementById("map_nodes_result_length").value);
-							$('input[name=plotted_c]').val(document.getElementById("map_nodes_result_length").value);
+							$('input[name=risk_area_c]').val(document.getElementById("risk_areas").value);
+							$('input[name=pidsr_c]').val(document.getElementById("pidsr_cases").value);
+							$('input[name=plotted_c]').val(document.getElementById("plot_cases").value);
 						});					
 					</script>
 					
@@ -313,9 +314,9 @@ body {height:100%;margin:0;padding:0}
 				<td style="width:33%;border: 1px solid red">
 					Overlays <br/>
 						<label style="color:red"><?php echo form_error('TPsex-dd'); ?></label>
-						<?php echo form_checkbox('risk_area', 'risk_areas',TRUE); ?> Dengue Risk Areas <br/>
-						<?php echo form_checkbox('pidsr', 'pidsr_cases',TRUE); ?> Dengue Cases (from PIDSR) <br/>
-						<?php echo form_checkbox('plotted', 'plot_cases',TRUE); ?> Dengue Cases (as visited by BHWs) <br/>
+						<?php echo form_checkbox('overlays[]', 'risk_areas',TRUE); ?> Dengue Risk Areas <br/>
+						<?php echo form_checkbox('overlays[]', 'pidsr_cases',TRUE); ?> Dengue Cases (from PIDSR) <br/>
+						<?php echo form_checkbox('overlays[]', 'plot_cases',TRUE); ?> Dengue Cases (as visited by BHWs) <br/>
 						<?php echo form_submit('submit','Submit'); ?>
 				</td>
 			</tr>
