@@ -241,15 +241,6 @@ body { height:100%;margin:0;padding:0 }
 		<input type="hidden" id="pol_lng<?= $ctr ?>" 	value="<?php echo $polygon_nodes[$ctr]['point_lng']; ?>"	/>
 	<?php } ?>
 <!-- //end Polygon Nodes -->
-	
-	<!-- Age Info -->
-<input type="hidden" id="polygon_nodes_result_length" value="<?php echo count($polygon_nodes); ?>" />
-	<?php for ($ctr = 0; $ctr < count($ages_array); $ctr++) {?>
-		<input type="hidden" id="age_barangay<?= $ctr ?>" 	value="<?php echo $ages_array[$ctr]['cr_barangay']; ?>"	/>
-		<input type="hidden" id="age_count<?= $ctr ?>" 	value="<?php echo $ages_array[$ctr]['patientcount']; ?>"	/>
-		<input type="hidden" id="age_range<?= $ctr ?>" 	value="<?php echo $ages_array[$ctr]['agerange']; ?>"		/>
-	<?php } ?>
-<!-- //end Age Info  -->
 
 <body>
 	<div id="container">
@@ -319,19 +310,40 @@ body { height:100%;margin:0;padding:0 }
 			<div id="tabs">
 				<ul>
 					<li><a href="#tab_summary"> Summary </a></li>
-					<li><a href="#tab_age"> Age </a></li>
 					<li><a href="#tab_dengue"> Dengue</a></li>
 					<li><a href="#tab_larva"> Larva</a></li>
 				</ul>
 				<div id="tab_summary">
 					test1
 				</div>
-				<div id="tab_age">
-					test2
-				</div>
+		<!-- Dengue Tab -->
+			<!-- Age Info -->
+			<input type="hidden" id="age_result_length" value="<?php echo count($ages_array); ?>" />
+				
+					
+				
+			<!-- //end Age Info  -->
 				<div id="tab_dengue">
-					test3
+				<?php for($brgy_ctr = 0; $brgy_ctr < count($brgys); $brgy_ctr++) { ?>
+				<?php echo $brgys[$brgy_ctr]['cr_barangay']; ?>
+					<table border="1">
+						<tr>
+							<th> Age Range </th>
+							<th> # </th>
+							<th> % </th>
+						</tr>
+						<?php for ($ctr = 0; $ctr < count($ages_array); $ctr++) { ?>
+							<?php if ($brgys[$brgy_ctr]['cr_barangay'] == $ages_array[$ctr]['cr_barangay']) {?>
+						<tr>
+							<td> <?php echo $ages_array[$ctr]['agerange']; ?> </td>
+							<td> <?php echo $ages_array[$ctr]['patientcount']; ?> </td>
+							<td> <?php echo $ages_array[$ctr]['cr_barangay']; ?> </td>
+						</tr>
+						<?php }} ?>
+					</table>
+				<?php } ?>
 				</div>
+		<!-- end Dengue Tab -->
 				<div id="tab_larva">
 					test4
 				</div>
