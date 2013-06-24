@@ -73,6 +73,7 @@ class Remap_model extends CI_Model
 	{
 		$this->db->select('cr_barangay');
 		$this->db->from('case_report_main');
+		$this->db->join('barangay','case_report_main.cr_barangay = barangay.barangay');
 		$this->db->group_by('cr_barangay');
 		$this->db->order_by('cr_barangay');
 		
