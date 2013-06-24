@@ -67,14 +67,19 @@ body { height:100%;margin:0;padding:0 }
 			var markers = [];
 
 			var oms = new OverlappingMarkerSpiderfier(map);
-
+			
+			//centroid variables
+			var x1=999;
+			var x2=-999;
+			var y1=999;
+			var y2=-999;
 
 			/** Sample Larval Data used as case data **/
 			if (document.getElementById("result_length").value != 0)
 			{
 				//var case_img = document.getElementById("case_icon").value;
 				for (var pt_ctr = 0; pt_ctr < document.getElementById("result_length").value; pt_ctr++) 
-				{
+				{					
 					cases.push(new google.maps.LatLng(
 							document.getElementById("pt_lat" + pt_ctr).value,
 							document.getElementById("pt_lng" + pt_ctr).value
@@ -136,6 +141,16 @@ body { height:100%;margin:0;padding:0 }
 				{//alert(document.getElementById("pol_id" + p_ctr).value);
 					if (pol_id_ctr == document.getElementById("pol_id" + p_ctr).value)
 					{
+
+						if(parseFloat(document.getElementById("pol_lng" + p_ctr).value) < x1)
+						{x1=parseFloat(document.getElementById("pol_lng" + p_ctr).value);}
+						if(parseFloat(document.getElementById("pol_lat" + p_ctr).value) < y1)
+						{y1=parseFloat(document.getElementById("pol_lat" + p_ctr).value);}
+						if(parseFloat(document.getElementById("pol_lng" + p_ctr).value) > x2)
+						{x2=parseFloat(document.getElementById("pol_lng" + p_ctr).value);}
+						if(parseFloat(document.getElementById("pol_lat" + p_ctr).value) > y2)
+						{y2=parseFloat(document.getElementById("pol_lat" + p_ctr).value);}
+						
 						polygon_coords.push( 
 					 			new google.maps.LatLng(
 					 					document.getElementById("pol_lat" + p_ctr).value,
@@ -146,11 +161,34 @@ body { height:100%;margin:0;padding:0 }
 					}
 					else
 					{
+						/** Centroid Marker Creation **/						
+						new google.maps.Marker({
+							position: new google.maps.LatLng(
+								y1 + ((y2 - y1) * 0.5),
+								x1 + ((x2 - x1) * 0.5)),
+						map: map,
+						icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+pol_id_ctr+'|FF0000|000000'  
+						});
+						x1=999;
+						x2=-999;
+						y1=999;
+						y2=-999;
+						/** end centroid marker creation **/
+						
 						pol_id_ctr++;
 						polygons.push(polygon_coords);
 						polygon_coords = [];
 					}
 				}
+				/** Centroid Marker Creation **/						
+				new google.maps.Marker({
+					position: new google.maps.LatLng(
+						y1 + ((y2 - y1) * 0.5),
+						x1 + ((x2 - x1) * 0.5)),
+				map: map,
+				icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+pol_id_ctr+'|FF0000|000000'  
+				});
+				/** end centroid marker creation **/
 				pol_id_ctr++;
 				polygons.push(polygon_coords);
 				polygon_coords = [];
@@ -241,7 +279,23 @@ body { height:100%;margin:0;padding:0 }
 		<input type="hidden" id="pol_lng<?= $ctr ?>" 	value="<?php echo $polygon_nodes[$ctr]['point_lng']; ?>"	/>
 	<?php } ?>
 <!-- //end Polygon Nodes -->
-
+	
+<!-- Dengue Info -->
+<input type="hidden" id="dengue_array_length" value="<?php echo count($dengue_array); ?>" />
+	<?php for ($ctr = 0; $ctr < count($dengue_array); $ctr++) {?>
+		<input type="hidden" id="polygon_ID<?= $ctr ?>"	value="<?php echo $dengue_array[$ctr]['polygon_ID']; ?>"		/>
+		<input type="hidden" id="barangay<?= $ctr ?>" 	value="<?php echo $dengue_array[$ctr]['barangay']; ?>"		/>
+		<input type="hidden" id="amount<?= $ctr ?>" 	value="<?php echo $dengue_array[$ctr]['amount']; ?>"		/>
+		<input type="hidden" id="gendF<?= $ctr ?>" 		value="<?php echo $dengue_array[$ctr]['gendF']; ?>"		/>
+		<input type="hidden" id="gendM<?= $ctr ?>" 		value="<?php echo $dengue_array[$ctr]['gendM']; ?>"		/>
+		<input type="hidden" id="ageMin<?= $ctr ?>" 	value="<?php echo $dengue_array[$ctr]['ageMin']; ?>"		/>
+		<input type="hidden" id="ageMax<?= $ctr ?>" 	value="<?php echo $dengue_array[$ctr]['ageMax']; ?>"		/>
+		<input type="hidden" id="ageAve<?= $ctr ?>" 	value="<?php echo $dengue_array[$ctr]['ageAve']; ?>"		/>
+		<input type="hidden" id="outA<?= $ctr ?>" 		value="<?php echo $dengue_array[$ctr]['outA']; ?>"		/>
+		<input type="hidden" id="outD<?= $ctr ?>" 		value="<?php echo $dengue_array[$ctr]['outD']; ?>"		/>
+		<input type="hidden" id="outU<?= $ctr ?>" 		value="<?php echo $dengue_array[$ctr]['outU']; ?>"		/>
+	<?php } ?>
+<!-- //end Dengue Info  -->
 <body>
 	<div id="container">
 	<div id="header">
@@ -319,10 +373,9 @@ body { height:100%;margin:0;padding:0 }
 		<!-- Dengue Tab -->
 			<!-- Age Info -->
 			<input type="hidden" id="age_result_length" value="<?php echo count($ages_array); ?>" />
-				
-					
-				
 			<!-- //end Age Info  -->
+			
+			
 				<div id="tab_dengue">
 				<?php for($brgy_ctr = 0; $brgy_ctr < count($brgys); $brgy_ctr++) { ?>
 				<?php echo $brgys[$brgy_ctr]['cr_barangay']; ?>

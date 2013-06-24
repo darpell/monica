@@ -135,6 +135,46 @@ class Remap_model extends CI_Model
 		}
 		//*/
 	}
+	
+	function getDengueInfo($data2)
+	{
+		$qString = 'CALL ';
+		$qString .= "get_brangay_count('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data2['date1']. "','".
+		$data2['date2']. "'". ")";
+			
+		$q = $this->db->query($qString);
+		//*
+		if($q->num_rows() > 0)
+		{	$data = "";
+		foreach ($q->result() as $row)
+			{
+				$data[]=array(
+						'polygon_ID'=> $row->polygon_ID,
+						'barangay'=> $row->barangay,
+						'amount'=> $row->amount,
+						'gendF'=> $row->gendF,
+						'gendM'=> $row->gendM,
+						'ageMin'=> $row->ageMin,
+						'ageMax'=> $row->ageMax,
+						'ageAve'=> $row->ageAve,
+						'outA'=> $row->outA,
+						'outD'=> $row->outD,
+						'outU'=> $row->outU
+				);
+			}
+		$q->free_result();
+		return $data;
+		}
+		else
+		{
+			$q->free_result();
+			return 0;
+		}
+		//*/
+	}
 }
 
 /* End of remap.php */
