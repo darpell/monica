@@ -36,15 +36,15 @@ class Remap extends CI_Controller
 		}
 		
 		
-		$begin_date = date("Y") . '-01-01';//date("Y-m-d H:i:s");
-		$current_date = date("Y-m-d");
+		//$begin_date = date("Y") . '-01-01';//date("Y-m-d H:i:s");
+		//$current_date = date("Y-m-d");
 		
 		if (sizeOf($overlays) != 0)
 		{
 			if (in_array('risk_areas',$overlays))
 			{
 				// risk nodes
-				$data['map_nodes'] = $this->remap_model->get_map_nodes();//($begin_date, $current_date);
+				$data['map_nodes'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date']);
 			}
 			else { $data['map_nodes'] = NULL; }
 			if (in_array('pidsr_cases',$overlays))
@@ -54,7 +54,7 @@ class Remap extends CI_Controller
 			if (in_array('plot_cases',$overlays))
 			{
 				// larval points
-				$data['points'] = $this->larval_mapping->get_points($begin_date, $current_date);
+				$data['points'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date']);
 			}
 			else { $data['points'] = NULL; }
 			// polygon nodes
@@ -63,10 +63,10 @@ class Remap extends CI_Controller
 		else
 		{
 			// larval points
-			$data['points'] = $this->larval_mapping->get_points($begin_date, $current_date);
+			$data['points'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date']);
 			
 			// risk nodes
-			$data['map_nodes'] = $this->remap_model->get_map_nodes();//($begin_date, $current_date);
+			$data['map_nodes'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date']);
 			
 			// polygon nodes
 			$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();

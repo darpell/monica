@@ -318,8 +318,8 @@ body { height:100%;margin:0;padding:0 }
 						$("#slider").bind("valuesChanged", function(e, data){
 							var dateValues = $("#slider").dateRangeSlider("values");
 							//alert("Values changed to "+dateValues.min.toString()+" and "+dateValues.max.toString()+"!");
-							$('input[name=beginDate]').val(dateValues.min.getFullYear() + "-" + dateValues.min.getMonth() + "-" + dateValues.min.getDate());
-							$('input[name=endDate]').val(dateValues.max.getFullYear() + "-" + dateValues.max.getMonth() + "-" + dateValues.max.getDate());
+							$('input[name=beginDate]').val(dateValues.min.getFullYear() + "-" + (dateValues.min.getMonth() + 1) + "-" + dateValues.min.getDate());
+							$('input[name=endDate]').val(dateValues.max.getFullYear() + "-" + (dateValues.max.getMonth() + 1) + "-" + dateValues.max.getDate());
 							$('input[name=risk_area_c]').val(document.getElementById("risk_areas").value);
 							$('input[name=pidsr_c]').val(document.getElementById("pidsr_cases").value);
 							$('input[name=plotted_c]').val(document.getElementById("plot_cases").value);
@@ -344,18 +344,22 @@ body { height:100%;margin:0;padding:0 }
 		<div id="sidebar-lower">
 			<div id="tabs">
 				<ul>
-					<li><a href="#tabs-1">Tab 1</a></li>
-					<li><a href="#tabs-2">Tab 2</a></li>
-					<li><a href="#tabs-3">Tab 3</a></li>
+					<li><a href="#tab_summary"> Summary </a></li>
+					<li><a href="#tab_age"> Age </a></li>
+					<li><a href="#tab_dengue"> Dengue</a></li>
+					<li><a href="#tab_larva"> Larva</a></li>
 				</ul>
-				<div id="tabs-1">
+				<div id="tab_summary">
 					test1
 				</div>
-				<div id="tabs-2">
+				<div id="tab_age">
 					test2
 				</div>
-				<div id="tabs-3">
+				<div id="tab_dengue">
 					test3
+				</div>
+				<div id="tab_larva">
+					test4
 				</div>
 			</div>
 		</div>
