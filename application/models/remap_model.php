@@ -42,6 +42,31 @@ class Remap_model extends CI_Model
 		$query->free_result();
 	}
 	
+	function get_pidsr_case_count($begin_date = FALSE, $end_date = FALSE, $place = NULL, $value = NULL)
+	{
+		//TODO
+		$this->db->select('cr_barangay');
+		$this->db->select('count()r_barangay');
+		$this->db->from('case_report_main');
+		if ($place != NULL && $place != 'NULL')
+		{
+			$this->db->where($this->check_place($place),$value);
+		}
+			
+		if ($begin_date === FALSE && $end_date === FALSE)
+		{
+			$query = $this->db->get();
+			return $query->result_array();
+			$query->free_result();
+		}
+		
+		//$this->db->where("node_addedOn BETWEEN '$begin_date' AND '$end_date'");
+		$this->db->group_by('cr_barangay');
+		$this->db->order_by('cr_barangay');
+		$query = $this->db->get();
+		return $query->result_array();
+		$query->free_result();
+	}
 }
 
 /* End of remap.php */

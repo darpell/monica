@@ -8,10 +8,10 @@ html { height:100% }
 body { height:100%;margin:0;padding:0 }
 #container { height:100%; width:100% }
 #header { border:1px solid red; margin:10px;padding: 10px; }
-#sidebar { float:right; width:35%; height:85%; border:1px solid blue; margin: 0px 10px 10px 10px;padding: 10px; }
-#sidebar-higher { height:50%; }
-#sidebar-lower { height:50% }
-#googleMap { width:60%; height:90%; margin: 10px; }
+#sidebar { float:right; width:40%; height:85%; border:1px solid blue; margin: 0px 10px 10px 10px;padding: 10px; }
+#sidebar-higher { height:0%; }
+#sidebar-lower { height:100% }
+#googleMap { width:55%; height:90%; margin: 10px; }
 </style>
 
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
@@ -174,41 +174,6 @@ body { height:100%;margin:0;padding:0 }
 			/** end Polygon **/
 					
 			//var mc = new MarkerClusterer(map, markers, mcOptions);
-		}
-
-
-		function toggleHeatmap() {
-		  heatmap.setMap(heatmap.getMap() ? null : map);
-		}
-
-		function changeGradient() {
-		  var gradient = [
-		    'rgba(0, 255, 255, 0)',
-		    'rgba(0, 255, 255, 1)',
-		    'rgba(0, 191, 255, 1)',
-		    'rgba(0, 127, 255, 1)',
-		    'rgba(0, 63, 255, 1)',
-		    'rgba(0, 0, 255, 1)',
-		    'rgba(0, 0, 223, 1)',
-		    'rgba(0, 0, 191, 1)',
-		    'rgba(0, 0, 159, 1)',
-		    'rgba(0, 0, 127, 1)',
-		    'rgba(63, 0, 91, 1)',
-		    'rgba(127, 0, 63, 1)',
-		    'rgba(191, 0, 31, 1)',
-		    'rgba(255, 0, 0, 1)'
-		  ]
-		  heatmap.setOptions({
-		    gradient: heatmap.get('gradient') ? null : gradient
-		  });
-		}
-
-		function changeRadius() {
-		  heatmap.setOptions({radius: heatmap.get('radius') ? null : 20});
-		}
-
-		function changeOpacity() {
-		  heatmap.setOptions({opacity: heatmap.get('opacity') ? null : 0.2});
 		}
 		google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
