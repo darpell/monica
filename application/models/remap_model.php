@@ -67,6 +67,52 @@ class Remap_model extends CI_Model
 		return $query->result_array();
 		$query->free_result();
 	}
+	
+	function getBarangayAges($data2)
+	{
+		$qString = 'CALL ';
+		$qString .= "get_case_ages('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data2['date1']. "','".
+		$data2['date2']. "'". ")";
+		$qString." END ";
+		$data[]=array(
+				'cr_barangay'=>'Barangay',
+				'patientcount'=> 'Patient Count',
+				'agerange'=> 'Age Range'
+		);
+	
+		$q = $this->db->query($qString);
+		//*
+		if($q->num_rows() > 0)
+		{
+			foreach ($q->result() as $row)
+			{
+				$agerange=null;
+				if($row->agerange*10==0)
+				{
+					$agerange = ($row->agerange*10)."-".(($row->agerange*10)+10);
+				}
+				else
+					$agerange = ($row->agerange*10+1)."-".(($row->agerange*10)+10);
+	
+				$data[]=array(
+						'cr_barangay'=> $row->cr_barangay,
+						'patientcount'=> $row->patientcount,
+						'agerange'=> $agerange
+				);
+			}
+			$q->free_result();
+			return $data;
+		}
+		else
+		{
+			$q->free_result();
+			return $data;
+		}
+		//*/
+	}
 }
 
 /* End of remap.php */

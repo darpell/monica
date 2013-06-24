@@ -241,6 +241,15 @@ body { height:100%;margin:0;padding:0 }
 		<input type="hidden" id="pol_lng<?= $ctr ?>" 	value="<?php echo $polygon_nodes[$ctr]['point_lng']; ?>"	/>
 	<?php } ?>
 <!-- //end Polygon Nodes -->
+	
+	<!-- Age Info -->
+<input type="hidden" id="polygon_nodes_result_length" value="<?php echo count($polygon_nodes); ?>" />
+	<?php for ($ctr = 0; $ctr < count($ages_array); $ctr++) {?>
+		<input type="hidden" id="age_barangay<?= $ctr ?>" 	value="<?php echo $ages_array[$ctr]['cr_barangay']; ?>"	/>
+		<input type="hidden" id="age_count<?= $ctr ?>" 	value="<?php echo $ages_array[$ctr]['patientcount']; ?>"	/>
+		<input type="hidden" id="age_range<?= $ctr ?>" 	value="<?php echo $ages_array[$ctr]['agerange']; ?>"		/>
+	<?php } ?>
+<!-- //end Age Info  -->
 
 <body>
 	<div id="container">

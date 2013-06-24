@@ -38,6 +38,8 @@ class Remap extends CI_Controller
 		
 		//$begin_date = date("Y") . '-01-01';//date("Y-m-d H:i:s");
 		//$current_date = date("Y-m-d");
+		$dates['date1']=$data['begin_date'];
+		$dates['date2']=$data['end_date'];
 		
 		if (sizeOf($overlays) != 0)
 		{
@@ -71,6 +73,9 @@ class Remap extends CI_Controller
 			// polygon nodes
 			$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
 		}
+		
+		//ages (Returns an array, code found in the function "getBarangayAges")
+		$data['ages_array'] = $this->remap_model->getBarangayAges($dates);//print_r($data['ages_array']);
 		$this->load->view('pages/remap',$data);
 	}
 }
