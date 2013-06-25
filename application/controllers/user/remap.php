@@ -77,6 +77,7 @@ class Remap extends CI_Controller
 		//ages (Returns an array, code found in the function "getBarangayAges")
 		$data['ages_array'] = $this->remap_model->getBarangayAges($dates);//print_r($data['ages_array']);
 		$data['dengue_array'] = $this->remap_model->getDengueInfo($dates);//print_r($data['dengue_array']);
+		$data['PoI_distance_array'] = $this->larval_mapping->distance_formula_PoI($dates);//print_r($data['PoI_distance_array']);
 		$data['brgys'] = $this->remap_model->get_brgy_with_cases($data['begin_date'], $data['end_date']);
 		$this->load->view('pages/remap',$data);
 	}

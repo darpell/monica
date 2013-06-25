@@ -286,6 +286,16 @@ body { height:100%;margin:0;padding:0 }
 	<?php } ?>
 <!-- //end Polygon Nodes -->
 	
+	<!-- PoI Distance Results-->
+<input type="hidden" id="PoI_nodes_result_length" value="<?php echo count($PoI_distance_array); ?>" />
+	<?php for ($ctr = 0; $ctr < count($PoI_distance_array); $ctr++) {?>
+		<input type="hidden" id="PoI_name<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['name']; ?>"		/>
+		<input type="hidden" id="PoI_type<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['type']; ?>"		/>
+		<input type="hidden" id="PoI_amount<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['amount']; ?>"		/>
+		<input type="hidden" id="PoI_percent<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['percent']; ?>"		/>
+	<?php } ?>
+<!-- //end PoI Distance Results -->
+	
 <body>
 	<div id="container">
 	<div id="header">
