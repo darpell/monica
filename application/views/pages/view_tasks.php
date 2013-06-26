@@ -108,7 +108,7 @@ echo form_open('CHO/view_tasks',$attributes); ?>
 <h5>Name</h5>
 <?php 
 
-$shirts_on_sale = array('small', 'large');
+$taskheader = array('Barangay Clean Up', 'Case Investigation', 'Inform Community');
 
 echo form_dropdown('name', $options);
 
@@ -118,7 +118,9 @@ echo form_dropdown('name', $options);
 <input type="text" name="TPtaskdate-txt" readonly = "true" id = "date1"size="50" value = "<?php echo date('m/d/y');?>"onClick= "javascript:NewCal('date1','mmddyyyy')"/>
 <h5>Task Header</h5>
 <label style="color:red"><?php echo form_error('TPtaskhead-txt'); ?></label>
-<input type="text" name="TPtaskhead-txt" size="100" />
+<?php 
+echo form_dropdown("TPtaskhead-txt", $taskheader);
+?>
 <h5>Task</h5>
 <label style="color:red"><?php echo form_error('TPtask-txt'); ?></label>
 <input type="text" name="TPtask-txt" size="100" />

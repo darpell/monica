@@ -51,6 +51,35 @@ class Cho extends CI_Controller
 		}
 
 	}
+	function view_pending_tasks()
+	{	$this->redirectLogin();
+		$this->load->model('Cho_model');
+		$this->load->library('table');
+		$data['title'] = 'View Pending Tasks';
+		$data['script'] = 'view_casereport';
+		$data2 = $this->Cho_model->get_pending_tasks();
+		$data['table']= $data2['table'];
+		$data['tasks']= $data2['task'];
+		$data['options']= $this->Cho_model->get_bhw();
+		$this->load->view('pages/view_pending_tasks.php' , $data);
+	}
+	
+	function approve_tasks()
+	{	$this->redirectLogin();
+		$this->load->model('Cho_model');
+		
+		$taskno= explode ('/', $this->input->post('tasks'));
+		for($s = 0 ; $s < count($taskno) - 1 ; $s++ )
+		{
+				$data = array(
+						'task' => $taskno[$s],
+						'status' =>  $this->input->post($taskno[$s])
+				);
+				$this->Cho_model->approve_task($data);
+		}
+		redirect('/CHO/view_pending_tasks/', 'refresh');
+	}
+	
 	function dashboard()
 	{	$this->redirectLogin();
 		$this->load->model('Cho_model');

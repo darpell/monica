@@ -53,6 +53,47 @@
 				return 0;
 			}
 		}
+		function get_pending_tasks()
+		{
+				
+			$qString = 'CALL ';
+			$qString .= "get_all_pending_tasks ()";
+		
+			$q = $this->db->query($qString);
+			if($q->num_rows() > 0)
+			{	$data['table'][] =array(
+				'Name' => 'Name'  ,
+				'Barangay'=>'Barangay' ,
+				'Task Header'=> 'Task Header',
+				'Task'=> 'Task',
+				'Date Assigned'=>'Date Assigned',
+				'Approve'=>'Approve',
+				'Deny'=>'Deny',
+				 );
+				$data['task'] = '';
+			foreach ($q->result() as $row)
+			{
+			$name = $row->user_firstname . ' ' . $row->user_middlename . ' ' . $row->user_lastname;
+			$date= explode ('-', $row->date_sent);
+			$data['table'][] =array(
+					'Name' => $name ,
+					'Barangay'=>$row->barangay ,
+					'Task Header'=> $row->task_header,
+					'Task'=> $row->task,
+					'Date Assigned'=>'Date Assigned',
+					'Approve'=>'<input type="radio" name="'.$row->task_no.'" value="approved" checked="true">',
+					'Deny'=>'<input type="radio" name="'.$row->task_no.'" value="denied">',
+			);
+			$data['task'] .=  $row->task_no . "/";
+			}
+				
+			return $data;
+			}
+			else
+			{
+				return null;
+			}
+		}
 		function get_bhw()
 		{
 				
@@ -87,6 +128,16 @@
 					$data['sent_by']. "','".
 					$data['task_header']. "'". ")";
 			
+			$query = $this->db->query($qString);
+			$query->free_result();
+		}
+		function approve_task($data)
+		{
+			$qString = 'CALL ';
+			$qString .= "approve_task ('"; // name of stored procedure
+			$qString .=
+			$data['task'] . "','" .
+			$data['status']. "'". ")";
 			$query = $this->db->query($qString);
 			$query->free_result();
 		}
