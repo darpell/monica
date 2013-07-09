@@ -23,7 +23,8 @@ class Pages extends CI_Controller
 			}
 			
 			else if ($page == 'checklocation')
-				$this->load->view('mobile/current_pos');
+				//$this->load->view('mobile/current_pos');
+				$this->load->view('mobile/plot');
 			
 			else if ($page == 'larval_survey')
 				$this->load->view('mobile/ls_form');

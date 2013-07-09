@@ -17,6 +17,9 @@ body { height:100%;margin:0;padding:0 }
 .brgy_stats { float:left; }
 .age_values { float:left; }
 
+.holder { padding: 3px; }
+td.bottom { vertical-align:bottom; }
+
 #googleMap { width:55%; height:90%; margin: 10px; }
 </style>
 
@@ -286,14 +289,14 @@ body { height:100%;margin:0;padding:0 }
 	<?php } ?>
 <!-- //end Polygon Nodes -->
 	
-	<!-- PoI Distance Results-->
-<input type="hidden" id="PoI_nodes_result_length" value="<?php echo count($PoI_distance_array); ?>" />
-	<?php for ($ctr = 0; $ctr < count($PoI_distance_array); $ctr++) {?>
-		<input type="hidden" id="PoI_name<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['name']; ?>"		/>
-		<input type="hidden" id="PoI_type<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['type']; ?>"		/>
-		<input type="hidden" id="PoI_amount<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['amount']; ?>"		/>
-		<input type="hidden" id="PoI_percent<?= $ctr ?>" 	value="<?php echo $PoI_distance_array[$ctr]['percent']; ?>"		/>
-	<?php } ?>
+	<!-- PoI Distance Results
+<input type="hidden" id="PoI_nodes_result_length" value="<?php //echo count($PoI_distance_array); ?>" />
+	<?php //for ($ctr = 0; $ctr < count($PoI_distance_array); $ctr++) {?>
+		<input type="hidden" id="PoI_name<?php //$ctr ?>" 	value="<?php //echo $PoI_distance_array[$ctr]['name']; ?>"		/>
+		<input type="hidden" id="PoI_type<?php //$ctr ?>" 	value="<?php //echo $PoI_distance_array[$ctr]['type']; ?>"		/>
+		<input type="hidden" id="PoI_amount<?php //$ctr ?>" 	value="<?php //echo $PoI_distance_array[$ctr]['amount']; ?>"		/>
+		<input type="hidden" id="PoI_percent<?php //$ctr ?>" 	value="<?php //echo $PoI_distance_array[$ctr]['percent']; ?>"		/>
+	<?php //} ?>
 <!-- //end PoI Distance Results -->
 	
 <body>
@@ -367,9 +370,26 @@ body { height:100%;margin:0;padding:0 }
 					<li><a href="#tab_dengue"> Dengue</a></li>
 					<li><a href="#tab_larva"> Larva</a></li>
 				</ul>
+			<!-- Summary Tab -->
 				<div id="tab_summary">
-					test1
+					<table>
+					<tr>
+						<td>
+							<h3>Legend</h3>
+						</td>
+					</tr>
+					<tr>
+						<td><img border="0" src="<?php echo base_url('/images/notice.png'); ?>"></td>
+						<td>Point of interest. Possible source of Mosquitoes.</td>
+					</tr>	
+					<tr>
+						<td><img border="0" src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=4|ff776b"></td>
+						<td>Barangay marker, number is the amount of dengue cases for the period. Commonly located at the center of the barangay boundary. For irregularly shaped barangays, the location may vary.</td>
+					</tr>
+					</table>
 				</div>
+			<!--  end Summary Tab -->
+				
 		<!-- Dengue Tab -->
 			<!-- Age Info -->
 			<input type="hidden" id="age_result_length" value="<?php echo count($ages_array); ?>" />
@@ -394,77 +414,87 @@ body { height:100%;margin:0;padding:0 }
 				<div id="tab_dengue">
 					
 					<div class="table_div">
-					<?php //for($brgy_ctr = 0; $brgy_ctr < count($brgys); $brgy_ctr++) { 
-						for ($brgy_ctr = 0; $brgy_ctr < count($dengue_array); $brgy_ctr++) {
-					?>
-						<div class="brgy_summary">
-							<?php echo $dengue_array[$brgy_ctr]['barangay']; ?>
-							<table style="margin:5px">
-								<tr>
-									<td> <?php echo $dengue_array[$brgy_ctr]['amount']; ?> Cases </td>
-								</tr>
-								<tr>
-									<td> Y% Total, Z% decrease </td>
-								</tr>
-								<tr>
-									<td> (Previously UU Cases, V% )</td>
-								</tr>
-							</table>
-						</div>
-						
-						<div class="brgy_stats">
-							<table style="margin:5px">
-								<tr>
-									<td> Min Age </td>
-									<td> <?php echo $dengue_array[$brgy_ctr]['ageMin']; ?> </td>
-								</tr>
-								<tr>
-									<td> Max Age </td>
-									<td> <?php echo $dengue_array[$brgy_ctr]['ageMax']; ?> </td>
-								</tr>
-								<tr>
-									<td> Male:Female Ratio </td>
-									<td> <?php echo $dengue_array[$brgy_ctr]['gendM']; ?>:<?php echo $dengue_array[$brgy_ctr]['gendF']; ?> </td>
-								</tr>
-								<tr>
-									<td> Average </td>
-									<td> <?php echo $dengue_array[$brgy_ctr]['ageAve']; ?> </td>
-								</tr>
-								<tr>
-									<td> Median </td>
-									<td> &nbsp; </td>
-								</tr>
-								<tr>
-									<td> Lowest </td>
-									<td> &nbsp; </td>
-								</tr>
-								<tr>
-									<td> Highest </td>
-									<td> &nbsp; </td>
-								</tr>
-							</table>
-						</div>
-
-						<div class="age_values"> 
-							<table border="1" style="margin:5px">
-								<tr>
-									<th> Age Range </th>
-									<th> # </th>
-									<th> % </th>
-								</tr>
-								<?php for ($ctr = 0; $ctr < count($ages_array); $ctr++) { ?>
-									<?php if ($brgys[$brgy_ctr]['cr_barangay'] == $ages_array[$ctr]['cr_barangay']) {?>
-								<tr>
-									<td> <?php echo $ages_array[$ctr]['agerange']; ?> </td>
-									<td> <?php echo $ages_array[$ctr]['patientcount']; ?> </td>
-									<td> <?php echo $ages_array[$ctr]['cr_barangay']; ?> </td>
-								</tr>
-								<?php }} ?>
-							</table>
-						</div>
-						<?php } ?>
-
-					</div>
+						<table class="holder">
+							<tr>
+								<td>
+									<?php //for($brgy_ctr = 0; $brgy_ctr < count($brgys); $brgy_ctr++) { 
+										for ($brgy_ctr = 0; $brgy_ctr < count($dengue_array); $brgy_ctr++) {
+									?>
+										<div class="brgy_summary">
+											<?php echo $dengue_array[$brgy_ctr]['barangay']; ?>
+											<table style="margin:5px">
+												<tr>
+													<td> <?php echo $dengue_array[$brgy_ctr]['amount']; ?> Cases </td>
+												</tr>
+												<tr>
+													<td> Y% Total, Z% decrease </td>
+												</tr>
+												<tr>
+													<td> (Previously UU Cases, V% )</td>
+												</tr>
+											</table>
+										</div>
+								</td>
+								<td class="bottom" rowspan="2">
+										<div class="age_values"> 
+											<table border="1" style="margin:5px">
+												<tr>
+													<th> Age Range </th>
+													<th> # </th>
+													<th> % </th>
+												</tr>
+												<?php for ($ctr = 0; $ctr < count($ages_array); $ctr++) { ?>
+													<?php if ($brgys[$brgy_ctr]['cr_barangay'] == $ages_array[$ctr]['cr_barangay']) {?>
+												<tr>
+													<td> <?php echo $ages_array[$ctr]['agerange']; ?> </td>
+													<td> <?php echo $ages_array[$ctr]['patientcount']; ?> </td>
+													<td> <?php echo $ages_array[$ctr]['cr_barangay']; ?> </td>
+												</tr>
+												<?php }} ?>
+											</table>
+										</div>
+								</td>
+							<tr>
+								<td>
+										<div class="brgy_stats">
+											<table style="margin:5px">
+												<tr>
+													<td> Min Age </td>
+													<td> <?php echo $dengue_array[$brgy_ctr]['ageMin']; ?> </td>
+												</tr>
+												<tr>
+													<td> Max Age </td>
+													<td> <?php echo $dengue_array[$brgy_ctr]['ageMax']; ?> </td>
+												</tr>
+												<tr>
+													<td> Male:Female Ratio </td>
+													<td> <?php echo $dengue_array[$brgy_ctr]['gendM']; ?>:<?php echo $dengue_array[$brgy_ctr]['gendF']; ?> </td>
+												</tr>
+												<tr>
+													<td> Average </td>
+													<td> <?php echo $dengue_array[$brgy_ctr]['ageAve']; ?> </td>
+												</tr>
+												<tr>
+													<td> Median </td>
+													<td> &nbsp; </td>
+												</tr>
+												<tr>
+													<td> Lowest </td>
+													<td> &nbsp; </td>
+												</tr>
+												<tr>
+													<td> Highest </td>
+													<td> &nbsp; </td>
+												</tr>
+											</table>
+										</div>
+								</td>
+							</tr>
+						</table>
+										
+										<?php } ?>
+				
+									</div>
 					
 				</div>
 		<!-- end Dengue Tab -->
