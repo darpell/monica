@@ -175,6 +175,176 @@ class Remap_model extends CI_Model
 		}
 		//*/
 	}
+
+	function getRepeatingLarvals($data2)
+	{
+		$dataPres;
+		$dataPresR[]=array();
+		$dataPrev1;
+		$dataPrev1R[]=array();
+		$dataPrev2;
+		$presRemvd=0;
+		$oldRemvd=0;
+		$invariant1=true;
+		$invariant2=true;
+		$invariant3=true;
+		
+		$qString = 'CALL ';
+		$qString .= "view_larval_nodes('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data2['datePresB']. "','".
+		$data2['datePresE']. "'". ")";
+		$q = $this->db->query($qString);
+		//*
+		if($q->num_rows() > 0)
+		{	
+			foreach ($q->result() as $row)
+			{
+				$dataPres[]=array(
+						'ls_lat'=> $row->ls_lat,
+						'ls_lng'=> $row->ls_lng,
+						'ls_household'=> $row->ls_household,
+						'ls_street'=> $row->ls_street,
+						'ls_container'=> $row->ls_container,
+						'ls_date'=> $row->ls_date,
+						'created_by'=> $row->created_by
+				);
+			}
+		}
+		else
+		{
+			$invariant1=false;
+		}
+		$q->free_result();
+		
+		$qString = 'CALL ';
+		$qString .= "view_larval_nodes('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data2['datePrev1B']. "','".
+		$data2['datePrev1E']. "'". ")";
+		$q = $this->db->query($qString);
+		//*
+		if($q->num_rows() > 0)
+		{	
+			foreach ($q->result() as $row)
+			{
+				$dataPrev1[]=array(
+						'ls_lat'=> $row->ls_lat,
+						'ls_lng'=> $row->ls_lng,
+						'ls_household'=> $row->ls_household,
+						'ls_street'=> $row->ls_street,
+						'ls_container'=> $row->ls_container,
+						'ls_date'=> $row->ls_date,
+						'created_by'=> $row->created_by
+				);
+			}
+		}
+		else
+		{
+			$invariant2=false;
+		}
+		$q->free_result();
+		
+		$qString = 'CALL ';
+		$qString .= "view_larval_nodes('"; // name of stored procedure
+		$qString .=
+		//variables needed by the stored procedure
+		$data2['datePrev2B']. "','".
+		$data2['datePrev2E']. "'". ")";
+		$q = $this->db->query($qString);
+		//*
+		if($q->num_rows() > 0)
+		{	
+			foreach ($q->result() as $row)
+			{
+				$dataPrev2[]=array(
+						'ls_lat'=> $row->ls_lat,
+						'ls_lng'=> $row->ls_lng,
+						'ls_household'=> $row->ls_household,
+						'ls_street'=> $row->ls_street,
+						'ls_container'=> $row->ls_container,
+						'ls_date'=> $row->ls_date,
+						'created_by'=> $row->created_by
+				);
+			}
+		}
+		else
+		{
+			$invariant3=false;
+		}
+		$q->free_result();
+		if($invariant2 && $invariant3)
+			foreach ($dataPrev2 as $oldkey => $value)
+			{
+				$lat_a=$value['ls_lat']* PI()/180;
+				$long_a=$value['ls_lng']* PI()/180;				
+				foreach($dataPrev1 as $key => $value2)
+				{
+					$lat_b = $value2['ls_lat'] * PI()/180;
+					$long_b = $value2['ls_lng'] * PI()/180;
+					$distance =
+					acos(
+							sin($lat_a ) * sin($lat_b) +
+							cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+					) * 6371;
+					$distance*=1000;
+					if ($distance<=50)
+					{
+						array_push($dataPrev1R,$dataPrev1[$key]);
+						unset($dataPrev1[$key]);
+					}
+				}
+			}
+		$dataReturn;
+		$dataReturn['presentDataExists']=$invariant1;
+		$dataReturn['oldDataExists']=$invariant2;
+		$dataReturn['olderDataExists']=$invariant3;
+		if($invariant1 && $invariant2)
+		{
+			foreach ($dataPrev1 as $value)
+			{
+				$lat_a=$value['ls_lat']* PI()/180;
+				$long_a=$value['ls_lng']* PI()/180;				
+				foreach($dataPres as $key => $value2)
+				{
+					$lat_b = $value2['ls_lat'] * PI()/180;
+					$long_b = $value2['ls_lng'] * PI()/180;
+					$distance =
+					acos(
+							sin($lat_a ) * sin($lat_b) +
+							cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+					) * 6371;
+					$distance*=1000;
+					if ($distance<=50)
+					{
+						array_push($dataPresR,$dataPres[$key]);
+						unset($dataPres[$key]);
+					}
+						
+				}
+			}
+			unset($dataPresR[0]);
+			unset($dataPrev1R[0]);
+			$dataReturn['presentData']=$dataPresR;
+			$dataReturn['oldData']=$dataPrev1R;
+			$dataReturn['olderData']=$dataPrev2;
+			$dataReturn['presRemvd']=$presRemvd;
+			$dataReturn['oldRemvd']=$oldRemvd;
+			return $dataReturn;
+		}
+		if(!$invariant2)
+		{
+			if($invariant1)
+			{
+				$dataReturn['presentData']=$dataPres;
+				return $dataReturn;
+			}
+			else 
+				return false;
+		}
+	}
 }
 
 /* End of remap.php */
