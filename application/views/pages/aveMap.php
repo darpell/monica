@@ -22,18 +22,20 @@ function load() {
 		var cases = new Array();
 	
 	/** Sample Larval Data used as case data **/
-	if (document.getElementById("present_length").value != 0)
-	{
+	if ((document.getElementById("present_length").value != 0)||(document.getElementById("old_length").value != 0))
+	{//alert("0");
 		//var case_img = document.getElementById("case_icon").value;
+		if(document.getElementById("present_length").value != 0)
 		for (var pt_ctr = 0; pt_ctr < document.getElementById("present_length").value; pt_ctr++) 
-		{					
+		{	//alert("1");				
 			cases.push(new google.maps.LatLng(
 					document.getElementById("lsPres_lat" + pt_ctr).value,
 					document.getElementById("lsPres_lng" + pt_ctr).value
 					));
 		}
+		if(document.getElementById("old_length").value != 0)
 		for (var pt_ctr = 0; pt_ctr < document.getElementById("old_length").value; pt_ctr++) 
-		{					
+		{	//alert("2");						
 			cases.push(new google.maps.LatLng(
 					document.getElementById("lsOld_lat" + pt_ctr).value,
 					document.getElementById("lsOld_lng" + pt_ctr).value
@@ -59,11 +61,9 @@ jQuery(document).ready(function(){
 </script>
 </head>
 <form>
-<input type = 'hidden' id ='presRemvd' name='presRemvd' value='<?php echo $presRemvd?>'>
-<input type = 'hidden' id ='oldRemvd' name='oldRemvd' value='<?php echo $oldRemvd?>'>
-<input type = 'hidden' id ='presentDataExists' name='presRemvd' value='<?php echo $presentDataExists?>'>
-<input type = 'hidden' id ='oldDataExists' name='oldRemvd' value='<?php echo $oldDataExists?>'>
-<input type = 'hidden' id ='olderDataExists' name='oldRemvd' value='<?php echo $olderDataExists?>'>
+<input type = 'hidden' id ='presentDataExists' name='presentDataExists' value='<?php echo $presentDataExists?>'>
+<input type = 'hidden' id ='oldDataExists' name='oldDataExists' value='<?php echo $oldDataExists?>'>
+<input type = 'hidden' id ='olderDataExists' name='olderDataExists' value='<?php echo $olderDataExists?>'>
 </form>
 
 <?php if ($presentDataExists === true){$ctr=0;?>

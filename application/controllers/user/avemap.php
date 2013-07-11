@@ -12,12 +12,50 @@ class avemap extends CI_Controller
 		
 		if ($this->form_validation->run('') == FALSE)
 		{
+			if(date("m")<=4 || date("m")>=11)//Dry Season
+			{
+				if(date("m")<=4)
+				{
+					$data['datePresB']=(date("Y")-1).'-11-01';
+					$data['datePresE']=date("Y-m-d");
+					$data['datePrev1B']=(date("Y")-2).'-11-01';
+					$data['datePrev1E']=(date("Y")-1).'-04-30';
+					$data['datePrev2B']=(date("Y")-3).'-11-01';
+					$data['datePrev2E']=(date("Y")-2).'-04-30';
+				}
+				else
+				{
+					$data['datePresB']=date("Y").'-11-01';
+					$data['datePresE']=date("Y-m-d");
+					$data['datePrev1B']=(date("Y")-1).'-11-01';
+					$data['datePrev1E']=date("Y").'-04-30';
+					$data['datePrev2B']=(date("Y")-2).'-11-01';
+					$data['datePrev2E']=(date("Y")-1).'-04-30';
+				}
+			}
+			else//Wet Season
+			{
+				$data['datePresB']=date("Y").'-05-01';
+				$data['datePresE']=date("Y-m-d");
+				$data['datePrev1B']=(date("Y")-1).'-05-01';
+				$data['datePrev1E']=(date("Y")-1).'-10-31';
+				$data['datePrev2B']=(date("Y")-2).'-05-01';
+				$data['datePrev2E']=(date("Y")-2).'-10-31';
+			}
+
+			/*
+			print_r($data['datePresB'].":");
+			print_r($data['datePresE']."________");
+			print_r($data['datePrev1B'].":");
+			print_r($data['datePrev1E']."________");
+			print_r($data['datePrev2B'].":");
+			print_r($data['datePrev2E']);/*
 			$data['datePresB']='2013-01-01';
 			$data['datePresE']='2013-06-01';
 			$data['datePrev1B']='2012-01-01';
 			$data['datePrev1E']='2012-12-01';
 			$data['datePrev2B']='2011-01-01';
-			$data['datePrev2E']='2011-12-01';
+			$data['datePrev2E']='2011-12-01';//*/
 			$this->load->view('pages/aveMap',$this->Remap_model->getRepeatingLarvals($data));
 		}
 		else

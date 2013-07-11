@@ -183,8 +183,6 @@ class Remap_model extends CI_Model
 		$dataPrev1;
 		$dataPrev1R[]=array();
 		$dataPrev2;
-		$presRemvd=0;
-		$oldRemvd=0;
 		$invariant1=true;
 		$invariant2=true;
 		$invariant3=true;
@@ -275,7 +273,9 @@ class Remap_model extends CI_Model
 			$invariant3=false;
 		}
 		$q->free_result();
+		
 		if($invariant2 && $invariant3)
+		{
 			foreach ($dataPrev2 as $oldkey => $value)
 			{
 				$lat_a=$value['ls_lat']* PI()/180;
@@ -297,10 +297,7 @@ class Remap_model extends CI_Model
 					}
 				}
 			}
-		$dataReturn;
-		$dataReturn['presentDataExists']=$invariant1;
-		$dataReturn['oldDataExists']=$invariant2;
-		$dataReturn['olderDataExists']=$invariant3;
+		}
 		if($invariant1 && $invariant2)
 		{
 			foreach ($dataPrev1 as $value)
@@ -330,20 +327,22 @@ class Remap_model extends CI_Model
 			$dataReturn['presentData']=$dataPresR;
 			$dataReturn['oldData']=$dataPrev1R;
 			$dataReturn['olderData']=$dataPrev2;
-			$dataReturn['presRemvd']=$presRemvd;
-			$dataReturn['oldRemvd']=$oldRemvd;
 			return $dataReturn;
 		}
-		if(!$invariant2)
+		elseif($invariant1)
 		{
-			if($invariant1)
-			{
-				$dataReturn['presentData']=$dataPres;
-				return $dataReturn;
-			}
-			else 
-				return false;
+			$dataReturn['presentData']=$dataPres;
 		}
+		elseif($invariant2)
+		{
+			unset($dataPrev1R[0]);
+			$dataReturn['oldData']=$dataPrev1R;
+		}
+		$dataReturn['olderData']=$dataPrev2;
+		$dataReturn['presentDataExists']=$invariant1;
+		$dataReturn['oldDataExists']=$invariant2;
+		$dataReturn['olderDataExists']=$invariant3;
+		return $dataReturn;
 	}
 }
 
