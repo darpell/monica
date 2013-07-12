@@ -51,6 +51,104 @@ class Cho extends CI_Controller
 		}
 
 	}
+	function view_dengue_profile()
+	{	$this->redirectLogin();
+	$this->load->model('Cho_model');
+	$this->load->library('table');
+	
+	$this->form_validation->set_rules('TPdatefrom-txt', 'Date from', 'required');
+	$this->form_validation->set_rules('TPdateto-txt', 'Date to', 'required');
+	if ($this->form_validation->run('') == FALSE)
+	{
+		
+		$data['title'] = 'View Pending Tasks';
+		$data['script'] = 'view_casereport';
+		$data['values_age']= null;
+		$data['error']= null;
+		$data['barangay_form']  = $this->Cho_model->getAllBarangays();
+		array_shift($data['barangay_form']);
+		$this->load->view('pages/view_dengue_profile.php' , $data);
+	}
+	else 
+	{	
+		$dateto= explode ('/', $this->input->post('TPdateto-txt'));
+		$datefrom= explode ('/', $this->input->post('TPdatefrom-txt'));
+		$data['dateto'] =  $dateto[2].'/'.$dateto[0].'/'.$dateto[1];
+		$data['datefrom'] =  $datefrom[2].'/'.$datefrom[0].'/'.$datefrom[1];
+		$data['barangay'] = $this->input->post('barangay');
+
+		$data2 = $this->Cho_model->get_dengue_profile($data);
+		if($data2 != null){
+		$data['total'] = $data2['total'];
+		$data['year'] = $data2['year'];
+		$data['values'] = $data2['values'];
+		
+		$data['title'] = 'View Pending Tasks';
+		$data['script'] = 'view_casereport';
+		$data['barangay_form']  = $this->Cho_model->getAllBarangays();
+		array_shift($data['barangay_form']);
+		
+		$data['values_age'] = 'Age Group&&0-10&&11-20&&21-30&&31-40&&>40';
+		$data['values_total'] = 'Barangay&&';
+		$data['barangay_list'] ='';
+		$data['year_list'] ='';
+		foreach ($data2['year'] as $year)
+		{	$data['year_list'] .= $year . "&&";
+		
+			foreach ($data2['barangay'] as $barangay)
+			{
+				$data['barangay_list'] .= $barangay . "&&";
+				for($i = 0 ; $i < 5 ; $i++ )
+				{
+					$data['values_age'] .=
+					$year . "&&" .
+					$barangay . "&&" .
+					'M'. "&&" .
+					$data2['values'][$year][$barangay]['M'][$i] . "%%" ;
+				}
+				for($i = 0 ; $i < 5 ; $i++ )
+				{
+					$data['values_age'] .=
+					$year . "&&" .
+					$barangay . "&&" .
+					'F'. "&&" .
+					$data2['values'][$year][$barangay]['F'][$i] . "%%" ;
+				}
+			}
+		}
+		foreach ($data2['year'] as $year)
+		{
+			$data['values_total'] .= $year . '&&';
+		}
+		$data['values_total'] .=  "%%";
+		foreach ($data2['barangay'] as $barangay)
+		{$data['values_total'] .= $barangay . "&&";
+			foreach ($data2['year'] as $year)
+			{
+				$data['values_total'] .=
+				$data2['total'][$year][$barangay] . "&&" ;
+			}
+			$data['values_total'] .=  "%%";
+		}
+		$test = explode('%%' , $data['values_total']);
+		$data['error']= null;
+		}
+		else
+		{
+			$data['title'] = 'View Pending Tasks';
+			$data['script'] = 'view_casereport';
+			$data['values_age']= null;
+			$data['error']= "There are no dengue cases between " . $this->input->post('TPdatefrom-txt') . ' and ' . $this->input->post('TPdateto-txt') ;
+			$data['barangay_form']  = $this->Cho_model->getAllBarangays();
+			array_shift($data['barangay_form']);
+		}
+		$this->load->view('pages/view_dengue_profile.php' , $data);
+		
+		
+	
+	}
+
+	}
 	function view_pending_tasks()
 	{	$this->redirectLogin();
 		$this->load->model('Cho_model');
