@@ -80,7 +80,7 @@
 					'Barangay'=>$row->barangay ,
 					'Task Header'=> $row->task_header,
 					'Task'=> $row->task,
-					'Date Assigned'=>'Date Assigned',
+					'Date Assigned'=> $row->date_sent,
 					'Approve'=>'<input type="radio" name="'.$row->task_no.'" value="approved" checked="true">',
 					'Deny'=>'<input type="radio" name="'.$row->task_no.'" value="denied">',
 			);
@@ -485,7 +485,7 @@
 		{
 			//echo $data['node_type'];
 			$qString = 'CALL ';
-			$qString .= "get_allbarangays("; // name of stored procedure
+			$qString .= "get_barangays("; // name of stored procedure
 			$qString .=
 			//variables needed by the stored procedure
 			")";
@@ -583,6 +583,79 @@
 				$q->free_result();
 				return 0;
 			}
+		}
+		function get_dengue_profile($data = null)
+		{
+			if($data!= null)
+			{
+			$qString = 'CALL ';
+			$qString .= "get_case_ages_gender ('"; // name of stored procedure
+			$qString .=
+						$data['datefrom']. "','".
+						$data['dateto']. "'". ")";
+			$q = $this->db->query($qString);
+			if($q->num_rows() > 0)
+			{	
+				$dateto= explode ('/', $data['dateto']);
+				$datefrom= explode ('/', $data['datefrom']);
+				
+				for($i = $datefrom[0] ; $i <= $dateto[0]  ; $i++ )
+				{
+					foreach ($data['barangay'] as $row)
+					{
+						$data2['values'][$i][$row]['M'][0] = 0;
+						$data2['values'][$i][$row]['M'][1] = 0;
+						$data2['values'][$i][$row]['M'][2] = 0;
+						$data2['values'][$i][$row]['M'][3] = 0;
+						$data2['values'][$i][$row]['M'][4] = 0;
+						$data2['values'][$i][$row]['F'][0] = 0;
+						$data2['values'][$i][$row]['F'][1] = 0;
+						$data2['values'][$i][$row]['F'][2] = 0;
+						$data2['values'][$i][$row]['F'][3] = 0;
+						$data2['values'][$i][$row]['F'][4] = 0;
+						
+						$data2['total'][$i][$row] = 0;
+					}
+				}
+				
+				foreach ($q->result() as $row)
+				{	
+					for($i = 0 ; $i < count($data['barangay']) ; $i++ )
+					{	$range = null;
+						if($data['barangay'][$i] == $row->cr_barangay)
+						{	$range = null;
+							if($row->agerange >= 4)
+							{$range = 4;}
+							else {$range =  $row->agerange;}
+					
+									$data2['values']
+									[$row->caseyear]
+									[$row->cr_barangay]
+									[$row->cr_sex]
+									[$range]
+									+= //array(
+									//'barangay'=>$row->cr_barangay ,
+									$row->patientcount;
+									//'range'=> (($row->agerange * 10)+1)."-".(($row->agerange *10)+10),
+									//'sex'=>$row->cr_sex,
+									//'year'=>$row->caseyear,
+									//);
+									
+							$data2['total'][$row->caseyear][$row->cr_barangay] += $row->patientcount;
+							$barangay [] = $row->cr_barangay ;
+							$year[] = $row->caseyear;
+							
+						}
+					}
+				}
+				$data2['barangay'] = array_values(array_unique($barangay));
+				$data2['year'] = array_values(array_unique($year));
+			}
+			
+			else {$data2 = null;}
+			}
+			
+			return $data2;
 		}
 		
 	}
