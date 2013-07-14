@@ -76,6 +76,7 @@ $route['larval_survey/(:any)'] = 'user/lsform/$1';
 $route['case_report/(:any)'] = 'user/crform/$1';
 $route['CHO'] = 'user/cho';
 $route['CHO/(:any)'] = 'user/cho/$1';
+$route['suggested'] = 'user/suggest';
 $route['tweet'] = 'user/twtest';
 $route['tweet/(:any)'] = 'user/twtest/$1';
 $route['remap'] = 'user/remap';
