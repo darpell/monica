@@ -12,10 +12,11 @@
   		year = year.split("&&");
   		year.pop();
 
+
+
   		var total = document.getElementById('value_totals').value.toString();
   		total = total.split("%%");
   		total.pop();
-  		
   		var data2 = new Array();
   		for (var i = 0; i < total.length; i++)
   		{
@@ -26,29 +27,119 @@
 				data2[i][s] = parseInt(data2[i][s]);
   	  		}
   		}
-  		/*
-          var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Barangay');
-          for (var i = 0; i < year.length; i++) 
-              {
-          	 data.addColumn('number', year[i]);
-          	}
-        	*/
-         
-            
-          var data = google.visualization.arrayToDataTable(data2,false);
+           
+        var data = google.visualization.arrayToDataTable(data2,false);
           	
-
 		var options = {
         title : 'Dengue cases arranged by barangay and year',
         vAxis: {title: "Cases"},
         hAxis: {title: "Barangay"},
         seriesType: "bars"
       };
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
 
 
+
+  		var total = document.getElementById('values_gender').value.toString();
+  		
+  		total = total.split("%%");
+  		
+  		total.pop();
+  		var data2 = new Array();
+  		for (var i = 0; i < total.length; i++)
+  		{
+  			data2[i] = total[i].split("&&");
+  			data2[i].pop();
+  			if(i>0)
+  			{
+  			for (var s = 1; s < data2[i].length; s++)
+  			{
+				data2[i][s] = parseInt(data2[i][s]);
+  	  		}
+  			}
+  		}
+  	
+        
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Barangay');
+     
+        for (var s = 1; s < data2[0].length; s++)
+			{
+			data.addColumn('number', data2[0][s]);
+	  		
+	  		}
+        data.addRows(data2.length-1);
+        
+        for (var i = 1; i < data2.length; i++)
+  		{	
+  			for (var s = 0; s < data2[i].length; s++)
+  			{
+  	  			if(s == 0)
+				data.setCell(i-1, s, data2[i][s]);
+  	  			else
+  	  			{
+  	  			data.setCell(i-1, s, parseInt(data2[i][s]));
+  	  			}
+  	  		
+  	  		}
+  		}
+        
+      	
+		var options = {
+        title : 'Dengue Cases Sorted By Gender and Year',
+        vAxis: {title: "Cases"},
+        hAxis: {title: "Barangay"},
+        seriesType: "bars"
+      };
         var chart = new google.visualization.ComboChart(document.getElementById('chart_div2'));
         chart.draw(data, options);
+
+
+
+
+        var total = document.getElementById('values_age').value.toString();
+  		total = total.split("%%");
+  		total.pop();
+
+  		for (var i = 0; i < total.length; i++)
+  		{
+  			var data2 = new Array();
+  			var data3 = new Array();
+  			data2 = total[i].split("##");
+  			data2[1] = data2[1].split("@@");
+  			data2[1].pop();
+
+  			for (var s = 0; s < data2[1].length; s++)
+  			{
+	  			data2[1][s] = data2[1][s].split("&&");
+	  			data2[1][s].pop();
+	  			for (var d = 1; d < data2[1][s].length; d++)
+	  			{
+					data2[1][s][d] = parseInt(data2[1][s][d]);
+	  	  		}
+	  			
+	  	  		
+  			}
+  		
+
+       var data = google.visualization.arrayToDataTable(data2[1],false);
+		alert(data2[0]);
+		var options = {
+        title : 'Dengue Cases Of ' + data2[0] + ' Arranged By Age Group and Year',
+        vAxis: {title: "Cases"},
+        hAxis: {title: "Age group"},
+        seriesType: "bars"
+      };
+        var chart = new google.visualization.ComboChart(document.getElementById(data2[0]));
+        chart.draw(data, options);
+
+  	}
+	
+
+    	
+
+        
       }
     </script>
     
@@ -101,7 +192,19 @@ echo form_open('CHO/view_dengue_profile',$attributes); ?>
 </div>
 </div>
 <?php if($values_age != null) {?>
-<div id="chart_div2"></div>
+
+<div id="chart_div" style="height: 500px;"></div>
+<div id="chart_div2" style="height: 520px;"></div>
+<div>
+<?php 
+foreach ($barangay as $y)
+{
+	echo '<center><h3>'. $y .'</h3></center>';
+	echo '<div id="' . $y .'" style="height: 500px;"></div>';
+}
+
+?>
+</div>
 <center>
 <h3>Distribution of Cases by year, gender and age group</h2>
 <table  border="1" cellpadding="5" cellspacing="0">
@@ -145,6 +248,7 @@ echo form_open('CHO/view_dengue_profile',$attributes); ?>
 
 
 <input type="hidden" name="values_age" id="values_age" value="<?php echo $values_age; ?>" />
+<input type="hidden" name="values_gender" id="values_gender" value="<?php echo $values_gender; ?>" />
 <input type="hidden" name="values_total" id="value_totals" value="<?php echo $values_total; ?>" />
 <input type="hidden" name="barangay_list" id="barangay_list" value="<?php echo $barangay_list; ?>" />
 <input type="hidden" name="year_list" id="year_list" value="<?php echo $year_list; ?>" />

@@ -88,50 +88,83 @@ class Cho extends CI_Controller
 		$data['barangay_form']  = $this->Cho_model->getAllBarangays();
 		array_shift($data['barangay_form']);
 		
-		$data['values_age'] = 'Age Group&&0-10&&11-20&&21-30&&31-40&&>40';
+		$data['values_age'] = '';
 		$data['values_total'] = 'Barangay&&';
+		$data['values_gender'] = 'Barangay&&';
 		$data['barangay_list'] ='';
 		$data['year_list'] ='';
-		foreach ($data2['year'] as $year)
-		{	$data['year_list'] .= $year . "&&";
 		
-			foreach ($data2['barangay'] as $barangay)
-			{
-				$data['barangay_list'] .= $barangay . "&&";
-				for($i = 0 ; $i < 5 ; $i++ )
-				{
-					$data['values_age'] .=
-					$year . "&&" .
-					$barangay . "&&" .
-					'M'. "&&" .
-					$data2['values'][$year][$barangay]['M'][$i] . "%%" ;
-				}
-				for($i = 0 ; $i < 5 ; $i++ )
-				{
-					$data['values_age'] .=
-					$year . "&&" .
-					$barangay . "&&" .
-					'F'. "&&" .
-					$data2['values'][$year][$barangay]['F'][$i] . "%%" ;
-				}
-			}
-		}
 		foreach ($data2['year'] as $year)
 		{
 			$data['values_total'] .= $year . '&&';
+			$data['values_gender'] .= 'M '.$year . '&&';
+			$data['values_gender'] .= 'F '.$year . '&&';
 		}
 		$data['values_total'] .=  "%%";
+		$data['values_gender'] .=  "%%";
+		
 		foreach ($data2['barangay'] as $barangay)
-		{$data['values_total'] .= $barangay . "&&";
+		{	$data['values_total'] .= $barangay . "&&";
+			$data['values_gender'] .= $barangay . "&&";
+			$data['values_age'] .= $barangay . "##";
+			$data['barangay_list'] .= $barangay . "&&";
+			
+			
+			$data['values_age'] .='Age group'. '&&';
+			foreach ($data2['year'] as $year)
+			{
+				$data['values_age'] .= $year . '&&';
+			}
+				$data['values_age'] .=  "@@";
+			
+			
+			for($s = 0; $s < 5; $s++)
+			{
+				if($s <4 )
+					{ $data['values_age'] .= ($s * 10)."-".(($s *10)+10).'&&';}
+				else{ $data['values_age'] .= '>40'.'&&';}
+				
+				foreach ($data2['year'] as $year)
+				{
+					$sum = $data2['values'][$year][$barangay]['M'][$s] + $data2['values'][$year][$barangay]['F'][$s];
+					$data['values_age'] .= $sum.'&&';
+				}
+				$data['values_age'] .=  "@@";
+			}
+			
+			$data['values_age'] .=  "%%";
+			
 			foreach ($data2['year'] as $year)
 			{
 				$data['values_total'] .=
 				$data2['total'][$year][$barangay] . "&&" ;
+				$data['year_list'] .= $year . "&&";
+				
+				
+				$male = $data2['values'][$year][$barangay]['M'][0] +
+						$data2['values'][$year][$barangay]['M'][1] +
+						$data2['values'][$year][$barangay]['M'][2] +
+						$data2['values'][$year][$barangay]['M'][3] +
+						$data2['values'][$year][$barangay]['M'][4];
+				$data['values_gender'] .= $male . "&&" ;
+				
+				$female = $data2['values'][$year][$barangay]['F'][0] +
+						$data2['values'][$year][$barangay]['F'][1] +
+						$data2['values'][$year][$barangay]['F'][2] +
+						$data2['values'][$year][$barangay]['F'][3] +
+						$data2['values'][$year][$barangay]['F'][4];
+				$data['values_gender'] .= $female . "&&" ;
 			}
 			$data['values_total'] .=  "%%";
+			$data['values_gender'] .=  "%%";
+		
 		}
-		$test = explode('%%' , $data['values_total']);
+		$test = explode('%%' , $data['values_age']);
+		$test = explode('##' , $test[0]);
+		$test = explode('@@' , $test[1]);
+		$test = explode('&&' , $test[0]);
 		$data['error']= null;
+		print_r($test);
 		}
 		else
 		{
