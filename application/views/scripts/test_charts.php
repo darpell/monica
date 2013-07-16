@@ -172,7 +172,7 @@
         // Create the data table.
       var data = google.visualization.arrayToDataTable([
           ['Age Group', 'Female', 'Male'],
-          ['1-10',  parseInt(age0f),      parseInt(age0m)],
+          ['0-10',  parseInt(age0f),      parseInt(age0m)],
           ['11-20',  parseInt(age1f),      parseInt(age1m)],
           ['21-30',  parseInt(age2f),      parseInt(age2m)],
           ['31-40',  parseInt(age3f),      parseInt(age3m)],
@@ -184,7 +184,8 @@
         // Set chart options
 		var curtotal = parseInt(mn1) + parseInt(mn2) + parseInt(mn3) + parseInt(mn4) + parseInt(mn5) + parseInt(mn6) + parseInt(mn7) + parseInt(mn8) + parseInt(mn9) + parseInt(mn10) + parseInt(mn11) + parseInt(mn12);
         var options = {
-          title : 'Fig.1 Dengue Cases by Agegroup and Gender Dasmarinas City, Philippines as of '+today,
+          title : 'Fig.2 Dengue Cases by Agegroup and Gender Dasmarinas City, Philippines as of '+today,
+          titleTextStyle : { fontSize: 20},
           vAxis: {title: "Number Of Cases"},
           hAxis: {title: "Age Group"},
           seriesType: "bars",
@@ -217,7 +218,8 @@
         // Set chart options
 		var curtotal = parseInt(mn1) + parseInt(mn2) + parseInt(mn3) + parseInt(mn4) + parseInt(mn5) + parseInt(mn6) + parseInt(mn7) + parseInt(mn8) + parseInt(mn9) + parseInt(mn10) + parseInt(mn11) + parseInt(mn12);
         var options2 = {
-          title : 'Fig.2 Dengue Cases by Month, Dasmarinas, Philippines, ' + yyyy +' vs '+ (yyyy-1),
+          title : 'Fig.1 Dengue Cases by Month, Dasmarinas, Philippines, ' + yyyy +' vs '+ (yyyy-1),
+          titleTextStyle : { fontSize: 20},
           vAxis: {title: "Number Of Cases"},
           hAxis: {title: "Month"},
           seriesType: "bars",

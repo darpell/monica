@@ -50,7 +50,8 @@
 		        containerId: 'chart_div',
 		        dataTable: datatable,
 		        options: {
-		            title: 'Epidemic Threshold Chart',
+		            title: 'Fig. 1 Epidemic Threshold Chart',
+		            titleTextStyle : { fontSize: 20},
 		            height: 400
 		        }
 		    });
@@ -161,15 +162,21 @@ echo form_dropdown('barangay', $barangay,array($parameter => $parameter));
 </td>
 </tr>
 </table>
-   <div id="visualization" style="width: 600px; height: 150px;"></div>
+
+<div id="colFilter_div"></div>
+<br />
+<br />
+<?php $this->load->view('pages/report_header_threshold');?>
+ <div id="chart_div" style="width: 80%;"></div>
+
 <?php if($table != null) {?>
 
 <div>
-<h3>Five years monthly record of cases (<?php echo (date('Y')-5).'-'.(date('Y')-1); ?>)</h3>
+<h3>Table 1. Five years monthly record of cases (<?php echo (date('Y')-5).'-'.(date('Y')-1); ?>)</h3>
 <?php 
 
 $tmpl = array (
-                    'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',
+                    'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" style="width: 70%;">',
 
                     'heading_row_start'   => '<tr>',
                     'heading_row_end'     => '</tr>',
@@ -206,11 +213,11 @@ echo $this->table->generate($table['data']);
 <?php if($table != null) {?>
 
 <div>
-<h3>Epidemic Threshold For the Year <?php echo date('Y'); ?> and the current number of cases</h3>
+<h3>Table 2. Epidemic Threshold For the Year <?php echo date('Y'); ?> and the current number of cases</h3>
 <?php 
 
 $tmpl = array (
-                    'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',
+                    'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" style="width: 70%;" >',
 
                     'heading_row_start'   => '<tr>',
                     'heading_row_end'     => '</tr>',
@@ -241,8 +248,6 @@ echo $this->table->generate($arranged);
 <div id="colFilter_div"></div>
  <div id="chart_div"></div>
 </center>
-
-
 
 </div>
 </div>

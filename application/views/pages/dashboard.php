@@ -900,8 +900,6 @@
     </script>
   <div class="body">
    <center>
-   <h3>Epidemic Threshold shown in Percentage</h3>
-   <div id="visualization" style="width: 600px; height: 150px;"></div>
    <h3>Dengue Cases Summary</h3>
     <div id="dashboard">
       <table>
