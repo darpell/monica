@@ -344,6 +344,51 @@ class Remap_model extends CI_Model
 		$dataReturn['olderDataExists']=$invariant3;
 		return $dataReturn;
 	}
+	
+	function investigated_cases($data)
+	{
+		$this->db->from('investigated_cases');
+		$this->db->join('case_report_main','investigated_cases.case_no = case_report_main.cr_no');
+		$where="";
+		if($data['barangay']===null)
+		{
+			$where="cr_date_onset BETWEEN ".$data['dateSel1']." AND ".$data['dateSel2'];
+		}
+		else
+		{
+			$where="cr_date_onset BETWEEN ".$data['dateSel1']." AND ".$data['dateSel2']." AND (";
+			foreach ($data['barangay'] as $value)
+			{
+				$where.="cr_barangay=".$value." OR";
+			}
+			$where=substr($where, 0, -2).")";
+		}
+		$this->db->where($where);
+		$q = $this->db->get();
+		
+		$dataReturn['data_exists']=false;
+		
+		if($q->num_rows() > 0)
+		{
+			foreach ($q->result() as $row)
+			{
+				$dataCases[]=array(
+						'ic_lat'=> $row->lat,
+						'ic_lng'=> $row->lng,
+						'ic_feedback'=> $row->feedback,
+						'ic_fname'=> $row->cr_first_name,
+						'ic_lname'=> $row->cr_last_name,
+						'ic_dateOnset'=> $row->cr_date_onset,
+						'ic_age'=> $row->cr_age,
+						'ic_barangay'=> $row->cr_barangay
+				);
+			}
+			$dataReturn['data_exists']=true;
+			$dataReturn['dataCases']=$dataCases;
+		}
+		$q->free_result();
+		return $dataReturn;
+	}
 }
 
 /* End of remap.php */
