@@ -17,10 +17,10 @@
 			<?php } ?>
 			
 			<ul data-role="listview" data-filter="true" data-inset="true" data-split-icon="check" data-split-theme="d">
-				
+				<!-- <li> <?php //echo $test; ?></li> -->
 				<?php for ($ctr = 0; $ctr < count($cases); $ctr++) {?>
 				
-				<li> <a href="<?php echo site_url('mobile/page/checklocation');?>" data-ajax="false" data-transition="slide">
+				<li> <a href="<?php echo site_url('mobile/cases/' . $cases[$ctr]['cr_patient_no']);?>" data-ajax="false" data-transition="slide">
 					<?php echo $cases[$ctr]['cr_first_name']; ?> <!-- First Name -->
 					<?php echo $cases[$ctr]['cr_last_name']; ?>, <!-- Last Name -->
 					<?php echo $cases[$ctr]['cr_sex']; ?>, <!-- Sex -->

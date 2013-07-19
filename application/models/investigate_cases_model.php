@@ -6,7 +6,7 @@ class Investigate_cases_model extends CI_Model
 	{
 		$query = $this->db->query("SELECT cr.cr_patient_no, cr.cr_first_name, cr.cr_last_name, cr.cr_sex, cr.cr_age, cr.cr_street
 									FROM case_report_main cr
-									WHERE cr.cr_barangay = '" . $barangay . "' AND
+									WHERE cr.cr_barangay = '" . $brgy . "' AND
 										cr.cr_patient_no NOT IN
 											(SELECT ic.case_no
 											FROM investigated_cases ic)"
@@ -22,7 +22,7 @@ class Investigate_cases_model extends CI_Model
 										(SELECT ic.case_no
 										FROM investigated_cases ic)"
 							);
-		return $query->result_array();
+		return $query->row_array();
 		$query->free_result();
 		
 		

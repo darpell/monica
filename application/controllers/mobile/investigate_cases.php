@@ -11,12 +11,22 @@ class Investigate_cases extends CI_Controller
 	{
 		
 		$data['cases'] = $this->ic->get_uninvestigated_cases($this->ic->get_user_brgy($this->session->userdata('TPusername')));
+		//$data['test'] = $this->ic->get_user_brgy($this->session->userdata('TPusername'));
 		$this->load->view('mobile/uninvestigated_cases',$data);
 	}
 	
-	function plot_case()
+	function plot($slug)
 	{
-			
+		$data['case_details'] = $this->ic->get_uninvestigated_cases($this->ic->get_user_brgy($this->session->userdata('TPusername')), $slug);
+	
+		if (empty($data['case_details']))
+		{
+			show_404();
+		}
+	
+		$data['title'] = $data['case_details']['cr_first_name'] . ' ' . $data['case_details']['cr_last_name'];
+
+		$this->load->view('mobile/plot_view', $data);
 	}
 }
 
