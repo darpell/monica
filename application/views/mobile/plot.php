@@ -212,7 +212,7 @@ function initialize(){
 	    		
 	    		<ul data-role="listview" data-inset="true" data-theme="d" data-divider-theme="d">
 						<li data-role="list-divider"> Plot investigated case </li>
-						<li><a href="index.html">
+						<li><a href="uninvestigated_cases">
 							<h3>Stephen Weber</h3>
 							<p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
 							<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
@@ -221,6 +221,7 @@ function initialize(){
 	    		</ul>
 	    		
 	    		<form id="" action="case_add" method="post" data-ajax="false">
+	    		
 				<ul data-role="listview" data-inset="true" data-divider-theme="d">
 						<li data-role="list-divider"> Single Case Entry </li>
 	    		<li data-role="fieldcontain">
