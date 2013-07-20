@@ -25,8 +25,26 @@ class Investigate_cases extends CI_Controller
 		}
 	
 		$data['title'] = $data['case_details']['cr_first_name'] . ' ' . $data['case_details']['cr_last_name'];
+		$data['slug'] = $slug;
 
 		$this->load->view('mobile/plot_view', $data);
+	}
+	
+	function add()
+	{
+		//TODO
+		
+		/*
+			$input_data = array(
+					'lat'		=>	$this->input->post(''),
+					'lng'		=>	$this->input->post(''),
+					'feedback'	=>	$this->input->post('TPremarks-txt_r')
+				);
+				
+			//$this->im_case->add($input_data);
+			$data['result'] = 'Your entry has been recorded';
+			$this->load->view('mobile/im_case_success',$data);
+		*/
 	}
 }
 

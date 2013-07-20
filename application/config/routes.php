@@ -50,6 +50,7 @@ $route['mobile/page/addls'] = 'user/lsform/addls';
 $route['mobile/page/new_poi'] = 'mobile/poi/add';
 $route['mobile/page/uninvestigated_cases'] = 'mobile/investigate_cases';
 $route['mobile/cases/(:num)'] = 'mobile/investigate_cases/plot/$1';
+$route['mobile/cases/add'] = 'mobile/investigate_cases/add';
 $route['mobile/immediate_case'] = 'mobile/immediate_case';
 $route['mobile/page/case_add'] = 'mobile/immediate_case/add';
 $route['mobile/riskmap_options'] = 'mobile/larval/options';

@@ -50,6 +50,11 @@ class Investigate_cases_model extends CI_Model
 									);
 		*/
 	}
+	
+	function plot_case($patient_no)
+	{
+		//TODO
+	}
 }
 
 /* End of investigate_cases_model.php */
