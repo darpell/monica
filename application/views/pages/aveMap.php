@@ -65,7 +65,7 @@ jQuery(document).ready(function(){
 <input type = 'hidden' id ='oldDataExists' name='oldDataExists' value='<?php echo $oldDataExists?>'>
 <input type = 'hidden' id ='olderDataExists' name='olderDataExists' value='<?php echo $olderDataExists?>'>
 </form>
-
+<?php echo $this->table->generate($tableData);?>
 <?php if ($presentDataExists === true){$ctr=0;?>
 <input type="hidden" id="present_length" value="<?php echo count($presentData); ?>" />
 	<?php foreach ($presentData as $value) {?>

@@ -183,17 +183,32 @@ class Remap_model extends CI_Model
 		$dataPrev1;
 		$dataPrev1R[]=array();
 		$dataPrev2;
+		$dataCITable[]=array(
+				'ls_household',
+				'ls_street',
+				'ls_container',
+				'ls_date',
+				'created_by'
+		);
 		$invariant1=true;
 		$invariant2=true;
 		$invariant3=true;
 		
-		$qString = 'CALL ';
-		$qString .= "view_larval_nodes('"; // name of stored procedure
-		$qString .=
-		//variables needed by the stored procedure
-		$data2['datePresB']. "','".
-		$data2['datePresE']. "'". ")";
-		$q = $this->db->query($qString);
+		$this->db->from('ls_report_main');
+		$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
+		$where="created_on BETWEEN '".$data2['datePresB']."' AND '".$data2['datePresE']."' AND "."ls_result = 'POSITIVE'";
+		if($data2['barangay']!=null)
+		{
+			$where.=" AND (";
+			foreach ($data2['barangay'] as $value)
+			{
+				$where.="ls_barangay='".$value."' OR ";
+			}
+			$where=substr($where, 0, -4).")";
+		}
+		$this->db->where($where);
+		$this->db->group_by('tracking_number');
+		$q = $this->db->get();
 		//*
 		if($q->num_rows() > 0)
 		{	
@@ -216,13 +231,21 @@ class Remap_model extends CI_Model
 		}
 		$q->free_result();
 		
-		$qString = 'CALL ';
-		$qString .= "view_larval_nodes('"; // name of stored procedure
-		$qString .=
-		//variables needed by the stored procedure
-		$data2['datePrev1B']. "','".
-		$data2['datePrev1E']. "'". ")";
-		$q = $this->db->query($qString);
+		$this->db->from('ls_report_main');
+		$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
+		$where="created_on BETWEEN '".$data2['datePrev1B']."' AND '".$data2['datePrev1E']."' AND "."ls_result = 'POSITIVE'";
+		if($data2['barangay']!=null)
+		{
+			$where.=" AND (";
+			foreach ($data2['barangay'] as $value)
+			{
+				$where.="ls_barangay='".$value."' OR ";
+			}
+			$where=substr($where, 0, -4).")";
+		}
+		$this->db->where($where);
+		$this->db->group_by('tracking_number');
+		$q = $this->db->get();
 		//*
 		if($q->num_rows() > 0)
 		{	
@@ -245,13 +268,21 @@ class Remap_model extends CI_Model
 		}
 		$q->free_result();
 		
-		$qString = 'CALL ';
-		$qString .= "view_larval_nodes('"; // name of stored procedure
-		$qString .=
-		//variables needed by the stored procedure
-		$data2['datePrev2B']. "','".
-		$data2['datePrev2E']. "'". ")";
-		$q = $this->db->query($qString);
+		$this->db->from('ls_report_main');
+		$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
+		$where="created_on BETWEEN '".$data2['datePrev2B']."' AND '".$data2['datePrev2E']."' AND "."ls_result = 'POSITIVE'";
+		if($data2['barangay']!=null)
+		{
+			$where.=" AND (";
+			foreach ($data2['barangay'] as $value)
+			{
+				$where.="ls_barangay='".$value."' OR ";
+			}
+			$where=substr($where, 0, -4).")";
+		}
+		$this->db->where($where);
+		$this->db->group_by('tracking_number');
+		$q = $this->db->get();
 		//*
 		if($q->num_rows() > 0)
 		{	
@@ -293,6 +324,13 @@ class Remap_model extends CI_Model
 					if ($distance<=50)
 					{
 						array_push($dataPrev1R,$dataPrev1[$key]);
+						$dataCITable[]=array(
+								$dataPrev1[$key]['ls_household'],
+								$dataPrev1[$key]['ls_street'],
+								$dataPrev1[$key]['ls_container'],
+								$dataPrev1[$key]['ls_date'],
+								$dataPrev1[$key]['created_by']
+						);
 						unset($dataPrev1[$key]);
 					}
 				}
@@ -316,7 +354,14 @@ class Remap_model extends CI_Model
 					$distance*=1000;
 					if ($distance<=50)
 					{
-						array_push($dataPresR,$dataPres[$key]);
+						array_push($dataPresR,$dataPres[$key]);//*
+						$dataCITable[]=array(
+								$dataPres[$key]['ls_household'],
+								$dataPres[$key]['ls_street'],
+								$dataPres[$key]['ls_container'],
+								$dataPres[$key]['ls_date'],
+								$dataPres[$key]['created_by']
+						);//*/
 						unset($dataPres[$key]);
 					}
 						
@@ -342,6 +387,7 @@ class Remap_model extends CI_Model
 		$dataReturn['presentDataExists']=$invariant1;
 		$dataReturn['oldDataExists']=$invariant2;
 		$dataReturn['olderDataExists']=$invariant3;
+		$dataReturn['tableData']=$dataCITable;
 		return $dataReturn;
 	}
 	

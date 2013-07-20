@@ -5,6 +5,7 @@ class avemap extends CI_Controller
 	{
 		$this->redirectLogin();
 		$this->load->model('Remap_model');
+		$this->load->library('table');
 
 		$data['title'] = 'View map';
 		//scripts if none keep ''
@@ -42,7 +43,16 @@ class avemap extends CI_Controller
 				$data['datePrev2B']=(date("Y")-2).'-05-01';
 				$data['datePrev2E']=(date("Y")-2).'-10-31';
 			}
-
+			$barangays[]=array(
+					'SAN AGUSTIN III',
+					'SAMPAOC I'
+			);
+			$data['barangay']=array(
+					'SAN AGUSTIN III',
+					'SAMPAOC I'
+			);
+			//$data['barangay']=null;
+			
 			/*
 			print_r($data['datePresB'].":");
 			print_r($data['datePresE']."________");
