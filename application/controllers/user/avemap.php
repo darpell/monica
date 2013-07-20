@@ -43,10 +43,7 @@ class avemap extends CI_Controller
 				$data['datePrev2B']=(date("Y")-2).'-05-01';
 				$data['datePrev2E']=(date("Y")-2).'-10-31';
 			}
-			$barangays[]=array(
-					'SAN AGUSTIN III',
-					'SAMPAOC I'
-			);
+			
 			$data['barangay']=array(
 					'SAN AGUSTIN III',
 					'SAMPAOC I'

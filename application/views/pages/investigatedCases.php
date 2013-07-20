@@ -8,6 +8,13 @@
 var infoWindow = new google.maps.InfoWindow();
 infoWindow.setOptions({maxWidth:400});
 
+function setInfo(fMarker,fInfo,fMap) {
+	google.maps.event.addListener(fMarker, 'click', function() {
+		infoWindow.setOptions({content:fInfo});
+		infoWindow.open(fMap, this);
+	});
+}
+
 function load() {
 	//alert("Present: "+document.getElementById("presRemvd").value+" remvd "+document.getElementById("present_length").value+" remain");
 	var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
@@ -24,13 +31,35 @@ function load() {
 	{//alert("0");
 		for (var pt_ctr = 0; pt_ctr < document.getElementById("ic_length").value; pt_ctr++) 
 		{	
-			new google.maps.Marker({
+			caseMarker=new google.maps.Marker({
 				  position: new google.maps.LatLng(
 							document.getElementById("ic_lat" + pt_ctr).value,
 							document.getElementById("ic_lng" + pt_ctr).value
 							),
 				  map: map
 				});
+			var s="Female";
+			var o="Unconfirmed";
+			if((""+document.getElementById("ic_sex" + pt_ctr).value)=="M")
+			{
+				s="Male";
+			}
+			if((""+document.getElementById("ic_sex" + pt_ctr).value)=="A")
+			{
+				o="Alive";
+			}
+			else if ((""+document.getElementById("ic_sex" + pt_ctr).value)=="D")
+			{
+				o="Deceased";
+			}
+			info="<b>"+document.getElementById("ic_lname" + pt_ctr).value+", "+document.getElementById("ic_fname" + pt_ctr).value+"</b>"+"<br/>"
+			+document.getElementById("ic_barangay" + pt_ctr).value+", "+document.getElementById("ic_street" + pt_ctr).value+"<br/>"
+			+"Onset: "+document.getElementById("ic_dateOnset" + pt_ctr).value+"<br/>"
+			+"Age: "+document.getElementById("ic_age" + pt_ctr).value+"<br/>"
+			+"Gender: "+s+"<br/>"
+			+"Outcome: "+o+"<br/>"+"<br/>"
+			+"Feedback: "+document.getElementById("ic_outcome" + pt_ctr).value+"<br/>";
+			setInfo(caseMarker,info,map);
 		}
 	}
 	/** end of sample data**/
@@ -57,7 +86,10 @@ jQuery(document).ready(function(){
 		<input type="hidden" id="ic_lname<?= $ctr ?>" 		value="<?php echo $value['ic_lname']; ?>"	/>
 		<input type="hidden" id="ic_dateOnset<?= $ctr ?>" 		value="<?php echo $value['ic_dateOnset']; ?>"	/>
 		<input type="hidden" id="ic_age<?= $ctr ?>" 		value="<?php echo $value['ic_age']; ?>"	/>
+		<input type="hidden" id="ic_sex<?= $ctr ?>" 		value="<?php echo $value['ic_sex']; ?>"	/>
 		<input type="hidden" id="ic_barangay<?= $ctr ?>" 		value="<?php echo $value['ic_barangay']; ?>"	/>
+		<input type="hidden" id="ic_street<?= $ctr ?>" 		value="<?php echo $value['ic_street']; ?>"	/>
+		<input type="hidden" id="ic_outcome<?= $ctr ?>" 		value="<?php echo $value['ic_outcome']; ?>"	/>
 	<?php $ctr++;}?> 
 	<?php } else { ?> <input type="hidden" id="ic_length" value="0" /> <?php } ?>
 	

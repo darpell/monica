@@ -394,20 +394,20 @@ class Remap_model extends CI_Model
 	function investigated_cases($data)
 	{
 		$this->db->from('investigated_cases');
-		$this->db->join('case_report_main','investigated_cases.case_no = case_report_main.cr_no');
+		$this->db->join('case_report_main','investigated_cases.case_no = case_report_main.cr_patient_no');
 		$where="";
 		if($data['barangay']===null)
 		{
-			$where="cr_date_onset BETWEEN ".$data['dateSel1']." AND ".$data['dateSel2'];
+			$where="cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."'";
 		}
 		else
 		{
-			$where="cr_date_onset BETWEEN ".$data['dateSel1']." AND ".$data['dateSel2']." AND (";
+			$where="cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."' AND (";
 			foreach ($data['barangay'] as $value)
 			{
-				$where.="cr_barangay=".$value." OR";
+				$where.="cr_barangay='".$value."' OR ";
 			}
-			$where=substr($where, 0, -2).")";
+			$where=substr($where, 0, -4).")";
 		}
 		$this->db->where($where);
 		$q = $this->db->get();
@@ -426,7 +426,10 @@ class Remap_model extends CI_Model
 						'ic_lname'=> $row->cr_last_name,
 						'ic_dateOnset'=> $row->cr_date_onset,
 						'ic_age'=> $row->cr_age,
-						'ic_barangay'=> $row->cr_barangay
+						'ic_sex'=> $row->cr_sex,
+						'ic_barangay'=> $row->cr_barangay,
+						'ic_street'=> $row->cr_street,
+						'ic_outcome'=> $row->cr_outcome,
 				);
 			}
 			$dataReturn['data_exists']=true;

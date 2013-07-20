@@ -18,7 +18,11 @@ class investigatedcases extends CI_Controller
 			
 			$data['dateSel1']='2000-01-01';
 			$data['dateSel2']='2100-01-01';
-			$data['barangay']=null;//set to null to display all barangays.
+			$data['barangay']=array(
+					'LANGKAAN II',
+					'SAMPALOC I'
+			);
+			//$data['barangay']=null;//set to null to display all barangays.
 			$this->load->view('pages/investigatedCases',$this->Remap_model->investigated_cases($data));
 		}
 		else
