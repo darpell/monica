@@ -51,9 +51,16 @@ class Investigate_cases_model extends CI_Model
 		*/
 	}
 	
-	function plot_case($patient_no)
+	function plot_case()
 	{
-		//TODO
+		$data = array(
+			'case_no'	=>	$this->input->post('patient_no'),
+			'lat' 		=>	$this->input->post('lat'),
+			'lng' 		=>	$this->input->post('lng'),
+			'feedback'	=>	$this->input->post('TPremarks-txt_r')
+		);
+		
+		return $this->db->insert('investigated_cases', $data);
 	}
 }
 

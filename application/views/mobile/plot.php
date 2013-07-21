@@ -213,92 +213,16 @@ function initialize(){
 	    		<ul data-role="listview" data-inset="true" data-theme="d" data-divider-theme="d">
 						<li data-role="list-divider"> Plot investigated case </li>
 						<li><a href="uninvestigated_cases">
-							<h3>Stephen Weber</h3>
-							<p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-							<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-							<p class="ui-li-aside"><strong>6:24</strong>PM</p>
+							<h3>Case List</h3>
+							<p><strong>Please click this link to see a list of uninvestigated cases.</strong></p>
 						</a></li>
 	    		</ul>
 	    		
-	    		<form id="" action="case_add" method="post" data-ajax="false">
-	    		
 				<ul data-role="listview" data-inset="true" data-divider-theme="d">
-						<li data-role="list-divider"> Single Case Entry </li>
-	    		<li data-role="fieldcontain">
-				<!-- date -->
-				<label for="TPdate-txt"> <h3>Date:</h3> </label>
-					<label style="color:red"><?php echo form_error('TPdate-txt_r'); ?></label>
-					<input type="date" name="TPdate-txt_r" id="TPdate-txt" value="<?php echo date("Y-m-d"); ?>" data-mini="true" readonly />
-					<!-- /date -->
-				</li>
-				
-				<li data-role="fieldcontain">
-				<!-- fname -->
-				<label for="TPfname-txt"> First Name: </label>
-					<label style="color:red"><?php echo form_error('TPfname-txt_r'); ?></label>
-					<input type="text" name="TPfname-txt_r" id="TPfname-txt" value="<?php echo set_value('TPfname-txt_r'); ?>" data-mini="true" />
-					<!-- /fname -->
-				</li>
-				
-				<li data-role="fieldcontain">
-				<!-- lname -->
-				<label for="TPlname-txt"> Last Name: </label>
-					<label style="color:red"><?php echo form_error('TPlname-txt_r'); ?></label>
-					<input type="text" name="TPlname-txt_r" id="TPlname-txt" value="<?php echo set_value('TPlname-txt_r'); ?>" data-mini="true" />
-					<!-- /lname -->
-				</li>
-				
-				<li data-role="fieldcontain">
-				<!-- age -->
-				<label for="TPage-txt"> Age: </label>
-					<label style="color:red"><?php echo form_error('TPage-txt_r'); ?></label>
-					<input type="text" name="TPage-txt_r" id="TPage-txt" value="<?php echo set_value('TPage-txt_r'); ?>" data-mini="true" />
-					<!-- /age -->
-				</li>
-				
-				<li data-role="fieldcontain">
-				<!-- sex -->
-				<label> Gender: </label>
-				<fieldset data-role="controlgroup" data-mini="true" data-type="horizontal">
-						<label style="color:red"><?php echo form_error('TPsex-txt_r'); ?></label>
-				    	<input type="radio" name="TPsex-txt_r" id="TPsex-txt-1" value="0" checked="checked" />
-				    	<label for="TPsex-txt-1">Male</label>
-				
-						<input type="radio" name="TPsex-txt_r" id="TPsex-txt-2" value="1"  />
-				    	<label for="TPsex-txt-2">Female</label>
-					</fieldset>
-					<!-- /sex -->
-				</li>
-				
-				<li data-role="fieldcontain">
-				<!-- date of birth -->
-				<label for="TPdob-txt"> Date of Birth: </label>
-					<label style="color:red"><?php echo form_error('TPdob-txt_r'); ?></label>
-					<input name="TPdob-txt_r" id="TPdob-txt" type="date" value="<?php echo set_value('TPdob-txt_r'); ?>" data-mini="true" data-role="datebox" data-options='{"mode":"flipbox", "beforeToday": true, "calShowWeek": true, "calUsePickers": true, "calNoHeader": true, "noButtonFocusMode": true, "useNewStyle":true}' />    
-					<!-- /date of birth -->
-				</li>
-				
-				<li data-role="fieldcontain">
-				<!-- address -->
-				<label for="TPaddress-txt"> Address: </label>
-					<label style="color:red"><?php echo form_error('TPaddress-txt_r'); ?></label>
-					<input type="text" name="TPaddress-txt_r" id="TPaddress-txt" value="<?php echo set_value('TPaddress-txt_r'); ?>" data-mini="true" />
-					<!-- /address -->
-				</li>
-				
-				<li data-role="fieldcontain">
-				<!-- remarks -->
-				<label for="TPremarks-txt"> Remarks: (e.g. symptoms like high fever, etc.)</label>
-					<label style="color:red"><?php echo form_error('TPremarks-txt_r'); ?></label>
-					<textarea  name="TPremarks-txt_r" id="TPremarks-txt" placeholder="<?php echo set_value('TPremarks-txt_r'); ?>" data-mini="true"> </textarea>
-				<!-- /remarks -->
-				</li>
-				
-				<li data-role="fieldcontain">
-					<input type="submit" value="Submit" />
-				</li>
+						<li data-role="list-divider"> Case Entry </li>
+	    			<li> Please use the PIDSR Form and re-enter it in a designated terminal at the center </li>
 				</ul>
-			</form>
+			
 	    	</div>
 	    	<!-- /end Single Case Report/Investigation -->
     	</div>

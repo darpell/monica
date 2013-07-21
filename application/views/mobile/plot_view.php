@@ -69,6 +69,8 @@ function initialize(){
         <a href="<?php echo site_url('mobile/page/uninvestigated_cases');?>" data-ajax="false" data-icon="arrow-l"> Back </a>
 	</div><!-- /header -->
 	<div data-role="content">
+	
+		<div id="test"></div>
 		<form id="" action="add" method="post" data-ajax="false">
 		
 		<!-- patient_no -->
@@ -82,16 +84,18 @@ function initialize(){
 		
 		<ul data-role="listview" data-inset="true">
 			<li>
-				<?php echo $case_details['cr_first_name'] . ' ' . $case_details['cr_last_name']; ?>, 
 				<?php 
 					$outcome = $case_details['cr_outcome'];
 					if ($outcome == 'A')
-						echo 'Alive';
+						echo '<label style="color:green;font-size:17px;"><strong> Alive </strong></label>';
 					else if ($outcome == 'D')
-						echo 'Died';
+						echo '<label style="color:red;font-size:17px;"><strong> Died </strong></label>';
 					else if ($outcome == 'U')
 						echo 'Unknown';
 				?>
+			</li>
+			<li>
+				<?php echo $case_details['cr_first_name'] . ' ' . $case_details['cr_last_name']; ?>
 			</li>
 			<li>
 				<?php echo $case_details['cr_age']; ?>, <?php $sex = ($case_details['cr_sex'] = 'F') ? 'Female' : 'Male'; echo $sex; ?>

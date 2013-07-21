@@ -32,19 +32,13 @@ class Investigate_cases extends CI_Controller
 	
 	function add()
 	{
-		//TODO
-		
-		/*
-			$input_data = array(
-					'lat'		=>	$this->input->post(''),
-					'lng'		=>	$this->input->post(''),
-					'feedback'	=>	$this->input->post('TPremarks-txt_r')
-				);
-				
-			//$this->im_case->add($input_data);
+		if ($this->ic->plot_case())
+		{
 			$data['result'] = 'Your entry has been recorded';
 			$this->load->view('mobile/im_case_success',$data);
-		*/
+		}
+		else
+			show_404();
 	}
 }
 
