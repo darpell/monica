@@ -54,6 +54,7 @@ class Cho extends CI_Controller
 	function view_dengue_profile()
 	{	$this->redirectLogin();
 	$this->load->model('Cho_model');
+	$this->load->model('Remap_model');
 	$this->load->library('table');
 	
 	$this->form_validation->set_rules('TPdatefrom-txt', 'Date from', 'required');
@@ -71,12 +72,18 @@ class Cho extends CI_Controller
 	}
 	else 
 	{	
+		$data['error']='';
 		$dateto= explode ('/', $this->input->post('TPdateto-txt'));
 		$datefrom= explode ('/', $this->input->post('TPdatefrom-txt'));
 		$data['dateto'] =  $dateto[2].'/'.$dateto[0].'/'.$dateto[1];
 		$data['datefrom'] =  $datefrom[2].'/'.$datefrom[0].'/'.$datefrom[1];
 		$data['barangay'] = $this->input->post('barangay');
+		
+		$data['dateSel1']=$data['datefrom'];
+		$data['dateSel2']=$data['dateto'];
+		$data['mapvalues'] = $this->Remap_model->investigated_cases($data);
 
+		
 		$data2 = $this->Cho_model->get_dengue_profile($data);
 		if($data2 != null){
 		$data['total'] = $data2['total'];
@@ -163,8 +170,13 @@ class Cho extends CI_Controller
 		$test = explode('##' , $test[0]);
 		$test = explode('@@' , $test[1]);
 		$test = explode('&&' , $test[0]);
-		$data['error']= null;
-		print_r($test);
+		
+
+		
+		
+		
+		
+		
 		}
 		else
 		{
@@ -175,10 +187,9 @@ class Cho extends CI_Controller
 			$data['barangay_form']  = $this->Cho_model->getAllBarangays();
 			array_shift($data['barangay_form']);
 		}
-		$this->load->view('pages/view_dengue_profile.php' , $data);
-		
-		
 	
+		$this->load->view('pages/view_dengue_profile.php' , $data);
+
 	}
 
 	}

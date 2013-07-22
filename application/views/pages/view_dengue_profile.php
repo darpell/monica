@@ -3,7 +3,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
+    
       function drawChart() {
 
 
@@ -124,7 +124,6 @@
   		
 
        var data = google.visualization.arrayToDataTable(data2[1],false);
-		alert(data2[0]);
 		var options = {
         title : 'Dengue Cases Of ' + data2[0] + ' Arranged By Age Group and Year',
         vAxis: {title: "Cases"},
@@ -143,6 +142,136 @@
       }
     </script>
     
+    
+    
+ 
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>    
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
+<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script>
+var infoWindow = new google.maps.InfoWindow();
+infoWindow.setOptions({maxWidth:400});
+
+function setInfo(fMarker,fInfo,fMap) {
+	google.maps.event.addListener(fMarker, 'click', function() {
+		infoWindow.setOptions({content:fInfo});
+		infoWindow.open(fMap, this);
+	});
+}
+
+function load() {
+	//alert("Present: "+document.getElementById("presRemvd").value+" remvd "+document.getElementById("present_length").value+" remain");
+	var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
+	var map;
+	var mapProp = {
+		center: dasma,
+		zoom: 12,
+		mapTypeId: google.maps.MapTypeId.TERRAIN
+	};
+	map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+	google.maps.event.trigger(map, 'resize');
+	/** Sample Larval Data used as case data **/
+	if (document.getElementById("ic_length").value != 0)
+	{//alert("0");
+		for (var pt_ctr = 0; pt_ctr < document.getElementById("ic_length").value; pt_ctr++) 
+		{	
+			caseMarker=new google.maps.Marker({
+				  position: new google.maps.LatLng(
+							document.getElementById("ic_lat" + pt_ctr).value,
+							document.getElementById("ic_lng" + pt_ctr).value
+							),
+				  map: map
+				});
+			var s="Female";
+			var o="Unconfirmed";
+			if((""+document.getElementById("ic_sex" + pt_ctr).value)=="M")
+			{
+				s="Male";
+			}
+			if((""+document.getElementById("ic_sex" + pt_ctr).value)=="A")
+			{
+				o="Alive";
+			}
+			else if ((""+document.getElementById("ic_sex" + pt_ctr).value)=="D")
+			{
+				o="Deceased";
+			}
+			info="<b>"+document.getElementById("ic_lname" + pt_ctr).value+", "+document.getElementById("ic_fname" + pt_ctr).value+"</b>"+"<br/>"
+			+document.getElementById("ic_barangay" + pt_ctr).value+", "+document.getElementById("ic_street" + pt_ctr).value+"<br/>"
+			+"Onset: "+document.getElementById("ic_dateOnset" + pt_ctr).value+"<br/>"
+			+"Age: "+document.getElementById("ic_age" + pt_ctr).value+"<br/>"
+			+"Gender: "+s+"<br/>"
+			+"Outcome: "+o+"<br/>"+"<br/>"
+			+"Feedback: "+document.getElementById("ic_outcome" + pt_ctr).value+"<br/>";
+			setInfo(caseMarker,info,map);
+		}
+	}
+	/** end of sample data**/
+}
+  function doNothing() {}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	  
+	});
+</script>
+
+
+
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
+<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+<script src="<?= base_url('scripts/OverlappingMarkerSpiderfier.js') ?>"></script>
+
+<link rel="stylesheet" href="<?php echo base_url('scripts/jQRangeSLider-5.1.1/css/iThing.css')?>"/>
+<link rel="stylesheet" href="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/lib/jquery-ui/css/smoothness/jquery-ui-1.8.10.custom.css')?>"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/lib/jquery-ui/js/jquery-ui-1.8.16.custom.min.js')?>"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/lib/jquery.mousewheel.min.js')?>"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/jQDateRangeSlider-min.js')?>"></script>
+
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/dateSliderDemo.js')?>"></script>
+
+<script>
+	$(function() {
+		drawChart();
+		load();
+		var tabs = $( "#tabs" ).tabs();
+		tabs.find( ".ui-tabs-nav" ).sortable({
+				axis: "x",
+				stop: function() {
+				tabs.tabs( "refresh" );
+			}
+		});
+	});
+</script>
+s
+<?php if($values_age != null) {?>
+<?php if ($mapvalues['data_exists'] === true){$ctr=0;?>
+<input type="hidden" id="ic_length" value="<?php echo count($mapvalues['dataCases']); ?>" />
+	<?php foreach ($mapvalues['dataCases'] as $value) {?>
+		<input type="hidden" id="ic_lat<?= $ctr ?>" 		value="<?php echo $value['ic_lat']; ?>"	/>
+		<input type="hidden" id="ic_lng<?= $ctr ?>" 		value="<?php echo $value['ic_lng']; ?>"	/>
+		<input type="hidden" id="ic_feedback<?= $ctr ?>" 		value="<?php echo $value['ic_feedback']; ?>"	/>
+		<input type="hidden" id="ic_fname<?= $ctr ?>" 		value="<?php echo $value['ic_fname']; ?>"	/>
+		<input type="hidden" id="ic_lname<?= $ctr ?>" 		value="<?php echo $value['ic_lname']; ?>"	/>
+		<input type="hidden" id="ic_dateOnset<?= $ctr ?>" 		value="<?php echo $value['ic_dateOnset']; ?>"	/>
+		<input type="hidden" id="ic_age<?= $ctr ?>" 		value="<?php echo $value['ic_age']; ?>"	/>
+		<input type="hidden" id="ic_sex<?= $ctr ?>" 		value="<?php echo $value['ic_sex']; ?>"	/>
+		<input type="hidden" id="ic_barangay<?= $ctr ?>" 		value="<?php echo $value['ic_barangay']; ?>"	/>
+		<input type="hidden" id="ic_street<?= $ctr ?>" 		value="<?php echo $value['ic_street']; ?>"	/>
+		<input type="hidden" id="ic_outcome<?= $ctr ?>" 		value="<?php echo $value['ic_outcome']; ?>"	/>
+	<?php $ctr++;}?> 
+	<?php } else { ?> <input type="hidden" id="ic_length" value="0" /> <?php } }?>
+
+
+<body onload="load()">    
 <!-- CONTENT -->
 <div class="body">
 <center><h1>Dengue Profile</h1></center>
@@ -193,57 +322,101 @@ echo form_open('CHO/view_dengue_profile',$attributes); ?>
 </div>
 <?php if($values_age != null) {?>
 
-<div id="chart_div" style="height: 500px;"></div>
-<div id="chart_div2" style="height: 520px;"></div>
-<div>
-<?php 
-foreach ($barangay as $y)
-{
-	echo '<center><h3>'. $y .'</h3></center>';
-	echo '<div id="' . $y .'" style="height: 500px;"></div>';
-}
-
-?>
-</div>
-<center>
-<h3>Distribution of Cases by year, gender and age group</h2>
-<table  border="1" cellpadding="5" cellspacing="0">
-	<tr>
-		<td>&nbsp;</td>
-		<?php 
-			foreach ($year as $y)
-			{
-				echo '<td align="center" colspan="2">'.$y.'</td>';
-			}
-			foreach ($barangay as $y)
-			{	echo '<tr>';
-				echo '<td align="center">'.$y.'</td>';
-				foreach ($year as $s)
-				{
-					echo '<td align="center">'.'M'.'</td>';
-					echo '<td align="center">'.'F'.'</td>';
-				}
-				echo '</tr>';
-					for ($i = 0; $i <=4; $i++)
+<!-- Sidebar -->
+	<div id="sidebar">
+		<div id="sidebar-higher"></div>
+		<div id="sidebar-lower">
+			<div id="tabs">
+				<ul>
+					<li><a href="#tab_summary"> Cases Per Year </a></li>
+					<li><a href="#tab_larva"> Cases By Gender </a></li>
+					<?php 
+					foreach ($barangay as $y)
 					{
-						echo '<tr>';
-						if($i <4 ){echo '<td align="center">'. ($i * 10)."-".(($i *10)+10).'</td>';}
-						else{echo '<td align="center">'. '>40' .'</td>';}
-						foreach ($year as $s)
-						{
-							echo '<td align="center">'.$values[$s][$y]['M'][$i] .'</td>';
-							echo '<td align="center">'.$values[$s][$y]['F'][$i] .'</td>';
-						}
+						$string = str_replace(' ', '', $y);
 						
-						echo '</tr>';
+						echo '<li><a href="#tab_' . $string .'">'.$y.'</a></li>';
 					}
-			}
-		?>
-	</tr>
-</table>
-</center>
+					
+					?>
+					<li><a href="#tab_table"> Table of Cases</a></li>
+				</ul>
 
+				<div id="tab_summary" >
+						<div id="chart_div" style="height: 500px"></div>
+				</div>
 
+				<div id="tab_larva" >
+						<div id="chart_div2" style="height: 500px"></div>
+				</div>
+				
+				
+				<?php 
+				foreach ($barangay as $y)
+				{
+					
+					$string = str_replace(' ', '', $y);
+					echo '<div id="tab_'. $string .'">';
+					echo '<div id="' . $y .'" style="height: 500px;"></div>';
+					echo '</div>';
+				}
+				
+				?>
+				
+				
+				
+				
+				
+				<div id ="tab_table">
+						<center>
+						<h3>Distribution of Cases by year, gender and age group</h2>
+						<table  border="1" cellpadding="5" cellspacing="0">
+							<tr>
+								<td>&nbsp;</td>
+								<?php 
+									foreach ($year as $y)
+									{
+										echo '<td align="center" colspan="2">'.$y.'</td>';
+									}
+									foreach ($barangay as $y)
+									{	echo '<tr>';
+										echo '<td align="center">'.$y.'</td>';
+										foreach ($year as $s)
+										{
+											echo '<td align="center">'.'M'.'</td>';
+											echo '<td align="center">'.'F'.'</td>';
+										}
+										echo '</tr>';
+											for ($i = 0; $i <=4; $i++)
+											{
+												echo '<tr>';
+												if($i <4 ){echo '<td align="center">'. ($i * 10)."-".(($i *10)+10).'</td>';}
+												else{echo '<td align="center">'. '>40' .'</td>';}
+												foreach ($year as $s)
+												{
+													echo '<td align="center">'.$values[$s][$y]['M'][$i] .'</td>';
+													echo '<td align="center">'.$values[$s][$y]['F'][$i] .'</td>';
+												}
+												
+												echo '</tr>';
+											}
+									}
+								?>
+							</tr>
+						</table>
+						</center>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end Sidebar -->
+
+				
+					<center>
+					<h3>Map of Dengue Cases</h3>
+					<div id="googleMap" style="width: 900px; height: 600px"></div>
+					</center>
+		
 
 
 
@@ -253,5 +426,7 @@ foreach ($barangay as $y)
 <input type="hidden" name="barangay_list" id="barangay_list" value="<?php echo $barangay_list; ?>" />
 <input type="hidden" name="year_list" id="year_list" value="<?php echo $year_list; ?>" />
 <?php } ?>
+
+</body>
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>
