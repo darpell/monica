@@ -15,8 +15,8 @@
     		<li> Username: <?php echo $this->session->userdata('TPusername'); ?> </li>
     		<li> Type: <?php echo $this->session->userdata('TPtype'); ?> </li>
     		<li> Name: <?php echo $this->session->userdata('TPfirstname'); ?> <?php echo $this->session->userdata('TPlastname'); ?> </li>
-    		<li> Last Visited Barangay: <?php echo $last_visit['ls_barangay']; ?> </li>
-    		<li> Last Visited on: <?php echo $last_visit['ls_date']; ?> </li>
+    		<!-- <li> Last Visited Barangay: <?php //echo $last_visit['ls_barangay']; ?> </li> -->
+    		<!-- <li> Last Visited on: <?php //echo $last_visit['ls_date']; ?> </li> -->
     	</ul>
 	<!-- 
     	<ul data-role="listview" data-autodividers="true" data-inset="true" data-count-theme="b">

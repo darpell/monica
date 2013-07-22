@@ -82,14 +82,28 @@ class Suggest_model extends CI_Model
 		return $query->result_array();
 		$query->free_result();
 		*/
-		if ($begin_date === FALSE && $end_date === FALSE)
+		/*if ($begin_date === FALSE && $end_date === FALSE)
 		{
 			return $this->db->query(
 					"SELECT cr_first_name, cr_last_name, cr_sex, cr_age, cr_date_admitted, cr_date_onset, cr_street, cr_barangay, cr_city, cr_province
 					FROM case_report_main
 					WHERE cr_barangay = '" . $brgy . "'"
 			);
-		}
+		}*/
+		
+		$query = $this->db->query("SELECT cr.cr_first_name, cr.cr_last_name, cr.cr_sex, cr.cr_age, cr.cr_street, cr.cr_barangay
+									FROM case_report_main cr
+									WHERE cr.cr_barangay = '" . $brgy . "' AND 
+									cr_date_onset BETWEEN '" . $begin_date . "' AND '" . $end_date . "'
+									AND
+										cr.cr_patient_no NOT IN
+											(SELECT ic.case_no
+											FROM investigated_cases ic)"
+		);
+
+			return $query->result_array();
+			$query->free_result();
+		
 		
 	}
 	

@@ -65,7 +65,6 @@ jQuery(document).ready(function(){
 <input type = 'hidden' id ='oldDataExists' name='oldDataExists' value='<?php echo $oldDataExists?>'>
 <input type = 'hidden' id ='olderDataExists' name='olderDataExists' value='<?php echo $olderDataExists?>'>
 </form>
-<?php echo $this->table->generate($tableData);?>
 <?php if ($presentDataExists === true){$ctr=0;?>
 <input type="hidden" id="present_length" value="<?php echo count($presentData); ?>" />
 	<?php foreach ($presentData as $value) {?>
@@ -79,7 +78,8 @@ jQuery(document).ready(function(){
 	<?php $ctr++;}?> 
 	<?php } else { ?> <input type="hidden" id="present_length" value="0" /> <?php } ?>
 
-<?php if ($oldDataExists === true){$ctr=0;?>
+<?php if ($oldDataExists === true){$ctr=0;
+		echo "There are ".count($oldData)." areas that have consistent repeating larval samplings for this season over the past 2 years.<br/>These areas are: <br/>";?>
 <input type="hidden" id="old_length" value="<?php echo count($oldData); ?>" />
 	<?php foreach ($oldData as $value) {?>
 		<input type="hidden" id="lsOld_lat<?= $ctr ?>" 		value="<?php echo $value['ls_lat']; ?>"	/>
@@ -89,9 +89,8 @@ jQuery(document).ready(function(){
 		<input type="hidden" id="lsOld_container<?= $ctr ?>" 		value="<?php echo $value['ls_container']; ?>"	/>
 		<input type="hidden" id="lsOld_date<?= $ctr ?>" 		value="<?php echo $value['ls_date']; ?>"	/>
 		<input type="hidden" id="lsOld_createdby<?= $ctr ?>" 		value="<?php echo $value['created_by']; ?>"	/>
-	<?php $ctr++;}?>
+	<?php echo $value['ls_household']." household, at ".$value['ls_street']." Street.<br/>"; $ctr++;}?>
 	<?php } else { ?> <input type="hidden" id="old_length" value="0" /> <?php } ?>
-	
 <body onload="load()">
 <div id="googleMap" style="width: 900px; height: 600px"></div>
 
