@@ -26,7 +26,7 @@ function initialize(){
           if (status == google.maps.GeocoderStatus.OK) {
             if (results[0]) {
               	//alert(results[0].formatted_address);
-				document.getElementById("test").innerHTML = results[0].formatted_address;
+				//document.getElementById("test").innerHTML = results[0].formatted_address;
 				document.getElementById("lat").value = lat;
 				document.getElementById("lng").value = lng;				
             } else {
@@ -69,8 +69,6 @@ function initialize(){
         <a href="<?php echo site_url('mobile/page/uninvestigated_cases');?>" data-ajax="false" data-icon="arrow-l"> Back </a>
 	</div><!-- /header -->
 	<div data-role="content">
-	
-		<div id="test"></div>
 		<form id="" action="add" method="post" data-ajax="false">
 		
 		<!-- patient_no -->
@@ -96,6 +94,9 @@ function initialize(){
 			</li>
 			<li>
 				<?php echo $case_details['cr_first_name'] . ' ' . $case_details['cr_last_name']; ?>
+			</li>
+			<li>
+				<?php echo $case_details['cr_street'] . ', ' . $case_details['cr_barangay'];?>
 			</li>
 			<li>
 				<?php echo $case_details['cr_age']; ?>, <?php $sex = ($case_details['cr_sex'] = 'F') ? 'Female' : 'Male'; echo $sex; ?>
