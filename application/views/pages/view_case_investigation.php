@@ -11,7 +11,7 @@
 $attributes = array(
 						'id' => 'TPcr-form'
 					);
-echo form_open('CHO/view_dengue_profile',$attributes); ?>
+echo form_open('investigatedcases/view_case_investigation',$attributes); ?>
   <tr>
     <td>Barangay:</td>
     <?php foreach ($barangay_form as $row) {
@@ -45,6 +45,38 @@ echo form_open('CHO/view_dengue_profile',$attributes); ?>
 <p />
 
 
+<?php if($values != null) {?>
+<center>
+
+<?php 
+
+$tmpl = array (
+                    'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" style="width: 80%;">',
+
+                    'heading_row_start'   => '<tr>',
+                    'heading_row_end'     => '</tr>',
+                    'heading_cell_start'  => '<th id="result" scope="col">',
+                    'heading_cell_end'    => '</th>',
+
+                    'row_start'           => '<tr>',
+                    'row_end'             => '</tr>',
+                    'cell_start'          => '<td align="center">',
+                    'cell_end'            => '</td>',
+
+                    'row_alt_start'       => '<tr style="background-color: #e3e3e3">',
+                    'row_alt_end'         => '</tr>',
+                    'cell_alt_start'      => '<td align="center">',
+                    'cell_alt_end'        => '</td>',
+
+                    'table_close'         => '</table>'
+              );
+
+$this->table->set_template($tmpl);
+
+echo $this->table->generate($values); 
+?>
+</center>
+<?php } ?>
 
 
 </div>

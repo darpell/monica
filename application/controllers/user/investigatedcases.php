@@ -60,11 +60,36 @@ class investigatedcases extends CI_Controller
 	
 		$data['title'] = 'View Pending Tasks';
 		$data['script'] = 'view_casereport';
-		$data['values_age']= null;
+		$data['values']= null;
 		$data['error']= null;
 		$data['barangay_form']  = $this->Cho_model->getAllBarangays();
 		array_shift($data['barangay_form']);
+	}
+	
+	else
+	{
+		$data['error']='';
+		$dateto= explode ('/', $this->input->post('TPdateto-txt'));
+		$datefrom= explode ('/', $this->input->post('TPdatefrom-txt'));
+		$data['dateto'] =  $dateto[2].'/'.$dateto[0].'/'.$dateto[1];
+		$data['datefrom'] =  $datefrom[2].'/'.$datefrom[0].'/'.$datefrom[1];
+		$data['barangay'] = $this->input->post('barangay');
+		$data['values'] = $this->Cho_model->get_investigated_cases($data);
+		$data['title'] = 'View Investigated Cases';
+		$data['script'] = 'view_casereport';
+		$data['barangay_form']  = $this->Cho_model->getAllBarangays();
+		array_shift($data['barangay_form']);
+		if($data['values'] != null)
+		{
+			$data['error']=null;
+		}
+		else 
+			{
+				$data['error']= "There are case investigation found between " . $this->input->post('TPdatefrom-txt') . ' and ' . $this->input->post('TPdateto-txt') ;
+			}
+		}
 		$this->load->view('pages/view_case_investigation.php' , $data);
+	
 	}
-	}
+	
 }

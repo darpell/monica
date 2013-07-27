@@ -79,10 +79,24 @@ class Cho extends CI_Controller
 		$data['datefrom'] =  $datefrom[2].'/'.$datefrom[0].'/'.$datefrom[1];
 		$data['barangay'] = $this->input->post('barangay');
 		
+		
+		
 		$data['dateSel1']=$data['datefrom'];
 		$data['dateSel2']=$data['dateto'];
 		$data['mapvalues'] = $this->Remap_model->investigated_cases($data);
-
+		
+		$data['total_text'] = 0;
+		$data['date_to_text'] = $this->input->post('TPdateto-txt');
+		$data['date_from_text'] = $this->input->post('TPdatefrom-txt');
+		$data['f_text'] = 0;
+		$data['m_text'] = 0;
+		$data['agegroup_text'][0] = 0;
+		$data['agegroup_text'][1] = 0;
+		$data['agegroup_text'][2] = 0;
+		$data['agegroup_text'][3] = 0;
+		$data['agegroup_text'][4] = 0;
+		$data['yeartotal_text'] = array();
+		$data['bartotal_text'] = array();
 		
 		$data2 = $this->Cho_model->get_dengue_profile($data);
 		if($data2 != null){
@@ -106,6 +120,7 @@ class Cho extends CI_Controller
 			$data['values_total'] .= $year . '&&';
 			$data['values_gender'] .= 'M '.$year . '&&';
 			$data['values_gender'] .= 'F '.$year . '&&';
+			$data['yeartotal_text'][$year]=0;
 		}
 		$data['values_total'] .=  "%%";
 		$data['values_gender'] .=  "%%";
@@ -115,6 +130,7 @@ class Cho extends CI_Controller
 			$data['values_gender'] .= $barangay . "&&";
 			$data['values_age'] .= $barangay . "##";
 			$data['barangay_list'] .= $barangay . "&&";
+			$data['bartotal_text'][$barangay] = 0;
 			
 			
 			$data['values_age'] .='Age group'. '&&';
@@ -133,8 +149,12 @@ class Cho extends CI_Controller
 				
 				foreach ($data2['year'] as $year)
 				{
+					$data['f_text'] +=   $data2['values'][$year][$barangay]['F'][$s];
+					$data['m_text'] +=   $data2['values'][$year][$barangay]['M'][$s];
 					$sum = $data2['values'][$year][$barangay]['M'][$s] + $data2['values'][$year][$barangay]['F'][$s];
 					$data['values_age'] .= $sum.'&&';
+					
+				
 				}
 				$data['values_age'] .=  "@@";
 			}
@@ -147,6 +167,7 @@ class Cho extends CI_Controller
 				$data2['total'][$year][$barangay] . "&&" ;
 				$data['year_list'] .= $year . "&&";
 				
+				$data['total_text'] += $data2['total'][$year][$barangay];
 				
 				$male = $data2['values'][$year][$barangay]['M'][0] +
 						$data2['values'][$year][$barangay]['M'][1] +
@@ -161,20 +182,30 @@ class Cho extends CI_Controller
 						$data2['values'][$year][$barangay]['F'][3] +
 						$data2['values'][$year][$barangay]['F'][4];
 				$data['values_gender'] .= $female . "&&" ;
+				
+
+				$data['agegroup_text'][0] += $data2['values'][$year][$barangay]['M'][0] +  $data2['values'][$year][$barangay]['F'][0];
+				$data['agegroup_text'][1] += $data2['values'][$year][$barangay]['M'][1] + $data2['values'][$year][$barangay]['F'][1];
+				$data['agegroup_text'][2] += $data2['values'][$year][$barangay]['M'][2] + $data2['values'][$year][$barangay]['F'][2];
+				$data['agegroup_text'][3] += $data2['values'][$year][$barangay]['M'][3] + $data2['values'][$year][$barangay]['F'][3];
+				$data['agegroup_text'][4] += $data2['values'][$year][$barangay]['M'][4] + $data2['values'][$year][$barangay]['F'][4];
+				
+				$data['yeartotal_text'][$year] += $male + $female ;
+				
+				$data['bartotal_text'][$barangay] += $male + $female ;
+			
+			
 			}
 			$data['values_total'] .=  "%%";
 			$data['values_gender'] .=  "%%";
 		
 		}
-		$test = explode('%%' , $data['values_age']);
-		$test = explode('##' , $test[0]);
-		$test = explode('@@' , $test[1]);
-		$test = explode('&&' , $test[0]);
 		
-
+		$data['agegroup_text2']= array_keys($data['agegroup_text'], max($data['agegroup_text']));
 		
+		$data['yeartotal_text2'] = array_keys($data['yeartotal_text'], max($data['yeartotal_text']));
 		
-		
+		$data['bartotal_text2'] = array_keys($data['bartotal_text'], max($data['bartotal_text']));
 		
 		
 		}
@@ -497,6 +528,11 @@ class Cho extends CI_Controller
 		{
 			$data['cases'] .= $epidemic['data'][1][$s] .'&&';
 		}
+		$date = date("n");
+		$x= ($data['arranged'][5][$date] / $epidemic['quartile'][$date])*100;
+		$data['percent_text']=round($x, 2);
+		$data['diff_text']= ($data['arranged'][5][$date] - $epidemic['quartile'][$date]);
+		$data['bar_text']=$data['parameter'];
 		$data['barangay'] = $this->Cho_model->getAllBarangays();
 		$this->load->library('table');
 		$this->load->view('pages/view_epidemic_threshold.php' , $data);

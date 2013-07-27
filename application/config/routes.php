@@ -74,6 +74,7 @@ $route['addmap/(:any)'] = 'user/addmap/$1';
 $route['deletemap'] = 'user/deletemap';
 $route['deletemap/(:any)'] = 'user/deletemap/$1';
 $route['investigatedcases'] = 'user/investigatedcases';
+$route['investigatedcases/(:any)'] = 'user/investigatedcases/$1';
 $route['login'] = 'user/login';
 $route['login/(:any)'] = 'user/login/$1';
 $route['larval_survey'] = 'user/lsform';

@@ -251,7 +251,7 @@ jQuery(document).ready(function(){
 		});
 	});
 </script>
-s
+
 <?php if($values_age != null) {?>
 <?php if ($mapvalues['data_exists'] === true){$ctr=0;?>
 <input type="hidden" id="ic_length" value="<?php echo count($mapvalues['dataCases']); ?>" />
@@ -276,7 +276,7 @@ s
 <div class="body">
 <center><h1>Dengue Profile</h1></center>
 		<div class="blog">
-<table    align="center" cellpadding="20">
+<table    align="center" cellpadding="5">
 <tr>
 <?php 
 $attributes = array(
@@ -320,8 +320,43 @@ echo form_open('CHO/view_dengue_profile',$attributes); ?>
 
 </div>
 </div>
-<?php if($values_age != null) {?>
+<?php if($values_age != null) { ?>
+<center>
+<table  style="width: 90%;">
+<tr><td>
+<h4>Trend</h4>
+<p>A total of <b><?php echo $total_text;?> </b> dengue cases was reported in Dasmarinas CHO-I from <?php echo $date_from_text;?> to <?php echo $date_to_text; ?>.
 
+<p>
+Most cases happened during the year <b><?php echo $yeartotal_text2[0]?></b>. A total of <b><?php echo $yeartotal_text[$yeartotal_text2[0]]?></b> where recorded.
+
+<h4>Profile of Cases</h4>
+
+<p>
+Majority of cases were <?php if($m_text > $f_text) echo '<b>male (' . $m_text ; else echo '<b>female (' . $f_text ; ?>).
+</p>
+<p>
+<?php  $x = $agegroup_text2[0]; $s = ($agegroup_text[$x]/$total_text)*100; echo round($s , 2);?> </b>% ( <b> <?php echo $agegroup_text[$x]; ?>)  </b>of cases belonged to the 
+<?php
+if($agegroup_text2[0] == 0)
+{echo ' 0 to 10 ' ;}
+if($agegroup_text2[0] == 1)
+{echo ' 11 to 20 ' ;}
+if($agegroup_text2[0] == 2)
+{echo ' 21 to 30 '; }
+if($agegroup_text2[0] == 3)
+{echo '31 to 40 ' ;}
+if($agegroup_text2[0] == 4)
+{echo ' greater than 40 '; }
+?>.
+
+<p>
+Most cases number of <b>(<?php echo $bartotal_text[$bartotal_text2[0]]; ?>) </b>recorded is at <b> <?php echo $bartotal_text2[0];?> </b>
+
+</td>
+</tr>
+</table>
+</center>
 <!-- Sidebar -->
 	<div id="sidebar">
 		<div id="sidebar-higher"></div>

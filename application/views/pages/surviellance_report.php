@@ -32,7 +32,7 @@ echo form_open('case_report/print_report',$attributes); ?>
 <table  style="width: 90%;">
 <tr><td>
 <h4>Trend</h4>
-<p>A total of <b><?php echo $totalcur;?> </b> dengue cases was reported nationwide from January 1 to <?php $my_t=getdate(); echo("$my_t[month] $my_t[mday], $my_t[year]");?>.
+<p>A total of <b><?php echo $totalcur;?> </b> dengue cases was reported in Dasmarinas CHO-I from January 1 to <?php $my_t=getdate(); echo("$my_t[month] $my_t[mday], $my_t[year]");?>.
 This is <b><?php if($percent > 0) echo $percent . '% higher'; else echo $percent . '% lower';?> </b>compared to the same time period last year <b>(<?php echo $totalprev;?> )</b>.</p>
 
 <br />

@@ -77,7 +77,7 @@
 				</table>
 			</td>
 			<td align="center" style="width: 80%">
-				<div style="font-style:solid;font-size:30px;font-family:arial">DISEASE SURVEILLANCE REPORT</div>
+				<div style="font-style:solid;font-size:30px;font-family:arial">EPIDEMIC THRESHOLD REPORT</div>
 			</td>
 		</tr>
 	</table>

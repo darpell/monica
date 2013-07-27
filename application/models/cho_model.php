@@ -658,6 +658,47 @@
 			return $data2;
 		}
 		
+		function get_investigated_cases($data = null)
+		{
+			if($data!= null)
+			{
+				$qString = 'CALL ';
+				$qString .= "get_investigated_cases ('"; // name of stored procedure
+				$qString .=
+				$data['datefrom']. "','".
+				$data['dateto']. "'". ")";
+				$q = $this->db->query($qString);
+				if($q->num_rows() > 0)
+				{
+					$data2 = array();
+					$data2[]=array(
+							'Name'=>'Name',
+							'Barangay'=>'Barangay',
+							'Result'=> 'Result');
+					foreach ($q->result() as $row)
+					{
+						for($i = 0 ; $i < count($data['barangay']) ; $i++ )
+						{	$range = null;
+						if($data['barangay'][$i] == $row->cr_barangay)
+						{	
+							
+							$data2[]=array(
+									'Name'=>$row->cr_last_name . ", ". $row->cr_first_name,
+									'Barangay'=>$row->cr_barangay,
+									'Result'=> $row->feedback);
+							
+						}
+						}
+					}
+				}
+					
+				else {$data2 = null;}
+			}
+				
+			return $data2;
+		}
+		
+		
 	}
 
 /* End of cho_model.php */
