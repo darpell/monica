@@ -3,10 +3,56 @@
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
  <script>
+
+ function load() {
+		//alert("Present: "+document.getElementById("presRemvd").value+" remvd "+document.getElementById("present_length").value+" remain");
+		//alert("Old: "+document.getElementById("oldRemvd").value+" remvd "+document.getElementById("old_length").value+" remain");
+		var dasma = new google.maps.LatLng(14.2990183, 120.9589699);
+		var heatmap, map;
+		var mapProp = {
+			center: dasma,
+			zoom: 12,
+			mapTypeId: google.maps.MapTypeId.HYBRID
+		};
+		map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			var cases = new Array();
+		
+		/** Sample Larval Data used as case data **/
+		if ((document.getElementById("present_length").value != 0)||(document.getElementById("old_length").value != 0))
+		{//alert("0");
+			//var case_img = document.getElementById("case_icon").value;
+			if(document.getElementById("present_length").value != 0)
+			for (var pt_ctr = 0; pt_ctr < document.getElementById("present_length").value; pt_ctr++) 
+			{	//alert("1");				
+				cases.push(new google.maps.LatLng(
+						document.getElementById("lsPres_lat" + pt_ctr).value,
+						document.getElementById("lsPres_lng" + pt_ctr).value
+						));
+			}
+			if(document.getElementById("old_length").value != 0)
+			for (var pt_ctr = 0; pt_ctr < document.getElementById("old_length").value; pt_ctr++) 
+			{	//alert("2");						
+				cases.push(new google.maps.LatLng(
+						document.getElementById("lsOld_lat" + pt_ctr).value,
+						document.getElementById("lsOld_lng" + pt_ctr).value
+						));
+			}
+			pointArray = new google.maps.MVCArray();
+			heatmap = new google.maps.visualization.HeatmapLayer({
+				  data: cases
+				});
+				heatmap.setMap(map);
+		}
+		/** end of sample data**/
+	}
+ 
 $(function() {
 $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
 $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
@@ -22,7 +68,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 </style>
 </head>
 <!-- CONTENT -->
-<div class="body">
+<div class="body" onload="aveMap()">
 			<div id="tabs">
 				<ul>
 					<li><a href="#tabs-1"> Route Information </a></li>
@@ -41,12 +87,40 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 				</div>
 				<div id="tabs-3">
 					<h2> Larval Occurrences </h2>
-					<p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-					<p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+					<div id="googleMap" style="width: 600px; height: 350px"></div>
+					<?php if ($presentDataExists === true){$ctr=0;?>
+					<input type="hidden" id="present_length" value="<?php echo count($presentData); ?>" />
+						<?php foreach ($presentData as $value) {?>
+							<input type="hidden" id="lsPres_lat<?= $ctr ?>" 		value="<?php echo $value['ls_lat']; ?>"	/>
+							<input type="hidden" id="lsPres_lng<?= $ctr ?>" 		value="<?php echo $value['ls_lng']; ?>"	/>
+							<input type="hidden" id="lsPres_household<?= $ctr ?>" 		value="<?php echo $value['ls_household']; ?>"	/>
+							<input type="hidden" id="lsPres_street<?= $ctr ?>" 		value="<?php echo $value['ls_street']; ?>"	/>
+							<input type="hidden" id="lsPres_container<?= $ctr ?>" 		value="<?php echo $value['ls_container']; ?>"	/>
+							<input type="hidden" id="lsPres_date<?= $ctr ?>" 		value="<?php echo $value['ls_date']; ?>"	/>
+							<input type="hidden" id="lsPres_createdby<?= $ctr ?>" 		value="<?php echo $value['created_by']; ?>"	/>
+						<?php $ctr++;}?> 
+						<?php } else { ?> <input type="hidden" id="present_length" value="0" /> <?php } ?>
+					
+					<?php if ($oldDataExists === true){$ctr=0;
+							echo "<p>There are ".count($oldData)." areas that have consistent repeating larval samplings for this season over the past 2 years.<br/>These areas are: </p>";?>
+					<input type="hidden" id="old_length" value="<?php echo count($oldData); ?>" />
+						<?php foreach ($oldData as $value) {?>
+							<input type="hidden" id="lsOld_lat<?= $ctr ?>" 		value="<?php echo $value['ls_lat']; ?>"	/>
+							<input type="hidden" id="lsOld_lng<?= $ctr ?>" 		value="<?php echo $value['ls_lng']; ?>"	/>
+							<input type="hidden" id="lsOld_household<?= $ctr ?>" 		value="<?php echo $value['ls_household']; ?>"	/>
+							<input type="hidden" id="lsOld_street<?= $ctr ?>" 		value="<?php echo $value['ls_street']; ?>"	/>
+							<input type="hidden" id="lsOld_container<?= $ctr ?>" 		value="<?php echo $value['ls_container']; ?>"	/>
+							<input type="hidden" id="lsOld_date<?= $ctr ?>" 		value="<?php echo $value['ls_date']; ?>"	/>
+							<input type="hidden" id="lsOld_createdby<?= $ctr ?>" 		value="<?php echo $value['created_by']; ?>"	/>
+						<?php echo "(".($ctr+1).") ".$value['ls_household']." household, at ".$value['ls_street']." Street.<br/>"; $ctr++;}?>
+						<?php } else { ?> <input type="hidden" id="old_length" value="0" /> <?php } ?>
 				</div>
 			</div>
 			
 	</div>
+	
 
+	
+<body onload="load()">
 <!-- FOOTER -->
 <?php $this->load->view('templates/footer');?>

@@ -7,6 +7,7 @@ class Suggest extends CI_Controller
 		parent::__construct();
 		// Your own constructor code
 		$this->load->model('suggest_model');
+		$this->load->model('Remap_model');
 		$this->load->library('table');
 	}
 	
@@ -19,7 +20,6 @@ class Suggest extends CI_Controller
 		$brgy = $this->suggest_model->get_user_brgy($user);
 		$data['query'] = $this->suggest_model->get_cases($brgy, '2013-01-01','2013-07-22');
 		
-		$this->load->view('pages/view_suggested',$data);
 		
 		/* TODO Pagination
 		$this->load->library('pagination');
@@ -32,6 +32,43 @@ class Suggest extends CI_Controller
 		
 		echo $this->pagination->create_links();
 		*/
+		if(date("m")<=4 || date("m")>=11)//Dry Season
+		{
+			if(date("m")<=4)
+			{
+				$Qdata['datePresB']=(date("Y")-1).'-11-01';
+				$Qdata['datePresE']=date("Y-m-d");
+				$Qdata['datePrev1B']=(date("Y")-2).'-11-01';
+				$Qdata['datePrev1E']=(date("Y")-1).'-04-30';
+				$Qdata['datePrev2B']=(date("Y")-3).'-11-01';
+				$Qdata['datePrev2E']=(date("Y")-2).'-04-30';
+			}
+			else
+			{
+				$Qdata['datePresB']=date("Y").'-11-01';
+				$Qdata['datePresE']=date("Y-m-d");
+				$Qdata['datePrev1B']=(date("Y")-1).'-11-01';
+				$Qdata['datePrev1E']=date("Y").'-04-30';
+				$Qdata['datePrev2B']=(date("Y")-2).'-11-01';
+				$Qdata['datePrev2E']=(date("Y")-1).'-04-30';
+			}
+		}
+		else//Wet Season
+		{
+			$Qdata['datePresB']=date("Y").'-05-01';
+			$Qdata['datePresE']=date("Y-m-d");
+			$Qdata['datePrev1B']=(date("Y")-1).'-05-01';
+			$Qdata['datePrev1E']=(date("Y")-1).'-10-31';
+			$Qdata['datePrev2B']=(date("Y")-2).'-05-01';
+			$Qdata['datePrev2E']=(date("Y")-2).'-10-31';
+		}
+			
+		$Qdata['barangay']=array(
+				'SAN AGUSTIN III',
+				'SAMPAOC I'
+		);
+		$data = array_merge($data,$this->Remap_model->getRepeatingLarvals($Qdata));
+		$this->load->view('pages/view_suggested',$data);
 	}
 }
 
