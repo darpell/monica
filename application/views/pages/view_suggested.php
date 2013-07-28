@@ -86,8 +86,8 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 					<p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
 				</div>
 				<div id="tabs-3">
-					<h2> Larval Occurrences </h2>
-					<div id="googleMap" style="width: 600px; height: 350px"></div>
+					<h2> Larval Occurrences</h2>
+					<div id="googleMap" style="width: 100%; height: 350px"></div>
 					<?php if ($presentDataExists === true){$ctr=0;?>
 					<input type="hidden" id="present_length" value="<?php echo count($presentData); ?>" />
 						<?php foreach ($presentData as $value) {?>
@@ -95,6 +95,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 							<input type="hidden" id="lsPres_lng<?= $ctr ?>" 		value="<?php echo $value['ls_lng']; ?>"	/>
 							<input type="hidden" id="lsPres_household<?= $ctr ?>" 		value="<?php echo $value['ls_household']; ?>"	/>
 							<input type="hidden" id="lsPres_street<?= $ctr ?>" 		value="<?php echo $value['ls_street']; ?>"	/>
+							<input type="hidden" id="lsPres_barangay<?= $ctr ?>" 		value="<?php echo $value['ls_barangay']; ?>"	/>
 							<input type="hidden" id="lsPres_container<?= $ctr ?>" 		value="<?php echo $value['ls_container']; ?>"	/>
 							<input type="hidden" id="lsPres_date<?= $ctr ?>" 		value="<?php echo $value['ls_date']; ?>"	/>
 							<input type="hidden" id="lsPres_createdby<?= $ctr ?>" 		value="<?php echo $value['created_by']; ?>"	/>
@@ -109,10 +110,11 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 							<input type="hidden" id="lsOld_lng<?= $ctr ?>" 		value="<?php echo $value['ls_lng']; ?>"	/>
 							<input type="hidden" id="lsOld_household<?= $ctr ?>" 		value="<?php echo $value['ls_household']; ?>"	/>
 							<input type="hidden" id="lsOld_street<?= $ctr ?>" 		value="<?php echo $value['ls_street']; ?>"	/>
+							<input type="hidden" id="lsOld_barangay<?= $ctr ?>" 		value="<?php echo $value['ls_barangay']; ?>"	/>
 							<input type="hidden" id="lsOld_container<?= $ctr ?>" 		value="<?php echo $value['ls_container']; ?>"	/>
 							<input type="hidden" id="lsOld_date<?= $ctr ?>" 		value="<?php echo $value['ls_date']; ?>"	/>
 							<input type="hidden" id="lsOld_createdby<?= $ctr ?>" 		value="<?php echo $value['created_by']; ?>"	/>
-						<?php echo "(".($ctr+1).") ".$value['ls_household']." household, at ".$value['ls_street']." Street.<br/>"; $ctr++;}?>
+						<?php echo "(".($ctr+1).") ".$value['ls_household']." household at ".$value['ls_street']." Street, ".$value['ls_barangay'].".<br/>"; $ctr++;}?>
 						<?php } else { ?> <input type="hidden" id="old_length" value="0" /> <?php } ?>
 				</div>
 			</div>

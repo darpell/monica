@@ -20,7 +20,6 @@ class Suggest extends CI_Controller
 		$brgy = $this->suggest_model->get_user_brgy($user);
 		$data['query'] = $this->suggest_model->get_cases($brgy, '2013-01-01','2013-07-22');
 		
-		
 		/* TODO Pagination
 		$this->load->library('pagination');
 		
@@ -62,11 +61,9 @@ class Suggest extends CI_Controller
 			$Qdata['datePrev2B']=(date("Y")-2).'-05-01';
 			$Qdata['datePrev2E']=(date("Y")-2).'-10-31';
 		}
-			
-		$Qdata['barangay']=array(
-				'SAN AGUSTIN III',
-				'SAMPAOC I'
-		);
+
+		//$Qdata['barangay']=array('SAN AGUSTIN III','SAMPAOC I');
+		$Qdata['barangay']=null;
 		$data = array_merge($data,$this->Remap_model->getRepeatingLarvals($Qdata));
 		$this->load->view('pages/view_suggested',$data);
 	}

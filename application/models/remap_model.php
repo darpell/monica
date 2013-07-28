@@ -208,6 +208,7 @@ class Remap_model extends CI_Model
 		}
 		$this->db->where($where);
 		$this->db->group_by('tracking_number');
+		$this->db->order_by('ls_barangay');
 		$q = $this->db->get();
 		//*
 		if($q->num_rows() > 0)
@@ -219,6 +220,7 @@ class Remap_model extends CI_Model
 						'ls_lng'=> $row->ls_lng,
 						'ls_household'=> $row->ls_household,
 						'ls_street'=> $row->ls_street,
+						'ls_barangay'=> $row->ls_barangay,
 						'ls_container'=> $row->ls_container,
 						'ls_date'=> $row->ls_date,
 						'created_by'=> $row->created_by
@@ -245,6 +247,7 @@ class Remap_model extends CI_Model
 		}
 		$this->db->where($where);
 		$this->db->group_by('tracking_number');
+		$this->db->order_by('ls_barangay');
 		$q = $this->db->get();
 		//*
 		if($q->num_rows() > 0)
@@ -256,6 +259,7 @@ class Remap_model extends CI_Model
 						'ls_lng'=> $row->ls_lng,
 						'ls_household'=> $row->ls_household,
 						'ls_street'=> $row->ls_street,
+						'ls_barangay'=> $row->ls_barangay,
 						'ls_container'=> $row->ls_container,
 						'ls_date'=> $row->ls_date,
 						'created_by'=> $row->created_by
@@ -282,6 +286,7 @@ class Remap_model extends CI_Model
 		}
 		$this->db->where($where);
 		$this->db->group_by('tracking_number');
+		$this->db->order_by('ls_barangay');
 		$q = $this->db->get();
 		//*
 		if($q->num_rows() > 0)
@@ -293,6 +298,7 @@ class Remap_model extends CI_Model
 						'ls_lng'=> $row->ls_lng,
 						'ls_household'=> $row->ls_household,
 						'ls_street'=> $row->ls_street,
+						'ls_barangay'=> $row->ls_barangay,
 						'ls_container'=> $row->ls_container,
 						'ls_date'=> $row->ls_date,
 						'created_by'=> $row->created_by
@@ -327,6 +333,7 @@ class Remap_model extends CI_Model
 						$dataCITable[]=array(
 								$dataPrev1[$key]['ls_household'],
 								$dataPrev1[$key]['ls_street'],
+								$dataPrev1[$key]['ls_barangay'],
 								$dataPrev1[$key]['ls_container'],
 								$dataPrev1[$key]['ls_date'],
 								$dataPrev1[$key]['created_by']
@@ -358,6 +365,7 @@ class Remap_model extends CI_Model
 						$dataCITable[]=array(
 								$dataPres[$key]['ls_household'],
 								$dataPres[$key]['ls_street'],
+								$dataPrev1[$key]['ls_barangay'],
 								$dataPres[$key]['ls_container'],
 								$dataPres[$key]['ls_date'],
 								$dataPres[$key]['created_by']
