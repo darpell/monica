@@ -9,6 +9,13 @@
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
+<style>
+<!--
+html { height:100% }
+#googleMap { height:100%;width:100%; }
+-->
+</style>
+
  <script>
 
  function load() {
@@ -19,7 +26,7 @@
 		var mapProp = {
 			center: dasma,
 			zoom: 12,
-			mapTypeId: google.maps.MapTypeId.HYBRID
+			mapTypeId: google.maps.MapTypeId.TERRAIN
 		};
 		map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 			var cases = new Array();
@@ -51,6 +58,8 @@
 				heatmap.setMap(map);
 		}
 		/** end of sample data**/
+
+		google.maps.event.trigger(map, 'resize');
 	}
  
 $(function() {
@@ -72,7 +81,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 			<div id="tabs">
 				<ul>
 					<li><a href="#tabs-1"> Route Information </a></li>
-					<li><a href="#tabs-2"> Event Calendar </a></li>
+					<li><a href="#tabs-2"> Event List </a></li>
 					<li><a href="#tabs-3"> Larval Occurrences</a></li>
 				</ul>
 				<div id="tabs-1">
@@ -90,8 +99,29 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 					?>
 				</div>
 				<div id="tabs-2">
-					<h2> Event Calendar </h2>
-					<p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+					<h2> Event List </h2>
+					<p>Pending Tasks</p>
+					<?php 
+					$tmpl = array (
+									'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',
+								    'heading_row_start'   => '<tr>',
+								    'heading_row_end'     => '</tr>',
+								    'heading_cell_start'  => '<th id="result" scope="col">',
+								    'heading_cell_end'    => '</th>',
+								    'row_start'           => '<tr>',
+								    'row_end'             => '</tr>',
+								    'cell_start'          => '<td align="center">',
+								    'cell_end'            => '</td>',
+								    'row_alt_start'       => '<tr style="background-color: #e3e3e3">',
+								    'row_alt_end'         => '</tr>',
+								    'cell_alt_start'      => '<td align="center">',
+								    'cell_alt_end'        => '</td>',
+								    'table_close'         => '</table>'
+								   );
+					$this->table->set_template($tmpl);
+					echo $this->table->generate($pendingTasks);?>
+					<p>Completed Tasks (Last 10)</p>
+					<?php echo $this->table->generate($completeTasks);?>
 				</div>
 				<div id="tabs-3">
 					<h2> Larval Occurrences</h2>
