@@ -13,6 +13,8 @@
 <!--
 html { height:100% }
 #googleMap { height:100%;width:100%; }
+div#map_text_header { font-size:17px; }
+div#map_text { font-size:17px; }
 -->
 </style>
 
@@ -25,7 +27,7 @@ html { height:100% }
 		var heatmap, map;
 		var mapProp = {
 			center: dasma,
-			zoom: 12,
+			zoom: 13,
 			mapTypeId: google.maps.MapTypeId.TERRAIN
 		};
 		map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
@@ -140,9 +142,12 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 						<?php $ctr++;}?> 
 						<?php } else { ?> <input type="hidden" id="present_length" value="0" /> <?php } ?>
 					
+					<div id="map_text_header">
 					<?php if ($oldDataExists === true){$ctr=0;
-							echo "<p>There are ".count($oldData)." areas that have consistent repeating larval samplings for this season over the past 2 years.<br/>These areas are: </p>";?>
+							echo "<p>There are <b>".count($oldData)."</b> areas that have consistent repeating larval samplings for this season over the past <b>2 years</b>.<br/>These areas are: </p>";?>
+					</div>
 					<input type="hidden" id="old_length" value="<?php echo count($oldData); ?>" />
+					<?php echo "<table border='1'><tr style='background-color: #e3e3e3'><td></td><td>HOUSEHOLD</td><td>STREET</td><td>BARANGAY</td></tr>" ?>
 						<?php foreach ($oldData as $value) {?>
 							<input type="hidden" id="lsOld_lat<?= $ctr ?>" 		value="<?php echo $value['ls_lat']; ?>"	/>
 							<input type="hidden" id="lsOld_lng<?= $ctr ?>" 		value="<?php echo $value['ls_lng']; ?>"	/>
@@ -152,7 +157,10 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 							<input type="hidden" id="lsOld_container<?= $ctr ?>" 		value="<?php echo $value['ls_container']; ?>"	/>
 							<input type="hidden" id="lsOld_date<?= $ctr ?>" 		value="<?php echo $value['ls_date']; ?>"	/>
 							<input type="hidden" id="lsOld_createdby<?= $ctr ?>" 		value="<?php echo $value['created_by']; ?>"	/>
-						<?php echo "(".($ctr+1).") ".$value['ls_household']." household at ".$value['ls_street']." Street, ".$value['ls_barangay'].".<br/>"; $ctr++;}?>
+						<div id="map_text">
+						<?php echo "<td>(".($ctr+1).")</td><td>".$value['ls_household']."</td><td>".$value['ls_street']."</td><td>".$value['ls_barangay']."</td></tr>";//echo "(".($ctr+1).") ".$value['ls_household']." household at ".$value['ls_street']." Street, ".$value['ls_barangay'].".<br/>"; 
+						$ctr++;} echo "</table>";?>
+						</div>
 						<?php } else { ?> <input type="hidden" id="old_length" value="0" /> <?php } ?>
 				</div>
 			</div>
