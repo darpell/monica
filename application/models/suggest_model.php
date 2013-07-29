@@ -98,7 +98,9 @@ class Suggest_model extends CI_Model
 									AND
 										cr.cr_patient_no NOT IN
 											(SELECT ic.case_no
-											FROM investigated_cases ic)"
+											FROM investigated_cases ic)
+									LIMIT 10"
+							
 		);
 
 			return $query->result_array();

@@ -77,7 +77,15 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 				</ul>
 				<div id="tabs-1">
 					<h2> Route Information </h2>
-					<?php 
+					<?php
+						$this->table->set_heading(
+												array(	'First Name',
+														'Last Name',
+														'Gender',
+														'Age',
+														'Street Address',
+														'Barangay'
+												));
 						echo $this->table->generate($query);
 					?>
 				</div>
