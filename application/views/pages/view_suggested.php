@@ -80,11 +80,11 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 <div class="body" onload="aveMap()">
 			<div id="tabs">
 				<ul>
-					<li><a href="#tabs-1"> Route Information </a></li>
+					<li><a href="#tabs-1"> Larval Occurrences </a></li>
 					<li><a href="#tabs-2"> Event List </a></li>
-					<li><a href="#tabs-3"> Larval Occurrences</a></li>
+					<li><a href="#tabs-3"> Route Information </a></li>
 				</ul>
-				<div id="tabs-1">
+				<div id="tabs-3">
 					<h2> Route Information </h2>
 					<?php
 						$this->table->set_heading(
@@ -123,7 +123,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 					<p>Completed Tasks (Last 10)</p>
 					<?php echo $this->table->generate($completeTasks);?>
 				</div>
-				<div id="tabs-3">
+				<div id="tabs-1">
 					<h2> Larval Occurrences</h2>
 					<div id="googleMap" style="width: 100%; height: 350px"></div>
 					<?php if ($presentDataExists === true){$ctr=0;?>
