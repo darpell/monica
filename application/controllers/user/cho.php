@@ -85,6 +85,31 @@ class Cho extends CI_Controller
 		$data['dateSel2']=$data['dateto'];
 		$data['mapvalues'] = $this->Remap_model->investigated_cases($data);
 		
+		$data['tablecases'][]=array(
+				'ic_fname'=> 'Name',
+				'ic_age'=> 'Age',
+				'ic_sex'=> 'Gender',
+				'ic_outcome'=> 'Outcome',
+				'ic_street'=> 'Street',
+				'ic_barangay'=> 'Barangay',
+				'ic_dateOnset'=> 'Date Onset',
+				'ic_feedback'=> 'Feedback',
+		);
+		
+		for($i = 0; $i< count($data['mapvalues']['dataCases']); $i++)
+		{
+			
+			$data['tablecases'][]=array(
+					'ic_fname'=>  $data['mapvalues']['dataCases'][$i]['ic_lname'] . ', '. $data['mapvalues']['dataCases'][$i]['ic_fname'],
+					'ic_age'=> $data['mapvalues']['dataCases'][$i]['ic_age'],
+					'ic_sex'=> $data['mapvalues']['dataCases'][$i]['ic_sex'],
+					'ic_outcome'=> $data['mapvalues']['dataCases'][$i]['ic_outcome'],
+					'ic_street'=> $data['mapvalues']['dataCases'][$i]['ic_street'],
+					'ic_barangay'=> $data['mapvalues']['dataCases'][$i]['ic_barangay'],
+					'ic_dateOnset'=> $data['mapvalues']['dataCases'][$i]['ic_dateOnset'],
+					'ic_feedback'=> $data['mapvalues']['dataCases'][$i]['ic_feedback'],
+			);
+		}
 		$data['total_text'] = 0;
 		$data['date_to_text'] = $this->input->post('TPdateto-txt');
 		$data['date_from_text'] = $this->input->post('TPdatefrom-txt');
@@ -300,8 +325,8 @@ class Cho extends CI_Controller
 
 		$data['barangay'] = $this->Cho_model->getAllBarangays();
 		$data['larval'] = $this->Cho_model->getPositiveSurveys();
-		$data['immediate_cases'] = $this->Cho_model->get_immediate_cases();
 		
+		$data['immediate_cases'] = $this->Cho_model->get_immediate_cases();
 		//map
 		
 		$this->load->model('Mapping');
@@ -597,7 +622,19 @@ class Cho extends CI_Controller
 		redirect('/CHO/dashboard/', 'refresh');
 	}
 	
-	
+	function tweet_info()
+	{
+		$this->redirectLogin();
+		$this->load->model('Cho_model');
+		$data['script'] = '';
+		$count = $this->Cho_model->get_immediate_cases();
+		$count = explode("%%", $count);
+		$count = count($count);
+		$data['fact'] = $this->Cho_model->randomfact();
+		$data['total']='The current number of cases for the month of '. date('F') .' are '. $count . ' cases.';
+		$this->load->view('pages/tweet.php' , $data);
+		
+	}
 	
 	
 	

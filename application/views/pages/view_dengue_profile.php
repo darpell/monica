@@ -150,8 +150,7 @@
 <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script>
-var infoWindow = new google.maps.InfoWindow();
+<script>var infoWindow = new google.maps.InfoWindow();
 infoWindow.setOptions({maxWidth:400});
 
 function setInfo(fMarker,fInfo,fMap) {
@@ -171,7 +170,7 @@ function load() {
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	};
 	map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-	google.maps.event.trigger(map, 'resize');
+	
 	/** Sample Larval Data used as case data **/
 	if (document.getElementById("ic_length").value != 0)
 	{//alert("0");
@@ -274,8 +273,39 @@ jQuery(document).ready(function(){
 <body onload="load()">    
 <!-- CONTENT -->
 <div class="body">
-<center><h1>Dengue Profile</h1></center>
+
 		<div class="blog">
+		<center><h1>Dengue Profile</h1></center>
+<?php if($values_age != null) { ?>
+<center>
+ <fieldset style="width: 50%;">
+  <legend>Trend</legend>
+A total of <b><?php echo $total_text;?> </b> dengue cases was reported in Dasmarinas CHO-I from <?php echo $date_from_text;?> to <?php echo $date_to_text; ?>.<br>
+  Most cases happened during the year <b><?php echo $yeartotal_text2[0]?></b>. A total of <b><?php echo $yeartotal_text[$yeartotal_text2[0]]?></b> where recorded.<br>
+ </fieldset>
+  <fieldset style="width: 50%;">
+  <legend>Profile of Cases</legend>
+Majority of cases were <?php if($m_text > $f_text) echo '<b>male (' . $m_text ; else echo '<b>female (' . $f_text ; ?>). <br>
+<?php  $x = $agegroup_text2[0]; $s = ($agegroup_text[$x]/$total_text)*100; echo round($s , 2);?> </b>% ( <b> <?php echo $agegroup_text[$x]; ?>)  </b>of cases belonged to the 
+<?php
+if($agegroup_text2[0] == 0)
+{echo ' 0 to 10 ' ;}
+if($agegroup_text2[0] == 1)
+{echo ' 11 to 20 ' ;}
+if($agegroup_text2[0] == 2)
+{echo ' 21 to 30 '; }
+if($agegroup_text2[0] == 3)
+{echo '31 to 40 ' ;}
+if($agegroup_text2[0] == 4)
+{echo ' greater than 40 '; }
+?>. <br>
+Most cases number of <b>(<?php echo $bartotal_text[$bartotal_text2[0]]; ?>) </b>recorded is at <b> <?php echo $bartotal_text2[0];?> </b><br>
+
+  </fieldset>
+
+</center>
+<?php }?>
+<br>
 <table    align="center" cellpadding="5">
 <tr>
 <?php 
@@ -321,42 +351,6 @@ echo form_open('CHO/view_dengue_profile',$attributes); ?>
 </div>
 </div>
 <?php if($values_age != null) { ?>
-<center>
-<table  style="width: 90%;">
-<tr><td>
-<h4>Trend</h4>
-<p>A total of <b><?php echo $total_text;?> </b> dengue cases was reported in Dasmarinas CHO-I from <?php echo $date_from_text;?> to <?php echo $date_to_text; ?>.
-
-<p>
-Most cases happened during the year <b><?php echo $yeartotal_text2[0]?></b>. A total of <b><?php echo $yeartotal_text[$yeartotal_text2[0]]?></b> where recorded.
-
-<h4>Profile of Cases</h4>
-
-<p>
-Majority of cases were <?php if($m_text > $f_text) echo '<b>male (' . $m_text ; else echo '<b>female (' . $f_text ; ?>).
-</p>
-<p>
-<?php  $x = $agegroup_text2[0]; $s = ($agegroup_text[$x]/$total_text)*100; echo round($s , 2);?> </b>% ( <b> <?php echo $agegroup_text[$x]; ?>)  </b>of cases belonged to the 
-<?php
-if($agegroup_text2[0] == 0)
-{echo ' 0 to 10 ' ;}
-if($agegroup_text2[0] == 1)
-{echo ' 11 to 20 ' ;}
-if($agegroup_text2[0] == 2)
-{echo ' 21 to 30 '; }
-if($agegroup_text2[0] == 3)
-{echo '31 to 40 ' ;}
-if($agegroup_text2[0] == 4)
-{echo ' greater than 40 '; }
-?>.
-
-<p>
-Most cases number of <b>(<?php echo $bartotal_text[$bartotal_text2[0]]; ?>) </b>recorded is at <b> <?php echo $bartotal_text2[0];?> </b>
-
-</td>
-</tr>
-</table>
-</center>
 <!-- Sidebar -->
 	<div id="sidebar">
 		<div id="sidebar-higher"></div>
@@ -374,7 +368,8 @@ Most cases number of <b>(<?php echo $bartotal_text[$bartotal_text2[0]]; ?>) </b>
 					}
 					
 					?>
-					<li><a href="#tab_table"> Table of Cases</a></li>
+					<li><a href="#tab_table"> demographics of Cases</a></li>
+					<li><a href="#tab_casetable">Cases Information</a></li>
 				</ul>
 
 				<div id="tab_summary" >
@@ -441,6 +436,42 @@ Most cases number of <b>(<?php echo $bartotal_text[$bartotal_text2[0]]; ?>) </b>
 						</table>
 						</center>
 				</div>
+				
+				<div id ="tab_casetable">
+						<center>
+						<h3>Case Information</h2>
+						<?php 
+								
+								$tmpl = array (
+								                    'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" style="width: 70%;" >',
+								
+								                    'heading_row_start'   => '<tr>',
+								                    'heading_row_end'     => '</tr>',
+								                    'heading_cell_start'  => '<th id="result" scope="col">',
+								                    'heading_cell_end'    => '</th>',
+								
+								                    'row_start'           => '<tr>',
+								                    'row_end'             => '</tr>',
+								                    'cell_start'          => '<td align="center">',
+								                    'cell_end'            => '</td>',
+								
+								                    'row_alt_start'       => '<tr style="background-color: #e3e3e3">',
+								                    'row_alt_end'         => '</tr>',
+								                    'cell_alt_start'      => '<td align="center">',
+								                    'cell_alt_end'        => '</td>',
+								
+								                    'table_close'         => '</table>'
+								              );
+								
+								$this->table->set_template($tmpl);
+								
+								echo $this->table->generate($tablecases); 
+								?>
+								
+								
+						</center>
+				</div>
+				
 			</div>
 		</div>
 	</div>

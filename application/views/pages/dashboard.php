@@ -164,7 +164,7 @@
 			var b = Math.sqrt(((n*xsumsq)-(xsum*xsum)) * ((n*ysumsq)-(ysum*ysum))); //denominator
 			var r = a/b; //correlation result;
 			
- 
+			
           // Prepare the data
         var str = document.getElementById('age_count').value.toString();
 
@@ -249,9 +249,10 @@
 		var datatable2 = new google.visualization.DataTable();
 		datatable2.addColumn('string', 'Name');
 		datatable2.addColumn('string', 'Age');
-		datatable2.addColumn('string', 'sex');
-		datatable2.addColumn('string', 'Address');
-		datatable2.addColumn('string', 'Remarks');
+		datatable2.addColumn('string', 'Gender');
+		datatable2.addColumn('string', 'Barangay');
+		datatable2.addColumn('string', 'Street');
+		datatable2.addColumn('string', 'Date Onset');
 		datatable2.addRows(icase.length);
 		for (var i = 0; i < icase.length; i++)
 		{
@@ -260,6 +261,7 @@
 		 datatable2.setCell(i, 2 , icase[i][2]);
 		 datatable2.setCell(i, 3 , icase[i][3]);
 		 datatable2.setCell(i, 4 , icase[i][4]);
+		 datatable2.setCell(i, 5 , icase[i][5]);
 
 		}
 		        
@@ -288,7 +290,7 @@
                  seriesType: "line",
                  series: {5: {type: "line"}}
                };
-         
+        
         var data = google.visualization.arrayToDataTable([
        	['Barangay', yyyy, yyyy-1],
         ['Langkaan II',  parseInt(mn1),      parseInt(m1)],
@@ -314,19 +316,21 @@
               // Instantiate and draw our chart, passing in some options.
               var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
               chart.draw(data, options);
-
+              
               var chart2 = new google.visualization.ComboChart(document.getElementById('chart_div2'));
               chart2.draw(data2, options2);
-              
-              new google.visualization.Gauge(document.getElementById('visualization')).
-              draw(epi,epioptions);
-
+            
+              //new google.visualization.Gauge(document.getElementById('visualization')).
+            //  draw(epi,epioptions);
+             
               var table = new google.visualization.Table(document.getElementById('table_div1'));
               table.draw(datatable2, {showRowNumber: true,width: '1000px'});
+
+            
                     
       }
 
-      google.setOnLoadCallback(drawVisualization);
+     
 
       function loadXMLDoc(q)
       {
@@ -898,29 +902,87 @@
       	  });
       	});
     </script>
+    
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&libraries=weather,visualization&sensor=true"></script>
+<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+<script src="<?= base_url('scripts/OverlappingMarkerSpiderfier.js') ?>"></script>
+
+<link rel="stylesheet" href="<?php echo base_url('scripts/jQRangeSLider-5.1.1/css/iThing.css')?>"/>
+<link rel="stylesheet" href="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/lib/jquery-ui/css/smoothness/jquery-ui-1.8.10.custom.css')?>"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/lib/jquery-ui/js/jquery-ui-1.8.16.custom.min.js')?>"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/lib/jquery.mousewheel.min.js')?>"></script>
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/jQDateRangeSlider-min.js')?>"></script>
+
+<script src="<?php echo base_url('scripts/jQRangeSLider-5.1.1/demo/dateSliderDemo.js')?>"></script>
+
+<script>
+	$(function() {
+		drawVisualization();
+		var tabs = $( "#tabs" ).tabs();
+
+		tabs.find( ".ui-tabs-nav" ).sortable({
+				axis: "x",
+				stop: function() {
+				tabs.tabs( "refresh" );
+			}
+		});
+	});
+</script>
   <div class="body">
-   <center>
-   <h3>Dengue Cases Summary</h3>
-    <div id="dashboard">
-      <table>
-        <tr style='vertical-align: top'>
-          <td style='width: 300px; font-size: 0.9em;'>
-            <div id="control1"></div>
-            <div id="control2"></div>
-            <div id="control3"></div>
-          </td>
-          <td>
-            <div style="float: left;" id="chart1"></div>
-            <div style="float: left;" id="chart2"></div>
-            <div style="float: left;" id="chart3"></div>
-          </td>
-        </tr>
-      </table>
-    </div>
-   <div id='chart_div'></div>
-   <div id='chart_div2'></div>
+  
+  <center>
+  	<!-- Sidebar -->
+	<div id="sidebar">
+		<div id="sidebar-higher"></div>
+		<div id="sidebar-lower">
+			<div id="tabs">
+				<ul>
+					<li><a href="#tab_summary"> Dengue Summary </a></li>
+					<li><a href="#tab_larva"> Cases Compared Last Year</a></li>
+					<li><a href="#tab_larva2"> Correlation</a></li>
+				</ul>
+			<!-- Summary Tab -->
+				<div id="tab_summary">
+					 <h3>Dengue Cases Summary</h3>
+					    <div id="dashboard">
+					      <table>
+					        <tr style='vertical-align: top'>
+					          <td style='width: 300px; font-size: 0.9em;'>
+					            <div id="control1"></div>
+					            <div id="control2"></div>
+					            <div id="control3"></div>
+					          </td>
+					          <td>
+					            <div style="float: left;" id="chart1"></div>
+					            <div style="float: left;" id="chart2"></div>
+					            <div style="float: left;" id="chart3"></div>
+					          </td>
+					        </tr>
+					      </table>
+					    </div>
+					    <div id='table_div1'></div>
+				</div>
+				<div id="tab_larva">
+					 <div id='chart_div'></div>
+					 
+					 
+				</div>
+				<div id="tab_larva2">
+				<div id='chart_div2'></div>
    <div><h5>*1 means perfect correlation, 0 means no correlation, positive values means the relationship is positive (when one goes up so does the other), negative values mean the relationship is negative (when one goes up the other goes down)
    </h5></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end Sidebar -->
+	
+   
+  
+  
+   
    
    
 
@@ -1012,10 +1074,7 @@ echo form_open('CHO/tweet',$attributes); ?>
 </table>
 </body>
 </div>
-<center>
-<h3>Immediate Cases found during the week by BHW</h3>
-<div id='table_div1' align="center"></div>
-</center>
+
 <br />
 <h4><center>Tweet Status</center></h4>
 <table  border="1"  align="center">

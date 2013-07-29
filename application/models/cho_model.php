@@ -562,6 +562,7 @@
 			$qString .= "get_immediate_case('"; // name of stored procedure
 			$qString .=
 			//variables needed by the stored procedure
+			date('Y-m-01',strtotime('this month')) . "','" .
 			date('y-m-d'). "'". ")";
 			$q = $this->db->query($qString);
 			//*
@@ -570,11 +571,12 @@
 			foreach ($q->result() as $row)
 			{
 				$data .=
-				$row->f_name.' '.$row->l_name . "&&" .
-				$row->age . "&&" .	
-				$row->sex . "&&" .
-				$row->address . "&&" .
-				$row->remarks . "%%" ;
+				$row->cr_first_name.' '.$row->cr_last_name . "&&" .
+				$row->cr_age . "&&" .	
+				$row->cr_sex . "&&" .
+				$row->cr_barangay . "&&" .
+				$row->cr_street . "&&" .
+				$row->cr_date_onset . "%%" ;
 			}
 			return $data;
 			}
