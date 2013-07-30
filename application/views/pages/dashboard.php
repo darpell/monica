@@ -931,8 +931,11 @@
 	});
 </script>
   <div class="body">
-  
+<br>
   <center>
+ <h2> Dengue Cases and Larval Positives for the Month of <?php echo date('F') . ' ' . date('Y'); ?></h2>
+    <br>
+      <br>
   	<!-- Sidebar -->
 	<div id="sidebar">
 		<div id="sidebar-higher"></div>
