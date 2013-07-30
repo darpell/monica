@@ -22,9 +22,6 @@ class Remap extends CI_Controller
 			$beginDate = $this->input->post('beginDate');
 			$endDate = $this->input->post('endDate');
 			$overlays = $this->input->post('overlays');
-			print_r($beginDate);
-			print_r($endDate);
-			print_r($overlays);
 			$data['begin_date'] = $beginDate;
 			$data['end_date'] = $endDate;
 		}//*/
@@ -40,46 +37,52 @@ class Remap extends CI_Controller
 		//$current_date = date("Y-m-d");
 		$dates['date1']=$data['begin_date'];
 		$dates['date2']=$data['end_date'];
+		$temp['dateSel1']=$data['begin_date'];
+		$temp['dateSel2']=$data['end_date'];
+		$temp['barangay']=null;
 		
 		if (sizeOf($overlays) != 0)
 		{
-			if (in_array('risk_areas',$overlays))
+			if (in_array('interest_points',$overlays))
 			{
-				// risk nodes
-				$data['map_nodes'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date']);
+				// POI nodes
+				$data['pointsOfInterest'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date']);
 			}
-			else { $data['map_nodes'] = NULL; }
-			if (in_array('pidsr_cases',$overlays))
+			else { $data['pointsOfInterest'] = NULL; }
+			if (in_array('investigatedCases_points',$overlays))
 			{
-				//TODO
+				//Investigated cases
+				//$data['investigatedCases'] = $this->remap_model->investigated_cases($temp);
 			}
-			if (in_array('plot_cases',$overlays))
+			if (in_array('larvalPositive_points',$overlays))
 			{
-				// larval points
-				$data['points'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date']);
+				// Positive Larval Surveys
+				$data['larvalPositives'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date']);
 			}
-			else { $data['points'] = NULL; }
-			// polygon nodes
-			$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
+			else { $data['larvalPositives'] = NULL; }
 		}
 		else
 		{
 			// larval points
-			$data['points'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date']);
-			
+			$data['larvalPositives'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date']);
+
 			// risk nodes
-			$data['map_nodes'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date']);
+			$data['pointsOfInterest'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date']);
 			
-			// polygon nodes
-			$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
+			// investigated cases
+			//$data['investigatedCases'] = ;
+			
+			
 		}
-		
+		// polygon nodes
+		$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
+		$data['larval_array'] = $this->remap_model->getLarvalCount($data['begin_date'], $data['end_date']);
 		//ages (Returns an array, code found in the function "getBarangayAges")
 		$data['ages_array'] = $this->remap_model->getBarangayAges($dates);//print_r($data['ages_array']);
 		$data['dengue_array'] = $this->remap_model->getDengueInfo($dates);//print_r($data['dengue_array']);
 		//$data['PoI_distance_array'] = $this->larval_mapping->distance_formula_PoI($dates);//print_r($data['PoI_distance_array']);
 		$data['brgys'] = $this->remap_model->get_brgy_with_cases($data['begin_date'], $data['end_date']);
-		$this->load->view('pages/remap',$data);
+		$this->load->view('pages/remap',array_merge($data,$this->remap_model->investigated_cases($temp)));
 	}
 }
 

@@ -42,33 +42,6 @@ class Remap_model extends CI_Model
 		$query->free_result();
 	}
 	
-	function get_pidsr_case_count($begin_date = FALSE, $end_date = FALSE, $place = NULL, $value = NULL)
-	{
-		//TODO
-		$this->db->select('cr_barangay');
-		$this->db->select('count()r_barangay');
-		$this->db->from('case_report_main');
-		$this->db->group_by('cr_barangay');
-		$this->db->order_by('cr_barangay');
-		if ($place != NULL && $place != 'NULL')
-		{
-			$this->db->where($this->check_place($place),$value);
-		}
-			
-		if ($begin_date === FALSE && $end_date === FALSE)
-		{
-			$query = $this->db->get();
-			return $query->result_array();
-			$query->free_result();
-		}
-		
-		//$this->db->where("node_addedOn BETWEEN '$begin_date' AND '$end_date'");
-		
-		$query = $this->db->get();
-		return $query->result_array();
-		$query->free_result();
-	}
-	
 	function get_brgy_with_cases($begin_date = FALSE, $end_date = FALSE)
 	{
 		$this->db->select('cr_barangay');
@@ -136,8 +109,21 @@ class Remap_model extends CI_Model
 		//*/
 	}
 	
+	function getLarvalCount($date1, $date2)
+	{
+		$query = $this->db->query("
+			SELECT DISTINCT(ls_barangay),count(tracking_number) as 'count' FROM demo.ls_report_header
+			LEFT JOIN ls_report_main on ls_report_header.ls_no=ls_report_main.ls_no
+			WHERE ls_date BETWEEN '" . $date1 . "' AND '" . $date2 . "'
+			GROUP BY ls_barangay				
+		");
+		return $query->result_array();
+		$query->free_result();
+	}
+	
 	function getDengueInfo($data2)
 	{
+		
 		$qString = 'CALL ';
 		$qString .= "get_brangay_count('"; // name of stored procedure
 		$qString .=
