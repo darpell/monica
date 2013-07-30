@@ -74,6 +74,19 @@ class Remap extends CI_Controller
 			
 			
 		}
+		
+		$denguetemp = array();
+		$denguetemp = $this->remap_model->investigated_cases($temp);
+		$bouncetemp = $this->remap_model->getICBounce($denguetemp,$data['pointsOfInterest']);
+		$i=0;
+		$NewArray = array();
+		foreach($denguetemp['dataCases'] as $value) {
+			$NewArray[] = array_merge($value,array($bouncetemp[$i]));
+			$i++;
+		}
+		$data['data_exists']=$denguetemp['data_exists'];
+		$data['dataCases']=$NewArray;
+		//print_r($NewArray);
 		// polygon nodes
 		$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes();
 		$data['larval_array'] = $this->remap_model->getLarvalCount($data['begin_date'], $data['end_date']);
@@ -82,7 +95,7 @@ class Remap extends CI_Controller
 		$data['dengue_array'] = $this->remap_model->getDengueInfo($dates);//print_r($data['dengue_array']);
 		//$data['PoI_distance_array'] = $this->larval_mapping->distance_formula_PoI($dates);//print_r($data['PoI_distance_array']);
 		$data['brgys'] = $this->remap_model->get_brgy_with_cases($data['begin_date'], $data['end_date']);
-		$this->load->view('pages/remap',array_merge($data,$this->remap_model->investigated_cases($temp)));
+		$this->load->view('pages/remap',array_merge($data,$NewArray));
 	}
 }
 

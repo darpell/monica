@@ -117,9 +117,19 @@ td.bottom { vertical-align:bottom; }
 
 			if (document.getElementById("map_nodes_result_length").value != 0)
 			{
-				var image = document.getElementById("node_icon").value;
+				var image;
 				for (var ctr = 0; ctr < document.getElementById("map_nodes_result_length").value; ctr++)
 				{
+					var nd_type="Risk Area";
+					if(document.getElementById("nd_type" + ctr).value==0)
+					{
+						image = document.getElementById("nodeSource_icon").value;
+						nd_type="Source Area";
+					}
+					else
+					{
+						image = document.getElementById("nodeRisk_icon").value;
+					}
 					var node_marker = new google.maps.Marker({
 											position: new google.maps.LatLng(
 											document.getElementById("nd_lat" + ctr).value,
@@ -143,11 +153,6 @@ td.bottom { vertical-align:bottom; }
 					oms.addListener('click', function(node_marker) {
 							node_marker_info.open(map, node_marker);
 						});//*/
-						var nd_type="Risk Area";
-						if(document.getElementById("nd_type" + ctr).value==0)
-						{
-							nd_type="Source Area";
-						}
 							
 					var info=
 						"<b>"+document.getElementById("nd_name" + ctr).value+"</b>"+"<br/>"+
@@ -168,11 +173,22 @@ td.bottom { vertical-align:bottom; }
 			{//alert("0");
 				for (var pt_ctr = 0; pt_ctr < document.getElementById("ic_length").value; pt_ctr++) 
 				{	
+					point=new google.maps.LatLng(
+							document.getElementById("ic_lat" + pt_ctr).value,
+							document.getElementById("ic_lng" + pt_ctr).value
+							);
+					circle = new google.maps.Circle({
+						center:point,
+						radius:200,
+						strokeColor:"#0000FF",
+						strokeOpacity:0.7,
+						strokeWeight:1,
+						fillColor:"#0000FF",
+						fillOpacity:0.05,
+						clickable:false
+					}); 
 					caseMarker=new google.maps.Marker({
-						  position: new google.maps.LatLng(
-									document.getElementById("ic_lat" + pt_ctr).value,
-									document.getElementById("ic_lng" + pt_ctr).value
-									),
+						  position:point ,
 						  map: map
 						});
 					
@@ -198,6 +214,11 @@ td.bottom { vertical-align:bottom; }
 					+"Outcome: "+o+"<br/>"+"<br/>"
 					+"Feedback: "+document.getElementById("ic_outcome" + pt_ctr).value+"<br/>";
 					setInfo(caseMarker,info,map);
+					if(document.getElementById("ic_bounce" + pt_ctr).value==1)
+					{
+						caseMarker.setAnimation(google.maps.Animation.BOUNCE);
+						circle.setMap(map);
+					}
 					oms.addMarker(caseMarker);
 				}
 			}
@@ -358,7 +379,8 @@ td.bottom { vertical-align:bottom; }
 		<input type="hidden" id="pt_container<?= $ctr ?>" 		value="<?php echo $larvalPositives[$ctr]['ls_container']; ?>"	/>
 		<input type="hidden" id="pt_tracking_no<?= $ctr ?>" 	value="<?php echo $larvalPositives[$ctr]['tracking_number']; ?>"	/>
 		<input type="hidden" id="pt_ref_no<?= $ctr ?>" 	value="<?php echo $larvalPositives[$ctr]['ls_no']; ?>"	/>
-	<?php }?> <input type="hidden" id="case_icon" value="<?php echo base_url('/images/arrow.png')?>" />
+	<?php }?> 
+	<input type="hidden" id="case_icon" value="<?php echo base_url('/images/arrow.png')?>" />
 	<?php } else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
 		
 <!-- Investigated Cases -->	
@@ -376,6 +398,7 @@ td.bottom { vertical-align:bottom; }
 		<input type="hidden" id="ic_barangay<?= $ctr ?>" 		value="<?php echo $value['ic_barangay']; ?>"	/>
 		<input type="hidden" id="ic_street<?= $ctr ?>" 		value="<?php echo $value['ic_street']; ?>"	/>
 		<input type="hidden" id="ic_outcome<?= $ctr ?>" 		value="<?php echo $value['ic_outcome']; ?>"	/>
+		<input type="hidden" id="ic_bounce<?= $ctr ?>" 		value="<?php echo $value['0']; ?>"	/>
 	<?php $ctr++;}?> 
 	<?php } else { ?> <input type="hidden" id="ic_length" value="0" /> <?php } ?>
 	
@@ -393,7 +416,8 @@ td.bottom { vertical-align:bottom; }
 		<input type="hidden" id="nd_addedOn<?= $ctr ?>"	value="<?php echo $pointsOfInterest[$ctr]['node_addedOn']; ?>"		/>
 		<input type="hidden" id="nd_notes<?= $ctr ?>" 	value="<?php echo $pointsOfInterest[$ctr]['node_notes']; ?>"	/>
 	<?php } ?>
-		<input type="hidden" id="node_icon" value="<?php echo base_url('/images/notice.png')?>" />
+		<input type="hidden" id="nodeSource_icon" value="<?php echo base_url('/images/eggs.png')?>" />
+		<input type="hidden" id="nodeRisk_icon" value="<?php echo base_url('/images/group.png')?>" />
 	<?php } else { ?> <input type="hidden" id="map_nodes_result_length" value="0" /> <?php } ?>
 <!-- //end Dengue Risk Areas -->
 	

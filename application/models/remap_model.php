@@ -161,6 +161,37 @@ class Remap_model extends CI_Model
 		}
 		//*/
 	}
+	
+	function getICBounce($ic,$poi)
+	{
+		$retArr = array();
+		//print_r($ic);
+		foreach ($ic['dataCases'] as $oldkey => $value)
+		{
+			$bounce=0;
+			$lat_a=$value['ic_lat']* PI()/180;
+			$long_a=$value['ic_lng']* PI()/180;
+			foreach($poi as $key => $value2)
+			{
+				$lat_b = $value2['node_lat'] * PI()/180;
+				$long_b = $value2['node_lng'] * PI()/180;
+				$distance =
+				acos(
+						sin($lat_a ) * sin($lat_b) +
+						cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+				) * 6371;
+				$distance*=1000;
+				if ($distance<=200)
+				{
+					$bounce=1;
+				}
+				
+			}
+			array_push($retArr,$bounce);
+		}
+		print_r($retArr);
+		return $retArr;
+	}
 
 	function getRepeatingLarvals($data2)
 	{
