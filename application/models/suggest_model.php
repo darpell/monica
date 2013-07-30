@@ -108,25 +108,23 @@ class Suggest_model extends CI_Model
 		
 		
 	}
-	function get_tasks($status)
+function get_tasks($status,$bgy)
 	{
 		$dataReturn[]=array(
-				'Tasked By',
-				'Tasked To',
-				'Status',
+				//'Tasked By',
+				//'Tasked To',
+				//'Status',
 				'Task Name',
 				'Description',
-				'Remarks',
+				//'Remarks',
 				'Sent On',
-				'Completed On');
+				//'Completed On'
+				);
 		//*
 		$this->db->from('tasks');
-		$this->db->where('status',$status);
-		if($status=="complete")
-		{
-			$this->db->limit(10);
-		}
-	
+		$this->db->join('bhw', 'bhw.user_username = tasks.sent_to');
+		$this->db->where('tasks.task_header',$status);
+		$this->db->where('bhw.barangay',$bgy);
 		$q = $this->db->get();
 		//*/
 		if($q->num_rows() > 0)
@@ -134,14 +132,14 @@ class Suggest_model extends CI_Model
 			foreach ($q->result() as $row)
 			{
 				$dataReturn[]=array(
-						'sent_by'=> $row->sent_by,
-						'sent_to'=> $row->sent_to,
-						'status'=> $row->status,
+					//	'sent_by'=> $row->sent_by,
+					//	'sent_to'=> $row->sent_to,
+					//	'status'=> $row->status,
 						'task_header'=> $row->task_header,
 						'task'=> $row->task,
-						'remarks'=> $row->remarks,
+						//'remarks'=> $row->remarks,
 						'date_sent'=> $row->date_sent,
-						'date_accomplished'=> $row->date_accomplished,
+						//'date_accomplished'=> $row->date_accomplished,
 				);
 			}
 		}

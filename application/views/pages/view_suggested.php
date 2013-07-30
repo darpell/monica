@@ -128,7 +128,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 				<div id="tabs-1">
 					<h2> Larval Occurrences</h2>
 					<div id="googleMap" style="width: 100%; height: 350px"></div>
-					<?php if ($presentDataExists === true){$ctr=0;?>
+					<?php if (count($presentData) > 0){$ctr=0;?>
 					<input type="hidden" id="present_length" value="<?php echo count($presentData); ?>" />
 						<?php foreach ($presentData as $value) {?>
 							<input type="hidden" id="lsPres_lat<?= $ctr ?>" 		value="<?php echo $value['ls_lat']; ?>"	/>
@@ -143,7 +143,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 						<?php } else { ?> <input type="hidden" id="present_length" value="0" /> <?php } ?>
 					
 					<div id="map_text_header">
-					<?php if ($oldDataExists === true){$ctr=0;
+					<?php if (count($oldData)>0){$ctr=0;
 							echo "<p>There are <b>".count($oldData)."</b> areas that have consistent repeating larval samplings for this season over the past <b>2 years</b>.<br/>These areas are: </p>";?>
 					</div>
 					<input type="hidden" id="old_length" value="<?php echo count($oldData); ?>" />
