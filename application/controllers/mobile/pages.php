@@ -26,6 +26,7 @@ class Pages extends CI_Controller
 				//$this->load->view('mobile/current_pos');
 				$this->load->view('mobile/plot');
 			
+			// SUBJECT FOR DELETION
 			else if ($page == 'larval_survey')
 				$this->load->view('mobile/ls_form');
 			
