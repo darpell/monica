@@ -21,10 +21,11 @@
 				<?php for ($ctr = 0; $ctr < count($subjects); $ctr++) {?>
 				
 				<li> <a href="<?php echo site_url('mobile/household/' . $subjects[$ctr]['household_id']);?>" data-ajax="false" data-transition="slide">
-					<?php echo $subjects[$ctr]['house_no']; ?> <!-- Household No. e.g. "Blk 2" --> located at
+					<?php echo $subjects[$ctr]['household_name']; ?> <!-- Household No. e.g. "Blk 2" --> located at
+					<?php echo $subjects[$ctr]['house_no']; ?>, <!-- Household No. e.g. "Blk 2" --> 
 					<?php echo $subjects[$ctr]['street']; ?> <!-- Street -->
 					<p class="ui-li-aside"> Last Visited On <strong>
-					<?php echo $subjects[$ctr]['last_visited_on']; ?> <!-- Last Visited On -->
+					<?php echo $subjects[$ctr]['last_visited']; ?> <!-- Last Visited On -->
 					</strong></p>
 					</a>
 				</li>

@@ -34,6 +34,47 @@ class Master_list extends CI_Controller
 		$data['household_persons'] = $this->masterlist->get_households($this->session->userdata('TPusername'),$household_id,$person_id);
 		$this->load->view('mobile/person_details_view', $data);
 	}
+	
+	function add_immediate_case()
+	{			
+		$this->form_validation->set_rules('duration', 'Dengue Fever Duration', 'callback_check_range|required');
+		
+		//$symptoms = $this->input->post('symptoms');
+		
+		//print_r($symptoms);
+				
+		if ($this->form_validation->run() === FALSE)
+		{
+			//redirect(uri_string(),'refresh');
+			//var_dump($_POST['household_id']);
+			$this->view_person();
+			//$this->view_person();//$this->load->view('mobile/view/household/' . $this->input->post('household_id') . '/person/' . $this->input->post('person_id'), $data);
+		}
+		else
+		{
+			$this->masterlist->add_immediate_cases();
+			$data['result'] = 'Your entry has been recorded';
+			$this->load->view('mobile/im_case_success',$data);
+		}
+	}
+	
+	public function check_range($num)
+	{
+		if ($num <= 0)
+		{
+			$this->form_validation->set_message('check_range', 'The %s field could not be less than nor equal to 0');
+			return FALSE;
+		}
+		else if ($num > 20)
+		{
+			$this->form_validation->set_message('check_range', 'The %s field could not more than 20');
+			return FALSE;
+		}
+		else
+		{
+			return TRUE;
+		}
+	}
 }
 
 /* End of file mobile/master_list.php */

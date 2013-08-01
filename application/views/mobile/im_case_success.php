@@ -14,7 +14,7 @@
 	<div data-role="content">	
 		<p><?php echo $result; ?></p> <br/>
 		<ul data-role="listview">
-			<li> <a href="<?php echo site_url('mobile/page/uninvestigated_cases');?>" data-ajax="false" data-transition="slide"> Add another entry </a> </li>
+		<!-- <li> <a href="<?php //echo site_url('mobile/page/uninvestigated_cases');?>" data-ajax="false" data-transition="slide"> Add another entry </a> </li> -->
 			<li> <a href="<?php echo site_url('mobile');?>" data-ajax="false" data-transition="slide"> Back to Home </a> </li>
 		</ul>
 	</div><!-- /content -->

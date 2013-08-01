@@ -61,6 +61,7 @@ $route['mobile/case_report'] = 'mobile/case_report';
 $route['mobile/page/master_list'] = 'mobile/master_list';
 $route['mobile/household/(:num)'] = 'mobile/master_list/view_household/$1';
 $route['mobile/view/household/(:num)/person/(:num)'] = 'mobile/master_list/view_person';
+$route['mobile/view/household/(:num)/person/(:num)/add_im'] = 'mobile/master_list/add_immediate_case';
 $route['mobile/case_report_filter/province'] = 'mobile/case_report/province';
 $route['mobile/case_report_filter/cities'] = 'mobile/case_report/cities';
 $route['mobile/case_report_filter/brgys'] = 'mobile/case_report/brgys';

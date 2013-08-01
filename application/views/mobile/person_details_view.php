@@ -60,6 +60,65 @@
 			<?php } ?>
 		</ul>
 		
+		<form name="symptom_form" action="<?php echo $household_persons[0]['person_id']; ?>/add_im" method="post" data-ajax="false">
+		
+		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
+				<div data-role="collapsible">
+					<h2> Has Fever?</h2>
+					
+					<?php for ($ctr = 0; $ctr < count($household_persons); $ctr++) {?>
+						<input type="hidden" name="household_id" id="household_id" value="<?php echo $household_persons[$ctr]['household_id']; ?>"	/>
+						<input type="hidden" name="person_id" id="person_id" value="<?php echo $household_persons[$ctr]['person_id']; ?>"	/>
+					<?php } ?>	
+					<ul data-role="listview">
+					
+						<li  data-role="fieldcontain">
+							 	<fieldset data-role="controlgroup">
+									Other dengue related symptoms:
+									<input type="checkbox" name="has_muscle_pain" id="checkbox-1a" value="Y" />
+									<label for="checkbox-1a"> Muscle Pain </label>
+				
+									<input type="checkbox" name="has_joint_pain" id="checkbox-2a" value="Y" />
+									<label for="checkbox-2a"> Joint Pain </label>
+									
+									<input type="checkbox" name="has_headache" id="checkbox-3a" value="Y" />
+									<label for="checkbox-3a"> Headache </label>
+				
+									<input type="checkbox" name="has_rashes" id="checkbox-4a" value="Y" />
+									<label for="checkbox-4a"> Rashes </label>
+									
+									<input type="checkbox" name="has_bleeding" id="checkbox-5a" value="Y" />
+									<label for="checkbox-5a"> Bleeding </label>
+							    </fieldset>
+							</li>
+						
+						
+						<!-- TODO limit the minimum to 0 -->
+						<li data-role="fieldcontain">
+						    <label for="name"> Duration of Fever: </label>
+							<label style="color:red"><?php echo form_error('duration'); ?></label>
+						    <input type="number" name="duration" id="duration" value="" min="1" max="20" />
+						</li>
+							
+						<li data-role="fieldcontain">
+						    <label for="name"> Suspected Source: (recent journey, etc.) </label>
+						    <input type="text" name="source" id="source" value="<?php echo set_value('source'); ?>" />
+						</li>
+						
+						<li data-role="fieldcontain">
+						<label for="textarea"> Remarks: (medicine intake, etc.) </label>
+							<textarea name="remarks" id="remarks"> <?php echo set_value('remarks'); ?> </textarea>
+						</li>
+						
+						<li>
+							<input type="submit" value="Submit" />
+						</li>
+					
+					</ul>
+					
+				</div>
+		</div>
+		</form>
 	</div><!-- /content -->
 </div><!-- /page -->
 

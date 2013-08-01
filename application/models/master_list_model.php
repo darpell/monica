@@ -9,6 +9,33 @@
 			$this->load->database('default');
 		}
 		
+		function add_immediate_cases()
+		{
+			$data = array(
+					'person_id'			=> $this->input->post('person_id'),
+					'has_muscle_pain'	=> $hmp = ($this->input->post('has_muscle_pain') == 'Y') ? 'Y' : 'N',
+					'has_joint_pain'	=> $hjp = ($this->input->post('has_joint_pain') == 'Y') ? 'Y' : 'N',
+					'has_headache'		=> $hh = ($this->input->post('has_headache') == 'Y') ? 'Y' : 'N',
+					'has_bleeding'		=> $hb = ($this->input->post('has_bleeding') == 'Y') ? 'Y' : 'N',
+					'has_rashes'		=> $hr = ($this->input->post('has_rashes') == 'Y') ? 'Y' : 'N',
+					'days_fever'		=> $this->input->post('duration'),
+					'suspected_source'	=> $this->input->post('source'),
+					'remarks'			=> $this->input->post('remarks')
+			);
+			$this->db->set('created_on', 'NOW()', FALSE);
+			$this->db->set('last_updated_on', 'NOW()', FALSE);
+			$this->db->insert('immediate_cases', $data);
+			
+			// updates last_visited_on at `household_address`
+			$hh = array(
+					'last_visited' => date('Y-m-d')
+			);
+			
+			$this->db->where('household_id',$this->input->post('household_id'));
+			$this->db->update('household_address', $hh);
+			
+		}
+		
 		function get_households($bhw, $household_id = FALSE, $person_id = FALSE)
 		{
 			$this->db->from('catchment_area');
