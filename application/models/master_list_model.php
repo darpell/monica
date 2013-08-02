@@ -20,7 +20,9 @@
 					'has_rashes'		=> $hr = ($this->input->post('has_rashes') == 'Y') ? 'Y' : 'N',
 					'days_fever'		=> $this->input->post('duration'),
 					'suspected_source'	=> $this->input->post('source'),
-					'remarks'			=> $this->input->post('remarks')
+					'remarks'			=> $this->input->post('remarks'),
+					'imcase_lat'		=> $this->input->post('lat'),
+					'imcase_lng'		=> $this->input->post('lng')
 			);
 			$this->db->set('created_on', 'NOW()', FALSE);
 			$this->db->set('last_updated_on', 'NOW()', FALSE);

@@ -1,6 +1,63 @@
 <!-- HEADER -->
 <?= $this->load->view('/mobile/templates/mob_header') ?>
 
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
+    <script type="text/javascript">
+		$( document ).bind( "mobileinit", function() {
+			// Make your jQuery Mobile framework configuration changes here!
+			$.support.cors = true;
+			$.mobile.allowCrossDomainPages = true;
+		});
+    </script>
+    <script>
+var geocoder = new google.maps.Geocoder();
+function initialize(){
+	
+        if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    }
+}
+      function showPosition(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var latlng = new google.maps.LatLng(lat, lng);
+        geocoder.geocode({'latLng': latlng}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+              	//alert(results[0].formatted_address);
+				//document.getElementById("test").innerHTML = results[0].formatted_address;
+				document.getElementById("lat").value = lat;
+				document.getElementById("lng").value = lng;				
+            } else {
+              alert('No results found');
+            }
+          } else {
+            alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
+
+       function showError(error)
+	  {
+	  switch(error.code) 
+	    {
+	    case error.PERMISSION_DENIED:
+	      x.innerHTML="User denied the request for Geolocation.";
+	      break;
+	    case error.POSITION_UNAVAILABLE:
+	      x.innerHTML="Location information is unavailable.";
+	      break;
+	    case error.TIMEOUT:
+	      x.innerHTML="The request to get user location timed out.";
+	      break;
+	    case error.UNKNOWN_ERROR:
+	      x.innerHTML="An unknown error occurred.";
+	      break;
+	    }
+	  }
+</script>
+
 <!-- CONTENT -->
 </head> 
 <body onload="initialize()"> 
@@ -61,6 +118,11 @@
 		</ul>
 		
 		<form name="symptom_form" action="<?php echo $household_persons[0]['person_id']; ?>/add_im" method="post" data-ajax="false">
+		
+		<!-- lat & lng -->
+		<input type="hidden" name="lat" id="lat" />
+		<input type="hidden" name="lng" id="lng" />
+		<!-- /lat & lng -->
 		
 		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
 				<div data-role="collapsible">
