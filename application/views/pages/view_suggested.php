@@ -122,8 +122,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 								   );
 					$this->table->set_template($tmpl);
 					echo $this->table->generate($pendingTasks);?>
-					<p>Completed Tasks (Last 10)</p>
-					<?php echo $this->table->generate($completeTasks);?>
+
 				</div>
 				<div id="tabs-1">
 					<h2> Larval Occurrences</h2>
