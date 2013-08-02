@@ -92,6 +92,7 @@ td.bottom { vertical-align:bottom; }
 			var x2=-999;
 			var y1=999;
 			var y2=-999;
+			var cimage = document.getElementById("nodeCase_icon").value;
 
 			/** Sample Larval Data used as case data **/
 			if (document.getElementById("result_length").value != 0)
@@ -126,33 +127,20 @@ td.bottom { vertical-align:bottom; }
 						image = document.getElementById("nodeSource_icon").value;
 						nd_type="Source Area";
 					}
-					else
+					else if(document.getElementById("nd_bounce" + ctr).value==1)
 					{
-						image = document.getElementById("nodeRisk_icon").value;
+						image = document.getElementById("nodeRisk2_icon").value;
 					}
+					else
+						image = document.getElementById("nodeRisk_icon").value;
+					point = new google.maps.LatLng(
+							document.getElementById("nd_lat" + ctr).value,
+							document.getElementById("nd_lng" + ctr).value);
 					var node_marker = new google.maps.Marker({
-											position: new google.maps.LatLng(
-											document.getElementById("nd_lat" + ctr).value,
-											document.getElementById("nd_lng" + ctr).value		
-										),
+										position: point,
 										map: map,
 										icon: image
 							});
-
-					/*
-					var node_marker_info = new google.maps.InfoWindow({
-								content: 'test'
-							});//*/
-
-					/*
-					google.maps.event.addListener(node_marker, 'click', function() {
-						node_marker_info.open(map,node_marker);
-						});//*/
-					
-					/*
-					oms.addListener('click', function(node_marker) {
-							node_marker_info.open(map, node_marker);
-						});//*/
 							
 					var info=
 						"<b>"+document.getElementById("nd_name" + ctr).value+"</b>"+"<br/>"+
@@ -162,6 +150,23 @@ td.bottom { vertical-align:bottom; }
 					setInfo(node_marker,info,map);
 					oms.addMarker(node_marker);
 					markers.push(node_marker);
+					//*
+					if(document.getElementById("nd_bounce" + ctr).value==1)
+					{
+						new google.maps.Circle({
+							center:point,
+							radius:200,
+							strokeColor:"#0000FF",
+							strokeOpacity:0.7,
+							strokeWeight:1,
+							fillColor:"#0000FF",
+							fillOpacity:0.05,
+							clickable:false
+						}).setMap(map); 
+						//circle;
+						if(document.getElementById("nd_type" + ctr).value==0)
+							node_marker.setAnimation(google.maps.Animation.BOUNCE);
+					}//*/
 				}
 			}
 
@@ -177,19 +182,10 @@ td.bottom { vertical-align:bottom; }
 							document.getElementById("ic_lat" + pt_ctr).value,
 							document.getElementById("ic_lng" + pt_ctr).value
 							);
-					circle = new google.maps.Circle({
-						center:point,
-						radius:200,
-						strokeColor:"#0000FF",
-						strokeOpacity:0.7,
-						strokeWeight:1,
-						fillColor:"#0000FF",
-						fillOpacity:0.05,
-						clickable:false
-					}); 
 					caseMarker=new google.maps.Marker({
 						  position:point ,
-						  map: map
+						  map: map,
+						  icon: cimage
 						});
 					
 					var s="Female";
@@ -213,12 +209,12 @@ td.bottom { vertical-align:bottom; }
 					+"Gender: "+s+"<br/>"
 					+"Outcome: "+o+"<br/>"+"<br/>"
 					+"Feedback: "+document.getElementById("ic_outcome" + pt_ctr).value+"<br/>";
-					setInfo(caseMarker,info,map);
+					setInfo(caseMarker,info,map);/*
 					if(document.getElementById("ic_bounce" + pt_ctr).value==1)
 					{
 						caseMarker.setAnimation(google.maps.Animation.BOUNCE);
 						circle.setMap(map);
-					}
+					}//*/
 					oms.addMarker(caseMarker);
 				}
 			}
@@ -398,7 +394,6 @@ td.bottom { vertical-align:bottom; }
 		<input type="hidden" id="ic_barangay<?= $ctr ?>" 		value="<?php echo $value['ic_barangay']; ?>"	/>
 		<input type="hidden" id="ic_street<?= $ctr ?>" 		value="<?php echo $value['ic_street']; ?>"	/>
 		<input type="hidden" id="ic_outcome<?= $ctr ?>" 		value="<?php echo $value['ic_outcome']; ?>"	/>
-		<input type="hidden" id="ic_bounce<?= $ctr ?>" 		value="<?php echo $value['0']; ?>"	/>
 	<?php $ctr++;}?> 
 	<?php } else { ?> <input type="hidden" id="ic_length" value="0" /> <?php } ?>
 	
@@ -415,12 +410,14 @@ td.bottom { vertical-align:bottom; }
 		<input type="hidden" id="nd_barangay<?= $ctr ?>" value="<?php echo $pointsOfInterest[$ctr]['node_barangay']; ?>"		/>
 		<input type="hidden" id="nd_addedOn<?= $ctr ?>"	value="<?php echo $pointsOfInterest[$ctr]['node_addedOn']; ?>"		/>
 		<input type="hidden" id="nd_notes<?= $ctr ?>" 	value="<?php echo $pointsOfInterest[$ctr]['node_notes']; ?>"	/>
+		<input type="hidden" id="nd_bounce<?= $ctr ?>" 	value="<?php echo $pointsOfInterest[$ctr]['bounce']; ?>"	/>
 	<?php } ?>
 		<input type="hidden" id="nodeSource_icon" value="<?php echo base_url('/images/eggs.png')?>" />
 		<input type="hidden" id="nodeRisk_icon" value="<?php echo base_url('/images/group.png')?>" />
+		<input type="hidden" id="nodeRisk2_icon" value="<?php echo base_url('/images/group-2.png')?>" />
 	<?php } else { ?> <input type="hidden" id="map_nodes_result_length" value="0" /> <?php } ?>
 <!-- //end Dengue Risk Areas -->
-	
+		<input type="hidden" id="nodeCase_icon" value="<?php echo base_url('/images/mosquito.png')?>" />
 	<!-- Polygon Nodes -->
 <input type="hidden" id="polygon_nodes_result_length" value="<?php echo count($polygon_nodes); ?>" />
 	<?php for ($ctr = 0; $ctr < count($polygon_nodes); $ctr++) {?>
@@ -472,8 +469,8 @@ td.bottom { vertical-align:bottom; }
 								},
 								defaultValues:
 								{
-									min: new Date((today.getFullYear()-1), today.getMonth(), today.getDate()),
-									max: today
+									min: new Date(<?php echo $b_date?>),
+									max: new Date(<?php echo $e_date?>)
 								}
 							});
 						var dateValues = $("#slider").dateRangeSlider("values");
@@ -659,6 +656,29 @@ td.bottom { vertical-align:bottom; }
 	<!-- Map div -->
 	<div id="googleMap"></div>
 	<!-- //Map div -->
+	
+	<?php $tmpl = array (
+						'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',
+					    'heading_row_start'   => '<tr>',
+					    'heading_row_end'     => '</tr>',
+					    'heading_cell_start'  => '<th id="result" scope="col">',
+					    'heading_cell_end'    => '</th>',
+					    'row_start'           => '<tr>',
+					    'row_end'             => '</tr>',
+					    'cell_start'          => '<td align="center">',
+					    'cell_end'            => '</td>',
+					    'row_alt_start'       => '<tr style="background-color: #e3e3e3">',
+					    'row_alt_end'         => '</tr>',
+					    'cell_alt_start'      => '<td align="center">',
+					    'cell_alt_end'        => '</td>',
+					    'table_close'         => '</table>'
+					   );
+		$this->table->set_template($tmpl);
+		echo "<br/><center><b>Possible Source Areas</b><br/>";
+		echo $this->table->generate($sourceTable);
+		echo "<br/><center><b>Possible Risk Areas</b><br/>";
+		echo $this->table->generate($riskTable);?>
+	
 </div>
 </body>
 </html>

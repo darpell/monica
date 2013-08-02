@@ -13,7 +13,7 @@ class Remap_model extends CI_Model
 		$this->db->from('map_nodes');
 		if ($place != NULL && $place != 'NULL')
 		{
-			$this->db->where($this->check_place($place),$value);
+			$this->db->where($this->check_placen($place),$value);
 		}
 			
 		if ($begin_date === FALSE && $end_date === FALSE)
@@ -22,11 +22,60 @@ class Remap_model extends CI_Model
 			return $query->result_array();
 			$query->free_result();
 		}
-		
-		$this->db->where("node_addedOn BETWEEN '$begin_date' AND '$end_date'");
+
+		$this->db->where("node_addedOn <= '$begin_date' AND (node_endDate ='0000-00-00' OR node_endDate >= '$end_date')");
+		$this->db->or_where("node_addedOn BETWEEN '$begin_date' AND '$end_date' AND node_endDate ='0000-00-00'");
 		$query = $this->db->get();
 		return $query->result_array();
 		$query->free_result();
+	}
+
+	function check_place($place)
+	{
+		if ($place == 'brgy')
+		{
+			return 'ls_barangay';
+		}
+		else if ($place == 'city')
+		{
+			return 'ls_municipality';
+		}
+		else if ($place == 'street')
+		{
+			return 'ls_street';
+		}
+	}
+	
+	function check_placel($place)
+	{
+		if ($place == 'brgy')
+		{
+			return 'cr_barangay';
+		}
+		else if ($place == 'city')
+		{
+			return 'cr_city';
+		}
+		else if ($place == 'street')
+		{
+			return 'cr_street';
+		}
+	}
+	
+	function check_placen($place)
+	{
+		if ($place == 'brgy')
+		{
+			return 'node_barangay';
+		}
+		else if ($place == 'city')
+		{
+			return 'cr_city';
+		}
+		else if ($place == 'street')
+		{
+			return 'cr_street';
+		}
 	}
 	
 	function get_polygon_nodes($place = NULL)
@@ -42,7 +91,7 @@ class Remap_model extends CI_Model
 		$query->free_result();
 	}
 	
-	function get_brgy_with_cases($begin_date = FALSE, $end_date = FALSE)
+	function get_brgy_with_cases($begin_date = FALSE, $end_date = FALSE, $bar=NULL)
 	{
 		$this->db->select('cr_barangay');
 		$this->db->from('case_report_main');
@@ -58,6 +107,10 @@ class Remap_model extends CI_Model
 		}
 		
 		$this->db->where("cr_date_onset BETWEEN '$begin_date' AND '$end_date'");
+		if($bar!=NULL)
+		{
+			$this->db->where('cr_barangay',$bar);
+		}
 		$query = $this->db->get();
 		return $query->result_array();
 		$query->free_result();
@@ -109,14 +162,17 @@ class Remap_model extends CI_Model
 		//*/
 	}
 	
-	function getLarvalCount($date1, $date2)
+	function getLarvalCount($date1, $date2, $brgy = NULL)
 	{
-		$query = $this->db->query("
+		$qString="
 			SELECT DISTINCT(ls_barangay),count(tracking_number) as 'count' FROM demo.ls_report_header
 			LEFT JOIN ls_report_main on ls_report_header.ls_no=ls_report_main.ls_no
-			WHERE ls_date BETWEEN '" . $date1 . "' AND '" . $date2 . "'
-			GROUP BY ls_barangay				
-		");
+			WHERE ls_date BETWEEN '" . $date1 . "' AND '" . $date2 . "'";
+		if($brgy!=NULL)
+		$qString.=	" AND ls_barangay='".$brgy."' ";
+		$qString.=	"GROUP BY ls_barangay				
+		";
+		$query = $this->db->query($qString);
 		return $query->result_array();
 		$query->free_result();
 	}
@@ -189,7 +245,105 @@ class Remap_model extends CI_Model
 			}
 			array_push($retArr,$bounce);
 		}
-		print_r($retArr);
+		//print_r($retArr);
+		return $retArr;
+	}
+	
+	function getCaseDistancePoI($ic = FALSE,$poi,$lp)
+	{
+		$retArr = array();
+		$poiBounce = array();
+		$poiCount = array();
+		//$rkBounce = array();
+		//print_r($ic);
+		foreach ($poi as $oldkey => $value)
+		{
+			$bounce=false;
+			$bounce2=false;
+			$c1=0;
+			$c2=0;
+			$lat_a=$value['node_lat']* PI()/180;
+			$long_a=$value['node_lng']* PI()/180;
+			if(array_key_exists("dataCases",$ic))
+			foreach($ic['dataCases'] as $key => $value2)
+			{
+				if($value['node_type']==0)
+				{				
+					$lat_b = $value2['ic_lat'] * PI()/180;
+					$long_b = $value2['ic_lng'] * PI()/180;
+					$distance =
+					acos(
+							sin($lat_a ) * sin($lat_b) +
+							cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+					) * 6371;
+					$distance*=1000;
+					if ($distance<=200)
+					{
+						$c2++;
+						$bounce=true;
+					}
+				}
+				
+			}
+			foreach($lp as $key => $value2)
+			{
+				$lat_b = $value2['ls_lat'] * PI()/180;
+				$long_b = $value2['ls_lng'] * PI()/180;
+				$distance =
+				acos(
+						sin($lat_a ) * sin($lat_b) +
+						cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+				) * 6371;
+				$distance*=1000;
+				if ($distance<=200)
+				{
+					$c1++;
+					$bounce2=true;
+				}
+			}
+			if($bounce||$bounce2)
+				$poiBounce[]=array('bounce'=>1);
+			else
+				$poiBounce[]=array('bounce'=>0);
+			$poiCount[]=array(
+					'0'=>$c1,
+					'1'=>$c2);
+			//array_push($retArr,$bounce);
+		}
+		
+		foreach ($poi as $oldkey => $value)
+		{
+			$c2=0;
+			if($value['node_type']==1)
+			{
+				$lat_a=$value['node_lat']* PI()/180;
+				$long_a=$value['node_lng']* PI()/180;
+				foreach($poi as $key => $value2)
+				{
+					if($oldkey!=$key && $value2['node_type']==0 && $poiBounce[$key]==1)
+					{
+						$lat_b = $value2['node_lat'] * PI()/180;
+						$long_b = $value2['node_lng'] * PI()/180;
+						$distance =
+						acos(
+								sin($lat_a ) * sin($lat_b) +
+								cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+						) * 6371;
+						$distance*=1000;
+						if ($distance<=200)
+						{
+							$poiBounce[$oldkey]=array('bounce'=>1);
+							$c2++;
+						}
+					}
+				}
+			}
+			$poiCount[]=array(
+					'1'=>$c2);
+		}
+		$retArr['bounceInfo']=$poiBounce;
+		$retArr['countInfo']=$poiCount;
+		
 		return $retArr;
 	}
 
@@ -420,20 +574,11 @@ class Remap_model extends CI_Model
 	{
 		$this->db->from('investigated_cases');
 		$this->db->join('case_report_main','investigated_cases.case_no = case_report_main.cr_patient_no');
-		$where="";
-		if($data['barangay']===null)
+		$where="cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."'";
+		if($data['barangay']!=null)
 		{
-			$where="cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."'";
-		}
-		else
-		{
-			$where="cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."' AND (";
-			foreach ($data['barangay'] as $value)
-			{
-				$where.="cr_barangay='".$value."' OR ";
-			}
-			$where=substr($where, 0, -4).")";
-		}
+			$where.=" AND (cr_barangay='".$data['barangay']."')";
+		}//print_r($where);
 		$this->db->where($where);
 		$q = $this->db->get();
 		
