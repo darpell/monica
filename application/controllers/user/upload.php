@@ -189,7 +189,7 @@ class Upload extends CI_Controller
 		{
 		$this->load->model('Case_report');
 		$this->load->model('notif');
-		
+		$this->load->model('midwife','masterlist');
 		$db_connection = new COM("ADODB.Connection", NULL, 1251);
 		$db_connstr = "DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=" .
 		$this->session->userdata('TPuploadvalues')  . "; ''; '';";
@@ -329,30 +329,32 @@ class Upload extends CI_Controller
 			'TPdateofentry-txt' => $date4[2].'-'.$date4[0].'-'.$date4[1],
 			);
 			$this->Case_report->addCase($data);
+			
+			$bgy =  $barangay[$i];
+			$cases = $this->masterlist->get_cases($bgy);
+			$bhw_id = $this->notif->get_midwife_by_barangay($bgy);
+			
+			if(($cases[date('Y')] > $cases[date('Y')-1]))
+			{
+				$id='highcase-'.date('Y-m').'-'.$bgy;
+				if ($this->notif->checknotifexist($id,$bhw_id))
+				{
+					$data2 = array(
+							'notif_type' => 3,
+							'notification' => 'current number of dengue cases exceeded the previous cases from last year',
+							'unique_id' => $id,
+							'notif_viewed' => 'N',
+							'notif_createdOn' => Date('Y-m-d'),
+							'notif_user' => $bhw_id,
+								
+					);
+					$this->notif->addnotif($data2);
+				}
+			}
 			}
 
 
-				$bgy =  $barangay[$i];
-				$cases = $this->masterlist->get_cases($bgy);
-				$bhw_id = $this->notif->get_midwife_by_barangay($bgy);
 				
-				if(($cases[date('Y')] > $cases[date('Y')-1]))
-				{
-					$id='highcase-'.date('Y-m').'-'.$bgy;
-					if ($this->notif->checknotifexist($id,$bhw_id))
-					{
-						$data2 = array(
-								'notif_type' => 3,
-								'notification' => 'current number of dengue cases exceeded the previous cases from last year',
-								'unique_id' => $id,
-								'notif_viewed' => 'N',
-								'notif_createdOn' => Date('Y-m-d'),
-								'notif_user' => $bhw_id,
-			
-						);
-						$this->notif->addnotif($data2);
-					}
-				}
 			
 
 			$data['title'] = 'View patients';
