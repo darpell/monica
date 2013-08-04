@@ -26,7 +26,12 @@
 					<?php echo $household_persons[$ctr]['person_last_name']; ?>, <!-- Last Name --> 
 					<?php echo $household_persons[$ctr]['person_nationality']; ?>, <!-- Nationality-->
 					<?php echo $household_persons[$ctr]['person_sex']; ?>, <!-- Sex -->
-					<?php echo $household_persons[$ctr]['person_dob']; ?> <!-- Age -->
+					<?php 
+						$bday = $household_persons[$ctr]['person_dob'];
+						$today = new DateTime();//date('Y-m-d');
+						$diff = $today->diff(new DateTime($bday));
+						echo $diff->y;
+					?> <!-- Age -->
 					</a>
 				</li>
 				<?php } ?>

@@ -90,7 +90,12 @@ function initialize(){
 				</li>
 				
 				<li> Age: 
-					<?php echo $household_persons[$ctr]['person_dob']; ?> <!-- Age -->
+					<?php //http://stackoverflow.com/questions/11272691/php-data-difference-giving-fatal-error
+						$bday = $household_persons[$ctr]['person_dob']; 
+						$today = new DateTime();//date('Y-m-d');
+						$diff = $today->diff(new DateTime($bday));
+						echo $diff->y;
+					?> <!-- Age -->
 				</li>
 				
 				<li> Gender: 
