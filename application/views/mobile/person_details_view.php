@@ -122,7 +122,11 @@ function initialize(){
 			<?php } ?>
 		</ul>
 		
-		<form name="symptom_form" action="<?php echo $household_persons[0]['person_id']; ?>/add_im" method="post" data-ajax="false">
+		<form name="symptom_form" action="
+			<?php echo site_url('mobile/view/household/' . 
+									$household_persons[0]['household_id'] .
+									'/person/' . $household_persons[0]['person_id']); //echo $household_persons[0]['person_id']; ?>/add_im" 
+			method="post" data-ajax="false">
 		
 		<!-- lat & lng -->
 		<input type="hidden" name="lat" id="lat" />
