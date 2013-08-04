@@ -8,6 +8,9 @@ class Master_list extends CI_Controller
 		$this->load->model('midwife','masterlist');
 		$this->load->model('Cho_model','Cho_model');
 		$this->load->model('suggest_model');
+		$this->load->model('notif');
+		$this->load->model('larval_mapping');
+		$this->load->model('remap_model');
 		$this->load->library('table');
 	}
 	
@@ -26,6 +29,220 @@ class Master_list extends CI_Controller
 		$this->session->sess_destroy();
 		redirect(substr(base_url(), 0, -1) . '/index.php/login');
 	}
+	}
+	function formatnotifs()
+	{
+		$temp = $this->notif->getnotifs($this->session->userdata('TPusername'));
+		$data = [];
+	
+		for($i  = 0; $i < count($temp);$i++)
+		{	
+			if ($temp[$i]['notif_type'] == 1)
+			$img = "<img src='".base_url('/images/notice.png')."'>";
+			else if ($temp[$i]['notif_type'] == 2)
+			$img = "<img src='".base_url('/images/mosquito.png')."'>";
+			else if ($temp[$i]['notif_type'] == 3)
+			$img = "<img src='".base_url('/images/group-2.png')."'>";
+		
+			$data[]= array(
+					'type' => $img,
+					'notif' => $temp[$i]['notification'],
+					'date' => $temp[$i]['notif_createdOn'],
+					);
+			$img = null;
+		}
+		return $data;
+	}
+	function checkforbounceandred($type)
+	{	
+		//$type = 'invcase';
+
+		if ($type =='larval')
+		{$type = 'bouncelarval';
+		 $msg = 'Larval Positive';
+		}
+		else if ($type == 'imcase')
+		{$type = 'bounceimcase';
+		$msg = 'Immediate Case';
+		}
+		else 
+		{$type = 'bounceinvcase';
+		$msg = 'Investigated Case';
+		}
+		
+		$bhw_id =$this->session->userdata('TPusername');
+		$barangay =  $this->masterlist->get_barangay_midwife($bhw_id);
+		//change this to barangay
+		$midwife = $this->notif->get_midwife_by_barangay($barangay);
+		$bounce = [];
+		$poi  = $this->notif->get_poi($barangay,'source');
+		
+		$lat_a= 14.275500 * PI()/180;
+		$long_a= 120.934998  * PI()/180;
+		for($i = 0; $i < count($poi); $i++)
+		{
+			$lat_b = $poi[$i]['node_lat'] * PI()/180;
+			$long_b = $poi[$i]['node_lng'] * PI()/180;
+			$distance =
+			acos(
+					sin($lat_a ) * sin($lat_b) +
+					cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+			) * 6371;
+			$distance*=1000;
+			if ($distance<=200)
+			{
+				$bounce[]=array(
+						'node_name' => $poi[$i]['node_name'],
+						'node_no' => $poi[$i]['node_no'],
+						'node_lat' => $poi[$i]['node_lat'],
+						'node_lng' => $poi[$i]['node_lng'],
+						);
+				
+			}
+		}
+		if(count($bounce > 0))
+		{
+			$lat_a= [];
+			$long_a= [];
+			
+			for($i = 0; $i < count($bounce); $i++)
+			{	$id = $type.'-'.date('Y-m').'-'.$bounce[$i]['node_no'];
+				if($this->notif->checknotifexist($id,$midwife))
+				{
+				$data2 = array(
+						'notif_type' => 2,
+						'notification' => $msg.' Found Near source area: '. $bounce[$i]['node_name'],
+						'unique_id' => $type.'-'.date('Y-m').'-'.$bounce[$i]['node_no'],
+						'notif_viewed' => 'N',
+						'notif_createdOn' => Date('Y-m-d'),
+						'notif_user' => $midwife,
+				);
+				$this->notif->addnotif($data2);
+				print('new ');
+				}
+			}
+			$risk  = $this->notif->get_poi($barangay,'risk');
+			$redrisk = [];
+			for ($s = 0; $s < count($bounce); $s++)
+			{
+				$lat_a=$bounce[$s]['node_lat']* PI()/180;
+				$long_a=$bounce[$s]['node_lng']* PI()/180;
+				
+				for($i = 0; $i < count($risk); $i++)
+				{
+				$lat_b = $risk[$i]['node_lat'] * PI()/180;
+				$long_b = $risk[$i]['node_lng'] * PI()/180;
+				$distance =
+				acos(
+						sin($lat_a ) * sin($lat_b) +
+						cos($lat_a) * cos($lat_b) * cos($long_b - $long_a)
+				) * 6371;
+				$distance*=1000;
+				if ($distance<=200)
+				{
+				$redrisk[]=array(
+						'node_name' => $risk[$i]['node_name'],
+						'node_no' => $risk[$i]['node_no'],
+						'node_lat' => $risk[$i]['node_lat'],
+						'node_lng' => $risk[$i]['node_lng'],
+										);
+				}
+				}
+			}
+			if(count($redrisk) > 0)
+			{
+				for($i = 0; $i < count($redrisk); $i++)
+				{	$id = 'red-'.date('Y-m').'-'.$redrisk[$i]['node_no'];
+					if($this->notif->checknotifexist($id,$midwife))
+					{
+						$data2 = array(
+								'notif_type' => 3,
+								'notification' => 'Possible Source Area Found Near Risk Area: '. $redrisk[$i]['node_name'],
+								'unique_id' => 'red-'.date('Y-m').'-'.$redrisk[$i]['node_no'],
+								'notif_viewed' => 'N',
+								'notif_createdOn' => Date('Y-m-d'),
+								'notif_user' => $midwife,
+										);
+								$this->notif->addnotif($data2);
+								print('newred ');
+						
+					}
+					$id = 'redcho-'.date('Y-m').'-'.$redrisk[$i]['node_no'].'-'.$barangay;
+					if($this->notif->checknotifexist($id,'CHO'))
+					{
+						$data2 = array(
+								'notif_type' => 3,
+								'notification' => $barangay.': Possible Source Area Found Near Risk Area: '. $redrisk[$i]['node_name'],
+								'unique_id' => 'redcho-'.date('Y-m').'-'.$redrisk[$i]['node_no'].'-'.$barangay,
+								'notif_viewed' => 'N',
+								'notif_createdOn' => Date('Y-m-d'),
+								'notif_user' => 'CHO',
+						);
+						$this->notif->addnotif($data2);
+						print('newredcho ');
+					}
+				}				
+			}
+			
+		} 
+	
+	}
+	function test()
+	{
+		$this->add_case_notif('imcase','asdasdasdasdad' );
+		$this->checkforbounceandred('larval');
+		print('new');
+		$data = $this->notif->getnotifs($this->session->userdata('TPusername'));
+		print_r($data);
+		
+	}
+	function add_case_notif($type,$id)
+	{
+		if ($type == 'imcase')
+		{//chance to person_id
+		$msg = 'New Immediate Case:';
+		}
+		else if($type == 'invcase')
+		{//change to patient_no'
+		$msg = 'Plotted Uninvestigated Case:';
+		}
+		$bhw_id =$this->session->userdata('TPusername');
+		$barangay =  $this->masterlist->get_barangay($bhw_id);
+		
+		$midwife = $this->notif->get_midwife_by_barangay($barangay);
+		$personid = 1;
+		$data2 = array(
+				'notif_type' => 1,
+				'notification' => $msg,
+				'unique_id' => $type.'-'.$personid,
+				'notif_viewed' => 'N',
+				'notif_createdOn' => Date('Y-m-d'),
+				'notif_user' => $midwife,
+		);
+		$this->notif->addnotif($data2);
+	}
+	function check_prev_case_notif()
+	{
+		$bhw_id =$this->session->userdata('TPusername');
+		$barangay =  $this->masterlist->get_barangay_midwife($bhw_id);
+		$data = $this->masterlist->get_cases($barangay);
+		if(($data[date('Y')] > $data[date('Y')-1]))
+		{
+			$id='highcase-'.date('Y-m');
+			if ($this->notif->checknotifexist($id,$bhw_id))
+			{
+				$data2 = array(
+						'notif_type' => 2,
+						'notification' => 'current number of dengue cases xceeded the previous cases from last year',
+						'unique_id' => $id,
+						'notif_viewed' => 'N',
+						'notif_createdOn' => Date('Y-m-d'),
+						'notif_user' => $bhw_id,
+				
+				);
+				$this->notif->addnotif($data2);
+			}
+		}
 	}
 
 	function view_household_bhw()
@@ -81,7 +298,8 @@ class Master_list extends CI_Controller
 		
 	}
 	function view_household_midwife()
-	{
+	{	
+		
 		$this->redirectLogin();
 		$data['title'] = 'Masterlist';
 		$data['script'] = 'view_casereport';
@@ -102,7 +320,7 @@ class Master_list extends CI_Controller
 	
 		if ($this->form_validation->run('') == FALSE)
 		{
-			$data['uninvest'] = $this->suggest_model->get_cases($brgy, '2013-01-01','2013-07-22');
+	
 			$data['households'] = $this->masterlist->get_households(false,$bhw_id);
 			$data['masterlist'] = $this->masterlist->get_masterlist(false,$bhw_id);
 			$data['cases'] = $this->masterlist->get_immediate_cases($bhw_id);
@@ -112,7 +330,7 @@ class Master_list extends CI_Controller
 			for($i = 0; $i < count($temp); $i++)
 			{
 				$x = $temp[$i]['bhw_id']; 
-				$data['catchement'][$x] = array(
+				$data['catchment'][$x][] = array(
 						'Name' => $temp[$i]['household_name'],
 						'House no' => $temp[$i]['house_no'],
 						'street' => $temp[$i]['street'],
@@ -121,8 +339,13 @@ class Master_list extends CI_Controller
 				$data['bhw'][$x] = $temp[$i]['user_firstname'] . ' '. $temp[$i]['user_lastname'] ;
 			
 			}
+			$data['uninvest'] = $this->suggest_model->get_cases($barangay, '2013-01-01', date('Y-m-d'));
 			$data['bhwdd']= $data['bhwdd'][$barangay];
-			
+			$mapdata = $this-> remap($barangay);
+			$data = array_merge($data,$mapdata);
+print($barangay);
+
+			$data['notif'] = $this->formatnotifs();
 			$this->load->view('pages/view_masterlist_midwife', $data);
 		}
 		else
@@ -253,7 +476,6 @@ class Master_list extends CI_Controller
 			);
 				
 			$person_id = $this->masterlist->add_masterlist_midwife($house_id,$data2);
-			print_r($person_id);
 			//$this->masterlist->add_catchment_area($house_id,$person_id,$bhw_id);
 		}
 		$data['households'] = $this->masterlist->get_households(false,$bhw_id);
@@ -264,6 +486,121 @@ class Master_list extends CI_Controller
 		$this->load->view('pages/view_masterlist_midwife', $data);
 	
 	}
+	public function remap($barangay)
+	{
+		//global variables
+		
+		$overlays = [];
+	
+			// setting dates
+			//$data['begin_date'] = date("Y-m") . '-01';
+			$data['begin_date'] = date("Y") . '-08-01';
+			$data['end_date'] = date("Y-m-d");
+			//$data['b_date'] = date("Y") . ', '.date('m').', 1';
+			$data['b_date'] = date("Y") . ', 8, 1';
+			$data['e_date'] = date("Y,m,d");
+		
+	
+	
+		//$begin_date = date("Y") . '-01-01';//date("Y-m-d H:i:s");
+		//$current_date = date("Y-m-d");
+		$dates['date1']=$data['begin_date'];//echo $data['begin_date']." END ";
+		$dates['date2']=$data['end_date'];//echo $data['end_date']." END ";
+		$temp['dateSel1']=$data['begin_date'];
+		$temp['dateSel2']=$data['end_date'];
+		$loc=null;
+		$bgy=null;
+		//
+		$bgy=$barangay;/*
+		if($this->input->post('barangay')!=null)//*/
+		{
+			$loc='brgy';
+			//$bgy=$this->input->post('barangay');
+		}
+		$temp['barangay']=$bgy;
+	
+		// larval points
+		$data['larvalPositives'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date'],$loc,$bgy);
+	
+		// risk nodes
+		$data['pointsOfInterest'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date'],$loc,$bgy);
+	
+		//print_r($data['pointsOfInterest']);
+		// investigated cases
+		//$data['investigatedCases'] = ;
+	
+		$denguetemp = array();
+		$denguetemp = $this->remap_model->investigated_cases($temp);
+		$bouncetemp = $this->remap_model->getCaseDistancePoI($denguetemp,$data['pointsOfInterest'],$data['larvalPositives']);
+		//print_r($data['larvalPositives']);
+		//print_r($bouncetemp);
+		$i=0;
+		$NewArray = array();
+		foreach($data['pointsOfInterest'] as $value) {
+			$NewArray[] = array_merge($value,$bouncetemp['bounceInfo'][$i]);
+			$i++;
+		}//print_r($bouncetemp['countInfo']);
+		//print_r($NewArray);
+		$data['data_exists']=$denguetemp['data_exists'];
+		if($denguetemp['data_exists']==1)
+			$data['dataCases']=$denguetemp['dataCases'];
+		$data['pointsOfInterest']=$NewArray;//print_r($data['pointsOfInterest']);
+		$sourceTable[]=array(
+				0=>"Name",
+				1=>"Notes",
+				2=>"Barangay",
+				3=>"Larvae<br/>within<br/>200m",
+				4=>"Dengue Cases<br/>within<br/>200m"
+		);
+		$riskTable[]=array(
+				0=>"Name",
+				1=>"Notes",
+				2=>"Barangay",
+				3=>"Larvae<br/>within<br/>200m",
+				4=>"Sources<br/>in alert<br/>within<br/>200m"
+		);
+		foreach($data['pointsOfInterest'] as $key => $value)
+		{
+			if($bgy ==$value['node_barangay'] &&($bouncetemp['countInfo'][$key]['0'] > 0) || $bouncetemp['countInfo'][$key]['1'] >0 )
+			{
+			if($value['node_type']==0)
+			{
+				$sourceTable[]=array(
+						0=>$value['node_name'],
+						1=>$value['node_notes'],
+						2=>$value['node_barangay'],
+						3=>$bouncetemp['countInfo'][$key]['0'],
+						4=>$bouncetemp['countInfo'][$key]['1']
+				);
+			}
+			else
+			{
+				$riskTable[]=array(
+						0=>$value['node_name'],
+						1=>$value['node_notes'],
+						2=>$value['node_barangay'],
+						3=>$bouncetemp['countInfo'][$key]['0'],
+						4=>$bouncetemp['countInfo'][$key]['1']
+				);
+			}
+			}
+		}
+		$data['sourceTable']=$sourceTable;
+		$data['riskTable']=$riskTable;
+		//polygon nodes
+		$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes($bgy);
+		$data['larval_array'] = $this->remap_model->getLarvalCount($data['begin_date'], $data['end_date'],$loc,$bgy);
+		//ages (Returns an array, code found in the function "getBarangayAges")
+		$data['ages_array'] = $this->remap_model->getBarangayAges($dates);//print_r($data['ages_array']);
+		$data['dengue_array'] = $this->remap_model->getDengueInfo($dates);//print_r($data['dengue_array']);
+		//$data['PoI_distance_array'] = $this->larval_mapping->distance_formula_PoI($dates);//print_r($data['PoI_distance_array']);
+		$data['brgys'] = $this->remap_model->get_brgy_with_cases($data['begin_date'], $data['end_date']);
+		$this->load->library('table');
+		array_merge($data);
+		return $data;
+	}
+	
+	
 	function view_person()
 	{
 		$param = $this->uri->uri_to_assoc(3);

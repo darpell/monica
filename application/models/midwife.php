@@ -8,6 +8,33 @@
 			//load monica database
 			$this->load->database('default');
 		}
+		function get_cases($brgy)
+		{
+			//$date = date('Y-m-d');
+			$date = '2013-07-01';
+			
+			$data = array (date('Y') => 0,(date('Y')-1) => 0);
+			$where = "count(cr_barangay) as patientcount ,YEAR(cr_date_onset) as caseyear  
+					FROM (`case_report_main`) 
+					WHERE
+					(YEAR( cr_date_onset ) = YEAR('".$date."') OR YEAR( cr_date_onset )= YEAR('".$date."')-1 )
+					AND month(cr_date_onset) = month('".$date."')
+					AND cr_barangay = '" . $brgy . "'
+					GROUP BY YEAR(`cr_date_onset`)";
+			$this->db->select($where);
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{ $x = $row->caseyear;
+					$data[$x] = $row->patientcount;
+				}
+			}
+			
+			return $data;
+			$q->free_result();
+			
+		}
 		
 		function get_households($bhw = FALSE,$midwife = FALSE)
 		{	
@@ -187,6 +214,15 @@
 			
 		}
 		function get_barangay_midwife($midwife)
+		{
+			$this->db->from('bhw');
+			$this->db->where('user_username', $midwife);
+			$query = $this->db->get();
+			$query = $query->result_array();
+			$barangay =  $query[0]['barangay'];
+			return $barangay;
+		}
+		function get_barangay($midwife)
 		{
 			$this->db->from('bhw');
 			$this->db->where('user_username', $midwife);
