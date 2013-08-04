@@ -80,6 +80,18 @@ class Investigate_cases extends CI_Controller
 				'notif_user' => $midwife,
 		);
 		$this->notif->addnotif($data2);
+		if($type == 'invcase')
+		{
+			$data2 = array(
+					'notif_type' => 1,
+					'notification' => $msg,
+					'unique_id' => $type.'-'.$personid,
+					'notif_viewed' => 'N',
+					'notif_createdOn' => Date('Y-m-d'),
+					'notif_user' => 'CHO',
+			);
+			$this->notif->addnotif($data2);
+		}
 	}
 	function checkforbounceandred($type,$lat,$lng)
 	{

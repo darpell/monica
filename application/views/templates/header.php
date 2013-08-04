@@ -43,7 +43,15 @@ if($script != "")
 					<?php if($this->session->userdata('TPtype') == "CHO"){?>
                 	<li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
                 	<li><?= anchor(base_url('index.php/CHO/dashboard'),'Dashboard')?></li>
+                	 <li><?= anchor(base_url('index.php/CHO/view_dengue_profile'),'Dengue Profile')?></li>
 					<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
+                	<?php }?>
+                	<?php if($this->session->userdata('TPtype') == "BHW"){?>
+                	<li><?= anchor(base_url('index.php/suggested/'),'Route Information')?></li>
+                	<li><?= anchor(base_url('index.php/master_list/view_household_bhw'),'Catchment Area	')?></li>
+                	<?php }?>
+                		<?php if($this->session->userdata('TPtype') == "MIDWIFE"){?>
+                	<li><?= anchor(base_url('index.php/master_list/view_household_midwife'),'Dashboard')?></li>
                 	<?php }?>
 					<li><?= anchor(base_url('index.php/CHO/epidemic_threshold'),'Epidemic Threshold')?></li>
  					<li><?= anchor(base_url('index.php/case_report/testChart'),'Surveillance Report ')?></li>

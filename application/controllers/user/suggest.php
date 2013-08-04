@@ -69,7 +69,6 @@ class Suggest extends CI_Controller
 		//$Qdata['barangay']=array('SAN AGUSTIN III','SAMPAOC I');
 		$Qdata['barangay']=null;
 		$data['pendingTasks']=$this->suggest_model->get_tasks("Barangay Cleanup",$brgy);
-		$data['completeTasks']=$this->suggest_model->get_tasks("Info Dissemination",$brgy);
 		$data = array_merge($data,$this->Remap_model->getRepeatingLarvals($Qdata));
 		$this->load->view('pages/view_suggested',$data);
 	}
@@ -184,6 +183,18 @@ class Suggest extends CI_Controller
 				'notif_user' => $midwife,
 		);
 		$this->notif->addnotif($data2);
+		if($type == 'invcase')
+		{
+			$data2 = array(
+					'notif_type' => 1,
+					'notification' => $msg,
+					'unique_id' => $type.'-'.$personid,
+					'notif_viewed' => 'N',
+					'notif_createdOn' => Date('Y-m-d'),
+					'notif_user' => 'CHO',
+			);
+			$this->notif->addnotif($data2);
+		}
 	}
 	
 	

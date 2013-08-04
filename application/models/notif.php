@@ -80,6 +80,90 @@
 			$query->free_result();
 			
 		}
+		function get_case($type,$caseid)
+		{
+			if ($type =='imcase')
+			{
+				//masterlist
+				$this->db->from('master_list');
+				$this->db->where('person_id',$caseid);
+				$q = $this->db->get();
+				
+				if($q->num_rows() > 0)
+				{
+					foreach($q->result() as $row)
+					{
+						$data = $row->person_first_name. ' '.$row->person_last_name ;
+					}
+					return $data;
+				}
+				
+			}
+			else if ($type == 'invcase')
+			{
+				$this->db->from('case_report_main');
+				$this->db->where('cr_patient_no',$caseid);
+				$q = $this->db->get();
+				if($q->num_rows() > 0)
+				{
+					foreach($q->result() as $row)
+					{
+						$data = $row->cr_first_name. ' '.$row->cr_last_name ;
+					}
+					return $data;
+				}
+				
+			}
+			else if ($type == 'newcase')
+			{
+				$this->db->from('case_report_main');
+				$this->db->where('cr_patient_no',$caseid);
+				$q = $this->db->get();
+				if($q->num_rows() > 0)
+				{
+					foreach($q->result() as $row)
+					{
+						$data = $row->cr_first_name. ' '.$row->cr_last_name ;
+					}
+					return $data;
+				}
+				
+			}
+				
+		}
+		function view_notif($id)
+		{
+			$data = array(
+					'notif_viewed' => 'Y'
+			);
+			$this->db->where('notif_id', $id);
+			$this->db->update('notifications', $data);
+		}
+	
+		function add_cleanup($midwife)
+		{
+			$this->db->from('tasks');
+			$this->db->where('sent_to', $midwife);
+			$this->db->where('sent_by', $midwife);
+			$this->db->where('date_sent', '0000-00-00');
+			$this->db->where('task_header', 'Barangay Cleanup');
+
+			$q = $this->db->get();
+			if($q->num_rows() == 0)
+			{
+			$data2 = array(
+					'sent_by' => $midwife,
+					'sent_to' => $midwife,
+					'date_sent' => '0000-00-00',
+					'date_accomplished' => '0000-00-00',
+					'task_header' => 'Barangay Cleanup',
+					'task' => '',
+					'status' => 'pending',
+			);
+			$this->db->insert('tasks', $data2);
+			}
+			
+		}
 		
 		
 	}

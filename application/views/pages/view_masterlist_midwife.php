@@ -488,10 +488,11 @@ function setInfo(fMarker,fInfo,fMap) {
 $this->table->set_heading(
 		array(	' ',
 				'Alert',
-				'Date'
+				'Date',
+				' '
 		));
 echo $this->table->generate($notif);?>
-asasdasdas
+
 </div>
 <div  id="tabs-1">
  <center>

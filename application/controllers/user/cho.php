@@ -84,7 +84,6 @@ class Cho extends CI_Controller
 		$data['dateSel1']=$data['datefrom'];
 		$data['dateSel2']=$data['dateto'];
 		$data['mapvalues'] = $this->Remap_model->investigated_cases($data);
-		
 		$data['tablecases'][]=array(
 				'ic_fname'=> 'Name',
 				'ic_age'=> 'Age',
@@ -281,6 +280,11 @@ class Cho extends CI_Controller
 	function dashboard()
 	{	$this->redirectLogin();
 		$this->load->model('Cho_model');
+		$this->load->model('larval_mapping');
+		$this->load->model('Remap_model');
+		$this->load->model('midwife','masterlist');
+		$this->load->model('notif');
+		
 		$data['title'] = 'View Tasks';
 		$data['script'] = 'view_casereport';
 		$data['table_data']= $this->Cho_model->get_tasks();
@@ -324,101 +328,44 @@ class Cho extends CI_Controller
 		}
 
 		$data['barangay'] = $this->Cho_model->getAllBarangays();
-		$data['larval'] = $this->Cho_model->getPositiveSurveys();
+		
+		$data['larval']='';
 		
 		$data['immediate_cases'] = $this->Cho_model->get_immediate_cases();
-		//map
 		
-		$this->load->model('Mapping');
-		$data['node_type'] = $this->input->post('NDtype-ddl');
+		$data['dateSel1']=date('Y-m').'-01';
+		$data['dateSel2']=date('Y-m-d');
+		$data['dateSel2']='2013-08-31';
+		$data['barangay'] = null;
+		$data['mapvalues'] = $this->Remap_model->investigated_cases($data);
+		//print_r($data['mapvalues']);
+		$data['tablecases'][]=array(
+				'ic_fname'=> 'Name',
+				'ic_age'=> 'Age',
+				'ic_sex'=> 'Gender',
+				'ic_outcome'=> 'Outcome',
+				'ic_street'=> 'Street',
+				'ic_barangay'=> 'Barangay',
+				'ic_dateOnset'=> 'Date Onset',
+				'ic_feedback'=> 'Feedback',
+		);
 		
-		if ($this->form_validation->run('') == FALSE)
+		for($i = 0; $i< count($data['mapvalues']['dataCases']); $i++)
 		{
-			{
-				if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST')
-				{
-					$date1=$this->input->post('YearStart-ddl').'-'.$this->input->post('MonthStart-ddl').'-'.'01';
-					$date2=$this->input->post('YearEnd-ddl').'-'.$this->input->post('MonthEnd-ddl').'-'.'01';
-					$date2=date('Y-m-t', strtotime($date2));
-				}
-				else
-				{
-					$date1=date('Y-m-01');
-					$date2=date('Y-m-t');
-				}
-		
-				//*DATE MANIPULATION BEGINS HERE
-				//yyyy-mm-dd
-				$data['date1']=$date1;
-				$data['date2']=$date2;
-		
-				$dateData1['date1']=$date1;
-				$dateData1['date2']=$date2;
-		
-				if($this->input->post('deflt')==1||strtoupper($_SERVER['REQUEST_METHOD']) != 'POST')
-				{
-					//*PREVIOUS DATE INTERVAL DATA PREPARATION
-					$dateTemp1=explode("-",$date1);
-					$dateTemp2=explode("-",$date2);
-		
-					$dateTemp1[0]=intval($dateTemp1[0]);
-					$dateTemp2[0]=intval($dateTemp2[0]);
-					if((($dateTemp1[0]-($dateTemp2[0]-$dateTemp1[0]))==$date2))
-					{
-						$dateData2['date1']=($dateTemp1[0]-1)."-".$dateTemp1[1]."-".$dateTemp1[2];
-						$dateData2['date2']=($dateTemp2[0]-1)."-".$dateTemp2[1]."-01";
-						$dateData2['date2']=date('Y-m-t', strtotime($dateData2['date2']));
-					}
-					else
-					{
-						$dateData2['date1']=($dateTemp1[0]-($dateTemp2[0]-$dateTemp1[0]+1))."-".$dateTemp1[1]."-".$dateTemp1[2];
-						$dateData2['date2']=($dateTemp2[0]-($dateTemp2[0]-$dateTemp1[0]+1))."-".$dateTemp2[1]."-01";
-						$dateData2['date2']=date('Y-m-t', strtotime($dateData2['date2']));
-					}
-					//*/
-				}
-				else
-				{
-					$dateData2['date1']=$this->input->post('PYearStart-ddl').'-'.$this->input->post('PMonthStart-ddl').'-'.'01';
-					$dateData2['date2']=$this->input->post('PYearEnd-ddl').'-'.$this->input->post('PMonthEnd-ddl').'-'.'01';
-					$dateData2['date2']=date('Y-m-t', strtotime($dateData2['date2']));
-				}
-		
-				//echo $dateData2['date1']." to ".$dateData2['date2']." : ";
-				//echo $dateData1['date1']." to ".$dateData1['date2'];
-		
-				//*CURRENT DATE INTERVAL DATA EXTRACTION
-				$data['nodes'] = $this->Mapping->mapByType($data);
-				$data['bage'] = $this->Mapping->getBarangayAges2($dateData1);
-				$data['binfo'] = $this->Mapping->getBarangayInfo($dateData1);
-				$data['bcount'] = $this->Mapping->getBarangayCount($dateData1);
-				$data['dist'] = $this->Mapping->calculateDistanceFormula($dateData1);
-				//*/
-		
-				$data['date1']=$dateData2['date1'];
-				$data['date2']=$dateData2['date2'];
-				$data['cdate1']=$dateData1['date1'];
-				$data['cdate2']=$dateData1['date2'];
-				$data['pdate1']=$dateData2['date1'];
-				$data['pdate2']=$dateData2['date2'];
-		
-				//*PREVIOUS DATE INTERVAL DATA EXTRACTION
-				$data['Pnodes'] = $this->Mapping->mapByType($data);
-				$data['Pbage'] = $this->Mapping->getBarangayAges2($dateData2);
-				$data['Pbinfo'] = $this->Mapping->getBarangayInfo($dateData2);
-				$data['Pbcount'] = $this->Mapping->getBarangayCount($dateData2);
-				$data['Pdist'] = $this->Mapping->calculateDistanceFormula($dateData2);
-				//*/
-				//-------------------*/
-		
-				$data['interest'] = $this->Mapping->getPointsOfInterest();
-				$data['table1'] = $this->Mapping->getBarangayAges($dateData1);
-				$data['table2'] = $this->Mapping->getBarangayAges($dateData2);
-				//$data['test'] = $this->Mapping->getBarangayAgesS($data);
-		
-		
-			}
+			
+		$data['tablecases'][]=array(
+				'ic_fname'=>  $data['mapvalues']['dataCases'][$i]['ic_lname'] . ', '. $data['mapvalues']['dataCases'][$i]['ic_fname'],
+					'ic_age'=> $data['mapvalues']['dataCases'][$i]['ic_age'],
+					'ic_sex'=> $data['mapvalues']['dataCases'][$i]['ic_sex'],
+					'ic_outcome'=> $data['mapvalues']['dataCases'][$i]['ic_outcome'],
+					'ic_street'=> $data['mapvalues']['dataCases'][$i]['ic_street'],
+					'ic_barangay'=> $data['mapvalues']['dataCases'][$i]['ic_barangay'],
+					'ic_dateOnset'=> $data['mapvalues']['dataCases'][$i]['ic_dateOnset'],
+					'ic_feedback'=> $data['mapvalues']['dataCases'][$i]['ic_feedback'],
+			);
 		}
+		$this->load->library('table');
+		$data['notif'] = $this->formatnotifs();
 		
 		
 		$this->load->view('pages/dashboard.php' , $data);
@@ -634,6 +581,155 @@ class Cho extends CI_Controller
 		$data['total']='The current number of cases for the month of '. date('F') .' are '. $count . ' cases.';
 		$this->load->view('pages/tweet.php' , $data);
 		
+	}
+	public function remap($barangay = null)
+	{
+		//global variables
+	
+		$overlays = [];
+	
+		// setting dates
+		//$data['begin_date'] = date("Y-m") . '-01';
+		$data['begin_date'] = date("Y-m") . '-01';
+		$data['end_date'] = date("Y-m-d");
+		//$data['b_date'] = date("Y") . ', '.date('m').', 1';
+		$data['b_date'] = date("Y") . ', '.date('m').', 1';
+		$data['e_date'] = date("Y,m,d");
+	
+	
+	
+		//$begin_date = date("Y") . '-01-01';//date("Y-m-d H:i:s");
+		//$current_date = date("Y-m-d");
+		$dates['date1']=$data['begin_date'];//echo $data['begin_date']." END ";
+		$dates['date2']=$data['end_date'];//echo $data['end_date']." END ";
+		$temp['dateSel1']=$data['begin_date'];
+		$temp['dateSel2']=$data['end_date'];
+		$loc=null;
+		$bgy=null;
+		//
+		$bgy=$barangay;/*
+		if($this->input->post('barangay')!=null)//*/
+		{
+			$loc='brgy';
+			//$bgy=$this->input->post('barangay');
+		}
+		$temp['barangay']=$bgy;
+	
+		// larval points
+		$data['larvalPositives'] = $this->larval_mapping->get_points($data['begin_date'], $data['end_date'],$loc,$bgy);
+	
+		// risk nodes
+		$data['pointsOfInterest'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date'],$loc,$bgy);
+	
+		//print_r($data['pointsOfInterest']);
+		// investigated cases
+		//$data['investigatedCases'] = ;
+	
+		$denguetemp = array();
+		$denguetemp = $this->remap_model->investigated_cases($temp);
+		$bouncetemp = $this->remap_model->getCaseDistancePoI($denguetemp,$data['pointsOfInterest'],$data['larvalPositives']);
+		//print_r($data['larvalPositives']);
+		//print_r($bouncetemp);
+		$i=0;
+		$NewArray = array();
+		foreach($data['pointsOfInterest'] as $value) {
+			$NewArray[] = array_merge($value,$bouncetemp['bounceInfo'][$i]);
+			$i++;
+		}//print_r($bouncetemp['countInfo']);
+		//print_r($NewArray);
+		$data['data_exists']=$denguetemp['data_exists'];
+		if($denguetemp['data_exists']==1)
+			$data['dataCases']=$denguetemp['dataCases'];
+		$data['pointsOfInterest']=$NewArray;//print_r($data['pointsOfInterest']);
+		$sourceTable[]=array(
+				0=>"Name",
+				1=>"Notes",
+				2=>"Barangay",
+				3=>"Larvae<br/>within<br/>200m",
+				4=>"Dengue Cases<br/>within<br/>200m"
+		);
+		$riskTable[]=array(
+				0=>"Name",
+				1=>"Notes",
+				2=>"Barangay",
+				3=>"Larvae<br/>within<br/>200m",
+				4=>"Sources<br/>in alert<br/>within<br/>200m"
+		);
+		foreach($data['pointsOfInterest'] as $key => $value)
+		{
+			if($bgy ==$value['node_barangay'] &&($bouncetemp['countInfo'][$key]['0'] > 0) || $bouncetemp['countInfo'][$key]['1'] >0 )
+			{
+				if($value['node_type']==0)
+				{
+					$sourceTable[]=array(
+							0=>$value['node_name'],
+							1=>$value['node_notes'],
+							2=>$value['node_barangay'],
+							3=>$bouncetemp['countInfo'][$key]['0'],
+							4=>$bouncetemp['countInfo'][$key]['1']
+					);
+				}
+				else
+				{
+					$riskTable[]=array(
+							0=>$value['node_name'],
+							1=>$value['node_notes'],
+							2=>$value['node_barangay'],
+							3=>$bouncetemp['countInfo'][$key]['0'],
+							4=>$bouncetemp['countInfo'][$key]['1']
+					);
+				}
+			}
+		}
+		$data['sourceTable']=$sourceTable;
+		$data['riskTable']=$riskTable;
+		//polygon nodes
+		$data['polygon_nodes'] = $this->remap_model->get_polygon_nodes($bgy);
+		$data['larval_array'] = $this->remap_model->getLarvalCount($data['begin_date'], $data['end_date'],$loc,$bgy);
+		//ages (Returns an array, code found in the function "getBarangayAges")
+		$data['ages_array'] = $this->remap_model->getBarangayAges($dates);//print_r($data['ages_array']);
+		$data['dengue_array'] = $this->remap_model->getDengueInfo($dates);//print_r($data['dengue_array']);
+		//$data['PoI_distance_array'] = $this->larval_mapping->distance_formula_PoI($dates);//print_r($data['PoI_distance_array']);
+		$data['brgys'] = $this->remap_model->get_brgy_with_cases($data['begin_date'], $data['end_date']);
+		$this->load->library('table');
+		array_merge($data);
+		return $data;
+	}
+	function formatnotifs()
+	{		$this->load->model('notif');
+		$temp = $this->notif->getnotifs($this->session->userdata('TPusername'));
+		$data = [];
+		
+		for($i  = 0; $i < count($temp);$i++)
+		{	
+			if ($temp[$i]['notif_type'] == 1)
+			$img = "<img src='".base_url('/images/notice.png')."'>";
+			else if ($temp[$i]['notif_type'] == 2)
+			$img = "<img src='".base_url('/images/mosquito.png')."'>";
+			else if ($temp[$i]['notif_type'] == 3)
+			$img = "<img src='".base_url('/images/group-2.png')."'>";
+			
+			$temptype = explode('-',$temp[$i]['unique_id']);
+			if($temptype[0] == 'invcase' ||$temptype[0]  =='imcase' ||$temptype[0]  =='newcase')
+			$name = $this->notif->get_case($temptype[0],$temptype[1]);
+			else 
+			$name = '';
+			$link  = "<a href='" . base_url('index.php/CHO/viewnotif/').'/'.$temp[$i]['notif_id']. "'><img src='".base_url('/images/left_nav_arrow.gif')."'>";
+			$data[]= array(
+					'type' => $img,
+					'notif' => $temp[$i]['notification'] .' '. $name,
+					'date' => $temp[$i]['notif_createdOn'],
+					'view' => $link,
+					);
+			$img = null;
+		}
+		return $data;
+	}
+	function viewnotif()
+	{ 	$this->load->model('notif');
+		$id = $this->uri->segment(3, 0);
+		$this->notif->view_notif($id);
+		$this->dashboard();	
 	}
 	
 	

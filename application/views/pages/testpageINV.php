@@ -5,7 +5,7 @@
 <div class="body">
 		<div class="blog">
 		
-TEST FOR ADDING IMMEDIATE CASE
+TEST FOR ADDING INVESTIGATED CASE
 <?php 
 $attributes = array(
 						'id' => 'TPcr-form'

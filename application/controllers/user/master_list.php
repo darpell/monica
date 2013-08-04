@@ -34,7 +34,7 @@ class Master_list extends CI_Controller
 	{
 		$temp = $this->notif->getnotifs($this->session->userdata('TPusername'));
 		$data = [];
-	
+		
 		for($i  = 0; $i < count($temp);$i++)
 		{	
 			if ($temp[$i]['notif_type'] == 1)
@@ -43,15 +43,31 @@ class Master_list extends CI_Controller
 			$img = "<img src='".base_url('/images/mosquito.png')."'>";
 			else if ($temp[$i]['notif_type'] == 3)
 			$img = "<img src='".base_url('/images/group-2.png')."'>";
-		
+			
+			$temptype = explode('-',$temp[$i]['unique_id']);
+			if($temptype[0] == 'invcase' ||$temptype[0]  =='imcase' ||$temptype[0]  =='newcase')
+			$name = $this->notif->get_case($temptype[0],$temptype[1]);
+			else 
+			$name = '';
+			$link  = "<a href='" . base_url('index.php/master_list/viewnotif/').'/'.$temp[$i]['notif_id']. "'><img src='".base_url('/images/left_nav_arrow.gif')."'>";
 			$data[]= array(
 					'type' => $img,
-					'notif' => $temp[$i]['notification'],
+					'notif' => $temp[$i]['notification'] .' '. $name,
 					'date' => $temp[$i]['notif_createdOn'],
+					'view' => $link,
 					);
 			$img = null;
 		}
 		return $data;
+	}
+	function viewnotif()
+	{ 	
+		$bhw_id =$this->session->userdata('TPusername');
+		$id = $this->uri->segment(3, 0);
+		$this->notif->view_notif($id);
+		$this->notif->add_cleanup($bhw_id);
+		$this->view_household_midwife();	
+		
 	}
 	function checkforbounceandred($type)
 	{	
@@ -65,7 +81,7 @@ class Master_list extends CI_Controller
 		{$type = 'bounceimcase';
 		$msg = 'Immediate Case';
 		}
-		else 
+		else if ($type == 'inv')
 		{$type = 'bounceinvcase';
 		$msg = 'Investigated Case';
 		}

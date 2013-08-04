@@ -117,7 +117,7 @@ function get_tasks($status,$bgy)
 				'Task Name',
 				'Description',
 				//'Remarks',
-				'Sent On',
+				'Date to be conducted',
 				//'Completed On'
 				);
 		//*
@@ -125,6 +125,7 @@ function get_tasks($status,$bgy)
 		$this->db->join('bhw', 'bhw.user_username = tasks.sent_to');
 		$this->db->where('tasks.task_header',$status);
 		$this->db->where('bhw.barangay',$bgy);
+		$this->db->where('status','approved');
 		$q = $this->db->get();
 		//*/
 		if($q->num_rows() > 0)

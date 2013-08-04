@@ -562,8 +562,8 @@
 			$qString .= "get_immediate_case('"; // name of stored procedure
 			$qString .=
 			//variables needed by the stored procedure
-			date('Y-m-01',strtotime('this month')) . "','" .
-			date('y-m-d'). "'". ")";
+			date('Y-m').'-01' . "','" .
+			date('Y-m').'-31' . "'". ")";
 			$q = $this->db->query($qString);
 			//*
 			if($q->num_rows() > 0)

@@ -102,7 +102,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 				</div>
 				<div id="tabs-2">
 					<h2> Event List </h2>
-					<p>Pending Tasks</p>
+					<p>Barangay Cleanup Schedule</p>
 					<?php 
 					$tmpl = array (
 									'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',

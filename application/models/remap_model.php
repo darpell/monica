@@ -578,10 +578,20 @@ class Remap_model extends CI_Model
 	{
 		$this->db->from('investigated_cases');
 		$this->db->join('case_report_main','investigated_cases.case_no = case_report_main.cr_patient_no');
-		$where="cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."'";
+		$where="(cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."') ";
 		if($data['barangay']!=null)
-		{
-			$where.=" AND (cr_barangay='".$data['barangay']."')";
+		{	$where.="AND(";
+			for ($i = 0; $i < count($data['barangay']);$i++)
+			{
+				
+				$where.="cr_barangay='".$data['barangay'][$i]."'";
+				if( $i < count($data['barangay'])-1)
+				{
+					$where .=' OR ';
+				}
+					
+			}
+			$where.=")";
 		}//print_r($where);
 		$this->db->where($where);
 		$q = $this->db->get();
