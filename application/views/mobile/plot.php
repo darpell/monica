@@ -208,7 +208,7 @@ function initialize(){
 	    	
 	    	<!-- Single Case Report/Investigation -->
 	    	<div data-role="collapsible">
-	    		<h2> Single Case Report/Investigation </h2>
+	    		<h2> Case Investigation </h2>
 	    		
 	    		<ul data-role="listview" data-inset="true" data-theme="d" data-divider-theme="d">
 						<li data-role="list-divider"> Plot investigated case </li>
@@ -217,12 +217,12 @@ function initialize(){
 							<p><strong>Please click this link to see a list of uninvestigated cases.</strong></p>
 						</a></li>
 	    		</ul>
-	    		
+	    		<!--
 				<ul data-role="listview" data-inset="true" data-divider-theme="d">
 						<li data-role="list-divider"> Case Entry </li>
 	    			<li> Please use the PIDSR Form and re-enter it in a designated terminal at the center </li>
 				</ul>
-			
+				-->
 	    	</div>
 	    	<!-- /end Single Case Report/Investigation -->
     	</div>
