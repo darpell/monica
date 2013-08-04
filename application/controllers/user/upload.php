@@ -330,27 +330,11 @@ class Upload extends CI_Controller
 			);
 			$this->Case_report->addCase($data);
 			
-			$bgy =  $barangay[$i];
-			$cases = $this->masterlist->get_cases($bgy);
-			$bhw_id = $this->notif->get_midwife_by_barangay($bgy);
+			$this->add_case_notif('newcase',$patientnum[$i],$barangay[$i]);
+			$this->check_prev_case_notif($barangay[$i]);
+
 			
-			if(($cases[date('Y')] > $cases[date('Y')-1]))
-			{
-				$id='highcase-'.date('Y-m').'-'.$bgy;
-				if ($this->notif->checknotifexist($id,$bhw_id))
-				{
-					$data2 = array(
-							'notif_type' => 3,
-							'notification' => 'current number of dengue cases exceeded the previous cases from last year',
-							'unique_id' => $id,
-							'notif_viewed' => 'N',
-							'notif_createdOn' => Date('Y-m-d'),
-							'notif_user' => $bhw_id,
-								
-					);
-					$this->notif->addnotif($data2);
-				}
-			}
+			
 			}
 
 
@@ -369,6 +353,56 @@ class Upload extends CI_Controller
 		{
 			$this->session->unset_userdata('TPuploadvalues');
 		 	redirect('/upload/', 'refresh');
+		}
+	}
+	function add_case_notif($type,$id,$barangay)
+	{
+		if ($type == 'imcase')
+		{//chance to person_id
+			$msg = 'New Immediate Case:';
+		}
+		else if($type == 'invcase')
+		{//change to patient_no'
+			$msg = 'Plotted Uninvestigated Case:';
+		}
+		else if($type == 'newcase')
+		{//change to patient_no'
+		$msg = 'New Dengue Case Reported:';
+		}
+	
+		$midwife = $this->notif->get_midwife_by_barangay($barangay);
+		$personid = $id;
+		$data2 = array(
+				'notif_type' => 1,
+				'notification' => $msg,
+				'unique_id' => $type.'-'.$personid,
+				'notif_viewed' => 'N',
+				'notif_createdOn' => Date('Y-m-d'),
+				'notif_user' => $midwife,
+		);
+		$this->notif->addnotif($data2);
+	}
+	function check_prev_case_notif($bgy)
+	{
+		$barangay =  $bgy;
+		$data = $this->masterlist->get_cases($barangay);
+		$midwife = $this->notif->get_midwife_by_barangay($barangay);
+		if(($data[date('Y')] > $data[date('Y')-1]))
+		{
+			$id='highcase-'.date('Y-m');
+			if ($this->notif->checknotifexist($id,$midwife))
+			{
+				$data2 = array(
+						'notif_type' => 2,
+						'notification' => 'current number of dengue cases exceeded the previous cases from last year',
+						'unique_id' => $id,
+						'notif_viewed' => 'N',
+						'notif_createdOn' => Date('Y-m-d'),
+						'notif_user' => $midwife,
+	
+				);
+				$this->notif->addnotif($data2);
+			}
 		}
 	}
 }

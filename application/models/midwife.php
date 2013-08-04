@@ -10,8 +10,8 @@
 		}
 		function get_cases($brgy)
 		{
-			//$date = date('Y-m-d');
-			$date = '2013-07-01';
+			$date = date('Y-m-d');
+			//$date = '2013-07-01';
 			
 			$data = array (date('Y') => 0,(date('Y')-1) => 0);
 			$where = "count(cr_barangay) as patientcount ,YEAR(cr_date_onset) as caseyear  

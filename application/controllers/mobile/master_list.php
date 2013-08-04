@@ -95,7 +95,7 @@ class Master_list extends CI_Controller
 		$barangay =  $this->midwife->get_barangay($bhw_id);
 	
 		$midwife = $this->notif->get_midwife_by_barangay($barangay);
-		$personid = 1;
+		$personid = $id;
 		$data2 = array(
 				'notif_type' => 1,
 				'notification' => $msg,
@@ -171,7 +171,7 @@ class Master_list extends CI_Controller
 													'notif_user' => $midwife,
 													);
 													$this->notif->addnotif($data2);
-													print('new ');
+											
 													}
 													}
 													$risk  = $this->notif->get_poi($barangay,'risk');
@@ -217,7 +217,7 @@ class Master_list extends CI_Controller
 																													'notif_user' => $midwife,
 										);
 																													$this->notif->addnotif($data2);
-																													print('newred ');
+																												
 	
 																	}
 						$id = 'redcho-'.date('Y-m').'-'.$redrisk[$i]['node_no'].'-'.$barangay;
@@ -232,7 +232,7 @@ class Master_list extends CI_Controller
 									'notif_user' => 'CHO',
 							);
 							$this->notif->addnotif($data2);
-							print('newredcho ');
+					
 						}
 					}
 				}

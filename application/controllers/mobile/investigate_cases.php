@@ -70,7 +70,7 @@ class Investigate_cases extends CI_Controller
 		$barangay =  $this->masterlist->get_barangay($bhw_id);
 	
 		$midwife = $this->notif->get_midwife_by_barangay($barangay);
-		$personid = 1;
+		$personid = $id;
 		$data2 = array(
 				'notif_type' => 1,
 				'notification' => $msg,
