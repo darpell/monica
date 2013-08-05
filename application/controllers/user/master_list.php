@@ -405,7 +405,7 @@ print($barangay);
 		else
 		{
 			$midwife =$this->session->userdata('TPusername');
-			$task  = $this->input->post('Description');
+			$task  = $this->input->post('description');
 			$date  = $this->input->post('conduct');
 			$date = explode('/', $date);
 			$date = $date[2].'-'.$date[0].'-'.$date[1];

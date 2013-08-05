@@ -863,6 +863,8 @@ $attributes = array(
 						'id' => 'TPcr-form'
 					);
 echo form_open('master_list/addcleanup',$attributes); ?>
+<br>
+<br>
   <center><b>Schedule Cleanup</b></center>
 
   </td>
