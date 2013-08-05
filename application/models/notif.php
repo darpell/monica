@@ -140,30 +140,60 @@
 			$this->db->update('notifications', $data);
 		}
 	
-		function add_cleanup($midwife)
+		function add_cleanup($midwife,$date,$task)
 		{
-			$this->db->from('tasks');
-			$this->db->where('sent_to', $midwife);
-			$this->db->where('sent_by', $midwife);
-			$this->db->where('date_sent', '0000-00-00');
-			$this->db->where('task_header', 'Barangay Cleanup');
-
-			$q = $this->db->get();
-			if($q->num_rows() == 0)
-			{
 			$data2 = array(
 					'sent_by' => $midwife,
 					'sent_to' => $midwife,
-					'date_sent' => '0000-00-00',
+					'date_sent' => $date,
 					'date_accomplished' => '0000-00-00',
 					'task_header' => 'Barangay Cleanup',
-					'task' => '',
-					'status' => 'pending',
+					'task' => $task,
+					'status' => 'approved',
 			);
 			$this->db->insert('tasks', $data2);
-			}
 			
 		}
+	function get_cleanup($midwife)
+	{
+		$dataReturn[]=array(
+				//'Tasked By',
+				//'Tasked To',
+				//'Status',
+				'Task Name',
+				'Description',
+				//'Remarks',
+				'Date to be conducted',
+				//'Completed On'
+				);
+		//*
+		$this->db->from('tasks');
+		$this->db->join('bhw', 'bhw.user_username = tasks.sent_to');
+		$this->db->where('tasks.task_header','Barangay Cleanup');
+		$this->db->where('tasks.sent_to',$midwife);
+		$this->db->where('status','approved');
+		$q = $this->db->get();
+		//*/
+		if($q->num_rows() > 0)
+		{
+			foreach ($q->result() as $row)
+			{
+				$dataReturn[]=array(
+					//	'sent_by'=> $row->sent_by,
+					//	'sent_to'=> $row->sent_to,
+					//	'status'=> $row->status,
+						'task_header'=> $row->task_header,
+						'task'=> $row->task,
+						//'remarks'=> $row->remarks,
+						'date_sent'=> $row->date_sent,
+						//'date_accomplished'=> $row->date_accomplished,
+				);
+			}
+		}
+
+		$q->free_result();
+		return $dataReturn;
+	}
 		
 		
 	}

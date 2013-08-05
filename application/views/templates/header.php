@@ -44,7 +44,6 @@ if($script != "")
                 	<li><?= anchor(base_url('index.php/upload'),'Upload Cases')?></li>
                 	<li><?= anchor(base_url('index.php/CHO/dashboard'),'Dashboard')?></li>
                 	 <li><?= anchor(base_url('index.php/CHO/view_dengue_profile'),'Dengue Profile')?></li>
-					<li><?= anchor(base_url('index.php/mapping'),'Case/Larval Survey Map')?></li>
                 	<?php }?>
                 	<?php if($this->session->userdata('TPtype') == "BHW"){?>
                 	<li><?= anchor(base_url('index.php/suggested/'),'Route Information')?></li>

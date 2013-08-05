@@ -338,14 +338,15 @@ function setInfo(fMarker,fInfo,fMap) {
 				<ul>
 					<li><a href="#tabs-5">Dengue Map</a></li>
 					<li><a href="#tabs-6">Alerts(<?php echo count($notif);?>)</a></li>
-					<li><a href="#tabs-1">Masterlist </a></li>
+					<li><a href="#tabs-1">Master List </a></li>
 					<li><a href="#tabs-2">Immediate Cases</a></li>
-					<li><a href="#tabs-4">Uninvestigated Case</a></li>
-					<li><a href="#tabs-3">Barangay Healthworker</a></li>
+					<li><a href="#tabs-4">Uninvestigated Cases</a></li>
+					<li><a href="#tabs-3">Barangay Health Worker</a></li>
+					<li><a href="#tabs-7">Barangay Cleanup</a></li>
 						
 				</ul>
 <div  id="tabs-5">
-	<div id="googleMap" >
+	<div id="googleMap" style="width:55%; height:90%; margin: 10px; float:left;" >
 	</div>
 	<input type="hidden" id="centroid_icon" value="<?php echo base_url('/images/information.png')?>" />
 	
@@ -832,6 +833,61 @@ echo $this->table->generate($uninvest);
 
 ?>
 </center>
+</div>
+<div id="tabs-7">
+					<h2> Barangay Cleanup Schedule </h2>
+					<?php 
+					$tmpl = array (
+									'table_open'          => '<table border="1" cellpadding="5" cellspacing="0" id="results" >',
+								    'heading_row_start'   => '<tr>',
+								    'heading_row_end'     => '</tr>',
+								    'heading_cell_start'  => '<th id="result" scope="col">',
+								    'heading_cell_end'    => '</th>',
+								    'row_start'           => '<tr>',
+								    'row_end'             => '</tr>',
+								    'cell_start'          => '<td align="center">',
+								    'cell_end'            => '</td>',
+								    'row_alt_start'       => '<tr style="background-color: #e3e3e3">',
+								    'row_alt_end'         => '</tr>',
+								    'cell_alt_start'      => '<td align="center">',
+								    'cell_alt_end'        => '</td>',
+								    'table_close'         => '</table>'
+								   );
+					$this->table->set_template($tmpl);
+					echo $this->table->generate($cleanup);?>
+<table    align="center" cellpadding="5" style="width: 100%;">
+  <tr>
+  <td colspan = "7">
+ <?php 
+$attributes = array(
+						'id' => 'TPcr-form'
+					);
+echo form_open('master_list/addcleanup',$attributes); ?>
+  <center><b>Schedule Cleanup</b></center>
+
+  </td>
+  </tr>
+  
+   <tr>
+   <td >Description:</td>
+    <td>
+    <label style="color:red"><?php echo form_error('description'); ?></label>
+     <input type="text" name="description" value="<?php echo set_value('patientno'); ?>"  size="50"/>
+     </td>
+
+    
+    <td >Date to be conducted:</td>
+    <td>
+<label style="color:red"><?php echo form_error('conduct'); ?></label>
+<input type="text" name="conduct" readonly = "true" id = "conduct" value=""  onClick = "javascript:NewCal('conduct','mmddyyyy')" />
+    
+     </td>
+     
+  </tr>
+	</table>
+	<center>
+  <input type="submit" class="submitButton" value="Add"/><?php echo form_close(); ?>
+
 </div>
 
 </div>

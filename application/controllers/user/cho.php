@@ -349,10 +349,11 @@ class Cho extends CI_Controller
 				'ic_dateOnset'=> 'Date Onset',
 				'ic_feedback'=> 'Feedback',
 		);
-		
+		if(array_key_exists('dataCases', $data['mapvalues']))
+		{
 		for($i = 0; $i< count($data['mapvalues']['dataCases']); $i++)
 		{
-			
+		
 		$data['tablecases'][]=array(
 				'ic_fname'=>  $data['mapvalues']['dataCases'][$i]['ic_lname'] . ', '. $data['mapvalues']['dataCases'][$i]['ic_fname'],
 					'ic_age'=> $data['mapvalues']['dataCases'][$i]['ic_age'],
@@ -363,6 +364,7 @@ class Cho extends CI_Controller
 					'ic_dateOnset'=> $data['mapvalues']['dataCases'][$i]['ic_dateOnset'],
 					'ic_feedback'=> $data['mapvalues']['dataCases'][$i]['ic_feedback'],
 			);
+		}
 		}
 		$this->load->library('table');
 		$data['notif'] = $this->formatnotifs();

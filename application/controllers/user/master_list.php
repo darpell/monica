@@ -362,6 +362,7 @@ class Master_list extends CI_Controller
 print($barangay);
 
 			$data['notif'] = $this->formatnotifs();
+			$data['cleanup'] = $this->notif->get_cleanup($bhw_id);
 			$this->load->view('pages/view_masterlist_midwife', $data);
 		}
 		else
@@ -390,6 +391,27 @@ print($barangay);
 		}
 	
 	
+	}
+	function addcleanup()
+	{
+	
+		$this->form_validation->set_rules('description', 'Description', 'required');
+		$this->form_validation->set_rules('conduct', 'Date to be conducted', 'required');
+		
+		if ($this->form_validation->run('') == FALSE)
+		{
+		
+		}
+		else
+		{
+			$midwife =$this->session->userdata('TPusername');
+			$task  = $this->input->post('Description');
+			$date  = $this->input->post('conduct');
+			$date = explode('/', $date);
+			$date = $date[2].'-'.$date[0].'-'.$date[1];
+			$this->notif->add_cleanup($midwife,$date,$task);
+		}
+		$this->view_household_midwife();
 	}
 	function add_masterlist_and_household($household,$houseno,$street,$bhw_id,$data)
 	{
