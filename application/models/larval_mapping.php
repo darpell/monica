@@ -76,10 +76,18 @@ class Larval_mapping extends CI_Model
 	
 	function get_last_visit($user)
 	{
+		// prior to db v33_1
+		/*
 		$this->db->select('ls_date, ls_barangay');
 			$this->db->from('ls_report_header');
 			$this->db->where('ls_inspector', $user);
 			$this->db->order_by('ls_date','desc');
+			*/
+		// after db v33_1
+		$this->db->select('last_updated_on, ls_barangay');
+			$this->db->from('ls_report');
+			$this->db->where('created_by', $user);
+			$this->db->order_by('last_updated_on','desc');
 			$this->db->limit('1');
 		$query = $this->db->get();
 		if ($query->num_rows() > 0)
