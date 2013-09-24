@@ -69,7 +69,8 @@
 			$data = array(
 					'household_name' => $household ,
 					'house_no' => $houseno ,
-					'street' => $street
+					'street' => $street,
+					'last_visited' => '0000-00-00',
 			);
 			
 			$this->db->insert('household_address', $data);
@@ -86,7 +87,6 @@
 					'household_id' => $houseid ,
 					'person_id' => $person_id,
 					'bhw_id' => $bhw,
-					'last_visited_on' => '0000-00-00',
 			);
 				
 			$this->db->insert('catchment_area', $data);

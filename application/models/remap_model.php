@@ -10,6 +10,7 @@ class Remap_model extends CI_Model
 	function get_map_nodes($begin_date = FALSE, $end_date = FALSE, $place = NULL, $value = NULL)
 	{
 		//$this->db->select('ls_barangay, ls_street, ls_municipality, ls_household, ls_container, ls_result, created_on, ls_lat, ls_lng');
+		//$this->db->select('node_barangay, ls_street, ls_municipality, ls_household, ls_container, ls_result, created_on, ls_lat, ls_lng');
 		$this->db->from('map_nodes');
 		if ($place != NULL && $place != 'NULL')
 		{
@@ -168,10 +169,14 @@ class Remap_model extends CI_Model
 	
 	function getLarvalCount($date1, $date2, $brgy = NULL)
 	{
+		//$qString="
+		//	SELECT DISTINCT(ls_barangay),count(tracking_number) as 'count' FROM demo.ls_report_header
+		//	LEFT JOIN ls_report_main on ls_report_header.ls_no=ls_report_main.ls_no
+		//	WHERE ls_date BETWEEN '" . $date1 . "' AND '" . $date2 . "'";
+		
 		$qString="
-			SELECT DISTINCT(ls_barangay),count(tracking_number) as 'count' FROM demo.ls_report_header
-			LEFT JOIN ls_report_main on ls_report_header.ls_no=ls_report_main.ls_no
-			WHERE ls_date BETWEEN '" . $date1 . "' AND '" . $date2 . "'";
+			SELECT DISTINCT(ls_barangay),count(tracking_number) as 'count' FROM demo.ls_report
+			WHERE created_on BETWEEN '" . $date1 . "' AND '" . $date2 . "'";
 		if($brgy!=NULL)
 		$qString.=	" AND ls_barangay='".$brgy."' ";
 		$qString.=	"GROUP BY ls_barangay				
@@ -360,18 +365,20 @@ class Remap_model extends CI_Model
 		$dataPrev2;
 		$dataCITable[]=array(
 				'ls_household',
-				'ls_street',
+				//'ls_street',
 				'ls_container',
-				'ls_date',
+				'created_on',
 				'created_by'
 		);
 		$invariant1=true;
 		$invariant2=true;
 		$invariant3=true;
 		
-		$this->db->from('ls_report_main');
-		$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
-		$where="created_on BETWEEN '".$data2['datePresB']."' AND '".$data2['datePresE']."' AND "."ls_result = 'POSITIVE'";
+		//$this->db->from('ls_report_main');
+		//$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
+		$this->db->from('ls_report');
+		//$where="created_on BETWEEN '".$data2['datePresB']."' AND '".$data2['datePresE']."' AND "."ls_result = 'POSITIVE'";
+		$where="created_on BETWEEN '".$data2['datePresB']."' AND '".$data2['datePresE']."'";
 		if($data2['barangay']!=null)
 		{
 			$where.=" AND (";
@@ -394,10 +401,10 @@ class Remap_model extends CI_Model
 						'ls_lat'=> $row->ls_lat,
 						'ls_lng'=> $row->ls_lng,
 						'ls_household'=> $row->ls_household,
-						'ls_street'=> $row->ls_street,
+						//'ls_street'=> $row->ls_street,
 						'ls_barangay'=> $row->ls_barangay,
 						'ls_container'=> $row->ls_container,
-						'ls_date'=> $row->ls_date,
+						'created_on'=> $row->created_on,
 						'created_by'=> $row->created_by
 				);
 			}
@@ -408,9 +415,11 @@ class Remap_model extends CI_Model
 		}
 		$q->free_result();
 		
-		$this->db->from('ls_report_main');
-		$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
-		$where="created_on BETWEEN '".$data2['datePrev1B']."' AND '".$data2['datePrev1E']."' AND "."ls_result = 'POSITIVE'";
+		//$this->db->from('ls_report_main');
+		//$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
+		$this->db->from('ls_report');
+		//$where="created_on BETWEEN '".$data2['datePrev1B']."' AND '".$data2['datePrev1E']."' AND "."ls_result = 'POSITIVE'";
+		$where="created_on BETWEEN '".$data2['datePrev1B']."' AND '".$data2['datePrev1E']."'";
 		if($data2['barangay']!=null)
 		{
 			$where.=" AND (";
@@ -433,10 +442,10 @@ class Remap_model extends CI_Model
 						'ls_lat'=> $row->ls_lat,
 						'ls_lng'=> $row->ls_lng,
 						'ls_household'=> $row->ls_household,
-						'ls_street'=> $row->ls_street,
+						//'ls_street'=> $row->ls_street,
 						'ls_barangay'=> $row->ls_barangay,
 						'ls_container'=> $row->ls_container,
-						'ls_date'=> $row->ls_date,
+						'created_on'=> $row->created_on,
 						'created_by'=> $row->created_by
 				);
 			}
@@ -447,9 +456,12 @@ class Remap_model extends CI_Model
 		}
 		$q->free_result();
 		
-		$this->db->from('ls_report_main');
-		$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
-		$where="created_on BETWEEN '".$data2['datePrev2B']."' AND '".$data2['datePrev2E']."' AND "."ls_result = 'POSITIVE'";
+		//$this->db->from('ls_report_main');
+		//$this->db->join('ls_report_header','ls_report_main.ls_no = ls_report_header.ls_no','left');
+		$this->db->from('ls_report');
+		//$where="created_on BETWEEN '".$data2['datePrev2B']."' AND '".$data2['datePrev2E']."' AND "."ls_result = 'POSITIVE'";
+		$where="created_on BETWEEN '".$data2['datePrev2B']."' AND '".$data2['datePrev2E']."'";
+		
 		if($data2['barangay']!=null)
 		{
 			$where.=" AND (";
@@ -472,10 +484,10 @@ class Remap_model extends CI_Model
 						'ls_lat'=> $row->ls_lat,
 						'ls_lng'=> $row->ls_lng,
 						'ls_household'=> $row->ls_household,
-						'ls_street'=> $row->ls_street,
+						//'ls_street'=> $row->ls_street,
 						'ls_barangay'=> $row->ls_barangay,
 						'ls_container'=> $row->ls_container,
-						'ls_date'=> $row->ls_date,
+						'created_on'=> $row->created_on,
 						'created_by'=> $row->created_by
 				);
 			}
@@ -507,10 +519,10 @@ class Remap_model extends CI_Model
 						array_push($dataPrev1R,$dataPrev1[$key]);
 						$dataCITable[]=array(
 								$dataPrev1[$key]['ls_household'],
-								$dataPrev1[$key]['ls_street'],
+								//$dataPrev1[$key]['ls_street'],
 								$dataPrev1[$key]['ls_barangay'],
 								$dataPrev1[$key]['ls_container'],
-								$dataPrev1[$key]['ls_date'],
+								$dataPrev1[$key]['created_on'],
 								$dataPrev1[$key]['created_by']
 						);
 						unset($dataPrev1[$key]);
@@ -539,10 +551,10 @@ class Remap_model extends CI_Model
 						array_push($dataPresR,$dataPres[$key]);//*
 						$dataCITable[]=array(
 								$dataPres[$key]['ls_household'],
-								$dataPres[$key]['ls_street'],
+								//$dataPres[$key]['ls_street'],
 								$dataPrev1[$key]['ls_barangay'],
 								$dataPres[$key]['ls_container'],
-								$dataPres[$key]['ls_date'],
+								$dataPres[$key]['created_on'],
 								$dataPres[$key]['created_by']
 						);//*/
 						unset($dataPres[$key]);

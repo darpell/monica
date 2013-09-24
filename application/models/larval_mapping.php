@@ -10,8 +10,8 @@ class Larval_mapping extends CI_Model
 	function get_points($begin_date = FALSE, $end_date = FALSE, $place = NULL, $value = NULL)
 	{
 		//$this->db->select('ls_barangay, ls_street, ls_municipality, ls_household, ls_container, ls_result, created_on, ls_lat, ls_lng');
-			$this->db->from('ls_report_main');
-			$this->db->join('ls_report_header', 'ls_report_main.ls_no = ls_report_header.ls_no');
+			$this->db->from('ls_report');
+			//$this->db->join('ls_report_header', 'ls_report_main.ls_no = ls_report_header.ls_no');
 			if ($place != NULL && $place != 'NULL')
 			{
 				$this->db->where($this->check_place($place),$value);

@@ -174,7 +174,7 @@ echo form_dropdown('barangay', $barangay,array($parameter => $parameter));
 <tr>
 <td>
 <h4>Status</h4>
-<p>The epidemic threshold(3rd quartile) in <b><?php if($bar_text == 'All' OR $bar_text == null){echo 'all barangays of';}else{echo $bar_text;}?>
+<p>The epidemic threshold(3rd quartile) in <b><?php if($bar_text == 'All' OR $bar_text == null){echo 'all barangays of Dasmarinas';}else{echo $bar_text;}?>
 </b> compared to its cases is at <b><?php echo $percent_text	?>% </b>for the month of <b><?php echo date('F') ?></b>.
 <p>The difference between the epidemic threshold and number of cases is <b><?php echo $diff_text;?></b>.
 </td>

@@ -65,7 +65,6 @@ class Master_list extends CI_Controller
 		$bhw_id =$this->session->userdata('TPusername');
 		$id = $this->uri->segment(3, 0);
 		$this->notif->view_notif($id);
-		$this->notif->add_cleanup($bhw_id);
 		$this->view_household_midwife();	
 		
 	}
@@ -521,7 +520,7 @@ print($barangay);
 		$data['bhwdd']= $this->Cho_model->get_bhw();
 		$barangay =  $this->masterlist->get_barangay_midwife($bhw_id);
 		$data['bhwdd']= $data['bhwdd'][$barangay];
-		$this->load->view('pages/view_masterlist_midwife', $data);
+		$this->view_household_midwife();
 	
 	}
 	public function remap($barangay)

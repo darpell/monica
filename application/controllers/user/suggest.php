@@ -65,9 +65,9 @@ class Suggest extends CI_Controller
 			$Qdata['datePrev2B']=(date("Y")-2).'-05-01';
 			$Qdata['datePrev2E']=(date("Y")-2).'-10-31';
 		}
-
+		
 		//$Qdata['barangay']=array('SAN AGUSTIN III','SAMPAOC I');
-		$Qdata['barangay']=null;
+		$Qdata['barangay']=array($brgy) ;
 		$data['pendingTasks']=$this->suggest_model->get_tasks("Barangay Cleanup",$brgy);
 		$data = array_merge($data,$this->Remap_model->getRepeatingLarvals($Qdata));
 		$this->load->view('pages/view_suggested',$data);
