@@ -35,6 +35,233 @@
 			$q->free_result();
 			
 		}
+		function get_immediate_cases($midwife)
+		{
+			$barangay = $this->get_barangay_midwife($midwife);
+				
+			$this->db->from('immediate_cases');
+			$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
+			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
+			$this->db->join('bhw','catchment_area.bhw_id = bhw.user_username');
+			$this->db->where('bhw.barangay', $barangay);
+			$this->db->where("YEAR(created_on) =".date('Y'));
+			$this->db->where("MONTH(created_on) =".date('m'));
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+		
+					$name = $row->person_first_name . ' ' . $row->person_last_name;
+					$date = explode ('-', $row->created_on);
+					$birthDate = explode ('-', $row->person_dob);
+					$birthDate = $birthDate[1].'/'.$birthDate[2].'/'.$birthDate[0];
+					//explode the date to get month, day and year
+					$birthDate = explode("/", $birthDate);
+					//get age from date or birthdate
+					$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+					$data[] =array(
+							'Name' => $name ,
+							'Age' => $age,
+							'Days Of Fever' => $row->days_fever ,
+							'Muscle Pain' => $row->has_muscle_pain ,
+							'Joint Pain' => $row->has_joint_pain ,
+							'Head Ache' => $row->has_headache ,
+							'Bleedling'  => $row->has_bleeding ,
+							'Rashes' => $row->has_rashes ,
+							'Date Onset' => $date[1].'/'.$date[2].'/'.$date[0] ,
+							'Remarks' => $row->remarks
+					);
+				}
+			}
+			else $data = null;
+			return $data;
+		}
+	function get_con_immediate_cases($midwife)
+		{
+			$barangay = $this->get_barangay_midwife($midwife);
+			
+			
+			
+			$this->db->from('immediate_cases');
+			$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
+			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
+			$this->db->join('bhw','catchment_area.bhw_id = bhw.user_username');
+			$this->db->where('bhw.barangay', $barangay);
+			//$this->db->where("YEAR(created_on) =".date('Y'));
+			//$this->db->where("MONTH(created_on) =".date('m'));
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+						$data[] =array(
+						'first_name' => $row->person_first_name ,
+						'last_name' => $row->person_last_name ,
+						'dob' => $row->person_dob ,
+						'Date Onset' => $row->created_on ,
+				);
+				}
+			}
+			else $data = null;
+			$q->free_result();
+			if($data != null) 
+			{
+			$this->db->from('case_report_main');
+			
+			
+			//$this->db->where("YEAR(cr_date_onset) =".date('Y'));
+			//$this->db->where("MONTH(cr_date_onset) =".date('m'));
+			$q = $this->db->get();
+			
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+					
+					$name = $row->cr_first_name . ' ' . $row->cr_last_name;
+					$date = explode ('-', $row->cr_date_onset);
+					
+					for ($i = 0 ; $i< count($data); $i++)
+					{
+					if($row->cr_first_name == $data[$i]['first_name'] AND $row->cr_last_name == $data[$i]['last_name'])
+					{
+						//if($row->cr_barangay == $barangay)
+						{
+							$data2[] =array(
+									'Name' => $name ,
+									'Age' => $row->cr_age,
+									'Type' => $row->cr_type,
+									'Outcome' => $row->cr_outcome,
+									'Date Onset' => $date[1].'/'.$date[2].'/'.$date[0],
+									'View Details' =>anchor(base_url('index.php/master_list/view_patient').'/'. $row->cr_patient_no ,  $row->cr_patient_no  , 'target="_blank"'),
+							);
+						}
+					
+					}
+					}
+					
+					
+				}
+			}
+			else $data2 =  null;
+			
+			
+			}
+			
+			return $data2;
+		}
+		function get_masterlist($bhw = FALSE,$midwife = FALSE)
+		{
+			$this->db->from('master_list');
+			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
+		
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
+			{
+				if( $bhw != FALSE){
+					foreach ($q->result() as $row)
+					{
+						if($bhw === $row->bhw_id)
+						{
+							$name = $row->person_first_name . ' ' . $row->person_last_name;
+							$date= explode ('-', $row->person_dob);
+							if( $row->person_blood_type === null || $row->person_blood_type == 'null')
+								$bloodtype = 'Not Indicated';
+							else
+								$bloodtype = $row->person_blood_type;
+							$data[$row->household_id][$row->person_id] =array(
+									'Name' => $name ,
+									'Birthday'=>$date[1].'/'.$date[2].'/'.$date[0]  ,
+									'Gender'=> $row->person_sex,
+									'Marital Status'=> $row->person_marital,
+									'Nationality'=> $row->person_nationality,
+									'Blood type'=> $bloodtype,
+									//'Previous Dengue Case'=> 'None',
+							);
+							$data2[] = array(
+									'h_id' => $row->household_id,
+									'first_name' => $row->person_first_name,
+									'last_name' => $row->person_last_name,
+									);
+						}
+					}
+				}
+				else {
+					foreach ($q->result() as $row)
+					{
+						$name = $row->person_first_name . ' ' . $row->person_last_name;
+						$date= explode ('-', $row->person_dob);
+						if( $row->person_blood_type === null || $row->person_blood_type == 'null')
+							$bloodtype = 'Not Indicated';
+						else
+							$bloodtype = $row->person_blood_type;
+						$data[$row->household_id][$row->person_id] =array(
+								'Name' => $name ,
+								'Birthday'=>$date[1].'/'.$date[2].'/'.$date[0]  ,
+								'Gender'=> $row->person_sex,
+								'Marital Status'=> $row->person_marital,
+								'Nationality'=> $row->person_nationality,
+								'Blood type'=> $bloodtype,
+								//'Previous Dengue Case'=> 'None',
+						);
+						/*
+						$data2[] = array(
+								'h_id' => $row->household_id,
+								'p_id' => $row->person_id,
+								'first_name' => $row->person_first_name,
+								'last_name' => $row->person_last_name,
+								'dob' => $row->person_dob,
+						);
+						*/
+		
+					}
+						
+				}
+				$q->free_result();
+	/*
+				if($data != null)
+				{
+					$this->db->from('case_report_main');
+					
+
+					$this->db->order_by("cr_date_onset", "asc");
+					
+					$q = $this->db->get();
+						
+					if($q->num_rows() > 0)
+					{
+						foreach ($q->result() as $row)
+						{
+								for ($i = 0 ; $i< count($data2); $i++)
+								{
+									if($row->cr_first_name == $data2[$i]['first_name'] AND $row->cr_last_name == $data2[$i]['last_name']  AND $row->cr_dob == $data2[$i]['dob'] )	
+									{
+										print_r($row->cr_first_name);
+										$pid =  $data2[$i]['h_id'];
+										$hid =  $data2[$i]['p_id'];
+										$data[$hid][$pid]['Previous Dengue Case'] = anchor(base_url('index.php/master_list/view_patient').'/'. $row->cr_patient_no ,  $row->cr_patient_no  , 'target="_blank"');
+										
+									}
+								}
+
+						}
+					}
+						
+						
+				}	
+				*/
+					
+				return $data;
+			}
+			else
+			{
+				return null;
+			}
+		
+		
+		
+		}
 		
 		function get_households($bhw = FALSE,$midwife = FALSE)
 		{	
@@ -117,68 +344,7 @@
 			
 			$this->add_catchment_area($house_id, $person_id,$bhw );
 		}
-		function get_masterlist($bhw = FALSE,$midwife = FALSE)
-		{
-			$this->db->from('master_list');
-			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
-				
-			$q = $this->db->get();
-			if($q->num_rows() > 0)
-			{	
-				if( $bhw != FALSE){
-					foreach ($q->result() as $row)
-					{
-						if($bhw === $row->bhw_id)
-						{
-						$name = $row->person_first_name . ' ' . $row->person_last_name;
-						$date= explode ('-', $row->person_dob);
-						if( $row->person_blood_type === null || $row->person_blood_type == 'null')
-						$bloodtype = 'Not Indicated';
-						else
-						$bloodtype = $row->person_blood_type;
-						$data[$row->household_id][] =array(
-								'Name' => $name ,
-								'Birthday'=>$date[1].'/'.$date[2].'/'.$date[0]  ,
-								'Gender'=> $row->person_sex,
-								'Marital Status'=> $row->person_marital,
-								'Nationality'=> $row->person_nationality,
-								'Blood type'=> $bloodtype,
-						);
-						}
-					}
-				}
-				else {
-					foreach ($q->result() as $row)
-					{
-							$name = $row->person_first_name . ' ' . $row->person_last_name;
-							$date= explode ('-', $row->person_dob);
-							if( $row->person_blood_type === null || $row->person_blood_type == 'null')
-								$bloodtype = 'Not Indicated';
-							else
-								$bloodtype = $row->person_blood_type;
-							$data[$row->household_id][] =array(
-									'Name' => $name ,
-									'Birthday'=>$date[1].'/'.$date[2].'/'.$date[0]  ,
-									'Gender'=> $row->person_sex,
-									'Marital Status'=> $row->person_marital,
-									'Nationality'=> $row->person_nationality,
-									'Blood type'=> $bloodtype,
-							);
-						
-					}
-					
-				}
-					
-				return $data;
-			}
-			else
-			{
-					return null;
-			}
-				
-				$query->free_result();
-
-		}
+		
 		function get_list($bhw, $person_id = FALSE)
 		{
 			/*
@@ -232,46 +398,7 @@
 			return $barangay;
 		}
 
-		function get_immediate_cases($midwife)
-		{
-			$barangay = $this->get_barangay_midwife($midwife);
-			
-			$this->db->from('immediate_cases');
-			$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
-			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
-			$this->db->join('bhw','catchment_area.bhw_id = bhw.user_username');
-			$this->db->where('bhw.barangay', $barangay);
-			$q = $this->db->get();
-			if($q->num_rows() > 0)
-			{
-				foreach ($q->result() as $row)
-				{
-				
-				$name = $row->person_first_name . ' ' . $row->person_last_name;
-				$date = explode ('-', $row->created_on);
-				$birthDate = explode ('-', $row->person_dob);
-				$birthDate = $birthDate[1].'/'.$birthDate[2].'/'.$birthDate[0];
-				//explode the date to get month, day and year
-				$birthDate = explode("/", $birthDate);
-				//get age from date or birthdate
-				$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-					$data[] =array(
-						'Name' => $name ,
-						'Age' => $age,
-						'Days Of Fever' => $row->days_fever ,
-						'Muscle Pain' => $row->has_muscle_pain ,
-						'Joint Pain' => $row->has_joint_pain ,
-						'Head Ache' => $row->has_headache ,
-						'Bleedling'  => $row->has_bleeding ,
-						'Rashes' => $row->has_rashes ,
-						'Date Onset' => $date[1].'/'.$date[2].'/'.$date[0] ,
-						'Remarks' => $row->remarks 
-				);
-				}
-			}
-			else $data = null;
-			return $data;
-		}
+		
 		
 		function get_bhw_catchment($midwife)
 		{

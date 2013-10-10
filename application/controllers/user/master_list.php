@@ -312,6 +312,31 @@ class Master_list extends CI_Controller
 		
 		
 	}
+	function view_patient()
+	{	$this->redirectLogin();
+	$this->load->model('case_report');
+	$data['patientno'] = $this->uri->segment(3,"");
+	
+	/* css */
+	$data['base'] = $this->config->item('base_url');
+	$data['css'] = $this->config->item('css');
+	$data['title'] = 'Update patient';
+	
+	
+	//scripts if none keep ''
+	$data['script'] = 'view_casereport';
+	
+	//for table result for search
+	$data['info'] = $this->case_report->getPatientInfo($data);
+	
+	/** Validation rules could be seen at application/config/form_validation.php **/
+	if ($this->form_validation->run('') == FALSE)
+	{
+		$this->load->library('table');
+		$this->load->view('pages/view_patient',$data);
+	}
+	}
+	
 	function view_household_midwife()
 	{	
 		
@@ -341,6 +366,7 @@ class Master_list extends CI_Controller
 			$data['cases'] = $this->masterlist->get_immediate_cases($bhw_id);
 			$data['bhwdd']= $this->Cho_model->get_bhw();
 			$barangay =  $this->masterlist->get_barangay_midwife($bhw_id);
+			$data['confirmedcases'] = $this->masterlist->get_con_immediate_cases($bhw_id);
 			$temp =$data['households'];
 			for($i = 0; $i < count($temp); $i++)
 			{

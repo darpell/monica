@@ -292,12 +292,15 @@
                };
         
         var data = google.visualization.arrayToDataTable([
-       	['Barangay', yyyy, yyyy-1],
-        ['Langkaan II',  parseInt(mn1),      parseInt(m1)],
-        ['Sampaloc I',  parseInt(mn2),      parseInt(m2)],
-        ['San Agustin I',  parseInt(mn3),     parseInt(m3)],
-        ['San Agustin III',  parseInt(mn4),      parseInt(m4)]
-        ]);
+       	['Barangay', String(yyyy-1), String(yyyy)],
+        ['Langkaan II',  parseInt(m1),      parseInt(mn1)],
+        ['Sampaloc I',  parseInt(m2),      parseInt(mn2)],
+        ['San Agustin I',  parseInt(m3),     parseInt(mn3)],
+        ['San Agustin III',  parseInt(m4),      parseInt(mn4)]],false);
+        
+
+
+        /*
         var data2 = google.visualization.arrayToDataTable([
          ['Barangay', 'No. of Cases', 'No. Positive Larval Points'],
          ['Langkaan II',  parseInt(mn1),  parseInt(larval1)    ],
@@ -305,6 +308,7 @@
          ['San Agustin I',  parseInt(mn3),  parseInt(larval3)   ],
          ['San Agustin III',  parseInt(mn4),  parseInt(larval4)    ]
          ]);
+        */
 
         var sumofcases = parseInt(mn1)+parseInt(mn2)+parseInt(mn3)+parseInt(mn4);
         document.getElementById('tquartile').value = tquartile;
@@ -314,7 +318,7 @@
         document.getElementById('tcsum196sd').value = tcsum196sd;
         
               // Instantiate and draw our chart, passing in some options.
-              var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+             var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
               chart.draw(data, options);
               
              // var chart2 = new google.visualization.ComboChart(document.getElementById('chart_div2'));
@@ -324,7 +328,7 @@
             //  draw(epi,epioptions);
              
               var table = new google.visualization.Table(document.getElementById('table_div1'));
-              table.draw(datatable2, {showRowNumber: true,width: '1000px'});
+              table.draw(datatable2, {showRowNumber: true,width: '1000px',page:'enable'});
 
             
                     

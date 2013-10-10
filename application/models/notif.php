@@ -10,7 +10,9 @@
 		}
 		function addnotif($data)
 		{	
+			
 			$this->db->insert('notifications', $data);
+			
 		}
 		function getnotifs($userid)
 		{
@@ -20,7 +22,15 @@
 			$this->db->where('notif_viewed', 'N');
 
 			$query = $this->db->get();
-			return $query->result_array();
+			$data = $query->result_array();
+			for($i = 0 ; $i < count($data); $i++)
+			{
+				$old_date_timestamp = strtotime($data[$i]['notif_createdOn']);
+				$new_date = date('l, F d, Y', $old_date_timestamp);
+				$data[$i]['notif_createdOn'] = $new_date;
+			}
+			
+			return $data;
 			$query->free_result();
 		}
 		function checknotifexist($id,$userid)

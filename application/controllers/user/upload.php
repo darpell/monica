@@ -299,6 +299,9 @@ class Upload extends CI_Controller
 		$crno = time().'-'.mt_rand();
 			for ($i=0; $i < count($patientnum); $i++)
 			{
+			$firstname[$i] = preg_replace('/\s+/', '', $firstname[$i]);
+			$familyname[$i] = preg_replace('/\s+/', '', $familyname[$i]);
+			
 			$date= explode ('/', $DOB[$i]);
 			$date2= explode ('/', $dAdmit[$i]);
 			$date3= explode ('/', $dOnset[$i]);

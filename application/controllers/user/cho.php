@@ -94,7 +94,8 @@ class Cho extends CI_Controller
 				'ic_dateOnset'=> 'Date Onset',
 				'ic_feedback'=> 'Feedback',
 		);
-		
+		if(array_key_exists('dataCases', $data['mapvalues']))
+		{
 		for($i = 0; $i< count($data['mapvalues']['dataCases']); $i++)
 		{
 			
@@ -108,6 +109,7 @@ class Cho extends CI_Controller
 					'ic_dateOnset'=> $data['mapvalues']['dataCases'][$i]['ic_dateOnset'],
 					'ic_feedback'=> $data['mapvalues']['dataCases'][$i]['ic_feedback'],
 			);
+		}
 		}
 		$data['total_text'] = 0;
 		$data['date_to_text'] = $this->input->post('TPdateto-txt');
@@ -231,16 +233,62 @@ class Cho extends CI_Controller
 		
 		$data['bartotal_text2'] = array_keys($data['bartotal_text'], max($data['bartotal_text']));
 		
+		$temp = $data['values_total'];
+		$temp = explode('%%',$data['values_total']);
+		array_pop($temp);
 		
+		
+		$temp2 = Array();
+		for ( $i = 0; $i < count($temp); $i++)
+		{
+		$temp2[$i] =  explode('&&',$temp[$i]);
+		array_pop($temp2[$i]);
+		}
+		
+		$outbreak = null;
+		for ( $i = 1; $i < count($temp2); $i++)
+		{
+			if(count($temp2[$i])>2)
+			{
+				for($s = 1; $s < count($temp2[$i])-1; $s++)
+				{	$d = $s;
+					if( $s != count($temp2[$i]))
+					{
+						$d++;
+					}
+					if($temp2[$i][$s] < $temp2[$i][$d] )
+					{
+						$outbreak[] = $temp2[$i][0];
+					}
+					
+				}	
+			}
+		}
+		//print_r($outbreak);
+		$this->load->model('notif');
+		$data2 = array(
+				'notif_type' => 2,
+				'notification' => 'current number of dengue cases exceeded the previous cases from last year',
+				'unique_id' => '1',
+				'notif_viewed' => 'N',
+				'notif_createdOn' => Date('Y-m-d'),
+				'notif_user' => 'CHO',
+					
+		);
+			
+		$this->notif->addnotif($data2);
 		}
 		else
 		{
+			
 			$data['title'] = 'View Pending Tasks';
 			$data['script'] = 'view_casereport';
 			$data['values_age']= null;
 			$data['error']= "There are no dengue cases between " . $this->input->post('TPdatefrom-txt') . ' and ' . $this->input->post('TPdateto-txt') ;
 			$data['barangay_form']  = $this->Cho_model->getAllBarangays();
 			array_shift($data['barangay_form']);
+			
+		
 		}
 	
 		$this->load->view('pages/view_dengue_profile.php' , $data);

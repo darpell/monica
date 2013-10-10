@@ -23,13 +23,14 @@ class Remap_model extends CI_Model
 			return $query->result_array();
 			$query->free_result();
 		}
+		
 		if ($value != NULL && $value != 'NULL')
 		{
 			$this->db->where('node_barangay',$value);
 		}
 
-		$this->db->where("node_addedOn <= '$begin_date' AND (node_endDate ='0000-00-00' OR node_endDate >= '$end_date')");
-		$this->db->or_where("node_addedOn BETWEEN '$begin_date' AND '$end_date' AND node_endDate ='0000-00-00'");
+		$this->db->where("node_addedOn <= '$begin_date' AND (node_endDate ='0000-00-00' OR node_endDate >= '$end_date' OR (node_addedOn BETWEEN '$begin_date' AND '$end_date' AND node_endDate ='0000-00-00'))");
+		//$this->db->or_where("node_addedOn BETWEEN '$begin_date' AND '$end_date' AND node_endDate ='0000-00-00'");
 		$query = $this->db->get();
 		return $query->result_array();
 		$query->free_result();
