@@ -16,10 +16,22 @@
 					<input type="hidden" id="household_id_<?= $ctr ?>" 		value="<?php echo $subjects[$ctr]['household_id']; ?>"	/>
 			<?php } ?>
 			
-			<ul data-role="listview" data-filter="true" data-inset="true" data-split-icon="check" data-split-theme="d">
+			
 				<!-- <li> <?php //echo $test; ?></li> -->
 				<?php for ($ctr = 0; $ctr < count($subjects); $ctr++) {?>
-				
+				<ul data-role="listview" data-inset="true" data-split-icon="check" data-split-theme="d" data-divider-theme="a">
+				<li data-role="list-divider"> 
+					<span> 
+						<?php 
+							$this->load->model('master_list_model','masterlist');
+							$fever_count = $this->masterlist->get_fever_count($subjects[$ctr]['household_id']);
+							
+							if ($fever_count != NULL)
+								echo $fever_count;
+							else
+								echo '0';
+						?> 
+					</span> identified with fever for the past 7 days</li>
 				<li> <a href="<?php echo site_url('mobile/household/' . $subjects[$ctr]['household_id']);?>" data-ajax="false" data-transition="slide">
 					<?php echo $subjects[$ctr]['household_name']; ?> <!-- Household No. e.g. "Blk 2" --> located at
 					<?php echo $subjects[$ctr]['house_no']; ?>, <!-- Household No. e.g. "Blk 2" --> 
@@ -29,8 +41,10 @@
 					</strong></p>
 					</a>
 				</li>
-				<?php } ?>
+				
+				
 			</ul>
+				<?php } ?>
 			
 		</div><!-- /content -->
 	</div><!-- /page-->

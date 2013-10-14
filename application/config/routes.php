@@ -61,6 +61,7 @@ $route['mobile/case_report'] = 'mobile/case_report';
 $route['mobile/page/master_list'] = 'mobile/master_list';
 $route['mobile/page/master_list/(:any)'] = 'mobile/master_list/$1';
 $route['mobile/household/(:num)'] = 'mobile/master_list/view_household/$1';
+$route['mobile/view/person/(:num)'] = 'mobile/master_list/add_fever_day/$1';
 $route['mobile/view/household/(:num)/person/(:num)'] = 'mobile/master_list/view_person';
 $route['mobile/view/household/(:num)/person/(:num)/add_im'] = 'mobile/master_list/add_immediate_case';
 $route['mobile/case_report_filter/province'] = 'mobile/case_report/province';

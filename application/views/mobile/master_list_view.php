@@ -19,7 +19,64 @@
 			
 			<ul data-role="listview" data-filter="true" data-inset="true" data-split-icon="check" data-split-theme="d">
 				<!-- <li> <?php //echo $test; ?></li> -->
-				<?php for ($ctr = 0; $ctr < count($household_persons); $ctr++) {?>
+				<?php 
+				for ($ctr = 0; $ctr < count($household_persons); $ctr++) 
+				{
+					$this->load->model('master_list_model','masterlist');
+					if ($this->masterlist->check_person_fever($household_persons[$ctr]['person_id']))
+					{
+						if($this->masterlist->check_person_hospitalized(
+										$household_persons[$ctr]['person_first_name'],
+										$household_persons[$ctr]['person_last_name'],
+										$household_persons[$ctr]['person_sex'],
+										$household_persons[$ctr]['person_dob']
+									)
+								)
+						{
+				?>
+							<li data-theme="e"> Hospitalized </li>
+							<li data-theme="e">
+								<?php echo $household_persons[$ctr]['person_first_name']; ?> <!-- First Name -->
+								<?php echo $household_persons[$ctr]['person_last_name']; ?>, <!-- Last Name --> 
+								<?php echo $household_persons[$ctr]['person_nationality']; ?>, <!-- Nationality-->
+								<?php echo $household_persons[$ctr]['person_sex']; ?>, <!-- Sex -->
+								<?php 
+									$bday = $household_persons[$ctr]['person_dob'];
+									$today = new DateTime();//date('Y-m-d');
+									$diff = $today->diff(new DateTime($bday));
+									echo $diff->y;
+								?> <!-- Age -->
+								</a>
+							</li>
+							
+					
+				<?php
+						}
+						else
+						{
+							//$this->masterlist->add_fever_day($household_persons[$ctr]['person_id']);
+				?>
+						<li data-theme="a"> Has fever </li>
+							<li data-theme="a">
+								<a href="<?php echo site_url('mobile/view/person/' . $household_persons[$ctr]['person_id']);?>" data-ajax="false" data-transition="slide">
+								<?php echo $household_persons[$ctr]['person_first_name']; ?> <!-- First Name -->
+								<?php echo $household_persons[$ctr]['person_last_name']; ?>, <!-- Last Name --> 
+								<?php echo $household_persons[$ctr]['person_nationality']; ?>, <!-- Nationality-->
+								<?php echo $household_persons[$ctr]['person_sex']; ?>, <!-- Sex -->
+								<?php 
+									$bday = $household_persons[$ctr]['person_dob'];
+									$today = new DateTime();//date('Y-m-d');
+									$diff = $today->diff(new DateTime($bday));
+									echo $diff->y;
+								?> <!-- Age -->
+								</a>
+							</li>
+				<?php
+						}
+					}
+					else 
+					{
+				?>
 				
 				<li> <a href="<?php echo site_url('mobile/view/household/' . $household_persons[$ctr]['household_id'] . '/person/' . $household_persons[$ctr]['person_id']);?>" data-ajax="false" data-transition="slide">
 					<?php echo $household_persons[$ctr]['person_first_name']; ?> <!-- First Name -->
@@ -34,7 +91,10 @@
 					?> <!-- Age -->
 					</a>
 				</li>
-				<?php } ?>
+				<?php
+					} 
+				} 
+				?>
 			</ul>
 			
 		</div><!-- /content -->
