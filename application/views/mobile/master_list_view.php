@@ -31,11 +31,11 @@
 										$household_persons[$ctr]['person_sex'],
 										$household_persons[$ctr]['person_dob']
 									)
-								)
+								) //is sick and hospitalized
 						{
 				?>
-							<li data-theme="e"> Hospitalized </li>
-							<li data-theme="e">
+							<li data-theme="d">
+								<label style="color:GREEN;"> [Hospitalized] </label>
 								<?php echo $household_persons[$ctr]['person_first_name']; ?> <!-- First Name -->
 								<?php echo $household_persons[$ctr]['person_last_name']; ?>, <!-- Last Name --> 
 								<?php echo $household_persons[$ctr]['person_nationality']; ?>, <!-- Nationality-->
@@ -46,19 +46,18 @@
 									$diff = $today->diff(new DateTime($bday));
 									echo $diff->y;
 								?> <!-- Age -->
-								</a>
 							</li>
 							
 					
 				<?php
 						}
-						else
+						else //is sick but unhospitalized
 						{
 							//$this->masterlist->add_fever_day($household_persons[$ctr]['person_id']);
 				?>
-						<li data-theme="a"> Has fever </li>
 							<li data-theme="a">
 								<a href="<?php echo site_url('mobile/view/person/' . $household_persons[$ctr]['person_id']);?>" data-ajax="false" data-transition="slide">
+								<label style="color:RED;"> [Has Fever] </label>
 								<?php echo $household_persons[$ctr]['person_first_name']; ?> <!-- First Name -->
 								<?php echo $household_persons[$ctr]['person_last_name']; ?>, <!-- Last Name --> 
 								<?php echo $household_persons[$ctr]['person_nationality']; ?>, <!-- Nationality-->
@@ -74,7 +73,7 @@
 				<?php
 						}
 					}
-					else 
+					else //not sick
 					{
 				?>
 				
