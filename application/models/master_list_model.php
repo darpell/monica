@@ -35,7 +35,37 @@
 			
 			$this->db->where('household_id',$this->input->post('household_id'));
 			$this->db->update('household_address', $hh);
+		}
+		
+		
+		# TODO
+		function update_im()
+		{
+			$data = array(
+					
+					'has_muscle_pain'	=> $hmp = ($this->input->post('has_muscle_pain') == 'Y') ? 'Y' : 'N',
+					'has_joint_pain'	=> $hjp = ($this->input->post('has_joint_pain') == 'Y') ? 'Y' : 'N',
+					'has_headache'		=> $hh = ($this->input->post('has_headache') == 'Y') ? 'Y' : 'N',
+					'has_bleeding'		=> $hb = ($this->input->post('has_bleeding') == 'Y') ? 'Y' : 'N',
+					'has_rashes'		=> $hr = ($this->input->post('has_rashes') == 'Y') ? 'Y' : 'N',
+					'days_fever'		=> $this->input->post('duration'),
+					'suspected_source'	=> $this->input->post('source'),
+					'remarks'			=> $this->input->post('remarks')
+			);
+			$this->db->set('created_on', 'NOW()', FALSE);
+			$this->db->set('last_updated_on', 'NOW()', FALSE);
+			$this->db->insert('immediate_cases', $data);
 			
+			$this->db->where('person_id',$this->input->post('person_id'));
+			$this->db->update('immediate_cases, $data');
+				
+			// updates last_visited_on at `household_address`
+			$hh = array(
+					'last_visited' => date('Y-m-d')
+			);
+				
+			$this->db->where('household_id',$this->input->post('household_id'));
+			$this->db->update('household_address', $hh);
 		}
 		
 		function get_households($bhw, $household_id = FALSE, $person_id = FALSE)
@@ -136,7 +166,8 @@
 		function check_person_fever($person_id)
 		{
 			$this->db->from('immediate_cases');
-				$this->db->where('person_id',$person_id);
+				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+				$this->db->where($where);
 				
 				$query = $this->db->get();
 				if ($query->num_rows() > 0)
@@ -158,6 +189,7 @@
 				$this->db->where('master_list.person_last_name', $l_name);
 				$this->db->where('master_list.person_sex', $sex);
 				$this->db->where('master_list.person_dob', $dob);
+				// + max cr_patient_no
 				
 				$query = $this->db->get();
 				if ($query->num_rows() > 0)
@@ -187,13 +219,15 @@
 		function add_fever_day($person_id)
 		{
 			$this->db->from('immediate_cases');
-				$this->db->where('person_id', $person_id);
+				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+				$this->db->where($where);
 				$query = $this->db->get();
 				
 				if ($query->num_rows() > 0)
 				{
 					$row = $query->row_array();
-				
+					
+					$max_case_no = $row['imcase_no'];
 					$old_fever = $row['days_fever'];
 				}
 			
@@ -201,8 +235,43 @@
 					'days_fever' => $old_fever + 1
 			);
 			
-			$this->db->where('person_id', $person_id);
+			$this->db->where('imcase_no', $max_case_no);
 			$this->db->update('immediate_cases', $data);
+		}
+		
+		function count_fever_day($person_id)
+		{
+			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$this->db->where($where);
+			$query = $this->db->get();
+			
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+					
+				return $row['days_fever'];
+			}
+		}
+		
+		function check_symptom_if_checked($person_id,$symptom)
+		{
+			$this->db->from('immediate_cases');
+				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+				$this->db->where($where);
+				
+			$query = $this->db->get();
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+				
+				if ($row[$symptom] == 'Y')
+					return TRUE;
+				else
+					return FALSE;
+			}
+			else
+				return FALSE;
 		}
 	}
 

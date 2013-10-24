@@ -62,6 +62,10 @@ function initialize(){
 </head> 
 <body onload="initialize()"> 
 
+<!-- load model -->
+<?php 
+	$this->load->model('master_list_model','masterlist');
+?>
 <div data-role="page">
 
 	<div data-role="header">
@@ -146,19 +150,49 @@ function initialize(){
 						<li  data-role="fieldcontain">
 							 	<fieldset data-role="controlgroup">
 									Other dengue related symptoms:
-									<input type="checkbox" name="has_muscle_pain" id="checkbox-1a" value="Y" />
+									<input type="checkbox" name="has_muscle_pain" id="checkbox-1a" value="Y" 
+										<?php 
+											if ($this->masterlist->check_symptom_if_checked($household_persons[0]['person_id'],'has_muscle_pain')) {
+										?>
+											checked="checked"
+										<?php } else ; ?>									
+										/>
 									<label for="checkbox-1a"> Muscle Pain </label>
 				
-									<input type="checkbox" name="has_joint_pain" id="checkbox-2a" value="Y" />
+									<input type="checkbox" name="has_joint_pain" id="checkbox-2a" value="Y" 
+										<?php 
+											if ($this->masterlist->check_symptom_if_checked($household_persons[0]['person_id'],'has_joint_pain')) {
+										?>
+											checked="checked"
+										<?php } else ; ?>
+										/>
 									<label for="checkbox-2a"> Joint Pain </label>
 									
-									<input type="checkbox" name="has_headache" id="checkbox-3a" value="Y" />
+									<input type="checkbox" name="has_headache" id="checkbox-3a" value="Y" 
+										<?php 
+											if ($this->masterlist->check_symptom_if_checked($household_persons[0]['person_id'],'has_muscle_pain')) {
+										?>
+											checked="checked"
+										<?php } else ; ?>
+										/>
 									<label for="checkbox-3a"> Headache </label>
 				
-									<input type="checkbox" name="has_rashes" id="checkbox-4a" value="Y" />
+									<input type="checkbox" name="has_rashes" id="checkbox-4a" value="Y" 
+										<?php 
+											if ($this->masterlist->check_symptom_if_checked($household_persons[0]['person_id'],'has_rashes')) {
+										?>
+											checked="checked"
+										<?php } else ; ?>
+										/>
 									<label for="checkbox-4a"> Rashes </label>
 									
-									<input type="checkbox" name="has_bleeding" id="checkbox-5a" value="Y" />
+									<input type="checkbox" name="has_bleeding" id="checkbox-5a" value="Y" 
+										<?php 
+											if ($this->masterlist->check_symptom_if_checked($household_persons[0]['person_id'],'has_bleeding')) {
+										?>
+											checked="checked"
+										<?php } else ; ?>
+										/>
 									<label for="checkbox-5a"> Bleeding </label>
 							    </fieldset>
 							</li>
