@@ -340,14 +340,14 @@ function setInfo(fMarker,fInfo,fMap) {
 					<li><a href="#tabs-6">Alerts(<?php echo count($notif);?>)</a></li>
 					<li><a href="#tabs-1">Master List </a></li>
 					<li><a href="#tabs-2">Immediate Cases</a></li>
-					<li><a href="#tabs-8"> Confirmed Immediate Cases</a></li>
+					<li><a href="#tabs-8">Hospitalized Residents</a></li>
 					<li><a href="#tabs-4">Uninvestigated Cases</a></li>
 					<li><a href="#tabs-3">Barangay Health Worker</a></li>
 					<li><a href="#tabs-7">Barangay Cleanup</a></li>
 						
 				</ul>
 <div  id="tabs-5">
-	<div id="googleMap" style="width:55%; height:90%; margin: 10px; float:left;" >
+	<div id="googleMap" style="width:30%; height:80%; margin: 10px; float:left;" >
 	</div>
 	<input type="hidden" id="centroid_icon" value="<?php echo base_url('/images/information.png')?>" />
 	
@@ -478,10 +478,72 @@ function setInfo(fMarker,fInfo,fMap) {
 					    'cell_alt_end'        => '</td>',
 					    'table_close'         => '</table>'
 					   );
-		echo "<br/><center><b>Possible Source Areas</b><br/>";
-		echo $this->table->generate($sourceTable);
-		echo "<br/><center><b>Possible Risk Areas</b><br/>";
-		echo $this->table->generate($riskTable);?>
+		//echo "<br/><center><b>Possible Source Areas</b><br/>";
+		//echo $this->table->generate($sourceTable);
+		//echo "<br/><center><b>Possible Risk Areas</b><br/>";
+		//echo $this->table->generate($riskTable);?>
+		<?php 
+if($cases != null){
+?>
+<table border="1" cellpadding="5" cellspacing="0" id="results" style="width: 30%; float:right;"  >
+<tr>
+<td><b>Severity</b></td>
+<td><b>Name</b></td>
+<td><b>Address</b></td>
+<td><b>Age</b></td>
+<td><b>Days Of Fever</b></td>
+<td><b>Muscle Pain</b></td>
+<td><b>Joint Pain</b></td>
+<td><b>Head Ache</b></td>
+<td><b>Bleeding</b></td>
+<td><b>Rashes</b></td>
+<td><b>Date Onset</b></td>
+<td><b>Remarks</b></td>
+</tr>
+
+<?php 
+foreach($cases as $value)
+{
+	$ctr = 0;
+	if($value['Muscle Pain'] == 'Y') $ctr=$ctr+1;
+	if($value['Head Ache'] == 'Y') $ctr=$ctr+1;
+	if($value['Joint Pain'] == 'Y') $ctr=$ctr+1;
+	if($value['Bleeding'] == 'Y') $ctr=$ctr+1;
+	if($value['Rashes'] == 'Y') $ctr=$ctr+1;
+	if($value['Remarks'] == '')$value['Remarks']=" ";
+	
+	echo '<tr>';
+	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y')
+		echo "<td bgcolor='#FF0000'></td>";
+	else if($value['Days Of Fever'] >= 2 && $ctr >=2)
+		echo "<td bgcolor='#FF8000'></td>";
+	else if($value['Days Of Fever'] >= 2 && $ctr <=2)
+		echo "<td bgcolor='#FFFF00'></td>";
+	else if($value['Days Of Fever'] >= 1 && $ctr <2)
+		echo "<td bgcolor='#00FF00'></td>";
+	echo '
+		<td>'.$value['Name'].'</td>
+		<td>'.$value['Address'].'</td>
+		<td>'.$value['Age'].'</td>
+		<td>'.$value['Days Of Fever'].'</td>
+		<td>'.$value['Muscle Pain'].'</td>
+		<td>'.$value['Joint Pain'].'</td>
+		<td>'.$value['Head Ache'].'</td>
+		<td>'.$value['Bleeding'].'</td>
+		<td>'.$value['Rashes'].'</td>
+		<td>'.$value['Date Onset'].'</td>
+		<td>'.$value['Remarks'].'</td>
+		';
+
+	
+	echo '</tr>';
+}
+}
+else 
+	echo '<b>No new cases has been reported.</b>';
+	
+	?>
+</table>
 
 </div>
 
@@ -608,6 +670,17 @@ echo form_open('master_list/add_masterlist_midwife',$attributes);
 		echo form_dropdown('TPblood-dd'.$row['household_id'], $options, 'male',$js);
 		?>
      </td>
+     
+           <td >Contact Nos:</td>
+               <td colspan = 2>
+		<label style="color:red"><?php echo form_error('TPnation-txt'.$row['household_id']); ?></label>
+		<input type="text" name="TPcontact-txt<?php echo $row['household_id']; ?>" size="40" />
+		    
+     </td>
+    <td>
+     </td>
+     
+     
   </tr>
 	</table>
 	<center>
@@ -785,13 +858,75 @@ $this->table->set_heading(
 				'Muscle Pain',
 				'Joint Pain',
 				'Head Ache',
-				'Bleedling',
+				'Bleeding',
 				'Rashes',
 				'Date Onset',
 				'Remarks'
 		));
-echo $this->table->generate($cases);
+//echo $this->table->generate($cases);
 ?>
+<?php 
+if($cases != null){
+?>
+<table border="1" cellpadding="2" cellspacing="0" id="results" style="width: 50%;"  >
+<tr>
+<td><b>Severity</b></td>
+<td><b>Name</b></td>
+<td><b>Address</b></td>
+<td><b>Age</b></td>
+<td><b>Days Of Fever</b></td>
+<td><b>Muscle Pain</b></td>
+<td><b>Joint Pain</b></td>
+<td><b>Head Ache</b></td>
+<td><b>Bleeding</b></td>
+<td><b>Rashes</b></td>
+<td><b>Date Onset</b></td>
+<td><b>Remarks</b></td>
+</tr>
+
+<?php 
+foreach($cases as $value)
+{
+	$ctr = 0;
+	if($value['Muscle Pain'] == 'Y') $ctr=$ctr+1;
+	if($value['Head Ache'] == 'Y') $ctr=$ctr+1;
+	if($value['Joint Pain'] == 'Y') $ctr=$ctr+1;
+	if($value['Bleeding'] == 'Y') $ctr=$ctr+1;
+	if($value['Rashes'] == 'Y') $ctr=$ctr+1;
+	if($value['Remarks'] == '')$value['Remarks']=" ";
+	
+		echo '<tr>';
+	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y')
+		echo "<td bgcolor='#FF0000'></td>";
+	else if($value['Days Of Fever'] >= 2 && $ctr >=2)
+		echo "<td bgcolor='#FF8000'></td>";
+	else if($value['Days Of Fever'] >= 2 && $ctr <=2)
+		echo "<td bgcolor='#FFFF00'></td>";
+	else if($value['Days Of Fever'] >= 1 && $ctr <2)
+		echo "<td bgcolor='#00FF00'></td>";
+	echo '
+		<td>'.$value['Name'].'</td>
+		<td>'.$value['Address'].'</td>
+		<td>'.$value['Age'].'</td>
+		<td>'.$value['Days Of Fever'].'</td>
+		<td>'.$value['Muscle Pain'].'</td>
+		<td>'.$value['Joint Pain'].'</td>
+		<td>'.$value['Head Ache'].'</td>
+		<td>'.$value['Bleeding'].'</td>
+		<td>'.$value['Rashes'].'</td>
+		<td>'.$value['Date Onset'].'</td>
+		<td>'.$value['Remarks'].'</td>
+		';
+
+	
+	echo '</tr>';
+}
+}
+else 
+	echo '<b>No new cases has been reported.</b>';
+	
+	?>
+</table>
 </center>
 				
 				

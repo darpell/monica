@@ -588,7 +588,7 @@ print($barangay);
 		// risk nodes
 		$data['pointsOfInterest'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date'],$loc,$bgy);
 	
-		//print_r($data['pointsOfInterest']);
+		//print_r($bgy);
 		// investigated cases
 		//$data['investigatedCases'] = ;
 	
