@@ -35,7 +35,7 @@
 						{
 				?>
 							<li data-theme="d">
-								<label style="color:GREEN;"> [Hospitalized] </label>
+								<label style="color:RED;"> [Hospitalized] </label>
 								<?php echo $household_persons[$ctr]['person_first_name']; ?> <!-- First Name -->
 								<?php echo $household_persons[$ctr]['person_last_name']; ?>, <!-- Last Name --> 
 								<?php 
@@ -65,13 +65,13 @@
 								<label style="color:YELLOW;"> [Has Fever for <?php echo $this->masterlist->count_fever_day($household_persons[$ctr]['person_id']); ?> days] </label>
 				<?php 
 							}
-							else if($this->masterlist->count_fever_day($household_persons[$ctr]['person_id']) >= 3 && $this->masterlist->count_fever_day($household_persons[$ctr]['person_id']) < 5)
+							else if($this->masterlist->count_fever_day($household_persons[$ctr]['person_id']) == 3 && $this->masterlist->count_fever_day($household_persons[$ctr]['person_id']) < 5)
 							{
 				?>		
 								<label style="color:ORANGE;"> [Has Fever for <?php echo $this->masterlist->count_fever_day($household_persons[$ctr]['person_id']); ?> days] </label>
 				<?php 
 							}
-							else if($this->masterlist->count_fever_day($household_persons[$ctr]['person_id']) >= 5)
+							else if($this->masterlist->count_fever_day($household_persons[$ctr]['person_id']) >= 4)
 							{
 				?>
 								<label style="color:RED;"> [Has Fever for <?php echo $this->masterlist->count_fever_day($household_persons[$ctr]['person_id']); ?> days] </label>
