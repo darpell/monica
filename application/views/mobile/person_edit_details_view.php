@@ -1,63 +1,6 @@
 <!-- HEADER -->
 <?= $this->load->view('/mobile/templates/mob_header') ?>
 
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
-    <script type="text/javascript">
-		$( document ).bind( "mobileinit", function() {
-			// Make your jQuery Mobile framework configuration changes here!
-			$.support.cors = true;
-			$.mobile.allowCrossDomainPages = true;
-		});
-    </script>
-    <script>
-var geocoder = new google.maps.Geocoder();
-function initialize(){
-	
-        if (navigator.geolocation)
-    {
-    navigator.geolocation.getCurrentPosition(showPosition);
-    }
-}
-      function showPosition(position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        var latlng = new google.maps.LatLng(lat, lng);
-        geocoder.geocode({'latLng': latlng}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            if (results[0]) {
-              	//alert(results[0].formatted_address);
-				//document.getElementById("test").innerHTML = results[0].formatted_address;
-				document.getElementById("lat").value = lat;
-				document.getElementById("lng").value = lng;				
-            } else {
-              alert('No results found');
-            }
-          } else {
-            alert('Geocoder failed due to: ' + status);
-          }
-        });
-      }
-
-       function showError(error)
-	  {
-	  switch(error.code) 
-	    {
-	    case error.PERMISSION_DENIED:
-	      x.innerHTML="User denied the request for Geolocation.";
-	      break;
-	    case error.POSITION_UNAVAILABLE:
-	      x.innerHTML="Location information is unavailable.";
-	      break;
-	    case error.TIMEOUT:
-	      x.innerHTML="The request to get user location timed out.";
-	      break;
-	    case error.UNKNOWN_ERROR:
-	      x.innerHTML="An unknown error occurred.";
-	      break;
-	    }
-	  }
-</script>
-
 <!-- CONTENT -->
 </head> 
 <body onload="initialize()"> 
@@ -132,11 +75,6 @@ function initialize(){
 									'/case/' . $household_persons[0]['person_id']); ?>/edit_case"
 			method="post" data-ajax="false">
 		
-		<!-- lat & lng -->
-		<input type="hidden" name="lat" id="lat" />
-		<input type="hidden" name="lng" id="lng" />
-		<!-- /lat & lng -->
-		
 		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
 				<div data-role="collapsible">
 					<h2> Has Fever?</h2>
@@ -144,7 +82,11 @@ function initialize(){
 					<?php for ($ctr = 0; $ctr < count($household_persons); $ctr++) {?>
 						<input type="hidden" name="household_id" id="household_id" value="<?php echo $household_persons[$ctr]['household_id']; ?>"	/>
 						<input type="hidden" name="person_id" id="person_id" value="<?php echo $household_persons[$ctr]['person_id']; ?>"	/>
+						
 						<input type="hidden" name="imcase_no" id="imcase_no" value="<?php echo $this->masterlist->get_imcase_no($household_persons[$ctr]['person_id']); ?>"	/>
+						<input type="hidden" name="created_on" id="created_on" value="<?php echo $this->masterlist->get_created_on($household_persons[$ctr]['person_id']); ?>"	/>
+						<input type="hidden" name="lat" id="lat" value="<?php echo $this->masterlist->get_imcase_lat($household_persons[$ctr]['person_id']); ?>"	/>
+						<input type="hidden" name="lng" id="lng" value="<?php echo $this->masterlist->get_imcase_lng($household_persons[$ctr]['person_id']); ?>"	/>
 					<?php } ?>	
 					<ul data-role="listview">
 					
@@ -171,7 +113,7 @@ function initialize(){
 									
 									<input type="checkbox" name="has_headache" id="checkbox-3a" value="Y" 
 										<?php 
-											if ($this->masterlist->check_symptom_if_checked($household_persons[0]['person_id'],'has_muscle_pain')) {
+											if ($this->masterlist->check_symptom_if_checked($household_persons[0]['person_id'],'has_headache')) {
 										?>
 											checked="checked"
 										<?php } else ; ?>

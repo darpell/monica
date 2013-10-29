@@ -42,6 +42,8 @@
 		function update_im()
 		{
 			$data = array(
+						'imcase_no'			=> $this->input->post('imcase_no'),
+						'person_id'			=> $this->input->post('person_id'),
 						'has_muscle_pain'	=> $hmp = ($this->input->post('has_muscle_pain') == 'Y') ? 'Y' : 'N',
 						'has_joint_pain'	=> $hjp = ($this->input->post('has_joint_pain') == 'Y') ? 'Y' : 'N',
 						'has_headache'		=> $hh = ($this->input->post('has_headache') == 'Y') ? 'Y' : 'N',
@@ -50,13 +52,19 @@
 						'days_fever'		=> $this->input->post('duration'),
 						'suspected_source'	=> $this->input->post('source'),
 						'remarks'			=> $this->input->post('remarks'),
-						'last_updated_on'	=> date('Y-m-d')
+					
+						'created_on'		=> $this->input->post('created_on'),
+						'imcase_lat'		=> $this->input->post('lat'),
+						'imcase_lng'		=> $this->input->post('lng')	
 				);
-			//$this->db->set('last_updated_on', 'NOW()', FALSE);
-			//$this->db->insert('immediate_cases', $data);
 			
-			$this->db->where('imcase_no',$this->input->post('imcase_no'));
-			$this->db->update('immediate_cases, $data');
+			$this->db->delete('immediate_cases', array('imcase_no' => $this->input->post('imcase_no')));
+			
+			$this->db->set('last_updated_on', 'NOW()', FALSE);
+			$this->db->insert('immediate_cases', $data);
+			
+			//$this->db->where('imcase_no',$this->input->post('imcase_no'));
+			//$this->db->update('immediate_cases, $data','imcase_no = ' . $this->input->post('imcase_no'));
 				
 			// updates last_visited_on at `household_address`
 			$hh = array(
@@ -330,6 +338,51 @@
 				$row = $query->row_array();
 					
 				return $row['remarks'];
+			}
+		}
+		
+		function get_created_on($person_id)
+		{
+			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$this->db->where($where);
+			
+			$query = $this->db->get();
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+					
+				return $row['created_on'];
+			}
+		}
+		
+		function get_imcase_lat($person_id)
+		{
+			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$this->db->where($where);
+			
+			$query = $this->db->get();
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+					
+				return $row['imcase_lat'];
+			}
+		}
+		
+		function get_imcase_lng($person_id)
+		{
+			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$this->db->where($where);
+			
+			$query = $this->db->get();
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+					
+				return $row['imcase_lng'];
 			}
 		}
 	}
