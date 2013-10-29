@@ -63,6 +63,38 @@ class Master_list extends CI_Controller
 		}
 	}
 	
+	function view_edit_person()
+	{
+		$param = $this->uri->uri_to_assoc(3);
+		$household_id = $param['household'];
+		$person_id = $param['case'];
+			
+		$data['household_persons'] = $this->masterlist->get_households($this->session->userdata('TPusername'),$household_id,$person_id);
+		$this->load->view('mobile/person_edit_details_view', $data);
+	}
+	
+	
+	# TODO
+	function edit_immediate_case()
+	{
+		// form validate
+		$this->form_validation->set_rules('duration', 'Dengue Fever Duration', 'callback_check_range|required');
+		
+		if ($this->form_validation->run() === FALSE)
+		{
+			$this->view_edit_person();
+		}
+		else
+		{
+			// update
+			$this->masterlist->update_im();
+			
+			// redirect to person_edit_details_view
+			$data['result'] = 'Your entry has been updated';
+			$this->load->view('mobile/im_case_success',$data);
+		}
+	}
+	
 	public function check_range($num)
 	{
 		if ($num <= 0)
@@ -107,6 +139,7 @@ class Master_list extends CI_Controller
 		$this->notif->addnotif($data2);
 	}
 	
+	#to be deleted
 	function add_fever_day($person_id)
 	{
 		$this->masterlist->add_fever_day($person_id);//$household_persons[$ctr]['person_id']);

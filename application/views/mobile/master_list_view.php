@@ -57,7 +57,7 @@
 							//$this->masterlist->add_fever_day($household_persons[$ctr]['person_id']);
 				?>
 							<li data-theme="a">
-								<a href="<?php echo site_url('mobile/view/person/' . $household_persons[$ctr]['person_id']);?>" data-ajax="false" data-transition="slide">
+								<a href="<?php echo site_url('mobile/view/household/' . $household_persons[$ctr]['household_id'] . '/case/' . $household_persons[$ctr]['person_id']);?>" data-ajax="false" data-transition="slide">
 				<?php 
 							if ($this->masterlist->count_fever_day($household_persons[$ctr]['person_id']) < 3)
 							{

@@ -42,21 +42,20 @@
 		function update_im()
 		{
 			$data = array(
-					
-					'has_muscle_pain'	=> $hmp = ($this->input->post('has_muscle_pain') == 'Y') ? 'Y' : 'N',
-					'has_joint_pain'	=> $hjp = ($this->input->post('has_joint_pain') == 'Y') ? 'Y' : 'N',
-					'has_headache'		=> $hh = ($this->input->post('has_headache') == 'Y') ? 'Y' : 'N',
-					'has_bleeding'		=> $hb = ($this->input->post('has_bleeding') == 'Y') ? 'Y' : 'N',
-					'has_rashes'		=> $hr = ($this->input->post('has_rashes') == 'Y') ? 'Y' : 'N',
-					'days_fever'		=> $this->input->post('duration'),
-					'suspected_source'	=> $this->input->post('source'),
-					'remarks'			=> $this->input->post('remarks')
-			);
-			$this->db->set('created_on', 'NOW()', FALSE);
-			$this->db->set('last_updated_on', 'NOW()', FALSE);
-			$this->db->insert('immediate_cases', $data);
+						'has_muscle_pain'	=> $hmp = ($this->input->post('has_muscle_pain') == 'Y') ? 'Y' : 'N',
+						'has_joint_pain'	=> $hjp = ($this->input->post('has_joint_pain') == 'Y') ? 'Y' : 'N',
+						'has_headache'		=> $hh = ($this->input->post('has_headache') == 'Y') ? 'Y' : 'N',
+						'has_bleeding'		=> $hb = ($this->input->post('has_bleeding') == 'Y') ? 'Y' : 'N',
+						'has_rashes'		=> $hr = ($this->input->post('has_rashes') == 'Y') ? 'Y' : 'N',
+						'days_fever'		=> $this->input->post('duration'),
+						'suspected_source'	=> $this->input->post('source'),
+						'remarks'			=> $this->input->post('remarks'),
+						'last_updated_on'	=> date('Y-m-d')
+				);
+			//$this->db->set('last_updated_on', 'NOW()', FALSE);
+			//$this->db->insert('immediate_cases', $data);
 			
-			$this->db->where('person_id',$this->input->post('person_id'));
+			$this->db->where('imcase_no',$this->input->post('imcase_no'));
 			$this->db->update('immediate_cases, $data');
 				
 			// updates last_visited_on at `household_address`
@@ -140,15 +139,29 @@
 		# TODO within 7 days
 		function get_fever_count($household_id)
 		{			
-			$this->db->select('count(household_id) as fever_house');
+			/*$this->db->select('count(household_id) as fever_house');
 				$this->db->from('immediate_cases');
 				$this->db->join('catchment_area','immediate_cases.person_id = catchment_area.person_id');
 				$this->db->where('catchment_area.household_id',$household_id);
 				//$this->db->where("last_updated_on BETWEEN '$start_date' AND '$end_date'");
 				
-				$this->db->group_by('catchment_area.household_id');
+				$this->db->group_by('catchment_area.household_id');*/
+			
+			$query = $this->db->query("SELECT COUNT(household_id) as fever_house
+						FROM 
+							(SELECT MAX(imcase_no), person_id, imcase_no
+							FROM immediate_cases
+							
+							GROUP BY person_id
+							)ic
+						
+						JOIN catchment_area ca ON ic.person_id = ca.person_id"
+						. " WHERE ca.household_id = '" .
+						$household_id
+						.
+						"' GROUP BY ca.household_id");
 				
-				$query = $this->db->get();
+				//$query = $this->db->get();
 				
 
 				if ($query->num_rows() > 0)
@@ -216,6 +229,7 @@
 				$query->free_result();
 		}
 		
+		# to be deleted
 		function add_fever_day($person_id)
 		{
 			$this->db->from('immediate_cases');
@@ -254,6 +268,21 @@
 			}
 		}
 		
+		function get_imcase_no($person_id)
+		{
+			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$this->db->where($where);
+			$query = $this->db->get();
+				
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+					
+				return $row['imcase_no'];
+			}
+		}
+		
 		function check_symptom_if_checked($person_id,$symptom)
 		{
 			$this->db->from('immediate_cases');
@@ -272,6 +301,36 @@
 			}
 			else
 				return FALSE;
+		}
+		
+		function get_suspected($person_id)
+		{
+			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$this->db->where($where);
+			
+			$query = $this->db->get();
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+			
+				return $row['suspected_source'];
+			}
+		}
+		
+		function get_remarks($person_id)
+		{
+			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$this->db->where($where);
+				
+			$query = $this->db->get();
+			if ($query->num_rows() > 0)
+			{
+				$row = $query->row_array();
+					
+				return $row['remarks'];
+			}
 		}
 	}
 
