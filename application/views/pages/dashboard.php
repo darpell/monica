@@ -392,12 +392,17 @@ function load() {
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	};
 	map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+	var cases = new Array();
 	
 	/** Sample Larval Data used as case data **/
 	if (document.getElementById("ic_length").value != 0)
 	{//alert("0");
 		for (var pt_ctr = 0; pt_ctr < document.getElementById("ic_length").value; pt_ctr++) 
 		{	
+			cases.push(new google.maps.LatLng(
+					document.getElementById("ic_lat" + pt_ctr).value,
+					document.getElementById("ic_lng" + pt_ctr).value
+					));/*
 			caseMarker=new google.maps.Marker({
 				  position: new google.maps.LatLng(
 							document.getElementById("ic_lat" + pt_ctr).value,
@@ -426,7 +431,11 @@ function load() {
 			+"Gender: "+s+"<br/>"
 			+"Outcome: "+o+"<br/>"+"<br/>"
 			+"Feedback: "+document.getElementById("ic_outcome" + pt_ctr).value+"<br/>";
-			setInfo(caseMarker,info,map);
+			setInfo(caseMarker,info,map);//*/
+			heatmap = new google.maps.visualization.HeatmapLayer({
+				  data: cases
+				});
+				heatmap.setMap(map);
 		}
 	}
 	/** end of sample data**/

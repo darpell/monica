@@ -62,7 +62,7 @@ class Remap extends CI_Controller
 		// risk nodes
 		$data['pointsOfInterest'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date'],$loc,$bgy);
 
-		//print_r($data['pointsOfInterest']);
+		//print_r("TEMP: ".$temp['barangay']);
 		// investigated cases
 		//$data['investigatedCases'] = ;
 		

@@ -43,6 +43,7 @@
 			$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
 			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
 			$this->db->join('bhw','catchment_area.bhw_id = bhw.user_username');
+			$this->db->join('household_address','catchment_area.household_id = household_address.household_id');
 			$this->db->where('bhw.barangay', $barangay);
 			$this->db->where("YEAR(created_on) =".date('Y'));
 			$this->db->where("MONTH(created_on) =".date('m'));
@@ -61,13 +62,14 @@
 					//get age from date or birthdate
 					$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
 					$data[] =array(
-							'Name' => $name ,
+							'Name' => anchor(base_url('index.php/master_list/view_patient').'/'. $row->person_id,  $name, 'target="_blank"') ,
+							'Address' => $row->house_no .' '. $row->street ,
 							'Age' => $age,
 							'Days Of Fever' => $row->days_fever ,
 							'Muscle Pain' => $row->has_muscle_pain ,
 							'Joint Pain' => $row->has_joint_pain ,
 							'Head Ache' => $row->has_headache ,
-							'Bleedling'  => $row->has_bleeding ,
+							'Bleeding'  => $row->has_bleeding ,
 							'Rashes' => $row->has_rashes ,
 							'Date Onset' => $date[1].'/'.$date[2].'/'.$date[0] ,
 							'Remarks' => $row->remarks
@@ -90,6 +92,7 @@
 			$this->db->where('bhw.barangay', $barangay);
 			//$this->db->where("YEAR(created_on) =".date('Y'));
 			//$this->db->where("MONTH(created_on) =".date('m'));
+			$this->db->order_by('immediate_cases.created_on', 'desc');
 			$q = $this->db->get();
 			if($q->num_rows() > 0)
 			{
@@ -110,8 +113,10 @@
 			$this->db->from('case_report_main');
 			
 			
+			
 			//$this->db->where("YEAR(cr_date_onset) =".date('Y'));
 			//$this->db->where("MONTH(cr_date_onset) =".date('m'));
+			$this->db->order_by('cr_date_onset', 'desc');
 			$q = $this->db->get();
 			
 			if($q->num_rows() > 0)
@@ -134,7 +139,7 @@
 									'Type' => $row->cr_type,
 									'Outcome' => $row->cr_outcome,
 									'Date Onset' => $date[1].'/'.$date[2].'/'.$date[0],
-									'View Details' =>anchor(base_url('index.php/master_list/view_patient').'/'. $row->cr_patient_no ,  $row->cr_patient_no  , 'target="_blank"'),
+									'View Details' =>anchor(base_url('index.php/master_list/view_patient').'/'. $row->cr_patient_no ,  'View' , 'target="_blank"'),
 							);
 						}
 					
