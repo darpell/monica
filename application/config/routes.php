@@ -61,6 +61,13 @@ $route['mobile/case_report'] = 'mobile/case_report';
 $route['mobile/page/master_list'] = 'mobile/master_list';
 $route['mobile/page/master_list/(:any)'] = 'mobile/master_list/$1';
 $route['mobile/household/(:num)'] = 'mobile/master_list/view_household/$1';
+// Mob Serious Cases
+$route['mobile/view/serious_cases'] = 'mobile/monitored_cases/serious_cases';
+$route['mobile/view/serious_cases/(:num)'] = 'mobile/monitored_cases/view_serious_case_details/$1';
+// Mob Suspected Casses
+$route['mobile/view/suspected_cases'] = 'mobile/monitored_cases/suspected_cases';
+$route['mobile/view/suspected_cases/(:num)'] = 'mobile/monitored_cases/view_suspected_case_details/$1';
+
 $route['mobile/view/person/(:num)'] = 'mobile/master_list/edit_immediate_case/$1'; # DONE
 $route['mobile/view/household/(:num)/case/(:num)'] = 'mobile/master_list/view_edit_person';
 $route['mobile/view/household/(:num)/case/(:num)/edit_case'] = 'mobile/master_list/edit_immediate_case';

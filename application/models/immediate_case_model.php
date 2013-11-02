@@ -36,6 +36,88 @@ class Immediate_case_model extends CI_Model
 		
 		
 	}
+	
+	
+	#TODO
+	function get_serious_imcases()
+	{
+		$query = $this->db->query("SELECT MAX(imcase_no) as imcase_no, ic.person_id,
+								ic.has_muscle_pain, ic.has_joint_pain, ic.has_headache, ic.has_bleeding, ic.has_rashes,
+								ic.days_fever, ic.created_on, ic.last_updated_on, ic.suspected_source, ic.remarks,
+								
+								ml.person_first_name, ml.person_last_name
+								FROM immediate_cases ic
+								
+								JOIN master_list ml ON ic.person_id = ml.person_id
+								JOIN catchment_area ca ON ca.person_id = ml.person_id
+								
+								WHERE days_fever >= '4'
+								
+								GROUP BY person_id");
+		
+		return $query->result_array();
+		$query->free_result();
+	}
+	
+	function get_suspected_imcases()
+	{
+		$query = $this->db->query("SELECT MAX(imcase_no) as imcase_no, ic.person_id,
+									ic.has_muscle_pain, ic.has_joint_pain, ic.has_headache, ic.has_bleeding, ic.has_rashes,
+									ic.days_fever, ic.created_on, ic.last_updated_on, ic.suspected_source, ic.remarks,
+									
+									ml.person_first_name, ml.person_last_name
+									FROM immediate_cases ic
+									
+									JOIN master_list ml ON ic.person_id = ml.person_id
+									JOIN catchment_area ca ON ca.person_id = ml.person_id
+									
+									WHERE days_fever >= '1' AND days_fever <= '3'
+									
+									GROUP BY person_id
+									ORDER BY days_fever DESC");
+		
+		return $query->result_array();
+		$query->free_result();
+		
+		/*$symptoms = 0;
+		
+		foreach ($query->result_array() as $row)
+		{
+			if ($row['has_muscle_pain'])
+				$symptoms++;
+			if ($row['has_joint_pain'])
+				$symptoms++;
+			if ($row['has_headache'])
+				$symptoms++;
+			if ($row['has_bleeding'])
+				$symptoms++;
+			if ($row['has_rashes'])
+				$symptoms++;
+			
+			
+		}*/
+	}
+	
+	function get_person_details($person_id)
+	{
+		$query = $this->db->query(
+					"SELECT * 
+
+					FROM master_list ml
+					JOIN immediate_cases ic
+					ON ic.person_id = ml.person_id
+					
+					JOIN catchment_area ca
+					ON ca.person_id = ml.person_id
+					
+					JOIN household_address ha
+					ON ha.household_id = ca.household_id"
+					#WHERE ic.imcase_no = $imcase_no
+				);
+		
+		return $query->result_array();
+		$query->free_result();
+	}
 }
 
 /* End of immediate_case_model.php */
