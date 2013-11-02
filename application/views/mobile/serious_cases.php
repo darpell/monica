@@ -8,7 +8,7 @@
 	<div data-role="page" id="main_task_page">
 		<div data-role="header">
 			<a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="delete"> Cancel </a>
-			<h1> Catchment Area List </h1>
+			<h1> Serious Cases List </h1>
 		</div>
 		<div data-role="content">
 			
@@ -18,7 +18,7 @@
 			<ul data-role="listview" data-filter="true" data-inset="true" data-split-icon="check" data-split-theme="d" data-divider-theme="a">
 				<?php for ($ctr = 0; $ctr < count($cases); $ctr++) {?>
 				
-				<li data-theme="a"> <a href="<?php echo site_url('mobile/');?>" data-ajax="false" data-transition="slide">
+				<li data-theme="a"> <a href="<?php echo site_url('mobile/view/serious_cases/' . $cases[$ctr]['imcase_no']);?>" data-ajax="false" data-transition="slide">
 					<label style="color:RED;"> [Has Fever for <?php echo $cases[$ctr]['days_fever']; ?> days] </label> <br/>					
 					<?php echo $cases[$ctr]['person_first_name']; ?> <!-- First Name -->
 					<?php echo $cases[$ctr]['person_last_name']; ?> <!-- Last Name -->

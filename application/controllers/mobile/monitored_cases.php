@@ -13,7 +13,7 @@ class Monitored_cases extends CI_Controller
 		//echo 'Hello World!';
 		
 		
-		$data['cases'] = $this->ic->get_serious_imcases();
+		$data['cases'] = $this->ic->get_serious_imcases($this->session->userdata('TPusername'));
 		$this->load->view('mobile/serious_cases', $data);
 		
 		/*
@@ -25,7 +25,8 @@ class Monitored_cases extends CI_Controller
 	
 	function view_serious_case_details($imcase_no)
 	{
-		
+		$data['cases'] = $this->ic->get_case_details($imcase_no);
+		$this->load->view('mobile/imcase_details', $data);
 	}
 	
 	function suspected_cases()
@@ -33,7 +34,7 @@ class Monitored_cases extends CI_Controller
 		//echo 'Hello World!';
 	
 	
-		$data['cases'] = $this->ic->get_suspected_imcases();
+		$data['cases'] = $this->ic->get_suspected_imcases($this->session->userdata('TPusername'));
 		$this->load->view('mobile/suspected_cases', $data);
 	
 		/*
@@ -45,7 +46,8 @@ class Monitored_cases extends CI_Controller
 	
 	function view_suspected_case_details($imcase_no)
 	{
-	
+		$data['cases'] = $this->ic->get_case_details($imcase_no);
+		$this->load->view('mobile/imcase_details', $data);
 	}
 }
 

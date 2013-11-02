@@ -18,7 +18,7 @@
 	<div data-role="content">
 
 		
-		<ul data-role="listview" data-inset="true">
+		<ul data-role="listview" data-inset="true" data-theme="d">
 			
 			<!-- <li> <?php //echo $test; ?></li> -->
 				<?php for ($ctr = 0; $ctr < count($household_persons); $ctr++) {?>
