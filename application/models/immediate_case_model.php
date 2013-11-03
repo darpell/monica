@@ -37,8 +37,6 @@ class Immediate_case_model extends CI_Model
 		
 	}
 	
-	
-	#TODO
 	function get_serious_imcases($bhw_id)
 	{
 		$query = $this->db->query("SELECT MAX(imcase_no) as imcase_no, ic.person_id,

@@ -24,9 +24,45 @@
 					'imcase_lat'		=> $this->input->post('lat'),
 					'imcase_lng'		=> $this->input->post('lng')
 			);
-			$this->db->set('created_on', 'NOW()', FALSE);
-			$this->db->set('last_updated_on', 'NOW()', FALSE);
+				$this->db->set('created_on', 'NOW()', FALSE);
+				$this->db->set('last_updated_on', 'NOW()', FALSE);
+				
+				/*
+				 * Status
+				 */
+				$symptoms = array();
+				if ($data['has_muscle_pain'] == 'Y')
+					array_push($symptoms,"Muscle Pain");
+				if ($data['has_joint_pain'] == 'Y')
+					array_push($symptoms,"Joint Pain");
+				if ($data['has_headache'] == 'Y')
+					array_push($symptoms,"Headache");
+				if ($data['has_bleeding'] == 'Y')
+					array_push($symptoms,"Bleeding");
+				if ($data['has_rashes'] == 'Y')
+					array_push($symptoms,"Rashes");
+				
+				if ($data['days_fever'] < 3 && count($symptoms) >= 2)
+				{
+					$level = 'suspected';
+				}
+				else if ($data['days_fever'] == 3 && count($symptoms) >= 2)
+				{
+					$level = 'threatening';
+				}
+				else if ($data['days_fever'] >= 3 && count($symptoms) >= 2)
+				{
+					$level = 'serious';
+				}
+				else
+					$level = 'none';
+				
+				$this->db->set('status',$level);
+				// end status
+			
 			$this->db->insert('immediate_cases', $data);
+			
+			# trigger notif
 			
 			// updates last_visited_on at `household_address`
 			$hh = array(
@@ -35,6 +71,8 @@
 			
 			$this->db->where('household_id',$this->input->post('household_id'));
 			$this->db->update('household_address', $hh);
+			
+			return $level;
 		}
 		
 		
@@ -61,6 +99,40 @@
 			$this->db->delete('immediate_cases', array('imcase_no' => $this->input->post('imcase_no')));
 			
 			$this->db->set('last_updated_on', 'NOW()', FALSE);
+			
+			/*
+			 * Status
+			 */
+			$symptoms = array();
+			if ($data['has_muscle_pain'] == 'Y')
+				array_push($symptoms,"Muscle Pain");
+			if ($data['has_joint_pain'] == 'Y')
+				array_push($symptoms,"Joint Pain");
+			if ($data['has_headache'] == 'Y')
+				array_push($symptoms,"Headache");
+			if ($data['has_bleeding'] == 'Y')
+				array_push($symptoms,"Bleeding");
+			if ($data['has_rashes'] == 'Y')
+				array_push($symptoms,"Rashes");
+			
+			if ($data['days_fever'] < 3 && count($symptoms) >= 2)
+			{
+				$level = 'suspected';
+			}
+			else if ($data['days_fever'] == 3 && count($symptoms) >= 2)
+			{
+				$level = 'threatening';
+			}
+			else if ($data['days_fever'] >= 3 && count($symptoms) >= 2)
+			{
+				$level = 'serious';
+			}
+			else
+				$level = 'none';
+			
+			$this->db->set('status',$level);
+			// end status
+			
 			$this->db->insert('immediate_cases', $data);
 			
 			//$this->db->where('imcase_no',$this->input->post('imcase_no'));
@@ -73,6 +145,8 @@
 				
 			$this->db->where('household_id',$this->input->post('household_id'));
 			$this->db->update('household_address', $hh);
+			
+			return $level;
 		}
 		
 		function get_households($bhw, $household_id = FALSE, $person_id = FALSE)

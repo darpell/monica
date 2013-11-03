@@ -54,11 +54,21 @@ class Master_list extends CI_Controller
 		}
 		else
 		{
-			$this->masterlist->add_immediate_cases();
+			$level = $this->masterlist->add_immediate_cases();
 
 			$this->add_case_notif('imcase', $this->input->post('person_id'));
 			$this->checkforbounceandred('imcase',$this->input->post('lat'),$this->input->post('lng'));
-			$data['result'] = 'Your entry has been recorded';
+
+			if ($level != null || $level != "")
+			{
+				$data['result'] = strtoupper($level) . 
+				" CASE.\n Please give your contact details and/or the brgy contact no and tell 
+				the person and/or the people living in the same household to contact you 
+				immediately if the patient condition worsens.";
+			}
+			else
+				$data['result'] = 'Your entry has been recorded';
+			
 			$this->load->view('mobile/im_case_success',$data);
 		}
 	}
@@ -87,10 +97,21 @@ class Master_list extends CI_Controller
 		else
 		{
 			// update
-			$this->masterlist->update_im();
+			$level = $this->masterlist->update_im();
+			
+			$this->add_case_notif('imcase', $this->input->post('person_id'));
+			$this->checkforbounceandred('imcase',$this->input->post('lat'),$this->input->post('lng'));
 			
 			// redirect to person_edit_details_view
-			$data['result'] = 'Your entry has been updated';
+			if ($level != null || $level != "")
+			{
+				$data['result'] = strtoupper($level) . 
+				" CASE.\n Please give your contact details and/or the brgy contact no and tell 
+				the person and/or the people living in the same household to contact you 
+				immediately if the patient condition worsens.";
+			}
+			else
+				$data['result'] = 'Your entry has been recorded';
 			$this->load->view('mobile/im_case_success',$data);
 		}
 	}
