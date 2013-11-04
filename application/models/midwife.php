@@ -64,6 +64,7 @@
 					$data[] =array(
 							'Name' => anchor(base_url('index.php/master_list/view_patient').'/'. $row->person_id,  $name, 'target="_blank"') ,
 							'Address' => $row->house_no .' '. $row->street ,
+							'Contact Nos' => $row->person_contactno ,
 							'Age' => $age,
 							'Days Of Fever' => $row->days_fever ,
 							'Muscle Pain' => $row->has_muscle_pain ,
@@ -178,6 +179,7 @@
 							$data[$row->household_id][$row->person_id] =array(
 									'Name' => $name ,
 									'Birthday'=>$date[1].'/'.$date[2].'/'.$date[0]  ,
+									'Contact Nos.'=> $row->person_contactno,
 									'Gender'=> $row->person_sex,
 									'Marital Status'=> $row->person_marital,
 									'Nationality'=> $row->person_nationality,
@@ -204,6 +206,7 @@
 						$data[$row->household_id][$row->person_id] =array(
 								'Name' => $name ,
 								'Birthday'=>$date[1].'/'.$date[2].'/'.$date[0]  ,
+								'Contact Nos.'=> $row->person_contactno,
 								'Gender'=> $row->person_sex,
 								'Marital Status'=> $row->person_marital,
 								'Nationality'=> $row->person_nationality,

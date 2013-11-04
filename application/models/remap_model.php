@@ -553,7 +553,7 @@ class Remap_model extends CI_Model
 						$dataCITable[]=array(
 								$dataPres[$key]['ls_household'],
 								//$dataPres[$key]['ls_street'],
-								$dataPrev1[$key]['ls_barangay'],
+							//	$dataPrev1[$key]['ls_barangay'],
 								$dataPres[$key]['ls_container'],
 								$dataPres[$key]['created_on'],
 								$dataPres[$key]['created_by']
@@ -632,6 +632,105 @@ class Remap_model extends CI_Model
 			$dataReturn['data_exists']=true;
 			$dataReturn['dataCases']=$dataCases;
 		}
+		$q->free_result();
+
+		return $dataReturn;
+	}
+	function investigated_casesArray($data)
+	{
+		$this->db->from('investigated_cases');
+		$this->db->join('case_report_main','investigated_cases.case_no = case_report_main.cr_patient_no');
+		$where="(cr_date_onset BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."') ";
+		if($data['barangay']!=null)
+		{	$where.="AND (";
+		for ($i = 0; $i < count($data['barangay']);$i++)
+		{
+	
+		$where.="cr_barangay='".$data['barangay'][$i]."'";
+		if( $i < count($data['barangay'])-1)
+		{
+				$where .=' OR ';
+		}
+			
+		}
+		$where.=")";
+		}print_r($where);
+				$this->db->where($where);
+				$q = $this->db->get();
+	
+				$dataReturn['data_exists']=false;
+	
+		if($q->num_rows() > 0)
+		{
+		foreach ($q->result() as $row)
+		{
+		$dataCases[]=array(
+		'ic_lat'=> $row->lat,
+		'ic_lng'=> $row->lng,
+		'ic_feedback'=> $row->feedback,
+		'ic_fname'=> $row->cr_first_name,
+		'ic_lname'=> $row->cr_last_name,
+		'ic_dateOnset'=> $row->cr_date_onset,
+		'ic_age'=> $row->cr_age,
+						'ic_sex'=> $row->cr_sex,
+							'ic_barangay'=> $row->cr_barangay,
+							'ic_street'=> $row->cr_street,
+						'ic_outcome'=> $row->cr_outcome,
+				);
+		}
+		$dataReturn['data_exists']=true;
+		$dataReturn['dataCases']=$dataCases;
+		}
+		$q->free_result();
+	
+		return $dataReturn;
+		}
+	function immediate_cases($data)
+	{
+		$this->db->from('immediate_cases');
+		$this->db->join('catchment_area','immediate_cases.person_id=catchment_area.person_id');
+		$this->db->join('household_address','catchment_area.household_id=household_address.household_id');
+		$where="(last_updated_on BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."') ";
+		$where.="AND imcase_lng IS NOT NULL ";
+		if($data['barangay']!=null)
+		{
+			$where.="AND (street='".$data['barangay']."')";
+		}//print_r($where);
+		$this->db->where($where);
+		$q = $this->db->get();
+		print_r($where);
+		if($q->num_rows() > 0)
+		{
+			foreach ($q->result() as $row)
+			{
+				$dataCases[]=array(
+						'has_muscle_pain'=> $row->has_muscle_pain,
+						'has_joint_pain'=> $row->has_joint_pain,
+						'has_headache'=> $row->has_headache,
+						'has_bleeding'=> $row->has_bleeding,
+						'has_rashes'=> $row->has_rashes,
+						'days_fever'=> $row->days_fever,
+						'created_on'=> $row->created_on,
+						'last_updated_on'=> $row->last_updated_on,
+						'suspected_source'=> $row->suspected_source,
+						'remarks'=> $row->remarks,
+						'node_lat'=> $row->imcase_lat,
+						'node_lng'=> $row->imcase_lng,
+						'status'=> $row->status,
+						'household_id'=> $row->household_id,
+						'person_id'=> $row->person_id,
+						'bhw_id'=> $row->bhw_id,
+						'household_name'=> $row->household_name,
+						'house_no'=> $row->house_no,
+						'barangay'=> $row->street,
+						'last_visited'=> $row->last_visited,
+				);
+			}
+			$dataReturn['data_exists']=true;
+			$dataReturn['dataCases']=$dataCases;
+		}
+		else
+			$dataReturn['data_exists']=false;
 		$q->free_result();
 		return $dataReturn;
 	}

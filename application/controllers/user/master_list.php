@@ -284,6 +284,7 @@ class Master_list extends CI_Controller
 		{
 			$data['households'] = $this->masterlist->get_households($bhw_id);
 			$data['masterlist'] = $this->masterlist->get_masterlist($bhw_id);
+			
 			$this->load->view('pages/view_masterlist_bhw', $data);
 		}
 		else 
@@ -535,6 +536,7 @@ print($barangay);
 					'person_marital' => $this->input->post('TPstatus-txt'.$house_id),
 					'person_nationality' => $this->input->post('TPnation-txt'.$house_id),
 					'person_blood_type' => $this->input->post('TPblood-dd'.$house_id),
+					'person_contactno' => $this->input->post('TPcontact-txt'.$house_id),
 	
 			);
 				
@@ -552,15 +554,14 @@ print($barangay);
 	public function remap($barangay)
 	{
 		//global variables
-		
 		$overlays = [];
 	
 			// setting dates
-			//$data['begin_date'] = date("Y-m") . '-01';
-			$data['begin_date'] = date("Y") . '-08-01';
+			$data['begin_date'] = date("Y-m") . '-01';
+			//$data['begin_date'] = date("Y") . '-08-01';
 			$data['end_date'] = date("Y-m-d");
-			//$data['b_date'] = date("Y") . ', '.date('m').', 1';
-			$data['b_date'] = date("Y") . ', 8, 1';
+			$data['b_date'] = date("Y") . ', '.date('m').', 1';
+			//$data['b_date'] = date("Y") . ', 8, 1';
 			$data['e_date'] = date("Y,m,d");
 		
 	
@@ -588,12 +589,16 @@ print($barangay);
 		// risk nodes
 		$data['pointsOfInterest'] = $this->remap_model->get_map_nodes($data['begin_date'], $data['end_date'],$loc,$bgy);
 	
-		//print_r($bgy);
+		print_r($bgy);
 		// investigated cases
 		//$data['investigatedCases'] = ;
 	
 		$denguetemp = array();
 		$denguetemp = $this->remap_model->investigated_cases($temp);
+		
+		// new code
+		$immediatetemp = $this->remap_model->immediate_cases($temp);
+		
 		$bouncetemp = $this->remap_model->getCaseDistancePoI($denguetemp,$data['pointsOfInterest'],$data['larvalPositives']);
 		//print_r($data['larvalPositives']);
 		//print_r($bouncetemp);
@@ -605,8 +610,16 @@ print($barangay);
 		}//print_r($bouncetemp['countInfo']);
 		//print_r($NewArray);
 		$data['data_exists']=$denguetemp['data_exists'];
+		//new code
+		$data['data_exists2']=$immediatetemp['data_exists'];
 		if($denguetemp['data_exists']==1)
 			$data['dataCases']=$denguetemp['dataCases'];
+		if($immediatetemp['data_exists']==1)
+			$data['dataImmediateCases']=$immediatetemp['dataCases'];
+		
+	//	if($denguetemp['data_exists']==1)
+	//		$data['dataCases']=$denguetemp['dataCases'];\
+	
 		$data['pointsOfInterest']=$NewArray;//print_r($data['pointsOfInterest']);
 		$sourceTable[]=array(
 				0=>"Name",

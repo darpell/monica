@@ -70,12 +70,12 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 });
 </script>
 <style>
-.ui-tabs-vertical { width: 55em; }
+.ui-tabs-vertical { width: 100%; }
 .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
 .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
 .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
-.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
+.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: left; width: 40em;}
 </style>
 </head>
 <!-- CONTENT -->
@@ -85,6 +85,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 					<li><a href="#tabs-1"> Larval Occurrences </a></li>
 					<li><a href="#tabs-2"> Event List </a></li>
 					<li><a href="#tabs-3"> Route Information </a></li>
+					<li><a href="#tabs-4"> Immediate Cases</a></li>
 				</ul>
 				<div id="tabs-3">
 					<h2> Route Information </h2>
@@ -100,6 +101,76 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 						echo $this->table->generate($query);
 					?>
 				</div>
+					<div id="tabs-4">
+					<h2> Route Information </h2>
+						<?php
+						if($cases != null){
+							?>
+						
+						<table border="1" cellpadding="0" cellspacing="0" id="results" style="width: 20%; "  >
+						<tr>
+						<td><b>Severity</b></td>
+						<td><b>Name</b></td>
+						<td><b>Address</b></td>
+						<td><b>Contact Nos.</b></td>
+						<td><b>Age</b></td>
+						<td><b>Days Of Fever</b></td>
+						<td><b>Muscle Pain</b></td>
+						<td><b>Joint Pain</b></td>
+						<td><b>Head Ache</b></td>
+						<td><b>Bleeding</b></td>
+						<td><b>Rashes</b></td>
+						<td><b>Date Onset</b></td>
+						<td><b>Remarks</b></td>
+						</tr>
+						
+						<?php 
+						foreach($cases as $value)
+						{
+							$ctr = 0;
+							if($value['Muscle Pain'] == 'Y') $ctr=$ctr+1;
+							if($value['Head Ache'] == 'Y') $ctr=$ctr+1;
+							if($value['Joint Pain'] == 'Y') $ctr=$ctr+1;
+							if($value['Bleeding'] == 'Y') $ctr=$ctr+1;
+							if($value['Rashes'] == 'Y') $ctr=$ctr+1;
+							if($value['Remarks'] == '')$value['Remarks']=" ";
+							
+							echo '<tr>';
+							if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y')
+								echo "<td bgcolor='#FF0000'></td>";
+							else if($value['Days Of Fever'] >= 2 && $ctr >=2)
+								echo "<td bgcolor='#FF8000'></td>";
+							else if($value['Days Of Fever'] >= 2 && $ctr <=2)
+								echo "<td bgcolor='#FFFF00'></td>";
+							else if($value['Days Of Fever'] >= 1 && $ctr <2)
+								echo "<td bgcolor='#00FF00'></td>";
+							echo '
+								<td>'.$value['Name'].'</td>
+								<td>'.$value['Address'].'</td>
+								<td>'.$value['Contact Nos'].'</td>
+								<td>'.$value['Age'].'</td>
+								<td>'.$value['Days Of Fever'].'</td>
+								<td>'.$value['Muscle Pain'].'</td>
+								<td>'.$value['Joint Pain'].'</td>
+								<td>'.$value['Head Ache'].'</td>
+								<td>'.$value['Bleeding'].'</td>
+								<td>'.$value['Rashes'].'</td>
+								<td>'.$value['Date Onset'].'</td>
+								<td>'.$value['Remarks'].'</td>
+								';
+						
+							
+							echo '</tr>';
+						}
+						}
+						else 
+							echo '<b>No new cases has been reported.</b>';
+							
+							?>
+						</table>
+
+				</div>
+				
 				<div id="tabs-2">
 					<h2> Event List </h2>
 					<p>Barangay Cleanup Schedule</p>

@@ -210,6 +210,72 @@ function setInfo(fMarker,fInfo,fMap) {
 
 			/** end Investigated Cases **/
 			
+			
+			/** Immediate Cases **/
+			
+			if (document.getElementById("mc_length").value != 0)
+			{//alert("0");
+				for (var pt_ctr = 0; pt_ctr < document.getElementById("mc_length").value; pt_ctr++) 
+				{	
+					var symptoms=0;
+					if (document.getElementById("mc_hasmusclepain"+pt_ctr).value == "Y")
+						symptoms++;
+					if (document.getElementById("mc_hasjointpain"+pt_ctr).value == "Y")
+						symptoms++;
+					if (document.getElementById("mc_hasheadache"+pt_ctr).value == "Y")
+						symptoms++;
+					if (document.getElementById("mc_hasbleeding"+pt_ctr).value == "Y")
+						symptoms++;
+					if (document.getElementById("mc_hasrashes"+pt_ctr).value == "Y")
+						symptoms++;
+					
+					var img=null;
+
+					if(parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) < 3 && parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) > 0 && symptoms == 0)
+					{
+						img=document.getElementById("notice1_icon").value; 
+					} 
+					
+					else if(parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) < 3 && parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) > 0 && symptoms == 1)
+					{
+						img=document.getElementById("notice2_icon").value; 
+					}
+					else //if(document.getElementById("mc_daysfever"+pt_ctr).value > 2 && symptoms > 2 )
+					{
+						img=document.getElementById("notice3_icon").value; 
+					}
+					
+					point=new google.maps.LatLng(
+							document.getElementById("mc_lat" + pt_ctr).value,
+							document.getElementById("mc_lng" + pt_ctr).value
+							);
+					caseMarker=new google.maps.Marker({
+						  position:point ,
+						  map: map,
+						  icon: img
+						});
+					
+					var info="<b><i>"+document.getElementById("mc_status" + pt_ctr).value+"</i></b><br/>"
+					+"<b>"+document.getElementById("mc_householdname" + pt_ctr).value+", "+document.getElementById("mc_houseno" + pt_ctr).value+"</b><br/>"
+					+"<b>"+document.getElementById("mc_bgy" + pt_ctr).value+"</b><br/>"
+					+"Fever: "+document.getElementById("mc_daysfever" + pt_ctr).value+" days<br/>"
+					+"Joint Pain: "+document.getElementById("mc_hasjointpain" + pt_ctr).value+"<br/>"
+					+"Headache: "+document.getElementById("mc_hasheadache" + pt_ctr).value+"<br/>"
+					+"Bleeding: "+document.getElementById("mc_hasbleeding" + pt_ctr).value+"<br/>"
+					+"Rashes: "+document.getElementById("mc_hasrashes" + pt_ctr).value+"<br/><br/>"
+					+"BHW in-charge: "+document.getElementById("mc_bhwid" + pt_ctr).value+"<br/>"
+					+"Detected on: "+document.getElementById("mc_createdon" + pt_ctr).value+"<br/>"
+					+"Last Visit: "+document.getElementById("mc_lastvisited" + pt_ctr).value+"<br/><br/>"
+					+"Suspected Source: "+document.getElementById("mc_suspectedsource" + pt_ctr).value+"<br/>"
+					+"Remarks: "+document.getElementById("mc_remarks" + pt_ctr).value+"<br/>";
+					setInfo(caseMarker,info,map);
+					oms.addMarker(caseMarker);
+					
+				}
+			}
+			
+			/** end Immediate Cases **/
+			
 			/** Polygon **/
 			
 			if (document.getElementById("polygon_nodes_result_length").value != 0)
@@ -347,7 +413,7 @@ function setInfo(fMarker,fInfo,fMap) {
 						
 				</ul>
 <div  id="tabs-5">
-	<div id="googleMap" style="width:30%; height:80%; margin: 10px; float:left;" >
+	<div id="googleMap" style="width:20%; height:80%; margin: 10px; float:left;" >
 	</div>
 	<input type="hidden" id="centroid_icon" value="<?php echo base_url('/images/information.png')?>" />
 	
@@ -355,12 +421,9 @@ function setInfo(fMarker,fInfo,fMap) {
 <input type="hidden" id="result_length" value="<?php echo count($larvalPositives); ?>" />
 	<?php for ($ctr = 0; $ctr < count($larvalPositives); $ctr++) {?>
 		<input type="hidden" id="pt_barangay<?= $ctr ?>" 		value="<?php echo $larvalPositives[$ctr]['ls_barangay']; ?>"	/>
-		<input type="hidden" id="pt_street<?= $ctr ?>" 			value="<?php echo $larvalPositives[$ctr]['ls_street']; ?>"	/>
-		<input type="hidden" id="pt_municipality<?= $ctr ?>"	value="<?php echo $larvalPositives[$ctr]['ls_municipality']; ?>"	/>
-		<input type="hidden" id="pt_lat<?= $ctr ?>" 			value="<?php echo $larvalPositives[$ctr]['ls_lat']; ?>"			/>
+			<input type="hidden" id="pt_lat<?= $ctr ?>" 			value="<?php echo $larvalPositives[$ctr]['ls_lat']; ?>"			/>
 		<input type="hidden" id="pt_lng<?= $ctr ?>" 			value="<?php echo $larvalPositives[$ctr]['ls_lng']; ?>"			/>
 		<input type="hidden" id="pt_household<?= $ctr ?>" 		value="<?php echo $larvalPositives[$ctr]['ls_household']; ?>"	/>
-		<input type="hidden" id="pt_result<?= $ctr ?>" 			value="<?php echo $larvalPositives[$ctr]['ls_result']; ?>"		/>
 		<input type="hidden" id="pt_created_on<?= $ctr ?>" 		value="<?php echo $larvalPositives[$ctr]['created_on']; ?>"		/>
 		<input type="hidden" id="pt_container<?= $ctr ?>" 		value="<?php echo $larvalPositives[$ctr]['ls_container']; ?>"	/>
 		<input type="hidden" id="pt_tracking_no<?= $ctr ?>" 	value="<?php echo $larvalPositives[$ctr]['tracking_number']; ?>"	/>
@@ -370,7 +433,9 @@ function setInfo(fMarker,fInfo,fMap) {
 	<?php } else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
 		
 <!-- Investigated Cases -->	
-	<?php if ($data_exists === true){$ctr=0;?>
+	<?php
+	$casectr = 0;
+	 if ($data_exists === true){$ctr=0;?>
 <input type="hidden" id="ic_length" value="<?php echo count($dataCases); ?>" />
 	<?php foreach ($dataCases as $value) {?>
 		<input type="hidden" id="ic_lat<?= $ctr ?>" 		value="<?php echo $value['ic_lat']; ?>"	/>
@@ -384,11 +449,49 @@ function setInfo(fMarker,fInfo,fMap) {
 		<input type="hidden" id="ic_barangay<?= $ctr ?>" 		value="<?php echo $value['ic_barangay']; ?>"	/>
 		<input type="hidden" id="ic_street<?= $ctr ?>" 		value="<?php echo $value['ic_street']; ?>"	/>
 		<input type="hidden" id="ic_outcome<?= $ctr ?>" 		value="<?php echo $value['ic_outcome']; ?>"	/>
-	<?php $ctr++;}?> 
+	<?php $ctr++;
+		$casectr++;}?> 
 	<?php } else { ?> <input type="hidden" id="ic_length" value="0" /> <?php } ?>
 	
+	
+			
+<!-- Immediate Cases -->	
+	<?php if ($data_exists2 === true){$ctr=0;?>
+<input type="hidden" id="mc_length" value="<?php echo count($dataImmediateCases); ?>" />
+	<?php foreach ($dataImmediateCases as $value) {?>
+		<input type="hidden" id="mc_hasmusclepain<?= $ctr ?>" 		value="<?php echo $value['has_muscle_pain']; ?>"	/>
+		<input type="hidden" id="mc_hasjointpain<?= $ctr ?>" 		value="<?php echo $value['has_joint_pain']; ?>"	/>
+		<input type="hidden" id="mc_hasheadache<?= $ctr ?>" 		value="<?php echo $value['has_headache']; ?>"	/>
+		<input type="hidden" id="mc_hasbleeding<?= $ctr ?>" 		value="<?php echo $value['has_bleeding']; ?>"	/>
+		<input type="hidden" id="mc_hasrashes<?= $ctr ?>" 		value="<?php echo $value['has_rashes']; ?>"	/>
+		<input type="hidden" id="mc_daysfever<?= $ctr ?>" 		value="<?php echo $value['days_fever']; ?>"	/>
+		<input type="hidden" id="mc_createdon<?= $ctr ?>" 		value="<?php echo $value['created_on']; ?>"	/>
+		<input type="hidden" id="mc_lastupdatedon<?= $ctr ?>" 		value="<?php echo $value['last_updated_on']; ?>"	/>
+		<input type="hidden" id="mc_suspectedsource<?= $ctr ?>" 		value="<?php echo $value['suspected_source']; ?>"	/>
+		<input type="hidden" id="mc_remarks<?= $ctr ?>" 		value="<?php echo $value['remarks']; ?>"	/>
+		<input type="hidden" id="mc_lat<?= $ctr ?>" 		value="<?php echo $value['node_lat']; ?>"	/>
+		<input type="hidden" id="mc_lng<?= $ctr ?>" 		value="<?php echo $value['node_lng']; ?>"	/>
+		<input type="hidden" id="mc_status<?= $ctr ?>" 		value="<?php echo $value['status']; ?>"	/>
+		<input type="hidden" id="mc_householdid<?= $ctr ?>" 		value="<?php echo $value['household_id']; ?>"	/>
+		<input type="hidden" id="mc_personid<?= $ctr ?>" 		value="<?php echo $value['person_id']; ?>"	/>
+		<input type="hidden" id="mc_bhwid<?= $ctr ?>" 		value="<?php echo $value['bhw_id']; ?>"	/>
+		<input type="hidden" id="mc_householdname<?= $ctr ?>" 		value="<?php echo $value['household_name']; ?>"	/>
+		<input type="hidden" id="mc_houseno<?= $ctr ?>" 		value="<?php echo $value['house_no']; ?>"	/>
+		<input type="hidden" id="mc_bgy<?= $ctr ?>" 		value="<?php echo $value['barangay']; ?>"	/>
+		<input type="hidden" id="mc_lastvisited<?= $ctr ?>" 		value="<?php echo $value['last_visited']; ?>"	/>
+	<?php $ctr++;
+		$casectr++;}?> 
+	<?php } else { ?> <input type="hidden" id="mc_length" value="0" /> <?php } ?>
+	
+	
+	
 <!-- Dengue Risk Areas -->
-	<?php if ($pointsOfInterest != NULL){?>
+	<?php
+	$bouncectr= 0;
+	$nonbouncectr= 0;
+	$riskareactr= 0;
+	$redriskareactr= 0;
+	 if ($pointsOfInterest != NULL){?>
 <input type="hidden" id="map_nodes_result_length" value="<?php echo count($pointsOfInterest); ?>" />
 	<?php for ($ctr = 0; $ctr < count($pointsOfInterest); $ctr++) {?>
 		<input type="hidden" id="nd_no<?= $ctr ?>" 		value="<?php echo $pointsOfInterest[$ctr]['node_no']; ?>"	/>
@@ -401,7 +504,16 @@ function setInfo(fMarker,fInfo,fMap) {
 		<input type="hidden" id="nd_addedOn<?= $ctr ?>"	value="<?php echo $pointsOfInterest[$ctr]['node_addedOn']; ?>"		/>
 		<input type="hidden" id="nd_notes<?= $ctr ?>" 	value="<?php echo $pointsOfInterest[$ctr]['node_notes']; ?>"	/>
 		<input type="hidden" id="nd_bounce<?= $ctr ?>" 	value="<?php echo $pointsOfInterest[$ctr]['bounce']; ?>"	/>
-	<?php } ?>
+	<?php 
+		if($pointsOfInterest[$ctr]['bounce'] != 0 && $pointsOfInterest[$ctr]['node_type'] ==0)
+		$bouncectr++;
+		else if($pointsOfInterest[$ctr]['bounce'] != 0 && $pointsOfInterest[$ctr]['node_type'] ==1)
+		$redriskareactr++;
+		else if($pointsOfInterest[$ctr]['bounce'] == 0 && $pointsOfInterest[$ctr]['node_type'] ==0)
+		$nonbouncectr++;
+		else if($pointsOfInterest[$ctr]['bounce'] == 0 && $pointsOfInterest[$ctr]['node_type'] ==1)
+		$riskareactr++;
+		} ?>
 		<input type="hidden" id="nodeSource_icon" value="<?php echo base_url('/images/eggs.png')?>" />
 		<input type="hidden" id="nodeRisk_icon" value="<?php echo base_url('/images/group.png')?>" />
 		<input type="hidden" id="nodeRisk2_icon" value="<?php echo base_url('/images/group-2.png')?>" />
@@ -482,14 +594,25 @@ function setInfo(fMarker,fInfo,fMap) {
 		//echo $this->table->generate($sourceTable);
 		//echo "<br/><center><b>Possible Risk Areas</b><br/>";
 		//echo $this->table->generate($riskTable);?>
-		<?php 
+ <fieldset style="width: 50%;">
+  <legend>Legend</legend>
+  <img src="<?php echo base_url('/images/eggs.png')?>" alt="Smiley face" height="42" width="42"> Breeding Area For Mosquitos(<?php echo $nonbouncectr;?>)<br />
+  <img src="<?php echo base_url('/images/eggs.png')?>" alt="Smiley face" height="42" width="42">(Bouncing)Positive For Larva(<?php echo $bouncectr;?>)<?php if ($bouncectr > 0){?><img src="<?php echo base_url('/images/notice.png')?>" alt="Smiley face" height="22" width="22"><br /><?php }?><br />
+  <img src="<?php echo base_url('/images/group.png')?>" alt="Smiley face" height="42" width="42">Area At Risk For Dengue(<?php echo $riskareactr;?>)<br />
+  <img src="<?php echo base_url('/images/group-2.png')?>" alt="Smiley face" height="42" width="42">Nearby Active Breeding Ground(<?php echo $redriskareactr;?>)<?php if ($redriskareactr > 0){?><img src="<?php echo base_url('/images/notice.png')?>" alt="Smiley face" height="22" width="22"><br /><?php }?><br />
+  <img src="<?php echo base_url('/images/Mosquito.png')?>" alt="Smiley face" height="42" width="42">Dengue and Immediate Case(<?php echo $casectr;?>)
+
+  </fieldset>		
+		<?php 		
 if($cases != null){
 ?>
-<table border="1" cellpadding="5" cellspacing="0" id="results" style="width: 30%; float:right;"  >
+
+<table border="1" cellpadding="0" cellspacing="0" id="results" style="width: 20%; "  >
 <tr>
 <td><b>Severity</b></td>
 <td><b>Name</b></td>
 <td><b>Address</b></td>
+<td><b>Contact Nos.</b></td>
 <td><b>Age</b></td>
 <td><b>Days Of Fever</b></td>
 <td><b>Muscle Pain</b></td>
@@ -524,6 +647,7 @@ foreach($cases as $value)
 	echo '
 		<td>'.$value['Name'].'</td>
 		<td>'.$value['Address'].'</td>
+		<td>'.$value['Contact Nos'].'</td>
 		<td>'.$value['Age'].'</td>
 		<td>'.$value['Days Of Fever'].'</td>
 		<td>'.$value['Muscle Pain'].'</td>
@@ -578,6 +702,7 @@ echo '<div data-options="selected:true" >';
 $this->table->set_heading(
 		array(	'Name',
 				'Birthday',
+				'Contact Nos.',
 				'Gender',
 				'Marital Status',
 				'Nationality',
@@ -673,7 +798,7 @@ echo form_open('master_list/add_masterlist_midwife',$attributes);
      
            <td >Contact Nos:</td>
                <td colspan = 2>
-		<label style="color:red"><?php echo form_error('TPnation-txt'.$row['household_id']); ?></label>
+		<label style="color:red"><?php echo form_error('TPcontact-txt'.$row['household_id']); ?></label>
 		<input type="text" name="TPcontact-txt<?php echo $row['household_id']; ?>" size="40" />
 		    
      </td>
@@ -816,6 +941,13 @@ echo form_open('master_list/view_household_midwife',$attributes); ?>
 		echo form_dropdown('TPblood-dd', $options, 'male',$js);
 		?>
      </td>
+     
+        <td >Contact Nos:</td>
+               <td colspan = 2>
+		<label style="color:red"><?php echo form_error('TPcontact-txt'.$row['household_id']); ?></label>
+		<input type="text" name="TPcontact-txt<?php echo $row['household_id']; ?>" size="40" />
+		    
+     </td>
   </tr>
   
   <input type="hidden" name="selected" id="selected" value="<?php echo $selected; ?>" />
@@ -873,6 +1005,7 @@ if($cases != null){
 <td><b>Severity</b></td>
 <td><b>Name</b></td>
 <td><b>Address</b></td>
+<td><b>Contact Nos.</b></td>
 <td><b>Age</b></td>
 <td><b>Days Of Fever</b></td>
 <td><b>Muscle Pain</b></td>
@@ -898,15 +1031,18 @@ foreach($cases as $value)
 		echo '<tr>';
 	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y')
 		echo "<td bgcolor='#FF0000'></td>";
-	else if($value['Days Of Fever'] >= 2 && $ctr >=2)
+	else if($value['Days Of Fever'] >= 4 && $ctr >=2)
+		echo "<td bgcolor='#FF0000'></td>";
+	else if($value['Days Of Fever'] >= 3 && $ctr >=2)
 		echo "<td bgcolor='#FF8000'></td>";
-	else if($value['Days Of Fever'] >= 2 && $ctr <=2)
+	else if($value['Days Of Fever'] >= 1 && $ctr <=2)
 		echo "<td bgcolor='#FFFF00'></td>";
 	else if($value['Days Of Fever'] >= 1 && $ctr <2)
-		echo "<td bgcolor='#00FF00'></td>";
+		echo "<td bgcolor='#BFFF00'></td>";
 	echo '
 		<td>'.$value['Name'].'</td>
 		<td>'.$value['Address'].'</td>
+		<td>'.$value['Contact Nos'].'</td>
 		<td>'.$value['Age'].'</td>
 		<td>'.$value['Days Of Fever'].'</td>
 		<td>'.$value['Muscle Pain'].'</td>

@@ -78,12 +78,13 @@ class Cho extends CI_Controller
 		$data['dateto'] =  $dateto[2].'/'.$dateto[0].'/'.$dateto[1];
 		$data['datefrom'] =  $datefrom[2].'/'.$datefrom[0].'/'.$datefrom[1];
 		$data['barangay'] = $this->input->post('barangay');
+		print_r($data['barangay']);
 		
 		
 		
 		$data['dateSel1']=$data['datefrom'];
 		$data['dateSel2']=$data['dateto'];
-		$data['mapvalues'] = $this->Remap_model->investigated_cases($data);
+		$data['mapvalues'] = $this->Remap_model->investigated_casesArray($data);
 		$data['tablecases'][]=array(
 				'ic_fname'=> 'Name',
 				'ic_age'=> 'Age',

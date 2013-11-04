@@ -21,6 +21,7 @@ class Suggest extends CI_Controller
 		$data['script'] = '';
 		
 		$user = $this->session->userdata('TPusername');
+		
 		$brgy = $this->suggest_model->get_user_brgy($user);
 		$data['query'] = $this->suggest_model->get_cases($brgy, '2013-01-01','2013-07-22');
 		
@@ -70,6 +71,7 @@ class Suggest extends CI_Controller
 		$Qdata['barangay']=array($brgy) ;
 		$data['pendingTasks']=$this->suggest_model->get_tasks("Barangay Cleanup",$brgy);
 		$data = array_merge($data,$this->Remap_model->getRepeatingLarvals($Qdata));
+		$data['cases'] = $this->midwife->get_immediate_cases($user);
 		$this->load->view('pages/view_suggested',$data);
 	}
 	function testimcase()
