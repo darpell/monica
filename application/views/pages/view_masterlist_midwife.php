@@ -430,6 +430,10 @@ function setInfo(fMarker,fInfo,fMap) {
 		<input type="hidden" id="pt_ref_no<?= $ctr ?>" 	value="<?php echo $larvalPositives[$ctr]['ls_no']; ?>"	/>
 	<?php }?> 
 	<input type="hidden" id="case_icon" value="<?php echo base_url('/images/arrow.png')?>" />
+		<input type="hidden" id="notice1_icon" value="<?php echo base_url('/images/notice.png')?>" />
+		<input type="hidden" id="notice2_icon" value="<?php echo base_url('/images/notice2.png')?>" />
+		<input type="hidden" id="notice3_icon" value="<?php echo base_url('/images/notice3.png')?>" />
+	<!-- Polygon Nodes -->
 	<?php } else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
 		
 <!-- Investigated Cases -->	
