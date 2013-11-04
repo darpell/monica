@@ -13,6 +13,9 @@ class Pages extends CI_Controller
 				{
 					$this->load->model('tasks_model');
 					$this->load->model('larval_mapping');
+					$this->load->model('immediate_case_model');
+					$data['suspected_count'] = $this->immediate_case_model->get_suspected_count($this->session->userdata('TPusername'));;
+					$data['serious_count'] = $this->immediate_case_model->get_serious_count($this->session->userdata('TPusername'));
 					$data['last_visit'] = $this->larval_mapping->get_last_visit($this->session->userdata('TPusername'));
 					$data['task_count'] = $this->tasks_model->get_count_unaccomplished($this->session->userdata('TPusername'));
 					$data['result'] = '';

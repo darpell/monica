@@ -49,7 +49,7 @@ class Immediate_case_model extends CI_Model
 								JOIN master_list ml ON ic.person_id = ml.person_id
 								JOIN catchment_area ca ON ca.person_id = ml.person_id
 								
-								WHERE days_fever >= '4' AND ca.bhw_id = '" . $bhw_id . "'
+								WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'
 								
 								GROUP BY person_id
 								ORDER BY days_fever DESC");
@@ -70,7 +70,7 @@ class Immediate_case_model extends CI_Model
 									JOIN master_list ml ON ic.person_id = ml.person_id
 									JOIN catchment_area ca ON ca.person_id = ml.person_id
 									
-									WHERE days_fever >= '1' AND days_fever <= '3' AND ca.bhw_id = '" . $bhw_id . "'
+									WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'suspected' OR ic.status = 'threatening'
 									
 									GROUP BY person_id
 									ORDER BY days_fever DESC");
@@ -97,6 +97,50 @@ class Immediate_case_model extends CI_Model
 				);
 		
 		return $query->result_array();
+		$query->free_result();
+	}
+	
+	function get_suspected_count($bhw_id)
+	{
+		$query = $this->db->query(
+				"SELECT COUNT(imcase_no) as count
+				FROM immediate_cases ic
+				JOIN catchment_area ca
+				ON ic.person_id = ca.person_id
+				
+				WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'suspected' OR ic.status = 'threatening'"
+		);
+		
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+		
+			return $row['count'];
+		}
+		else
+			return '0';
+		$query->free_result();
+	}
+	
+	function get_serious_count($bhw_id)
+	{
+		$query = $this->db->query(
+				"SELECT COUNT(imcase_no) as count
+				FROM immediate_cases ic
+				JOIN catchment_area ca
+				ON ic.person_id = ca.person_id
+				
+				WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'"
+		);
+	
+		if ($query->num_rows() > 0)
+		{
+		   $row = $query->row_array();
+		
+		   return $row['count'];
+		} 
+		else
+			return '0';
 		$query->free_result();
 	}
 }
