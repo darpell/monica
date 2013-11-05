@@ -338,6 +338,77 @@ class Master_list extends CI_Controller
 	}
 	}
 	
+	function view_immediate_case()
+	{	$this->redirectLogin();
+
+	$data['person'] = $this->uri->segment(3,"");
+	$data['case'] = $this->uri->segment(4,"");
+	
+	/* css */
+	$data['base'] = $this->config->item('base_url');
+	$data['css'] = $this->config->item('css');
+	$data['title'] = 'Update patient';
+	
+	
+	//scripts if none keep ''
+	$data['script'] = 'view_casereport';
+	
+	//for table result for search
+	$data['person'] = $this->masterlist->get_immediate_case($data['person'],$data['case']);
+	
+	/** Validation rules could be seen at application/config/form_validation.php **/
+	if ($this->form_validation->run('') == FALSE)
+	{
+		$this->load->library('table');
+		$this->load->view('pages/view_immediate_case',$data);
+	}
+	}
+	function delete_person()
+	{	$this->redirectLogin();
+	
+	$data['person'] = $this->uri->segment(3,"");
+	
+	/* css */
+	$data['base'] = $this->config->item('base_url');
+	$data['css'] = $this->config->item('css');
+	$data['title'] = 'Update patient';
+	
+	
+	//scripts if none keep ''
+	$data['script'] = 'view_casereport';
+	
+	//for table result for search
+	$data['person'] = $this->masterlist->delete_person($data['person']);
+	
+	redirect('/master_list/view_household_midwife/', 'refresh');
+	}
+	function update_immediate_case()
+	{	$this->redirectLogin();
+	
+		
+		$imcase_no = $this->input->post('imcase_no');
+		$data = array(
+				'status'			=> $this->input->post('status'),
+				'person_id'			=> $this->input->post('person_id'),
+				'has_muscle_pain'	=> $this->input->post('musclepain'),
+				'has_joint_pain'	=> $this->input->post('jointpain'),
+				'has_headache'		=> $this->input->post('headache'),
+				'has_bleeding'		=> $this->input->post('bleeding'),
+				'has_rashes'		=> $this->input->post('rashes'),
+				'days_fever'		=>$this->input->post('daysoffever'),
+				'remarks'			=> $this->input->post('remarks'),
+				'last_updated_on'   => date('Y-m-d'),
+		);
+		
+		$this->masterlist->update_immediate_case($data,$imcase_no);
+
+		$data['title'] = 'Masterlist';
+		$data['script'] = 'view_casereport';
+		$this->load->view('pages/success', $data);
+	}
+	
+	
+	
 	function view_household_midwife()
 	{	
 		
@@ -413,7 +484,6 @@ print($barangay);
 				
 			$this->add_masterlist_and_household($household,$houseno,$street,$bhw_id,$data2);
 				
-			redirect('/master_list/view_household_midwife/', 'refresh');
 		}
 	
 	

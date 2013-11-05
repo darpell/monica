@@ -62,7 +62,7 @@
 					//get age from date or birthdate
 					$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
 					$data[] =array(
-							'Name' => anchor(base_url('index.php/master_list/view_patient').'/'. $row->person_id,  $name, 'target="_blank"') ,
+							'Name' => anchor(base_url('index.php/master_list/view_immediate_case').'/'. $row->person_id .'/'. $row->imcase_no ,  $name, 'target="_blank"') ,
 							'Address' => $row->house_no .' '. $row->street ,
 							'Contact Nos' => $row->person_contactno ,
 							'Age' => $age,
@@ -72,6 +72,7 @@
 							'Head Ache' => $row->has_headache ,
 							'Bleeding'  => $row->has_bleeding ,
 							'Rashes' => $row->has_rashes ,
+							'Status' => $row->status ,
 							'Date Onset' => $date[1].'/'.$date[2].'/'.$date[0] ,
 							'Remarks' => $row->remarks
 					);
@@ -184,7 +185,8 @@
 									'Marital Status'=> $row->person_marital,
 									'Nationality'=> $row->person_nationality,
 									'Blood type'=> $bloodtype,
-									//'Previous Dengue Case'=> 'None',
+									'Delete'=> anchor(base_url('index.php/master_list/delete_person').'/'. $row->person_id  ,'Delete', 'target="_blank"') ,
+							
 							);
 							$data2[] = array(
 									'h_id' => $row->household_id,
@@ -211,7 +213,8 @@
 								'Marital Status'=> $row->person_marital,
 								'Nationality'=> $row->person_nationality,
 								'Blood type'=> $bloodtype,
-								//'Previous Dengue Case'=> 'None',
+								'Delete'=> anchor(base_url('index.php/master_list/delete_person').'/'. $row->person_id  ,'Delete', 'target="_blank"') ,
+							
 						);
 						/*
 						$data2[] = array(
@@ -382,9 +385,110 @@
 				$query->free_result();
 			}
 			
-			$query = $this->db->get_where('master_list.person_id','$person_id');
+			$query = $this->db->get_where('master_list.person_id',$person_id);
 				return $query->row_array();
 				$query->free_result();
+			
+		}
+		function get_immediate_case($person_id,$case)
+		{
+			/*
+			 $this->db->query('
+			 		SELECT *
+			 		FROM master_list ml
+			 		INNER JOIN catchment_area ca
+			 		ON ml.person_id = ca.person_id
+			 		INNER JOIN household_address ha
+			 		ON ca.household_id = ha.household_id
+			 		INNER JOIN bhw b
+			 		ON b.user_username = ca.bhw_id
+		
+			 		');
+			*/
+			//$this->db->select();
+			$this->db->from('master_list');
+			
+			$this->db->where('master_list.person_id',$person_id);
+			
+			$q= $this->db->get();
+			if($q->num_rows() > 0)
+			{
+			foreach ($q->result() as $row)
+			{
+					$name = $row->person_first_name . ' ' . $row->person_last_name;
+					$date= explode ('-', $row->person_dob);
+					if( $row->person_blood_type === null || $row->person_blood_type == 'null')
+						$bloodtype = 'Not Indicated';
+					else
+						$bloodtype = $row->person_blood_type;
+					$data['table'][]=array(
+							'Name' => $name ,
+							'Birthday'=>$date[1].'/'.$date[2].'/'.$date[0]  ,
+							'Contact Nos.'=> $row->person_contactno,
+							'Gender'=> $row->person_sex,
+							'Marital Status'=> $row->person_marital,
+							'Nationality'=> $row->person_nationality,
+							'Blood type'=> $bloodtype,
+
+					);
+					$data['hidden']=array(
+							'person_id' => $row->person_id,
+					); 
+			}
+			$q->free_result();
+			
+			$q = null;
+			$this->db->from('immediate_cases');
+			$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
+			$this->db->where('imcase_no', $case);
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
+			{
+				foreach ($q->result() as $row)
+				{
+		
+					$date = explode ('-', $row->created_on);
+					$birthDate = explode ('-', $row->person_dob);
+					$birthDate = $birthDate[1].'/'.$birthDate[2].'/'.$birthDate[0];
+					//explode the date to get month, day and year
+					$birthDate = explode("/", $birthDate);
+					//get age from date or birthdate
+					$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+					$data['symptoms']=array(
+							'Severity' => $row->status ,
+							'Age' => $age,
+							'Days Of Fever' => $row->days_fever ,
+							'Muscle Pain' => $row->has_muscle_pain ,
+							'Joint Pain' => $row->has_joint_pain ,
+							'Head Ache' => $row->has_headache ,
+							'Bleeding'  => $row->has_bleeding ,
+							'Rashes' => $row->has_rashes ,
+							'Remarks' => $row->remarks,
+							'Date Onset' => $date[1].'/'.$date[2].'/'.$date[0] ,
+					);
+					$data['hidden2']=array(
+							'imcase_no' => $row->imcase_no,
+					);
+				}
+			}
+			
+			return $data;
+			}
+			else return null;
+			
+			$query->free_result();
+				
+		}
+		function update_immediate_case($data,$id)
+		{
+			$this->db->where('imcase_no', $id);
+			$this->db->update('immediate_cases', $data);
+		}
+		function delete_person($id)
+		{
+			$this->db->delete('immediate_cases', array('person_id' => $id));
+			$this->db->delete('catchment_area', array('person_id' => $id));
+			$this->db->delete('master_list', array('person_id' => $id));
 			
 		}
 		function get_barangay_midwife($midwife)

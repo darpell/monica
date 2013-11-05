@@ -24,7 +24,7 @@
 						<a href="#">info@WTPcom</a>
 					</li>
 					<li class="address">
-						1341 Oakmound Drive <br> Chicago, IL 60609
+						Dasmarinas City <br> Cavite
 					</li>
 				</ul>
 			</div>
