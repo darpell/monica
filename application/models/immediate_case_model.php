@@ -104,11 +104,17 @@ class Immediate_case_model extends CI_Model
 	{
 		$query = $this->db->query(
 				"SELECT COUNT(imcase_no) as count
-				FROM immediate_cases ic
+				FROM 
+				(
+				SELECT MAX(imcase_no), person_id, imcase_no, created_on, status
+					FROM immediate_cases
+											
+					GROUP BY person_id
+				)ic
 				JOIN catchment_area ca
 				ON ic.person_id = ca.person_id
 				
-				WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'suspected' OR ic.status = 'threatening'"
+				WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'suspected' OR ic.status = 'threatening'"
 		);
 		
 		if ($query->num_rows() > 0)
@@ -126,11 +132,17 @@ class Immediate_case_model extends CI_Model
 	{
 		$query = $this->db->query(
 				"SELECT COUNT(imcase_no) as count
-				FROM immediate_cases ic
+				FROM 
+				(
+				SELECT MAX(imcase_no), person_id, imcase_no, created_on, status
+					FROM immediate_cases
+											
+					GROUP BY person_id
+				)ic
 				JOIN catchment_area ca
 				ON ic.person_id = ca.person_id
 				
-				WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'"
+				WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'"
 		);
 	
 		if ($query->num_rows() > 0)

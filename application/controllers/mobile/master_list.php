@@ -54,21 +54,41 @@ class Master_list extends CI_Controller
 		}
 		else
 		{
-			$level = $this->masterlist->add_immediate_cases();
+			$return_data = $this->masterlist->add_immediate_cases();
 
 			$this->add_case_notif('imcase', $this->input->post('person_id'));
 			$this->checkforbounceandred('imcase',$this->input->post('lat'),$this->input->post('lng'));
 
-			if ($level != null || $level != "")
+			if ($return_data[0] == 'suspected')
+				$color = 'YELLOW' ;
+			else if ($return_data[0] == 'threatening')
+				$color = 'ORANGE' ;
+			else if ($return_data[0] == 'serious')
+				$color = 'RED' ;
+			
+			if ($return_data[0] != null || $return_data[0] != "")
 			{
-				$data['result'] = strtoupper($level) . 
-				" CASE.\n Please give your contact details and/or the brgy contact no and tell 
+				$data['result'] = "<label style=\"color:" . $color . "\">[" . strtoupper($return_data[0]) . 
+				" CASE] </label>Please give your contact details and/or the brgy contact no and tell 
 				the person and/or the people living in the same household to contact you 
 				immediately if the patient condition worsens.";
+				
+				if (in_array('Bleeding',$return_data[1]) || in_array('Rashes',$return_data[1]))
+					$data['treatment'] = "Please ask the patient to have a check up to in the Barangay Health Center or at a nearby hospital due to bleeding and/or rashes.";
+				else if (in_array('Headache',$return_data[1]) || in_array('Muscle Pain',$return_data[1]) || in_array('Joint Pain',$return_data[1]))
+				{
+					$data['treatment'] = "Pain Relievers (for muscle pain, joint pain, and severe headache)
+											Acetaminophen (Tylenol), codeine, or analgesics. 
+											Avoid using ibuprofen, naproxen and aspirin as they might increase bleeding problems.";
+				}
+				else
+					$data['treatment'] = "Please continue monitoring the fever.";
 			}
 			else
+			{
 				$data['result'] = 'Your entry has been recorded';
-			
+				$data['treatment'] = "Please continue monitoring the fever.";
+			}
 			$this->load->view('mobile/im_case_success',$data);
 		}
 	}
@@ -97,21 +117,42 @@ class Master_list extends CI_Controller
 		else
 		{
 			// update
-			$level = $this->masterlist->update_im();
+			$return_data = $this->masterlist->update_im();
 			
 			$this->add_case_notif('imcase', $this->input->post('person_id'));
 			$this->checkforbounceandred('imcase',$this->input->post('lat'),$this->input->post('lng'));
 			
+			if ($return_data[0] == 'suspected')
+				$color = 'YELLOW' ;
+			else if ($return_data[0] == 'threatening')
+				$color = 'ORANGE' ;
+			else if ($return_data[0] == 'serious')
+				$color = 'RED' ;
+			
 			// redirect to person_edit_details_view
-			if ($level != null || $level != "")
+			if ($return_data[0] != null || $return_data[0] != "")
 			{
-				$data['result'] = strtoupper($level) . 
-				" CASE.\n Please give your contact details and/or the brgy contact no and tell 
+				$data['result'] = "<label style=\"color:" . $color . "\">[" . strtoupper($return_data[0]) . 
+				" CASE] </label>Please give your contact details and/or the brgy contact no and tell 
 				the person and/or the people living in the same household to contact you 
 				immediately if the patient condition worsens.";
+				
+				if (in_array('Bleeding',$return_data[1]) || in_array('Rashes',$return_data[1]))
+					$data['treatment'] = "Please ask the patient to have a check up to in the Barangay Health Center or at a nearby hospital due to bleeding and/or rashes.";
+				else if (in_array('Headache',$return_data[1]) || in_array('Muscle Pain',$return_data[1]) || in_array('Joint Pain',$return_data[1]))
+				{
+					$data['treatment'] = "Treat with pain relievers like
+											Acetaminophen (Tylenol), codeine, or analgesics. <br/>
+											Avoid using ibuprofen, naproxen and aspirin as they might cause bleeding problems.";
+				}
+				else
+					$data['treatment'] = "Please continue monitoring the fever.";
 			}
 			else
+			{
 				$data['result'] = 'Your entry has been recorded';
+				$data['treatment'] = "Please continue monitoring the fever.";
+			}
 			$this->load->view('mobile/im_case_success',$data);
 		}
 	}

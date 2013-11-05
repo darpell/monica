@@ -95,8 +95,8 @@
 				<li>Guardian: 
 					<?php echo $cases[$ctr]['person_guardian'];?>
 				</li>
-				<li> Address: <?php echo $cases[$ctr]['house_no'];?> <?php echo $cases[$ctr]['street'];?></li>
-				
+				<li> Address: <?php echo $cases[$ctr]['house_no'];?> <?php echo $cases[$ctr]['street'];?> </li>
+				<li> Remarks: <?php echo $cases[$ctr]['remarks'];?> </li>
 				<?php } ?>
 			</ul>
 		</div><!-- /content -->

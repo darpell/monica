@@ -11,6 +11,15 @@
 		
 		function add_immediate_cases()
 		{
+			if ($this->input->post('duration') == '1')
+				$remark = '1st day: ';
+			else if ($this->input->post('duration') == '2')
+				$remark = '2nd day: ';
+			else if ($this->input->post('duration') == '3')
+				$remark = '3rd day: ';
+			else
+				$remark = $this->input->post('duration') . 'th day: ';
+			
 			$data = array(
 					'person_id'			=> $this->input->post('person_id'),
 					'has_muscle_pain'	=> $hmp = ($this->input->post('has_muscle_pain') == 'Y') ? 'Y' : 'N',
@@ -20,7 +29,7 @@
 					'has_rashes'		=> $hr = ($this->input->post('has_rashes') == 'Y') ? 'Y' : 'N',
 					'days_fever'		=> $this->input->post('duration'),
 					'suspected_source'	=> $this->input->post('source'),
-					'remarks'			=> $this->input->post('remarks'),
+					'remarks'			=> $remark . $this->input->post('remarks'),
 					'imcase_lat'		=> $this->input->post('lat'),
 					'imcase_lng'		=> $this->input->post('lng')
 			);
@@ -50,7 +59,7 @@
 				{
 					$level = 'threatening';
 				}
-				else if ($data['days_fever'] >= 3 && count($symptoms) >= 2)
+				else if ($data['days_fever'] >= 3 || count($symptoms) >= 2 || in_array('Rashes',$symptoms) || in_array('Bleeding',$symptoms))
 				{
 					$level = 'serious';
 				}
@@ -72,13 +81,33 @@
 			$this->db->where('household_id',$this->input->post('household_id'));
 			$this->db->update('household_address', $hh);
 			
-			return $level;
+			$returning_data = array($level, $symptoms);
+			
+			return $returning_data;
 		}
 		
 		
 		# TODO
 		function update_im()
 		{
+			if ($this->input->post('duration') == '1')
+				$remark = '1st day: ';
+			else if ($this->input->post('duration') == '2')
+				$remark = '2nd day: ';
+			else if ($this->input->post('duration') == '3')
+				$remark = '3rd day: ';
+			else
+				$remark = $this->input->post('duration') . 'th day: ';
+			
+			$this->db->from('immediate_cases');
+			$this->db->where('imcase_no',$this->input->post('imcase_no'));
+			
+			$query = $this->db->get();
+					$row = $query->row_array();
+				
+					$old_remark = $row['remarks'];
+			
+			
 			$data = array(
 						'imcase_no'			=> $this->input->post('imcase_no'),
 						'person_id'			=> $this->input->post('person_id'),
@@ -89,7 +118,7 @@
 						'has_rashes'		=> $hr = ($this->input->post('has_rashes') == 'Y') ? 'Y' : 'N',
 						'days_fever'		=> $this->input->post('duration'),
 						'suspected_source'	=> $this->input->post('source'),
-						'remarks'			=> $this->input->post('remarks'),
+						'remarks'			=> $remark . $this->input->post('remarks') . " " . $old_remark,
 					
 						'created_on'		=> $this->input->post('created_on'),
 						'imcase_lat'		=> $this->input->post('lat'),
@@ -123,12 +152,12 @@
 			{
 				$level = 'threatening';
 			}
-			else if ($data['days_fever'] >= 3 && count($symptoms) >= 2)
+			else if ($data['days_fever'] >= 3 || count($symptoms) >= 2 || in_array('Rashes',$symptoms) || in_array('Bleeding',$symptoms))
 			{
 				$level = 'serious';
 			}
 			else
-				$level = 'none';
+				$level = 'fever';
 			
 			$this->db->set('status',$level);
 			// end status
@@ -146,7 +175,9 @@
 			$this->db->where('household_id',$this->input->post('household_id'));
 			$this->db->update('household_address', $hh);
 			
-			return $level;
+			$returning_data = array($level, $symptoms);
+			
+			return $returning_data;
 		}
 		
 		function get_households($bhw, $household_id = FALSE, $person_id = FALSE)
@@ -231,14 +262,14 @@
 			
 			$query = $this->db->query("SELECT COUNT(household_id) as fever_house
 						FROM 
-							(SELECT MAX(imcase_no), person_id, imcase_no
+							(SELECT MAX(imcase_no), person_id, imcase_no, created_on
 							FROM immediate_cases
 							
 							GROUP BY person_id
 							)ic
 						
 						JOIN catchment_area ca ON ic.person_id = ca.person_id"
-						. " WHERE ca.household_id = '" .
+						. " WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.household_id = '" .
 						$household_id
 						.
 						"' GROUP BY ca.household_id");
@@ -273,6 +304,7 @@
 					return FALSE;
 		}
 		
+		# TODO
 		function check_person_hospitalized($f_name,$l_name,$sex,$dob)
 		{
 			$this->db->from('immediate_cases');
@@ -309,30 +341,6 @@
 				else
 					return FALSE;
 				$query->free_result();
-		}
-		
-		# to be deleted
-		function add_fever_day($person_id)
-		{
-			$this->db->from('immediate_cases');
-				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
-				$this->db->where($where);
-				$query = $this->db->get();
-				
-				if ($query->num_rows() > 0)
-				{
-					$row = $query->row_array();
-					
-					$max_case_no = $row['imcase_no'];
-					$old_fever = $row['days_fever'];
-				}
-			
-			$data = array(
-					'days_fever' => $old_fever + 1
-			);
-			
-			$this->db->where('imcase_no', $max_case_no);
-			$this->db->update('immediate_cases', $data);
 		}
 		
 		function count_fever_day($person_id)

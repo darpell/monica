@@ -6,7 +6,7 @@ class Investigate_cases_model extends CI_Model
 	{
 		$query = $this->db->query("SELECT cr.cr_patient_no, cr.cr_first_name, cr.cr_last_name, cr.cr_sex, cr.cr_age, cr.cr_street
 									FROM case_report_main cr
-									WHERE cr.cr_barangay = '" . $brgy . "' AND
+									WHERE DATEDIFF(NOW(), cr.cr_date_onset) <= '20' AND cr.cr_barangay = '" . $brgy . "' AND
 										cr.cr_patient_no NOT IN
 											(SELECT ic.case_no
 											FROM investigated_cases ic)"
@@ -18,7 +18,7 @@ class Investigate_cases_model extends CI_Model
 		}
 		$query = $this->db->query("SELECT *
 									FROM case_report_main cr
-									WHERE cr.cr_patient_no = " . $patient_no . " and cr.cr_patient_no NOT IN
+									WHERE WHERE DATEDIFF(NOW(), cr.cr_date_onset) <= '20' AND cr.cr_patient_no = " . $patient_no . " and cr.cr_patient_no NOT IN
 										(SELECT ic.case_no
 										FROM investigated_cases ic)"
 							);
