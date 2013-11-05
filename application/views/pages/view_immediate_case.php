@@ -82,7 +82,7 @@ echo $this->table->generate($person['table']);
 </td>
 
 
-<td style="width:100% "> <input type="text" name="remarks" value="<?php echo $person['symptoms']['Remarks'];  ?>" /></td>
+<td style="width:100% "> <textarea name="remarks"><?php echo $person['symptoms']['Remarks'];?></textarea></td>
 
 
 <td> <?php echo $person['symptoms']['Date Onset']?></td>
