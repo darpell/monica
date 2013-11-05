@@ -214,7 +214,7 @@ function setInfo(fMarker,fInfo,fMap) {
 			/** Immediate Cases **/
 			
 			if (document.getElementById("mc_length").value != 0)
-			{//alert("0");
+			{
 				for (var pt_ctr = 0; pt_ctr < document.getElementById("mc_length").value; pt_ctr++) 
 				{	
 					var symptoms=0;
@@ -230,7 +230,7 @@ function setInfo(fMarker,fInfo,fMap) {
 						symptoms++;
 					
 					var img=null;
-
+					
 					if(parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) < 3 && parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) > 0 && symptoms == 0)
 					{
 						img=document.getElementById("notice1_icon").value; 
@@ -242,13 +242,16 @@ function setInfo(fMarker,fInfo,fMap) {
 					}
 					else //if(document.getElementById("mc_daysfever"+pt_ctr).value > 2 && symptoms > 2 )
 					{
+					
 						img=document.getElementById("notice3_icon").value; 
 					}
+					
 					
 					point=new google.maps.LatLng(
 							document.getElementById("mc_lat" + pt_ctr).value,
 							document.getElementById("mc_lng" + pt_ctr).value
 							);
+					
 					caseMarker=new google.maps.Marker({
 						  position:point ,
 						  map: map,
@@ -268,6 +271,7 @@ function setInfo(fMarker,fInfo,fMap) {
 					+"Last Visit: "+document.getElementById("mc_lastvisited" + pt_ctr).value+"<br/><br/>"
 					+"Suspected Source: "+document.getElementById("mc_suspectedsource" + pt_ctr).value+"<br/>"
 					+"Remarks: "+document.getElementById("mc_remarks" + pt_ctr).value+"<br/>";
+					
 					setInfo(caseMarker,info,map);
 					oms.addMarker(caseMarker);
 					
@@ -416,7 +420,11 @@ function setInfo(fMarker,fInfo,fMap) {
 	<div id="googleMap" style="width:20%; height:80%; margin: 10px; float:left;" >
 	</div>
 	<input type="hidden" id="centroid_icon" value="<?php echo base_url('/images/information.png')?>" />
-	
+	<input type="hidden" id="case_icon" value="<?php echo base_url('/images/arrow.png')?>" />
+		<input type="hidden" id="notice1_icon" value="<?php echo base_url('/images/notice.png')?>" />
+		<input type="hidden" id="notice2_icon" value="<?php echo base_url('/images/notice2.png')?>" />
+		<input type="hidden" id="notice3_icon" value="<?php echo base_url('/images/notice3.png')?>" />
+		
 	<?php if ($larvalPositives != NULL){?>
 <input type="hidden" id="result_length" value="<?php echo count($larvalPositives); ?>" />
 	<?php for ($ctr = 0; $ctr < count($larvalPositives); $ctr++) {?>
@@ -429,10 +437,7 @@ function setInfo(fMarker,fInfo,fMap) {
 		<input type="hidden" id="pt_tracking_no<?= $ctr ?>" 	value="<?php echo $larvalPositives[$ctr]['tracking_number']; ?>"	/>
 		<input type="hidden" id="pt_ref_no<?= $ctr ?>" 	value="<?php echo $larvalPositives[$ctr]['ls_no']; ?>"	/>
 	<?php }?> 
-	<input type="hidden" id="case_icon" value="<?php echo base_url('/images/arrow.png')?>" />
-		<input type="hidden" id="notice1_icon" value="<?php echo base_url('/images/notice.png')?>" />
-		<input type="hidden" id="notice2_icon" value="<?php echo base_url('/images/notice2.png')?>" />
-		<input type="hidden" id="notice3_icon" value="<?php echo base_url('/images/notice3.png')?>" />
+	
 	<!-- Polygon Nodes -->
 	<?php } else { ?> <input type="hidden" id="result_length" value="0" /> <?php } ?>
 		

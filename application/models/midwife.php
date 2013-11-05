@@ -38,7 +38,7 @@
 		function get_immediate_cases($midwife)
 		{
 			$barangay = $this->get_barangay_midwife($midwife);
-				
+			
 			$this->db->from('immediate_cases');
 			$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
 			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');

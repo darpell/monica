@@ -384,7 +384,7 @@ class Cho extends CI_Controller
 		
 		$data['dateSel1']=date('Y-m').'-01';
 		$data['dateSel2']=date('Y-m-d');
-		$data['dateSel2']='2013-08-31';
+		//$data['dateSel2']='2013-08-31';
 		$data['barangay'] = null;
 		$data['mapvalues'] = $this->Remap_model->investigated_cases($data);
 		//print_r($data['mapvalues']);

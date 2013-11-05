@@ -690,11 +690,15 @@ class Remap_model extends CI_Model
 		$this->db->from('immediate_cases');
 		$this->db->join('catchment_area','immediate_cases.person_id=catchment_area.person_id');
 		$this->db->join('household_address','catchment_area.household_id=household_address.household_id');
+		$this->db->join('bhw','bhw.user_username=catchment_area.bhw_id');
 		$where="(last_updated_on BETWEEN '".$data['dateSel1']."' AND '".$data['dateSel2']."') ";
 		$where.="AND imcase_lng IS NOT NULL ";
+		
 		if($data['barangay']!=null)
 		{
-			$where.="AND (street='".$data['barangay']."')";
+			$where.="AND (barangay='".$data['barangay']."')";
+			//$where.="AND (street='".$data['barangay']."')";
+			//$this->db->where('bhw.barangay', $data['barangay']);
 		}//print_r($where);
 		$this->db->where($where);
 		$q = $this->db->get();

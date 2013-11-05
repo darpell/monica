@@ -489,7 +489,7 @@ jQuery(document).ready(function(){
 		<input type="hidden" id="ic_outcome<?= $ctr ?>" 		value="<?php echo $value['ic_outcome']; ?>"	/>
 	<?php $ctr++;}?> 
 	<?php } else { ?> <input type="hidden" id="ic_length" value="0" /> <?php } ?>
-	<center><div id="googleMap" style="width: 900px; height: 600px"></div></center>
+	<center><div id="googleMap" style="width: 900px; height: 600px float:center"></div></center>
 </div>
 <div id="tabs-6">
 <?php 

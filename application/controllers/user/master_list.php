@@ -642,6 +642,7 @@ print($barangay);
 		$dates['date2']=$data['end_date'];//echo $data['end_date']." END ";
 		$temp['dateSel1']=$data['begin_date'];
 		$temp['dateSel2']=$data['end_date'];
+		$temp['barangay']=$barangay;
 		$loc=null;
 		$bgy=null;
 		//
