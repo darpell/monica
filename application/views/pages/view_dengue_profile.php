@@ -368,7 +368,7 @@ echo form_open('CHO/view_dengue_profile',$attributes); ?>
 					}
 					
 					?>
-					<li><a href="#tab_table"> demographics of Cases</a></li>
+					<li><a href="#tab_table"> Demographics of Cases</a></li>
 					<li><a href="#tab_casetable">Cases Information</a></li>
 				</ul>
 

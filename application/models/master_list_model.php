@@ -271,7 +271,7 @@
 							)ic
 						
 						JOIN catchment_area ca ON ic.person_id = ca.person_id"
-						. " WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.household_id = '" .
+						. " WHERE /*DATEDIFF(NOW(), ic.created_on) <= '7' AND*/ ca.household_id = '" .
 						$household_id
 						.
 						"' GROUP BY ca.household_id");

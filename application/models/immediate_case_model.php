@@ -70,7 +70,7 @@ class Immediate_case_model extends CI_Model
 									JOIN master_list ml ON ic.person_id = ml.person_id
 									JOIN catchment_area ca ON ca.person_id = ml.person_id
 									
-									WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'suspected' OR ic.status = 'threatening'
+									WHERE ca.bhw_id = '" . $bhw_id . "' AND (ic.status = 'suspected' OR ic.status = 'threatening')
 									
 									GROUP BY person_id
 									ORDER BY days_fever DESC");
@@ -114,7 +114,7 @@ class Immediate_case_model extends CI_Model
 				JOIN catchment_area ca
 				ON ic.person_id = ca.person_id
 				
-				WHERE /*DATEDIFF(NOW(), ic.created_on) <= '7' AND*/ ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'suspected' OR ic.status = 'threatening'"
+				WHERE /*DATEDIFF(NOW(), ic.created_on) <= '7' AND*/ ca.bhw_id = '" . $bhw_id . "' AND (ic.status = 'suspected' OR ic.status = 'threatening')"
 		);
 		
 		if ($query->num_rows() > 0)
