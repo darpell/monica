@@ -264,7 +264,9 @@
 						FROM 
 							(SELECT MAX(imcase_no), person_id, imcase_no, created_on
 							FROM immediate_cases
-							
+
+							WHERE status != 'hospitalized'
+					
 							GROUP BY person_id
 							)ic
 						
@@ -341,6 +343,12 @@
 				else
 					return FALSE;
 				$query->free_result();
+		}
+		
+		# TODO
+		function view_hospitalized($person_id)
+		{
+			
 		}
 		
 		function count_fever_day($person_id)

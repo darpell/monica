@@ -93,6 +93,17 @@ class Master_list extends CI_Controller
 		}
 	}
 	
+	# TODO
+	function view_hosp_case()
+	{
+		$param = $this->uri->uri_to_assoc(3);
+		$household_id = $param['household'];
+		$person_id = $param['hosp'];
+			
+		$data['household_persons'] = $this->masterlist->get_households($this->session->userdata('TPusername'),$household_id,$person_id);
+		$this->load->view('mobile/person_edit_details_view', $data);
+	}
+	
 	function view_edit_person()
 	{
 		$param = $this->uri->uri_to_assoc(3);
@@ -103,8 +114,6 @@ class Master_list extends CI_Controller
 		$this->load->view('mobile/person_edit_details_view', $data);
 	}
 	
-	
-	# TODO
 	function edit_immediate_case()
 	{
 		// form validate
@@ -199,15 +208,6 @@ class Master_list extends CI_Controller
 				'notif_user' => $midwife,
 		);
 		$this->notif->addnotif($data2);
-	}
-	
-	#to be deleted
-	function add_fever_day($person_id)
-	{
-		$this->masterlist->add_fever_day($person_id);//$household_persons[$ctr]['person_id']);
-		
-		$data['result'] = 'Your entry has been recorded';
-		$this->load->view('mobile/im_case_success',$data);
 	}
 	
 	function checkforbounceandred($type,$lat,$lng)

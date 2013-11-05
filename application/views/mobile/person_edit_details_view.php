@@ -77,7 +77,7 @@
 		
 		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
 				<div data-role="collapsible">
-					<h2> Has Fever?</h2>
+					<h2> Still Has Fever?</h2>
 					
 					<?php for ($ctr = 0; $ctr < count($household_persons); $ctr++) {?>
 						<input type="hidden" name="household_id" id="household_id" value="<?php echo $household_persons[$ctr]['household_id']; ?>"	/>
@@ -155,7 +155,7 @@
 						
 						<li data-role="fieldcontain">
 						<label for="textarea"> Remarks: (medicine intake, etc.) </label>
-							<textarea name="remarks" id="remarks"> <?php echo $this->masterlist->get_remarks($household_persons[0]['person_id']);//from db ?> </textarea>
+							<textarea name="remarks" id="remarks">  </textarea>
 						</li>
 						
 						<li>

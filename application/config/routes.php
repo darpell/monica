@@ -71,6 +71,9 @@ $route['mobile/view/suspected_cases/(:num)'] = 'mobile/monitored_cases/view_susp
 $route['mobile/view/person/(:num)'] = 'mobile/master_list/edit_immediate_case/$1'; # DONE
 $route['mobile/view/household/(:num)/case/(:num)'] = 'mobile/master_list/view_edit_person';
 $route['mobile/view/household/(:num)/case/(:num)/edit_case'] = 'mobile/master_list/edit_immediate_case';
+//hospital
+$route['mobile/view/household/(:num)/hosp/(:num)'] = 'mobile/master_list/view_hosp_case';
+
 $route['mobile/view/household/(:num)/person/(:num)'] = 'mobile/master_list/view_person';
 $route['mobile/view/household/(:num)/person/(:num)/add_im'] = 'mobile/master_list/add_immediate_case';
 $route['mobile/case_report_filter/province'] = 'mobile/case_report/province';
