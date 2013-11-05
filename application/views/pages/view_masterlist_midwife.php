@@ -600,12 +600,27 @@ function setInfo(fMarker,fInfo,fMap) {
 		//echo $this->table->generate($riskTable);?>
  <fieldset style="width: 50%;">
   <legend>Legend</legend>
-  <img src="<?php echo base_url('/images/eggs.png')?>" alt="Smiley face" height="42" width="42"> Breeding Area For Mosquitos(<?php echo $nonbouncectr;?>)<br />
-  <img src="<?php echo base_url('/images/eggs.png')?>" alt="Smiley face" height="42" width="42">(Bouncing)Positive For Larva(<?php echo $bouncectr;?>)<?php if ($bouncectr > 0){?><img src="<?php echo base_url('/images/notice.png')?>" alt="Smiley face" height="22" width="22"><br /><?php }?><br />
-  <img src="<?php echo base_url('/images/group.png')?>" alt="Smiley face" height="42" width="42">Area At Risk For Dengue(<?php echo $riskareactr;?>)<br />
-  <img src="<?php echo base_url('/images/group-2.png')?>" alt="Smiley face" height="42" width="42">Nearby Active Breeding Ground(<?php echo $redriskareactr;?>)<?php if ($redriskareactr > 0){?><img src="<?php echo base_url('/images/notice.png')?>" alt="Smiley face" height="22" width="22"><br /><?php }?><br />
-  <img src="<?php echo base_url('/images/Mosquito.png')?>" alt="Smiley face" height="42" width="42">Dengue and Immediate Case(<?php echo $casectr;?>)
-
+  <table>
+  <tr>
+ <td> <?php echo $nonbouncectr;?></td> <td> <img src="<?php echo base_url('/images/eggs.png')?>" alt="Smiley face" height="42" width="42"></td> <td>  Breeding Area For Mosquitos</td> <br />
+ </tr>
+ <tr>
+ <td>  <?php echo $bouncectr;?></td> <td> <img src="<?php echo base_url('/images/eggs.png')?>" alt="Smiley face" height="42" width="42"></td> <td> (Bouncing)Positive For Larva<?php if ($bouncectr > 0){?><img src="<?php echo base_url('/images/notice.png')?>" alt="Smiley face" height="22" width="22"><br /><?php }?></td> <br />
+  </tr>
+ <tr>
+ <td> <?php echo $riskareactr;?></td> <td>  <img src="<?php echo base_url('/images/group.png')?>" alt="Smiley face" height="42" width="42"></td> <td> Area At Risk For Dengue</td> <br />
+   </tr>
+ <tr>
+ <td>  <?php echo $redriskareactr;?></td> <td> <img src="<?php echo base_url('/images/group-2.png')?>" alt="Smiley face" height="42" width="42"></td> <td> Nearby Active Breeding Ground<?php if ($redriskareactr > 0){?><img src="<?php echo base_url('/images/notice.png')?>" alt="Smiley face" height="22" width="22"><br /><?php }?><br />
+  </tr>
+ <tr>
+ <td> <?php echo $casectr;?></td> <td>  <img src="<?php echo base_url('/images/Mosquito.png')?>" alt="Smiley face" height="42" width="42">
+  <img src="<?php echo base_url('/images/notice.png')?>" alt="Smiley face" height="42" width="42"> 
+  <img src="<?php echo base_url('/images/notice2.png')?>" alt="Smiley face" height="42" width="42"> 
+  <img src="<?php echo base_url('/images/notice3.png')?>" alt="Smiley face" height="42" width="42"></td> <td> Dengue and Immediate Case</td> 
+   </tr>
+ 
+  </table>
   </fieldset>		
 		<?php 		
 if($cases != null){
@@ -631,23 +646,17 @@ if($cases != null){
 <?php 
 foreach($cases as $value)
 {
-	$ctr = 0;
-	if($value['Muscle Pain'] == 'Y') $ctr=$ctr+1;
-	if($value['Head Ache'] == 'Y') $ctr=$ctr+1;
-	if($value['Joint Pain'] == 'Y') $ctr=$ctr+1;
-	if($value['Bleeding'] == 'Y') $ctr=$ctr+1;
-	if($value['Rashes'] == 'Y') $ctr=$ctr+1;
-	if($value['Remarks'] == '')$value['Remarks']=" ";
+	
 	
 	echo '<tr>';
-	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y')
-		echo "<td bgcolor='#FF0000'></td>";
-	else if($value['Days Of Fever'] >= 2 && $ctr >=2)
-		echo "<td bgcolor='#FF8000'></td>";
-	else if($value['Days Of Fever'] >= 2 && $ctr <=2)
-		echo "<td bgcolor='#FFFF00'></td>";
-	else if($value['Days Of Fever'] >= 1 && $ctr <2)
-		echo "<td bgcolor='#00FF00'></td>";
+	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y' || $value['Status'] == 'serious')
+		echo "<td bgcolor='#FF0000'><b>Serious<b></b></td>";
+	else if($value['Status'] == "threatening")
+		echo "<td bgcolor='#FF8000'><b>".$value['Status']."<b></td>";
+	else if($value['Status'] == "supected")
+		echo "<td bgcolor='#FFFF00'><b>".$value['Status']."<b></td>";
+	else //if($value['Status'] == "finished")
+		echo "<td bgcolor='#00FF00'><b>".$value['Status']."<b></td>";
 	echo '
 		<td>'.$value['Name'].'</td>
 		<td>'.$value['Address'].'</td>
@@ -711,7 +720,7 @@ $this->table->set_heading(
 				'Marital Status',
 				'Nationality',
 				'Blood Type',
-				'Previous Dengue Case'
+				'options',
 		));
 echo $this->table->generate($masterlist[$row['household_id']]);
 $attributes = array(
@@ -1024,25 +1033,19 @@ if($cases != null){
 <?php 
 foreach($cases as $value)
 {
-	$ctr = 0;
-	if($value['Muscle Pain'] == 'Y') $ctr=$ctr+1;
-	if($value['Head Ache'] == 'Y') $ctr=$ctr+1;
-	if($value['Joint Pain'] == 'Y') $ctr=$ctr+1;
-	if($value['Bleeding'] == 'Y') $ctr=$ctr+1;
-	if($value['Rashes'] == 'Y') $ctr=$ctr+1;
-	if($value['Remarks'] == '')$value['Remarks']=" ";
+
 	
 		echo '<tr>';
-	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y')
-		echo "<td bgcolor='#FF0000'></td>";
-	else if($value['Days Of Fever'] >= 4 && $ctr >=2)
-		echo "<td bgcolor='#FF0000'></td>";
-	else if($value['Days Of Fever'] >= 3 && $ctr >=2)
-		echo "<td bgcolor='#FF8000'></td>";
-	else if($value['Days Of Fever'] >= 1 && $ctr <=2)
-		echo "<td bgcolor='#FFFF00'></td>";
-	else if($value['Days Of Fever'] >= 1 && $ctr <2)
-		echo "<td bgcolor='#BFFF00'></td>";
+		echo '<tr>';
+	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y' || $value['Status'] == 'serious')
+		echo "<td bgcolor='#FF0000'><b>Serious<b></b></td>";
+	else if($value['Status'] == "threatening")
+		echo "<td bgcolor='#FF8000'><b>".$value['Status']."<b></td>";
+	else if($value['Status'] == "supected")
+		echo "<td bgcolor='#FFFF00'><b>".$value['Status']."<b></td>";
+	else //if($value['Status'] == "finished")
+		echo "<td bgcolor='#00FF00'><b>".$value['Status']."<b></td>";
+	
 	echo '
 		<td>'.$value['Name'].'</td>
 		<td>'.$value['Address'].'</td>

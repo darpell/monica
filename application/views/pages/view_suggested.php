@@ -127,23 +127,18 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 						<?php 
 						foreach($cases as $value)
 						{
-							$ctr = 0;
-							if($value['Muscle Pain'] == 'Y') $ctr=$ctr+1;
-							if($value['Head Ache'] == 'Y') $ctr=$ctr+1;
-							if($value['Joint Pain'] == 'Y') $ctr=$ctr+1;
-							if($value['Bleeding'] == 'Y') $ctr=$ctr+1;
-							if($value['Rashes'] == 'Y') $ctr=$ctr+1;
-							if($value['Remarks'] == '')$value['Remarks']=" ";
-							
+						
 							echo '<tr>';
-							if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y')
-								echo "<td bgcolor='#FF0000'></td>";
-							else if($value['Days Of Fever'] >= 2 && $ctr >=2)
-								echo "<td bgcolor='#FF8000'></td>";
-							else if($value['Days Of Fever'] >= 2 && $ctr <=2)
-								echo "<td bgcolor='#FFFF00'></td>";
-							else if($value['Days Of Fever'] >= 1 && $ctr <2)
-								echo "<td bgcolor='#00FF00'></td>";
+							echo '<tr>';
+							if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y' || $value['Status'] == 'serious')
+								echo "<td bgcolor='#FF0000'><b>Serious<b></b></td>";
+							else if($value['Status'] == "threatening")
+								echo "<td bgcolor='#FF8000'><b>".$value['Status']."<b></td>";
+							else if($value['Status'] == "supected")
+								echo "<td bgcolor='#FFFF00'><b>".$value['Status']."<b></td>";
+							else //if($value['Status'] == "finished")
+								echo "<td bgcolor='#00FF00'><b>".$value['Status']."<b></td>";
+	
 							echo '
 								<td>'.$value['Name'].'</td>
 								<td>'.$value['Address'].'</td>
