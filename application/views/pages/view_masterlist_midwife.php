@@ -655,13 +655,13 @@ foreach($cases as $value)
 	
 	echo '<tr>';
 	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y' || $value['Status'] == 'serious')
-		echo "<td bgcolor='#FF0000'><b>Serious<b></b></td>";
+		echo "<td bgcolor='#FF0000'><b>".strtoupper($value['Status'])."</b></td>";
 	else if($value['Status'] == "threatening")
-		echo "<td bgcolor='#FF8000'><b>".$value['Status']."<b></td>";
+		echo "<td bgcolor='#FF8000'><b>".strtoupper($value['Status'])."<b></td>";
 	else if($value['Status'] == "supected")
-		echo "<td bgcolor='#FFFF00'><b>".$value['Status']."<b></td>";
-	else //if($value['Status'] == "finished")
-		echo "<td bgcolor='#00FF00'><b>".$value['Status']."<b></td>";
+		echo "<td bgcolor='#FFFF00'><b>".strtoupper($value['Status'])."<b></td>";
+	else //if($value['Status'] == "hospitalized")
+		echo "<td bgcolor='#00FF00'><b>".strtoupper($value['Status'])."<b></td>";
 	echo '
 		<td>'.$value['Name'].'</td>
 		<td>'.$value['Address'].'</td>
@@ -1043,13 +1043,13 @@ foreach($cases as $value)
 		echo '<tr>';
 		echo '<tr>';
 	if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y' || $value['Status'] == 'serious')
-		echo "<td bgcolor='#FF0000'><b>Serious<b></b></td>";
+		echo "<td bgcolor='#FF0000'><b>".strtoupper($value['Status'])."<b></b></td>";
 	else if($value['Status'] == "threatening")
-		echo "<td bgcolor='#FF8000'><b>".$value['Status']."<b></td>";
+		echo "<td bgcolor='#FF8000'><b>".strtoupper($value['Status'])."<b></td>";
 	else if($value['Status'] == "supected")
-		echo "<td bgcolor='#FFFF00'><b>".$value['Status']."<b></td>";
+		echo "<td bgcolor='#FFFF00'><b>".strtoupper($value['Status'])."<b></td>";
 	else //if($value['Status'] == "finished")
-		echo "<td bgcolor='#00FF00'><b>".$value['Status']."<b></td>";
+		echo "<td bgcolor='#00FF00'><b>".strtoupper($value['Status'])."<b></td>";
 	
 	echo '
 		<td>'.$value['Name'].'</td>

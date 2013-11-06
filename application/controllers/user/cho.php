@@ -557,6 +557,28 @@ class Cho extends CI_Controller
 		$data['diff_text']= ($data['arranged'][5][$date] - $epidemic['quartile'][$date]);
 		$data['bar_text']=$data['parameter'];
 		$data['barangay'] = $this->Cho_model->getAllBarangays();
+		
+		
+		
+		//alerts
+		$data['alerts'] = null;
+		for ($i = 1; $i < count($data['arranged'])-1;$i++)
+		{
+			for ($s = 1; $s < count($data['arranged'][$i])-1;$s++)
+			{
+				//echo $data['arranged'][$i][$s].'VS' . $data['arranged'][5][$s] . '<br />';
+				if($data['arranged'][$i][$s] <= $data['arranged'][5][$s])
+				{ $data['alerts'][$data['arranged'][$i]['epidemic']][] = 'Epidemic Threshold('.$data['arranged'][$i]['epidemic'] .') Exceeded During The Month Of <b>'
+					.$data['arranged'][0][$s].' (' . ($data['arranged'][5][$s] - $data['arranged'][$i][$s]) . ' Cases)</b><br />';
+				
+				}
+			}
+			
+		}
+		
+		//print_r($data['alerts']);
+		
+		
 		$this->load->library('table');
 		$this->load->view('pages/view_epidemic_threshold.php' , $data);
 		

@@ -92,8 +92,8 @@
 			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
 			$this->db->join('bhw','catchment_area.bhw_id = bhw.user_username');
 			$this->db->where('bhw.barangay', $barangay);
-			//$this->db->where("YEAR(created_on) =".date('Y'));
-			//$this->db->where("MONTH(created_on) =".date('m'));
+			$this->db->where("YEAR(created_on) =".date('Y'));
+			$this->db->where("MONTH(created_on) =".date('m'));
 			$this->db->order_by('immediate_cases.created_on', 'desc');
 			$q = $this->db->get();
 			if($q->num_rows() > 0)
@@ -116,8 +116,8 @@
 			
 			
 			
-			//$this->db->where("YEAR(cr_date_onset) =".date('Y'));
-			//$this->db->where("MONTH(cr_date_onset) =".date('m'));
+			$this->db->where("YEAR(cr_date_onset) =".date('Y'));
+			$this->db->where("MONTH(cr_date_onset) =".date('m'));
 			$this->db->order_by('cr_date_onset', 'desc');
 			$q = $this->db->get();
 			

@@ -179,6 +179,49 @@ echo form_dropdown('barangay', $barangay,array($parameter => $parameter));
 <p>The difference between the epidemic threshold and number of cases is <b><?php echo $diff_text;?></b>.
 </td>
 </tr>
+<?php if($alerts != null){?>
+<tr>
+<td>
+<br />
+<h4>Alerts</h4>
+<?php 
+if(array_key_exists('3rd Quartile', $alerts))
+	{
+		foreach($alerts['3rd Quartile'] as $value)
+		{
+			echo $value;
+		}
+		
+	}
+	if(array_key_exists('C-SUM', $alerts))
+	{
+		foreach($alerts['C-SUM'] as $value)
+		{
+			echo $value;
+		}
+	
+	}
+	if(array_key_exists('mean+2SD', $alerts))
+	{
+		foreach($alerts['mean+2SD'] as $value)
+		{
+			echo $value;
+		}
+	
+	}
+	if(array_key_exists('C-SUM+1.96SD', $alerts))
+	{
+		foreach($alerts['C-SUM+1.96SD'] as $value)
+		{
+			echo $value;
+		}
+	
+	}
+?>
+
+</td>
+</tr>
+<?php }?>
 </table>
 </center>
  <br />

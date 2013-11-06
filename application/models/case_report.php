@@ -8,9 +8,40 @@
 			//load monica database
 			$this->load->database('default');
 		}
+		function checkforimmediatecase($data)
+		{
+
+			$this->db->from('immediate_cases');
+			$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
+			$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
+			$this->db->join('bhw','catchment_area.bhw_id = bhw.user_username');
+			$this->db->where('bhw.barangay', $data['TPbarangay-txt']);
+			$this->db->where("YEAR(created_on) =". date("Y",strtotime($data['TPillnessdate-txt'])));
+			$this->db->where("MONTH(created_on) =". date("m",strtotime($data['TPillnessdate-txt'])));
+			$this->db->where("person_first_name", $data['TPfirstname-txt']);
+			$this->db->where("person_last_name", $data['TPlastname-txt']);
+			$q = $this->db->get();
+			
+
+			if($q->num_rows() > 0)
+			{	
+				
+			foreach ($q->result() as $row)
+			{
+				
+				$data2 = array(
+						'status'=>'hospitalized'
+						);
+				$this->db->where('imcase_no', $row->imcase_no);
+				$this->db->update('immediate_cases', $data2);
+			}
+			
+			}
+
+		}
 		
 		function addCase($data){
-			
+			$this->checkforimmediatecase($data);
 			$qString = 'CALL '; 
 			$qString .= "add_case ('"; // name of stored procedure
 			$qString .= 
@@ -44,6 +75,8 @@
 			$data['TPdateofentry-txt']. "'". ")";
 			$query = $this->db->query($qString);
 			$query->free_result();
+			
+			
 		}
 		function searchcase($data)
 		{
