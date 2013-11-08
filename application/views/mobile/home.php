@@ -26,8 +26,9 @@
 	-->
 	
 		<ul data-role="listview" data-autodividers="true" data-inset="true" data-count-theme="b">
+			<li> <a href="<?php echo site_url('mobile/view/hospitalized_cases');?>" data-ajax="false" data-transition="slide"> Hospitalized Cases </a> <span class="ui-li-count"><?php echo $hospitalized_count; ?></span> </li>
+			<li> <a href="<?php echo site_url('mobile/view/serious_cases');?>" data-ajax="false" data-transition="slide"> Serious Cases </a> <span class="ui-li-count"><?php echo $serious_count; ?></span> </li>
         	<li> <a href="<?php echo site_url('mobile/view/suspected_cases');?>" data-ajax="false" data-transition="slide"> Suspected Cases </a> <span class="ui-li-count"><?php echo $suspected_count; ?></span> </li>
-        	<li> <a href="<?php echo site_url('mobile/view/serious_cases');?>" data-ajax="false" data-transition="slide"> Serious Cases </a> <span class="ui-li-count"><?php echo $serious_count; ?></span> </li>
         	<!-- <li> <a href="<?php //echo site_url('mobile/page/point_of_interest');?>" data-ajax="false" data-transition="slide"> Add Source/Risk Area </a> </li>
            	<li> <a href="<?php //echo site_url('mobile/page/larval_survey');?>" data-ajax="false" data-transition="slide"> Fill up Larval Form </a> </li>
         -->

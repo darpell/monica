@@ -49,7 +49,7 @@ class Immediate_case_model extends CI_Model
 								JOIN master_list ml ON ic.person_id = ml.person_id
 								JOIN catchment_area ca ON ca.person_id = ml.person_id
 								
-								WHERE ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'
+								WHERE DATEDIFF(NOW(), created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'
 								
 								GROUP BY person_id
 								ORDER BY days_fever DESC");
@@ -70,8 +70,29 @@ class Immediate_case_model extends CI_Model
 									JOIN master_list ml ON ic.person_id = ml.person_id
 									JOIN catchment_area ca ON ca.person_id = ml.person_id
 									
-									WHERE ca.bhw_id = '" . $bhw_id . "' AND (ic.status = 'suspected' OR ic.status = 'threatening')
+									WHERE DATEDIFF(NOW(), created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND (ic.status = 'suspected' OR ic.status = 'threatening')
 									
+									GROUP BY person_id
+									ORDER BY days_fever DESC");
+		
+		return $query->result_array();
+		$query->free_result();
+	}
+	
+	function get_hospitalized_imcases($bhw_id)
+	{
+		$query = $this->db->query("SELECT MAX(imcase_no) as imcase_no, ic.person_id,
+									ic.has_muscle_pain, ic.has_joint_pain, ic.has_headache, ic.has_bleeding, ic.has_rashes,
+									ic.days_fever, ic.created_on, ic.last_updated_on, ic.suspected_source, ic.remarks,
+					
+									ml.person_first_name, ml.person_last_name
+									FROM immediate_cases ic
+					
+									JOIN master_list ml ON ic.person_id = ml.person_id
+									JOIN catchment_area ca ON ca.person_id = ml.person_id
+					
+									WHERE DATEDIFF(NOW(), created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'hospitalized'
+					
 									GROUP BY person_id
 									ORDER BY days_fever DESC");
 		
@@ -93,7 +114,7 @@ class Immediate_case_model extends CI_Model
 					
 					JOIN household_address ha
 					ON ha.household_id = ca.household_id
-					WHERE ic.imcase_no = $imcase_no"
+					WHERE ic.imcase_no = " . $imcase_no
 				);
 		
 		return $query->result_array();
@@ -114,7 +135,7 @@ class Immediate_case_model extends CI_Model
 				JOIN catchment_area ca
 				ON ic.person_id = ca.person_id
 				
-				WHERE /*DATEDIFF(NOW(), ic.created_on) <= '7' AND*/ ca.bhw_id = '" . $bhw_id . "' AND (ic.status = 'suspected' OR ic.status = 'threatening')"
+				WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND (ic.status = 'suspected' OR ic.status = 'threatening')"
 		);
 		
 		if ($query->num_rows() > 0)
@@ -142,7 +163,7 @@ class Immediate_case_model extends CI_Model
 				JOIN catchment_area ca
 				ON ic.person_id = ca.person_id
 				
-				WHERE /*DATEDIFF(NOW(), ic.created_on) <= '7' AND*/ ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'"
+				WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'serious'"
 		);
 	
 		if ($query->num_rows() > 0)
@@ -151,6 +172,34 @@ class Immediate_case_model extends CI_Model
 		
 		   return $row['count'];
 		} 
+		else
+			return '0';
+		$query->free_result();
+	}
+	
+	function get_hospitalized_count($bhw_id)
+	{
+		$query = $this->db->query(
+				"SELECT COUNT(imcase_no) as count
+				FROM
+				(
+				SELECT MAX(imcase_no), person_id, imcase_no, created_on, status
+					FROM immediate_cases
+						
+					GROUP BY person_id
+				)ic
+				JOIN catchment_area ca
+				ON ic.person_id = ca.person_id
+	
+				WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.bhw_id = '" . $bhw_id . "' AND ic.status = 'hospitalized'"
+		);
+	
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+	
+			return $row['count'];
+		}
 		else
 			return '0';
 		$query->free_result();

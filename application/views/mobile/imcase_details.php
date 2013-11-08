@@ -71,7 +71,7 @@
 					?>
 					
 				</li>
-				
+				<li> Date Recorded: <?php echo $cases[$ctr]['created_on'];?> </li>
 				<li> Name: <?php echo $cases[$ctr]['person_first_name']; ?> <?php echo $cases[$ctr]['person_last_name']; ?></li> <!-- Name -->
 				<li> Contact No: <?php echo $cases[$ctr]['person_contactno'];?> </li>
 				<li> Civil Status: <?php echo $cases[$ctr]['person_marital'];?> <!-- Civil Status --> </li>

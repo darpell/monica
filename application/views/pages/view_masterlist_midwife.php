@@ -230,13 +230,18 @@ function setInfo(fMarker,fInfo,fMap) {
 						symptoms++;
 					
 					var img=null;
+
+					if(document.getElementById("mc_hasbleeding"+pt_ctr).value == "Y" || document.getElementById("mc_hasrashes"+pt_ctr).value == "Y")
+					{
+						img=document.getElementById("notice3_icon").value; 
+					} 
 					
-					if(parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) < 3 && parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) > 0 && symptoms == 0)
+					else if(parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) < 3 && parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) > 0 && symptoms == 0)
 					{
 						img=document.getElementById("notice1_icon").value; 
 					} 
 					
-					else if(parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) < 3 && parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) > 0 && symptoms == 1)
+					else if(parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) <= 3 && parseInt(document.getElementById("mc_daysfever"+pt_ctr).value) > 0 && symptoms <= 2)
 					{
 						img=document.getElementById("notice2_icon").value; 
 					}
@@ -658,7 +663,7 @@ foreach($cases as $value)
 		echo "<td bgcolor='#FF0000'><b>".strtoupper($value['Status'])."</b></td>";
 	else if($value['Status'] == "threatening")
 		echo "<td bgcolor='#FF8000'><b>".strtoupper($value['Status'])."<b></td>";
-	else if($value['Status'] == "supected")
+	else if($value['Status'] == "suspected")
 		echo "<td bgcolor='#FFFF00'><b>".strtoupper($value['Status'])."<b></td>";
 	else //if($value['Status'] == "hospitalized")
 		echo "<td bgcolor='#00FF00'><b>".strtoupper($value['Status'])."<b></td>";

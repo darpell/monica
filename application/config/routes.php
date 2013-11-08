@@ -67,12 +67,16 @@ $route['mobile/view/serious_cases/(:num)'] = 'mobile/monitored_cases/view_seriou
 // Mob Suspected Casses
 $route['mobile/view/suspected_cases'] = 'mobile/monitored_cases/suspected_cases';
 $route['mobile/view/suspected_cases/(:num)'] = 'mobile/monitored_cases/view_suspected_case_details/$1';
+// Mob Hospitalized Casses
+$route['mobile/view/hospitalized_cases'] = 'mobile/monitored_cases/hospitalized_cases';
+$route['mobile/view/hospitalized_cases/(:num)'] = 'mobile/monitored_cases/view_hospitalized_case_details/$1';
 
 $route['mobile/view/person/(:num)'] = 'mobile/master_list/edit_immediate_case/$1'; # DONE
 $route['mobile/view/household/(:num)/case/(:num)'] = 'mobile/master_list/view_edit_person';
 $route['mobile/view/household/(:num)/case/(:num)/edit_case'] = 'mobile/master_list/edit_immediate_case';
 //hospital
 $route['mobile/view/household/(:num)/hosp/(:num)'] = 'mobile/master_list/view_hosp_case';
+$route['mobile/view/household/(:num)/hosp/(:num)/edit_case'] = 'mobile/master_list/edit_hospitalized_case';
 
 $route['mobile/view/household/(:num)/person/(:num)'] = 'mobile/master_list/view_person';
 $route['mobile/view/household/(:num)/person/(:num)/add_im'] = 'mobile/master_list/add_immediate_case';

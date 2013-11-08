@@ -49,6 +49,27 @@ class Monitored_cases extends CI_Controller
 		$data['cases'] = $this->ic->get_case_details($imcase_no);
 		$this->load->view('mobile/imcase_details', $data);
 	}
+	
+	function hospitalized_cases()
+	{
+		//echo 'Hello World!';
+	
+	
+		$data['cases'] = $this->ic->get_hospitalized_imcases($this->session->userdata('TPusername'));
+		$this->load->view('mobile/hospitalized_cases', $data);
+	
+		/*
+		 * $data['result'] = '';
+		* $data['tasks'] = $this->tasks->get_tasks($this->session->userdata('TPusername'));
+		* $this->load->view('mobile/tasks.php', $data);
+		*/
+	}
+	
+	function view_hospitalized_case_details($imcase_no)
+	{
+		$data['cases'] = $this->ic->get_case_details($imcase_no);
+		$this->load->view('mobile/imcase_details', $data);
+	}
 }
 
 /* End of file mobile/monitored_cases.php */

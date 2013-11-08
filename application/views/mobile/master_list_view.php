@@ -25,18 +25,18 @@
 					$this->load->model('master_list_model','masterlist');
 					if ($this->masterlist->check_person_fever($household_persons[$ctr]['person_id']))
 					{
-						if($this->masterlist->check_person_hospitalized(
-										$household_persons[$ctr]['person_first_name'],
+						if($this->masterlist->check_person_hospitalized( $household_persons[$ctr]['person_id']
+										/*$household_persons[$ctr]['person_first_name'],
 										$household_persons[$ctr]['person_last_name'],
 										$household_persons[$ctr]['person_sex'],
-										$household_persons[$ctr]['person_dob']
+										$household_persons[$ctr]['person_dob']*/
 									)
 								) //is sick and hospitalized
 						{
 				?>
 							<li data-theme="d">
-								<a>
-									<label style="color:RED;"> [Hospitalized] </label>
+								<a href="<?php echo site_url('mobile/view/household/' . $household_persons[$ctr]['household_id'] . '/hosp/' . $household_persons[$ctr]['person_id']);?>" data-ajax="false" data-transition="slide">
+									<label style="color:GREEN;"> [Hospitalized] </label>
 									<?php echo $household_persons[$ctr]['person_first_name']; ?> <!-- First Name -->
 									<?php echo $household_persons[$ctr]['person_last_name']; ?>, <!-- Last Name --> 
 									<?php 

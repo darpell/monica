@@ -101,7 +101,22 @@ class Master_list extends CI_Controller
 		$person_id = $param['hosp'];
 			
 		$data['household_persons'] = $this->masterlist->get_households($this->session->userdata('TPusername'),$household_id,$person_id);
-		$this->load->view('mobile/person_edit_details_view', $data);
+		$this->load->view('mobile/update_case', $data);
+	}
+	
+	function edit_hospitalized_case()
+	{
+			// update
+			$this->masterlist->update_hospitalized();
+				
+			$this->add_case_notif('imcase', $this->input->post('person_id'));
+			$this->checkforbounceandred('imcase',$this->input->post('lat'),$this->input->post('lng'));
+			
+			$data['result'] = 'Your entry has been recorded.';
+			$data['treatment'] = "";
+			
+			$this->load->view('mobile/im_case_success',$data);
+		
 	}
 	
 	function view_edit_person()

@@ -452,7 +452,7 @@ class Master_list extends CI_Controller
 				$data['bhw'][$x] = $temp[$i]['user_firstname'] . ' '. $temp[$i]['user_lastname'] ;
 			
 			}
-			$data['uninvest'] = $this->suggest_model->get_cases($barangay, '2013-01-01', date('Y-m-d'));
+			$data['uninvest'] = $this->suggest_model->get_cases($barangay, date('Y-m-01'), date('Y-m-d'));
 			$data['bhwdd']= $data['bhwdd'][$barangay];
 			$mapdata = $this-> remap($barangay);
 			$data = array_merge($data,$mapdata);

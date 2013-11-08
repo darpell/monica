@@ -64,7 +64,7 @@
 					$level = 'serious';
 				}
 				else
-					$level = 'none';
+					$level = 'suspected';
 				
 				$this->db->set('status',$level);
 				// end status
@@ -157,7 +157,7 @@
 				$level = 'serious';
 			}
 			else
-				$level = 'fever';
+				$level = 'suspected';
 			
 			$this->db->set('status',$level);
 			// end status
@@ -265,13 +265,13 @@
 							(SELECT MAX(imcase_no), person_id, imcase_no, created_on
 							FROM immediate_cases
 
-							WHERE status != 'hospitalized'
+							WHERE status != 'finished'
 					
 							GROUP BY person_id
 							)ic
 						
 						JOIN catchment_area ca ON ic.person_id = ca.person_id"
-						. " WHERE /*DATEDIFF(NOW(), ic.created_on) <= '7' AND*/ ca.household_id = '" .
+						. " WHERE DATEDIFF(NOW(), ic.created_on) <= '7' AND ca.household_id = '" .
 						$household_id
 						.
 						"' GROUP BY ca.household_id");
@@ -294,7 +294,8 @@
 		function check_person_fever($person_id)
 		{
 			$this->db->from('immediate_cases');
-				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7'
+							AND status != 'finished')";
 				$this->db->where($where);
 				
 				$query = $this->db->get();
@@ -307,9 +308,21 @@
 		}
 		
 		# TODO
-		function check_person_hospitalized($f_name,$l_name,$sex,$dob)
+		function check_person_hospitalized($person_id)//($f_name,$l_name,$sex,$dob)
 		{
 			$this->db->from('immediate_cases');
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7'
+							AND status = 'hospitalized')";
+			$this->db->where($where);
+			
+			$query = $this->db->get();
+			if ($query->num_rows() > 0)
+			{
+				return TRUE;
+			}
+			else
+				return FALSE;
+			/*$this->db->from('immediate_cases');
 				$this->db->join('master_list','master_list.person_id = immediate_cases.person_id');
 				$this->db->join('catchment_area','master_list.person_id = catchment_area.person_id');
 				$this->db->join('bhw','catchment_area.bhw_id = bhw.user_username');
@@ -342,19 +355,14 @@
 				}
 				else
 					return FALSE;
-				$query->free_result();
-		}
-		
-		# TODO
-		function view_hospitalized($person_id)
-		{
-			
+				$query->free_result();*/
 		}
 		
 		function count_fever_day($person_id)
 		{
 			$this->db->from('immediate_cases');
-			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7'
+						AND status != 'finished')";
 			$this->db->where($where);
 			$query = $this->db->get();
 			
@@ -369,7 +377,8 @@
 		function get_imcase_no($person_id)
 		{
 			$this->db->from('immediate_cases');
-			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7' 
+						AND status != 'finished' )";
 			$this->db->where($where);
 			$query = $this->db->get();
 				
@@ -384,7 +393,8 @@
 		function check_symptom_if_checked($person_id,$symptom)
 		{
 			$this->db->from('immediate_cases');
-				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+				$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7' 
+							AND status != 'finished')";
 				$this->db->where($where);
 				
 			$query = $this->db->get();
@@ -404,7 +414,8 @@
 		function get_suspected($person_id)
 		{
 			$this->db->from('immediate_cases');
-			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7' 
+						AND status != 'finished')";
 			$this->db->where($where);
 			
 			$query = $this->db->get();
@@ -419,7 +430,8 @@
 		function get_remarks($person_id)
 		{
 			$this->db->from('immediate_cases');
-			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7'
+						AND status != 'finished')";
 			$this->db->where($where);
 				
 			$query = $this->db->get();
@@ -434,7 +446,8 @@
 		function get_created_on($person_id)
 		{
 			$this->db->from('immediate_cases');
-			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7'
+						AND status != 'finished')";
 			$this->db->where($where);
 			
 			$query = $this->db->get();
@@ -449,7 +462,8 @@
 		function get_imcase_lat($person_id)
 		{
 			$this->db->from('immediate_cases');
-			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7'
+						AND status != 'finished')";
 			$this->db->where($where);
 			
 			$query = $this->db->get();
@@ -464,7 +478,8 @@
 		function get_imcase_lng($person_id)
 		{
 			$this->db->from('immediate_cases');
-			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "')";
+			$where = "imcase_no = (SELECT MAX(imcase_no) FROM immediate_cases WHERE person_id = '" . $person_id . "' AND DATEDIFF(NOW(), created_on) <= '7'
+						AND status != 'finished')";
 			$this->db->where($where);
 			
 			$query = $this->db->get();
@@ -474,6 +489,44 @@
 					
 				return $row['imcase_lng'];
 			}
+		}
+		
+		function update_hospitalized()
+		{
+			$this->db->from('immediate_cases');
+			$this->db->where('imcase_no',$this->input->post('imcase_no'));
+			
+			$query = $this->db->get();
+			$row = $query->row_array();
+
+			$data = array(
+						'imcase_no'			=> $this->input->post('imcase_no'),
+						'person_id'			=> $this->input->post('person_id'),
+						'has_muscle_pain'	=> $row['has_muscle_pain'],
+						'has_joint_pain'	=> $row['has_joint_pain'],
+						'has_headache'		=> $row['has_headache'],
+						'has_bleeding'		=> $row['has_bleeding'],
+						'has_rashes'		=> $row['has_rashes'],
+						'days_fever'		=> $row['days_fever'],
+						'suspected_source'	=> $row['suspected_source'],
+						'remarks'			=> $row['remarks'],
+						'status'			=> 'finished',
+						'created_on'		=> $this->input->post('created_on'),
+						'imcase_lat'		=> $this->input->post('lat'),
+						'imcase_lng'		=> $this->input->post('lng')	
+				);
+			
+			$this->db->delete('immediate_cases', array('imcase_no' => $this->input->post('imcase_no')));
+			
+			$this->db->set('last_updated_on', 'NOW()', FALSE);
+
+			//$this->db->set('status','finished');
+			// end status
+			
+			$this->db->insert('immediate_cases', $data);
+			
+			//$this->db->where('imcase_no',$this->input->post('imcase_no'));
+			//$this->db->update('immediate_cases, $data','imcase_no = ' . $this->input->post('imcase_no'));
 		}
 	}
 

@@ -84,11 +84,11 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 				<ul>
 					<li><a href="#tabs-1"> Larval Occurrences </a></li>
 					<li><a href="#tabs-2"> Event List </a></li>
-					<li><a href="#tabs-3"> Route Information </a></li>
+					<li><a href="#tabs-3"> Uninvestigated Cases </a></li>
 					<li><a href="#tabs-4"> Immediate Cases</a></li>
 				</ul>
 				<div id="tabs-3">
-					<h2> Route Information </h2>
+					<h2> Uninvestigated Cases </h2>
 					<?php
 						$this->table->set_heading(
 												array(	'First Name',
@@ -134,7 +134,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 								echo "<td bgcolor='#FF0000'><b>Serious<b></b></td>";
 							else if($value['Status'] == "threatening")
 								echo "<td bgcolor='#FF8000'><b>".$value['Status']."<b></td>";
-							else if($value['Status'] == "supected")
+							else if($value['Status'] == "suspected")
 								echo "<td bgcolor='#FFFF00'><b>".$value['Status']."<b></td>";
 							else //if($value['Status'] == "finished")
 								echo "<td bgcolor='#00FF00'><b>".$value['Status']."<b></td>";
@@ -193,7 +193,10 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 				<div id="tabs-1">
 					<h2> Larval Occurrences</h2>
 					<div id="googleMap" style="width: 100%; height: 350px"></div>
-					<?php if (count($presentData) > 0){$ctr=0;?>
+					<?php 
+						
+					?>
+					<?php if (isset($presentData) ){$ctr=0;?>
 					<input type="hidden" id="present_length" value="<?php echo count($presentData); ?>" />
 						<?php foreach ($presentData as $value) {?>
 							<input type="hidden" id="lsPres_lat<?= $ctr ?>" 		value="<?php echo $value['ls_lat']; ?>"	/>

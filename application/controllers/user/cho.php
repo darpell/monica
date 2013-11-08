@@ -415,6 +415,7 @@ class Cho extends CI_Controller
 			);
 		}
 		}
+
 		$this->load->library('table');
 		$data['notif'] = $this->formatnotifs();
 		
