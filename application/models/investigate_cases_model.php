@@ -18,7 +18,7 @@ class Investigate_cases_model extends CI_Model
 		}
 		$query = $this->db->query("SELECT *
 									FROM case_report_main cr
-									WHERE WHERE DATEDIFF(NOW(), cr.cr_date_onset) <= '30' AND cr.cr_patient_no = " . $patient_no . " and cr.cr_patient_no NOT IN
+									WHERE DATEDIFF(NOW(), cr.cr_date_onset) <= '30' AND cr.cr_patient_no = " . $patient_no . " and cr.cr_patient_no NOT IN
 										(SELECT ic.case_no
 										FROM investigated_cases ic)"
 							);

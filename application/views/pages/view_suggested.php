@@ -131,7 +131,7 @@ $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 							echo '<tr>';
 							echo '<tr>';
 							if($value['Bleeding'] == 'Y' || $value['Rashes'] == 'Y' || $value['Status'] == 'serious')
-								echo "<td bgcolor='#FF0000'><b>Serious<b></b></td>";
+								echo "<td bgcolor='#FF0000'><b>".$value['Status']."<b></b></td>";
 							else if($value['Status'] == "threatening")
 								echo "<td bgcolor='#FF8000'><b>".$value['Status']."<b></td>";
 							else if($value['Status'] == "suspected")

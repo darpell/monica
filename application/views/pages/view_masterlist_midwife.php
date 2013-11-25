@@ -422,7 +422,7 @@ function setInfo(fMarker,fInfo,fMap) {
 						
 				</ul>
 <div  id="tabs-5">
-	<div id="googleMap" style="width:20%; height:80%; margin: 10px; float:left;" >
+	<div id="googleMap" style="width:40%; height:80%; margin: 10px; float:left;" >
 	</div>
 	<input type="hidden" id="centroid_icon" value="<?php echo base_url('/images/information.png')?>" />
 	<input type="hidden" id="case_icon" value="<?php echo base_url('/images/arrow.png')?>" />

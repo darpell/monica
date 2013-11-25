@@ -629,7 +629,8 @@ print($barangay);
 			// setting dates
 			$data['begin_date'] = date("Y-m") . '-01';
 			//$data['begin_date'] = date("Y") . '-08-01';
-			$data['end_date'] = date("Y-m-d");
+			$c = date("d") + 1;
+			$data['end_date'] = date("Y-m") .'-'.$c;
 			$data['b_date'] = date("Y") . ', '.date('m').', 1';
 			//$data['b_date'] = date("Y") . ', 8, 1';
 			$data['e_date'] = date("Y,m,d");

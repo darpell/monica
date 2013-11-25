@@ -122,7 +122,7 @@
 			$q = $this->db->get();
 			
 			if($q->num_rows() > 0)
-			{
+			{$data2=null;
 				foreach ($q->result() as $row)
 				{
 					
@@ -151,10 +151,13 @@
 					
 				}
 			}
+			}
+			
+			
 			else $data2 =  null;
 			
 			
-			}
+			
 			
 			return $data2;
 		}

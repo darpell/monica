@@ -32,7 +32,7 @@ class Larval_survey extends CI_Model
 	}
 	
 	function add($data)
-	{
+	{ /*
 		$header_data = array(
 						'ls_inspector'		=>	$data['TPinspector-txt'],
 						'ls_date'			=>	$data['TPdate-txt'],
@@ -76,12 +76,12 @@ class Larval_survey extends CI_Model
 			
 			$query_inserted_header_data = $this->db->get_where('ls_report_header', $insert_header_data);
 			$inserted_header_data = $query_inserted_header_data->row_array();
-			
+			*/
 			// Add data to ls_report_main
 			$insert_main_data = array(
-					'ls_no'				=>	$inserted_header_data['ls_no'],
+					//'ls_no'				=>	$inserted_header_data['ls_no'],
 					'ls_household'		=>	$data['TPhousehold-txt'],
-					'ls_result'			=>	$data['TPresult-rd'],
+					//'ls_result'			=>	$data['TPresult-rd'],
 					'ls_container'		=>	$data['TPcontainer-txt'],
 					'ls_lat'			=>	$data['lat'],
 					'ls_lng'			=>	$data['lng'],
@@ -91,8 +91,9 @@ class Larval_survey extends CI_Model
 					'last_updated_on'	=>	$data['TPlastupdatedon-txt']
 				);
 			
-			$this->db->insert('ls_report_main', $insert_main_data);
-		}
+			$this->db->insert('ls_report', $insert_main_data);
+		//}
+		
 	}
 	function searchcase($data)
 	{

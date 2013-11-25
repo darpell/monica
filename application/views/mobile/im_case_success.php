@@ -17,7 +17,7 @@
 			<li> <a href="<?php echo site_url('mobile');?>" data-ajax="false" data-transition="slide"> Back to Home </a> </li>
 			<li> 
 				<?php echo $result; ?> <br/> <br/>
-				<?php echo $treatment; ?>
+				<?php if(isset($result)) echo $treatment; ?>
 			</li>
 		</ul>
 	</div><!-- /content -->
