@@ -200,10 +200,12 @@
 			if($barangay != null)
 			{	$qString .= "epidemic_threshold_barangay ('"; 
 				$qString .=$barangay . "','";	
+				$str = "AND bhw.barangay = '".$barangay."'";
 			}
 			else
 			{
 				$qString .= "epidemic_threshold ('"; 
+				$str = "";
 			}
 			$qString .=
 			date('Y'). "'". ")";
@@ -362,6 +364,34 @@
 				if($row->year2 != date('Y'))
 				$sum[$row->month] += $row->num;
 			}
+			$q->free_result();
+			
+			
+			
+			
+			$where = "count(imcase_no) as num, Month(created_on) as month, Year(created_on) as year2
+					FROM (`immediate_cases`) 
+					JOIN `master_list` ON `master_list`.`person_id` = `immediate_cases`.`person_id` 
+					JOIN `catchment_area` ON `master_list`.`person_id` = `catchment_area`.`person_id` 
+					JOIN `bhw` ON `catchment_area`.`bhw_id` = `bhw`.`user_username` 
+					JOIN `household_address` ON `catchment_area`.`household_id` = `household_address`.`household_id` 
+					WHERE  (YEAR(created_on) >= ".date('Y')." - 5)".$str."
+					GROUP BY MONTH(created_on), YEAR(created_on)
+					ORDER BY YEAR(created_on),MONTH(created_on)
+					";
+			$this->db->select($where);
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
+			{
+			foreach ($q->result() as $row)
+			{	$year = $ctr - $row->year2;
+				$data[$year][$row->month] = $data[$year][$row->month]  +  $row->num;
+				
+				if($row->year2 != date('Y'))
+				$sum[$row->month] += $row->num;
+			}
+			}
+			
 			
 			//mean
 			for($i = 1 ; $i <= 12 ; $i++ )

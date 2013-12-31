@@ -247,10 +247,10 @@
 			//variables needed by the stored procedure
 			
 			$data['year'] . "'". ")";
-			
+			$data = "";
 			$q = $this->db->query($qString);
 			if($q->num_rows() > 0) 
-			{	$data = "";
+			{	
 				foreach ($q->result() as $row) 
 				{
 					$data .=
@@ -259,12 +259,36 @@
 					$row->agerange  . "%%" ;
 				}
 				
-				return $data;
+				
 			}
-			else
+			$q->free_result();
+			
+			$where = "
+					count(imcase_no) as patientcount , person_sex as sex, FLOOR(TIMESTAMPDIFF(YEAR,person_dob,CURDATE())/10) as agerange
+					FROM (`immediate_cases`) 
+					JOIN `master_list` ON `master_list`.`person_id` = `immediate_cases`.`person_id` 
+					JOIN `catchment_area` ON `master_list`.`person_id` = `catchment_area`.`person_id` 
+					JOIN `bhw` ON `catchment_area`.`bhw_id` = `bhw`.`user_username` 
+					JOIN `household_address` ON `catchment_area`.`household_id` = `household_address`.`household_id` 
+					WHERE  YEAR(created_on) = ".date("Y")." 
+					GROUP BY   YEAR( created_on ) , FLOOR(TIMESTAMPDIFF(YEAR,person_dob,CURDATE())/10) , person_sex
+					
+					";
+			$this->db->select($where);
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
 			{
-				return 0;
+				foreach ($q->result() as $row)
+				{
+					$data .=
+					$row->patientcount . "&&" . 
+					$row->sex . "&&" . 
+					$row->agerange  . "%%" ;
+				}
 			}
+			
+			return $data;
+		
 		}
 		function get_report_data_cases($data)
 		{
@@ -276,8 +300,9 @@
 			$data['year'] . "'". ")";
 			
 			$q = $this->db->query($qString);
+			$data = "";
 			if($q->num_rows() > 0) 
-			{	$data = "";
+			{	
 				foreach ($q->result() as $row) 
 				{
 					
@@ -286,13 +311,33 @@
 					$row->month  . "&&" .
 					$row->year2 .   "%%" ;
 				}
-				
-				return $data;
 			}
-			else
+			$q->free_result();
+
+			$where = "count(imcase_no) as num, Month(created_on) as month, Year(created_on) as year2
+					FROM (`immediate_cases`)
+					JOIN `master_list` ON `master_list`.`person_id` = `immediate_cases`.`person_id`
+					JOIN `catchment_area` ON `master_list`.`person_id` = `catchment_area`.`person_id`
+					JOIN `bhw` ON `catchment_area`.`bhw_id` = `bhw`.`user_username`
+					JOIN `household_address` ON `catchment_area`.`household_id` = `household_address`.`household_id`
+					WHERE  YEAR(created_on) = ".date('Y')." OR  YEAR(created_on) = ".(date('Y')-1)."
+					GROUP BY MONTH(created_on), YEAR(created_on)
+					ORDER BY YEAR(created_on)
+					";
+			$this->db->select($where);
+			$q = $this->db->get();
+			if($q->num_rows() > 0)
 			{
-				return 0;
+				foreach ($q->result() as $row)
+				{	
+					$data .=
+					$row->num . "&&" .
+					$row->month  . "&&" .
+					$row->year2 .   "%%" ;
+				}
 			}
+			return $data;
+			
 		}
 		function  get_report_data_barangay($data)
 		{

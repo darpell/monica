@@ -43,32 +43,32 @@
 			if (data[i][2] == 0) 
 			{
 			if(data[i][1] == 'F')
-			{age0f = data[i][0];}
-			else {age0m = data[i][0];}
+			{age0f += parseInt(data[i][0]);}
+			else {age0m += parseInt(data[i][0]);}
 			}
 			else if (data[i][2] == 1) 
 			{
 			if(data[i][1] == 'F')
-			{age1f = data[i][0];}
-			else {age1m = data[i][0];}
+			{age1f += parseInt(data[i][0]);}
+			else {age1m += parseInt(data[i][0]);}
 			}
 			else if (data[i][2] == 2) 
 			{
 			if(data[i][1] == 'F')
-			{age2f = data[i][0];}
-			else {age2m = data[i][0];}
+			{age2f += parseInt(data[i][0]);}
+			else {age2m += parseInt(data[i][0]);}
 			}
 			else if (data[i][2] == 3) 
 			{
 			if(data[i][1] == 'F')
-			{age3f = data[i][0];}
-			else {age3m = data[i][0];}
+			{age3f += parseInt(data[i][0]);}
+			else {age3m += parseInt(data[i][0]);}
 			}
 			else if (data[i][2] >= 4) 
 			{
 			if(data[i][1] == 'F')
-			{age4f = age4f + parseInt(data[i][0]);}
-			else {age4m = age4m + parseInt(data[i][0]);}
+			{age4f += parseInt(data[i][0]);}
+			else {age4m +=  parseInt(data[i][0]);}
 			}
 			
 		}
@@ -114,56 +114,56 @@
 			if(parseInt(data2[i][2]) == parseInt(yyyy))
 			{
 			if (data2[i][1] == 1) 
-			{mn1 = data2[i][0];}
+			{mn1 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 2) 
-			{mn2 = data2[i][0];}
+			{mn2 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 3) 
-			{mn3 = data2[i][0];}
+			{mn3 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 4) 
-			{mn4 = data2[i][0];}
+			{mn4 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 5) 
-			{mn5 = data2[i][0];}
+			{mn5 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 6) 
-			{mn6 = data2[i][0];}
+			{mn6 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 7) 
-			{mn7 = data2[i][0];}
+			{mn7 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 8) 
-			{mn8 = data2[i][0];}
+			{mn8 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 9) 
-			{mn9 = data2[i][0];}
+			{mn9 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 10) 
-			{mn10 = data2[i][0];}
+			{mn10 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 11) 
-			{mn11 = data2[i][0];}
+			{mn11 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 12) 
-			{mn12 = data2[i][0];}
+			{mn12 += parseInt(data2[i][0]);}
 			}
 			else if(parseInt(data2[i][2]) == parseInt(yyyy) -1)
 			{
 			if (data2[i][1] == 1) 
-			{m1 = data2[i][0];}
+			{m1 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 2) 
-			{m2 = data2[i][0];}
+			{m2 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 3) 
-			{m3 = data2[i][0];}
+			{m3 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 4) 
-			{m4 = data2[i][0];}
+			{m4 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 5) 
-			{m5 = data2[i][0];}
+			{m5 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 6) 
-			{m6 = data2[i][0];}
+			{m6 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 7) 
-			{m7 = data2[i][0];}
+			{m7 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 8) 
-			{m8 = data2[i][0];}
+			{m8 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 9) 
-			{m9 = data2[i][0];}
+			{m9 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 10) 
-			{m10 = data2[i][0];}
+			{m10 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 11) 
-			{m11 = data2[i][0];}
+			{m11 += parseInt(data2[i][0]);}
 			if (data2[i][1] == 12) 
-			{m12 = data2[i][0];}
+			{m12 += parseInt(data2[i][0]);}
 			}
 		}
 		
@@ -200,7 +200,7 @@
 		
 		
 		var data3 = google.visualization.arrayToDataTable([
-          ['Month', yyyy, yyyy-1],
+          ['Month', yyyy.toString(), (yyyy-1).toString()],
           ['Jan',  parseInt(mn1),      parseInt(m1)],
           ['Feb',  parseInt(mn2),     parseInt( m2)],
           ['Mar',  parseInt(mn3),      parseInt(m3)],

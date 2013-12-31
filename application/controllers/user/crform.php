@@ -245,6 +245,7 @@ class Crform extends CI_Controller
 		{
 			$data2[] =  explode('&&', $case[$i]);
 		}
+		
 		$m1 = 0;
 	    $m2 = 0;
 		$m3 = 0;
@@ -270,63 +271,68 @@ class Crform extends CI_Controller
 		$mn10 = 0;
 		$mn11 = 0;
 		$mn12 = 0;
+		
 		for ($i = 0; $i < (count($data2)-1); $i++)
 		{	
 			if($data2[$i][2] == $data['year'])
 			{
 			if ($data2[$i][1] == 1) 
-			{$mn1 = $data2[$i][0];}
+			{$mn1 += $data2[$i][0];}
 			if ($data2[$i][1] == 2) 
-			{$mn2 = $data2[$i][0];}
+			{$mn2 += $data2[$i][0];}
 			if ($data2[$i][1] == 3) 
-			{$mn3 = $data2[$i][0];}
+			{$mn3 += $data2[$i][0];}
 			if ($data2[$i][1] == 4) 
-			{$mn4 = $data2[$i][0];}
+			{$mn4 += $data2[$i][0];}
 			if ($data2[$i][1] == 5) 
-			{$mn5 = $data2[$i][0];}
+			{$mn5 += $data2[$i][0];}
 			if ($data2[$i][1] == 6) 
-			{$mn6 = $data2[$i][0];}
+			{$mn6 += $data2[$i][0];}
 			if ($data2[$i][1] == 7) 
-			{$mn7 = $data2[$i][0];}
+			{$mn7 += $data2[$i][0];}
 			if ($data2[$i][1] == 8) 
-			{$mn8 = $data2[$i][0];}
+			{$mn8 += $data2[$i][0];}
 			if ($data2[$i][1] == 9) 
-			{$mn9 = $data2[$i][0];}
+			{$mn9 += $data2[$i][0];}
 			if ($data2[$i][1] == 10) 
-			{$mn10 = $data2[$i][0];}
+			{$mn10 += $data2[$i][0];}
 			if ($data2[$i][1] == 11) 
-			{$mn11 = $data2[$i][0];}
+			{$mn11 += $data2[$i][0];}
 			if ($data2[$i][1] == 12) 
-			{$mn12 = $data2[$i][0];}
+			{$mn12 += $data2[$i][0];}
 			}
 			else if($data2[$i][2] == $data['year'] - 1)
 			{
 			if ($data2[$i][1] == 1) 
-			{$m1 = $data2[$i][0];}
+			{$m1 += $data2[$i][0];}
 			if ($data2[$i][1] == 2) 
-			{$m2 = $data2[$i][0];}
+			{$m2 += $data2[$i][0];}
 			if ($data2[$i][1] == 3) 
-			{$m3 = $data2[$i][0];}
+			{$m3 += $data2[$i][0];}
 			if ($data2[$i][1] == 4) 
-			{$m4 = $data2[$i][0];}
+			{$m4 += $data2[$i][0];}
 			if ($data2[$i][1] == 5) 
-			{$m5 = $data2[$i][0];}
+			{$m5 += $data2[$i][0];}
 			if ($data2[$i][1] == 6) 
-			{$m6 = $data2[$i][0];}
+			{$m6 += $data2[$i][0];}
 			if ($data2[$i][1] == 7) 
-			{$m7 = $data2[$i][0];}
+			{$m7 += $data2[$i][0];}
 			if ($data2[$i][1] == 8) 
-			{$m8 = $data2[$i][0];}
+			{$m8 += $data2[$i][0];}
 			if ($data2[$i][1] == 9) 
-			{$m9 = $data2[$i][0];}
+			{$m9 += $data2[$i][0];}
 			if ($data2[$i][1] == 10) 
-			{$m10 = $data2[$i][0];}
+			{$m10 += $data2[$i][0];}
 			if ($data2[$i][1] == 11) 
-			{$m11 = $data2[$i][0];}
+			{$m11 += $data2[$i][0];}
 			if ($data2[$i][1] == 12) 
-			{$m12 = $data2[$i][0];}
+			{$m12 += $data2[$i][0];}
 			}
+			
+
 		}
+		
+		
 		
 		$age = $this->Case_report->get_report_data_age($data);
 		
@@ -352,32 +358,32 @@ class Crform extends CI_Controller
 			if ($data3[$i][2] == 0) 
 			{
 			if($data3[$i][1] == 'F')
-			{$age0f = $data3[$i][0];}
-			else {$age0m = $data3[$i][0];}
+			{$age0f += $data3[$i][0];}
+			else {$age0m += $data3[$i][0];}
 			}
 			else if ($data3[$i][2] == 1) 
 			{
 			if($data3[$i][1] == 'F')
-			{$age1f = $data3[$i][0];}
-			else {$age1m = $data3[$i][0];}
+			{$age1f += $data3[$i][0];}
+			else {$age1m += $data3[$i][0];}
 			}
 			else if ($data3[$i][2] == 2) 
 			{
 			if($data3[$i][1] == 'F')
-			{$age2f = $data3[$i][0];}
-			else {$age2m = $data3[$i][0];}
+			{$age2f += $data3[$i][0];}
+			else {$age2m += $data3[$i][0];}
 			}
 			else if ($data3[$i][2] == 3) 
 			{
 			if($data3[$i][1] == 'F')
-			{$age3f = $data3[$i][0];}
-			else {$age3m = $data3[$i][0];}
+			{$age3f += $data3[$i][0];}
+			else {$age3m += $data3[$i][0];}
 			}
 			else if ($data3[$i][2] >= 4) 
 			{
 			if($data3[$i][1] == 'F')
-			{$age4f = $age4f + $data3[$i][0];}
-			else {$age4m = $age4m + $data3[$i][0];}
+			{$age4f += $age4f + $data3[$i][0];}
+			else {$age4m += $age4m + $data3[$i][0];}
 			}
 			
 		}
@@ -389,7 +395,7 @@ class Crform extends CI_Controller
 		{	//scripts if none keep '' 
 			$data['script'] = 'test_charts';
 			//$this->load->view('templates/header',$data);
-			$data['report_data_age'] = $this->Case_report->get_report_data_age($data);;
+			$data['report_data_age'] = $this->Case_report->get_report_data_age($data);
 			$data['report_data_cases'] = $this->Case_report->get_report_data_cases($data);
 			$data['totalcur'] = $mn1 + $mn2 + $mn3 + $mn4 + $mn5 + $mn6 + $mn7 + $mn8 + $mn9 + $mn10 + $mn11 + $mn12;
 			$data['totalprev'] = $m1 + $m2 + $m3 + $m4 + $m5 + $m6 + $m7 + $m8 + $m9 + $m10 + $m11 + $m12;
@@ -412,7 +418,6 @@ class Crform extends CI_Controller
 			
 			$this->load->library('table');
 			$data['table'] = $this->Case_report->get_report_data_barangay($data);
-
 			$this->load->view('pages/surviellance_report', $data);
 			//$this->load->view('templates/footer');
 		}
