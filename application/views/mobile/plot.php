@@ -75,7 +75,7 @@ function initialize(){
     <div data-role="header" data-id="myfooter" id="home_header" data-position="fixed" data-nobackbtn="true">
         <!-- <p style="font-size:medium;padding:5px;text-align:center;">Dengue Mapping</p> -->
         <a href="<?php echo site_url('mobile');?>" data-ajax="false" data-icon="arrow-l"> Back </a>
-        <h1> Plot Occurrence </h1>
+        <h1> Plot Points </h1>
     </div><!-- /header -->
 
     <div data-role="content">
@@ -208,21 +208,37 @@ function initialize(){
 	    	
 	    	<!-- Single Case Report/Investigation -->
 	    	<div data-role="collapsible">
-	    		<h2> Case Investigation </h2>
-	    		
-	    		<ul data-role="listview" data-inset="true" data-theme="d" data-divider-theme="d">
-						<li data-role="list-divider"> Plot investigated case </li>
-						<li><a href="uninvestigated_cases">
-							<h3>Case List</h3>
-							<p><strong>Please click this link to see a list of uninvestigated cases.</strong></p>
-						</a></li>
-	    		</ul>
-	    		<!--
-				<ul data-role="listview" data-inset="true" data-divider-theme="d">
-						<li data-role="list-divider"> Case Entry </li>
-	    			<li> Please use the PIDSR Form and re-enter it in a designated terminal at the center </li>
-				</ul>
-				-->
+	    		<h2> New Household </h2>
+	    		<form id="hh_form" action="addhh" method="post" data-ajax="false">
+			
+					<!-- lat & lng -->
+					<input type="hidden" name="lat" class="lat" />
+					<input type="hidden" name="lng" class="lng" />
+					<!-- /lat & lng -->
+				
+					<!-- household -->
+					<label for="TPhousehold-txt"> Name of Household: </label>
+					<label style="color:red"><?php echo form_error('hh_name'); ?></label>
+					<input type="text" name="hh_name" id="hh_name" value="<?php echo set_value('hh_name'); ?>" data-mini="true" />
+					<!-- /household -->
+					
+					<!-- household_no -->
+					<label for="TPhousehold-txt"> House Address No.: </label>
+					<label style="color:red"><?php echo form_error('hh_no'); ?></label>
+					<input type="text" name="hh_no" id="hh_no" value="<?php echo set_value('hh_no'); ?>" data-mini="true" />
+					<!-- /household_no -->
+					
+					<!-- street -->
+					<label for="TPstreet-txt"> Street: </label>
+					<label style="color:red"><?php echo form_error('hh_street'); ?></label>
+					<input type="text" name="hh_street" class="hh_street" data-mini="true" />
+					<!-- /street -->
+				
+					<div>
+						<input type="submit" value="Submit" />
+					</div>
+			
+				</form>
 	    	</div>
 	    	<!-- /end Single Case Report/Investigation -->
     	</div>

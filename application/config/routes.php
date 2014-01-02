@@ -70,6 +70,8 @@ $route['mobile/view/suspected_cases/(:num)'] = 'mobile/monitored_cases/view_susp
 // Mob Hospitalized Casses
 $route['mobile/view/hospitalized_cases'] = 'mobile/monitored_cases/hospitalized_cases';
 $route['mobile/view/hospitalized_cases/(:num)'] = 'mobile/monitored_cases/view_hospitalized_case_details/$1';
+// Mob Households
+$route['mobile/page/addhh'] = 'mobile/household/add';
 
 $route['mobile/view/person/(:num)'] = 'mobile/master_list/edit_immediate_case/$1'; # DONE
 $route['mobile/view/household/(:num)/case/(:num)'] = 'mobile/master_list/view_edit_person';
