@@ -19,6 +19,9 @@
 			
 			<ul data-role="listview" data-filter="true" data-inset="true" data-split-icon="check" data-split-theme="d">
 				<!-- <li> <?php //echo $test; ?></li> -->
+				<?php for ($ctr = 0; $ctr < count($household_persons); $ctr++) {?>
+					<li><a href="<?php echo site_url('mobile/household/'. $household_persons[$ctr]['household_id'] .'/new_mem');?>" data-ajax="false" data-transition="slide"> Add New Member </a></li>
+				<?php $ctr+= count($household_persons);} ?>
 				<?php 
 				for ($ctr = 0; $ctr < count($household_persons); $ctr++) 
 				{

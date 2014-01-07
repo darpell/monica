@@ -31,6 +31,21 @@ class Household extends CI_Controller
 		}
 	}
 	
+	function add_mem_index()
+	{
+		$param = $this->uri->uri_to_assoc(3);
+		$household_id = $param['household'];
+		
+		$data['household_id'] = $household_id;
+	
+		$this->load->view('mobile/household_member_form',$data);
+	}
+	
+	function add_new_member()
+	{
+	
+	}
+	
 }
 
 /* End of file mobile/household.php */
