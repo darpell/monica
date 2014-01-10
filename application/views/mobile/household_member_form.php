@@ -29,13 +29,19 @@
 			<!-- dob -->
 			<label for="hh_dob"> Date of Birth: </label>
 			<label style="color:red"><?php echo form_error('hh_dob'); ?></label>
-			<input type="text" name="hh_dob" id="hh_dob" value="<?php echo set_value('hh_dob'); ?>" data-mini="true" />
+			<input type="date" name="hh_dob" id="hh_dob" value="<?php echo set_value('hh_dob'); ?>" data-mini="true" />
 			<!-- /dob -->
 			
 			<!-- gender -->
 			<label for="hh_gender"> Gender: </label>
 			<label style="color:red"><?php echo form_error('hh_gender'); ?></label>
-			<input type="text" name="hh_gender" id="hh_gender" value="<?php echo set_value('hh_gender'); ?>" data-mini="true" />
+			<fieldset data-role="controlgroup" data-mini="true">
+			    	<input type="radio" name="hh_gender" id="hh_gender-1" value="male" />
+			    	<label for="hh_gender-1"> Male </label>
+			
+					<input type="radio" name="hh_gender" id="hh_gender-2" value="female" />
+			    	<label for="hh_gender-2"> Female </label>
+			</fieldset>
 			<!-- /gender -->
 			
 			<!-- marital -->
@@ -51,7 +57,7 @@
 			<!-- /nationality -->
 			
 			<!-- blood_type -->
-			<label for="hh_blood"> Name of Household: </label>
+			<label for="hh_blood"> Blood Type: </label>
 			<label style="color:red"><?php echo form_error('hh_blood'); ?></label>
 			<input type="text" name="hh_blood" id="hh_blood" value="<?php echo set_value('hh_blood'); ?>" data-mini="true" />
 			<!-- /blood_type -->
@@ -62,18 +68,14 @@
 			<input type="text" name="hh_guardian" id="hh_guardian" value="<?php echo set_value('hh_guardian'); ?>" data-mini="true" />
 			<!-- /guardian -->
 			
-			<!-- adu -->
-			<label for="hh_adu"> ADU(?): </label>
-			<label style="color:red"><?php echo form_error('hh_adu'); ?></label>
-			<input type="text" name="hh_adu" id="hh_adu" value="<?php echo set_value('hh_adu'); ?>" data-mini="true" />
-			<!-- /adu -->
-			
 			<!-- contact -->
-			<label for="hh_contact"> Name of Household: </label>
+			<label for="hh_contact"> Contact No: </label>
 			<label style="color:red"><?php echo form_error('hh_contact'); ?></label>
-			<input type="text" name="hh_contact" id="hh_contact" value="<?php echo set_value('hh_contact'); ?>" data-mini="true" />
+			<input type="tel" name="hh_contact" id="hh_contact" value="<?php echo set_value('hh_contact'); ?>" data-mini="true" placeholder="e.g. 09XX XXXXXXX"/>
 			<!-- /contact -->
-					
+			
+			<br/>
+			
 			<div>
 				<input type="submit" value="Submit" />
 			</div>
